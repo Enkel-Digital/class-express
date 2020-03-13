@@ -32,7 +32,7 @@
 import SearchBar from "@/components/SearchBar.vue";
 
 export default {
-  name: "home",
+  name: "explore",
   components: {
     SearchBar
   },

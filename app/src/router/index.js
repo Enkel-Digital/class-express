@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
 import Explore from "../views/Explore.vue";
+import Upcoming from "../views/Upcoming.vue";
 
 Vue.use(VueRouter);
 
@@ -17,6 +18,11 @@ const routes = [
     path: "/explore",
     name: "explore",
     component: Explore
+  },
+  {
+    path: "/upcoming",
+    name: "upcoming",
+    component: Upcoming
   },
   {
     path: "/profile",
