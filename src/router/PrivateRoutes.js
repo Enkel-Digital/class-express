@@ -38,6 +38,12 @@ const routes = [
     name: "profile",
     component: Profile,
     meta: { Auth_requirements: AuthType.private }
+  },
+  {
+    path: "/settings",
+    name: "settings",
+    component: () => import("@/views/Settings.vue"),
+    meta: { Auth_requirements: AuthType.private }
   }
 ];
 
