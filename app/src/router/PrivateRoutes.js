@@ -6,6 +6,7 @@ import Home from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
 import Explore from "../views/Explore.vue";
 import Upcoming from "../views/Upcoming.vue";
+import ClassDetails from "../views/ClassDetails.vue";
 
 /**
  * @notice Some of these less frequented routes uses lazily loaded components
@@ -25,6 +26,12 @@ const routes = [
     path: "/explore",
     name: "explore",
     component: Explore,
+    meta: { Auth_requirements: AuthType.private }
+  },
+  {
+    path: "/classdetails",
+    name: "ClassDetails",
+    component: ClassDetails,
     meta: { Auth_requirements: AuthType.private }
   },
   {
