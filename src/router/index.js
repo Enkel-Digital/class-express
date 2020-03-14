@@ -1,43 +1,19 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import RouteGaurd from "./RouteGaurd";
 
-import Home from "../views/Home.vue";
-import Profile from "../views/Profile.vue";
-import Explore from "../views/Explore.vue";
-import Upcoming from "../views/Upcoming.vue";
+// Import the private and public routes
+import PrivateRoutes from "./PrivateRoutes";
+import PublicRoutes from "./PublicRoutes";
 
+// Attach use of vue route to the vue object instance
 Vue.use(VueRouter);
 
-const routes = [
-  {
-    path: "/",
-    name: "home",
-    component: Home
-  },
-  {
-    path: "/explore",
-    name: "explore",
-    component: Explore
-  },
-  {
-    path: "/upcoming",
-    name: "upcoming",
-    component: Upcoming
-  },
-  {
-    path: "/profile",
-    name: "profile",
-    component: Profile
-  },
-  {
-    path: "/about",
-    name: "About",
-    component: () => import("../views/About.vue")
-  }
-];
-
 const router = new VueRouter({
-  routes
+  routes: [...PrivateRoutes, ...PublicRoutes]
 });
+
+// Attach Router Gaurd Middleware function to run when navigation is made before the actual navigation.
+router.beforeEach(RouteGaurd);
 
 export default router;
