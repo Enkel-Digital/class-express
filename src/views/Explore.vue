@@ -1,29 +1,42 @@
 <template>
-  <v-content class="home">
+  <v-content class="explore">
     <SearchBar />
 
-    <!-- Below will either be the explore page or the search result's page. -->
-    <v-responsive>
-      <v-list-item id="recently-searched-items">
-        <v-list-item-content
-          v-for="searchItem in searchItems"
-          :key="searchItem"
-        >
-          <p>{{ searchItem }}</p>
-        </v-list-item-content>
-      </v-list-item>
+    <v-responsive v-if="searchResults.length">
+      <span style="text-align: left;">Search Results:</span>
+
+      <v-card outlined v-for="(searchResult, i) in searchResults" :key="i">
+        <div class="d-flex flex-no-wrap justify-space-between">
+          <div>
+            <v-card-title
+              class="headline"
+              v-text="searchResult.name"
+            ></v-card-title>
+
+            <v-card-subtitle
+              v-text="searchResult.provider.name"
+            ></v-card-subtitle>
+          </div>
+
+          <v-avatar class="ma-3" size="125" tile>
+            <v-img :src="searchResult.pictureSrc"></v-img>
+          </v-avatar>
+        </div>
+      </v-card>
     </v-responsive>
 
-    <v-divider></v-divider>
-
-    <v-responsive class="ma-4">
+    <v-responsive class="ma-4" v-if="!searchResults.length">
       <h4>Sort by Category</h4>
 
-      <v-btn class="ma-4">Academics</v-btn>
-      <v-btn class="ma-4">Music</v-btn>
-      <v-btn class="ma-4">Sports</v-btn>
-      <v-btn class="ma-4">Cooking</v-btn>
-      <v-btn class="ma-4">Tech</v-btn>
+      <!-- Show all icons for the categories -->
+      <v-btn
+        class="ma-4"
+        v-for="(category, i) in categories"
+        :key="i"
+        @click="searchByCategory(category)"
+      >
+        {{ category }}
+      </v-btn>
     </v-responsive>
   </v-content>
 </template>
@@ -38,8 +51,46 @@ export default {
   },
   data() {
     return {
-      searchItems: ["search1", "search2", "search3"]
+      searchResults: [
+        {
+          name: "basic guitar",
+          ratings: 4, // Ratings out of 5 stars
+          classLength: "60", // Store classLength in minutes can show otherwise in hours as needed
+          provider: {
+            name: "Guitar Studio 1", // Name of the provider
+            id: 123
+          },
+          location: "", // Location Coordinates so we can show on a Map insert
+          pictureSrc:
+            "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg"
+        },
+        {
+          name: "advance guitar",
+          ratings: 3.8, // Ratings out of 5 stars
+          classLength: "60", // Store classLength in minutes can show otherwise in hours as needed
+          provider: {
+            name: "Guitar Studio 2", // Name of the provider
+            id: 123
+          },
+          location: "", // Location Coordinates so we can show on a Map insert
+          pictureSrc:
+            "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg"
+        }
+      ],
+      categories: [
+        "tech",
+        "language",
+        "academics",
+        "cooking",
+        "music",
+        "sports"
+      ]
     };
+  },
+  methods: {
+    searchByCategory(category) {
+      console.log("category:", category);
+    }
   }
 };
 </script>
