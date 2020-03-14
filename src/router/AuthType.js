@@ -10,14 +10,10 @@
  * @notice Auth types:
  * @notice public: All User can access route regardless of current auth status.
  * @notice public_only: Only accessible if user is not logged in. Example would be the login route.
- * @notice private: Accessible by all users as long as they are authenticated.
- * @notice privateUser: Only accessible if user is authenticated and user is a normal app user.
- * @notice privatePartner: Only accessible if user is authenticated and user is a education partner.
+ * @notice private: Accessible to users after authentication.
  */
 export default Object.freeze({
   public: 1,
   public_only: 2,
-  private: 3,
-  privateUser: 4,
-  privatePartner: 5
+  private: 3
 });
