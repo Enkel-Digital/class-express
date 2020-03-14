@@ -47,11 +47,13 @@
 
     <v-divider></v-divider>
 
-    <v-btn>Logout</v-btn>
+    <v-btn @click="logout">Logout</v-btn>
   </v-content>
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
   name: "profile",
   data() {
@@ -62,6 +64,17 @@ export default {
       pointsLeft: 20,
       totalPoints: 45
     };
+  },
+  methods: {
+    logout() {
+      alert("You have now been logged out");
+
+      // Signout current user and redirect to welcome page afterwards.
+      firebase
+        .auth()
+        .signOut()
+        .then(() => this.$router.push({ name: "welcome" }));
+    }
   }
 };
 </script>

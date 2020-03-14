@@ -8,6 +8,10 @@ import firebase from "firebase";
 
 Vue.config.productionTip = false;
 
+// Register global custom directive called `v-autofocus`
+import autofocus from "./directives/autofocus";
+Vue.directive("autofocus", autofocus);
+
 // firebaseConfig auto generated in project settings
 firebase.initializeApp({
   apiKey: "AIzaSyAXQkdXjxHpZbEYNTXoyfyBXfWVEbm-tCA",
