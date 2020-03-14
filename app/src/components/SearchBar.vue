@@ -1,17 +1,22 @@
 <template>
   <v-content class="search">
-    <v-card>
-      <input
-        type="text"
-        v-model="searchText"
-        placeholder="Search"
-        @click="clicked"
-        @keypress="suggest"
-        @keypress.enter="search"
-      />
-    </v-card>
-
-    <!-- Add a drop down menu to show suggested items -->
+    <v-autocomplete
+      v-model="searchText"
+      :loading="loading"
+      :items="items"
+      :search-input.sync="suggest"
+      cache-items
+      class="mx-4"
+      hide-no-data
+      hide-details
+      label="Search"
+      solo-inverted
+      autofocus
+      light
+      flat
+      open-on-clear
+      @keypress.enter="search"
+    />
   </v-content>
 </template>
 
@@ -20,25 +25,49 @@ export default {
   name: "search",
   data() {
     return {
-      searchText: ""
+      searchText: "",
+      loading: false,
+      items: [],
+      suggest: null,
+      select: null,
+      classNames: [
+        "cooking",
+        "guitar",
+        "piano",
+        "math",
+        "primary 6 science",
+        "chinese",
+        "english",
+        "art"
+      ]
     };
   },
+  watch: {
+    suggest(searchText) {
+      this.getSuggestions(searchText);
+    }
+  },
   methods: {
-    suggest() {
-      console.log("suggestion engine:", this.searchText);
-    },
     search() {
-      console.log("search engine:", this.searchText);
+      console.log("searching ... ...");
 
-      // Get the search result's as a promise
-      // Redirect to the search page and pass the promise there to await and populate the page.
-      // Search page is just the explore page.
+      // Collapse suggestions dropdown
 
-      this.$router.push({ name: "explore" });
+      // Return the search result to the Explore page to show.
     },
-    clicked() {
-      console.log("clicked");
-      // Perhaps redirect to explore and use the actual search box in explore.
+    /**
+     * @function getSuggestions
+     * To Simulate ajax query
+     */
+    getSuggestions(search) {
+      this.loading = true;
+      setTimeout(() => {
+        this.items = this.classNames.filter(
+          e =>
+            (e || "").toLowerCase().indexOf((search || "").toLowerCase()) > -1
+        );
+        this.loading = false;
+      }, 1000);
     }
   }
 };
