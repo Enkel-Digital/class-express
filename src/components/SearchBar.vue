@@ -11,7 +11,6 @@
       hide-details
       label="Search"
       solo-inverted
-      autofocus
       light
       flat
       open-on-clear
