@@ -6,7 +6,7 @@
     </v-content>
 
     <!-- Bottom navigation bar stays the same across the screens -->
-    <v-bottom-navigation app>
+    <v-bottom-navigation app v-if="showNavBar">
       <v-btn to="/">
         <span>Home</span>
         <v-icon>mdi-home</v-icon>
@@ -29,6 +29,19 @@
     </v-bottom-navigation>
   </v-app>
 </template>
+
+<script>
+import AuthType from "@/router/AuthType";
+
+export default {
+  name: "App",
+  computed: {
+    showNavBar() {
+      return this.$route.meta.Auth_requirements !== AuthType.public_only;
+    }
+  }
+};
+</script>
 
 <style>
 /* Basic default styles applied throughout the app */

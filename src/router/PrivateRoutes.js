@@ -16,7 +16,7 @@ import Upcoming from "../views/Upcoming.vue";
  */
 const routes = [
   {
-    path: "/",
+    path: "/home",
     name: "home",
     component: Home,
     meta: { Auth_requirements: AuthType.private }
