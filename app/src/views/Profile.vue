@@ -20,7 +20,7 @@
     <v-divider></v-divider>
 
     <v-responsive class="ma-4">
-      <v-btn class="ma-4">Settings</v-btn>
+      <v-btn class="ma-4" to="/settings">Settings</v-btn>
 
       <v-btn class="ma-4">Subscription Plan</v-btn>
     </v-responsive>
