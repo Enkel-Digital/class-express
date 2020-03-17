@@ -1,9 +1,13 @@
 <template>
   <v-content class="profile">
+    <v-toolbar color="orange lighten-1" flat dark>
+      <v-toolbar-title>Profile</v-toolbar-title>
+    </v-toolbar>
+
     <v-responsive>
       <v-list-item id="user-details-card">
         <v-list-item-content>
-          <p>{{ name }}</p>
+          <h3>{{ name }}</h3>
           <p>{{ email }}</p>
         </v-list-item-content>
 
@@ -17,23 +21,13 @@
       </v-list-item>
     </v-responsive>
 
-    <v-divider></v-divider>
-
-    <v-responsive class="ma-4">
-      <v-btn class="ma-4" to="/settings">Settings</v-btn>
-
-      <v-btn class="ma-4">Subscription Plan</v-btn>
-    </v-responsive>
-
-    <v-divider></v-divider>
-
     <v-card id="points-card" class="mx-auto" max-width="344" outlined>
       <v-list-item>
         <v-list-item-content>
           <p class="overline">Points</p>
 
           <v-list-item-subtitle>
-            Points period ends on: {{ periodEndDate }}
+            Period ends on: {{ periodEndDate }}
           </v-list-item-subtitle>
 
           <v-list-item-title class="headline mb-1">
@@ -41,13 +35,44 @@
           </v-list-item-title>
         </v-list-item-content>
 
-        <v-btn>Add!</v-btn>
+        <v-btn color="primary">Add!</v-btn>
       </v-list-item>
     </v-card>
 
-    <v-divider></v-divider>
+    <br />
 
-    <v-btn @click="logout">Logout</v-btn>
+    <v-divider></v-divider>
+    <v-responsive class="mx-auto">
+      <v-card :to="'/settings'" ripple tile>
+        <v-list-item>
+          Settings
+        </v-list-item>
+      </v-card>
+
+      <v-card :to="'/subscription'" ripple tile>
+        <v-list-item>
+          Subscription Plan
+        </v-list-item>
+      </v-card>
+
+      <v-card :to="'/favourite-classes'" ripple tile>
+        <v-list-item>
+          Favourite classes
+        </v-list-item>
+      </v-card>
+
+      <v-card :to="'/past-classes'" ripple tile>
+        <v-list-item>
+          Past classes
+        </v-list-item>
+      </v-card>
+
+      <v-card ripple tile>
+        <v-list-item @click="logout" style="background-color: #ededed;">
+          Logout
+        </v-list-item>
+      </v-card>
+    </v-responsive>
   </v-content>
 </template>
 
@@ -58,7 +83,7 @@ export default {
   name: "profile",
   data() {
     return {
-      name: "JJ",
+      name: "JJ Lee",
       email: "JJ@enkeldigital.com",
       periodEndDate: "20 / 4 / 2020",
       pointsLeft: 20,
