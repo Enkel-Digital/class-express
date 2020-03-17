@@ -5,12 +5,13 @@ import RouteGaurd from "./RouteGaurd";
 // Import the private and public routes
 import PrivateRoutes from "./PrivateRoutes";
 import PublicRoutes from "./PublicRoutes";
+import NotFound from "./404Route";
 
 // Attach use of vue route to the vue object instance
 Vue.use(VueRouter);
 
 const router = new VueRouter({
-  routes: [...PrivateRoutes, ...PublicRoutes]
+  routes: [...PrivateRoutes, ...PublicRoutes, ...NotFound]
 });
 
 // Attach Router Gaurd Middleware function to run when navigation is made before the actual navigation.
