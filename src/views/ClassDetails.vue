@@ -1,7 +1,7 @@
 <template>
   <v-content class="ClassDetails">
-    <v-card outlined>
-      <v-responsive id="class-image" size="125" tile>
+    <v-responsive>
+      <v-responsive id="class-image">
         <v-img :src="clas.pictureSrc"></v-img>
       </v-responsive>
 
@@ -14,16 +14,16 @@
           <v-card-text v-text="clas.location"></v-card-text>
         </div>
       </div>
-    </v-card>
+    </v-responsive>
 
-    <!-- Replace the card with the section thing -->
-    <v-card id="reviews-card" class="mx-auto" max-width="344">
+    <v-divider></v-divider>
+
+    <v-responsive id="reviews-card" class="mx-auto">
       <v-list-item>
         <v-list-item-content>
           <p class="overline">Reviews</p>
 
           <v-list-item-subtitle>
-            <!-- Points period ends on: {{ periodEndDate }} -->
             <!-- Do the star icon thing for the reviews -->
             {{ clas.reviews.points }} / 5 from
             {{ clas.reviews.numberOfReviews }} reviews
@@ -32,13 +32,28 @@
 
         <v-btn text small color="primary">Read them!</v-btn>
       </v-list-item>
-    </v-card>
+    </v-responsive>
+
+    <v-divider></v-divider>
+
+    <v-responsive id="reviews-card" class="mx-auto">
+      <v-list-item>
+        <v-list-item-content>
+          <p class="overline">Class Desciption</p>
+
+          <!-- Change to a more readable font -->
+          <p>{{ clas.description }}</p>
+        </v-list-item-content>
+      </v-list-item>
+    </v-responsive>
+
+    <v-divider></v-divider>
 
     <!-- Embedded Maps  -->
 
-    <!-- how to get there -> Descriptions provided by the partner -->
+    <!-- put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
 
-    <!-- Perhaps have a similiar partners thing? -->
+    <!-- Perhaps have a similiar classes/partners thing? -->
   </v-content>
 </template>
 
@@ -58,10 +73,12 @@ export default {
   data() {
     return {
       clas: {
+        id: 12345,
         name: "advance guitar",
         ratings: 3.8, // Ratings out of 5 stars
         classLength: "60", // Store classLength in minutes can show otherwise in hours as needed
-        description: "Advance guitar lessons taught be the legendary Ichika Mo",
+        description:
+          "Advance guitar lessons taught be the legendary Ichika Mo. Will be going through advanced music scores and includes 1 on 1 trainings for the students, alongside a chance to practice in front of a live audience",
         reviews: {
           points: 4.8,
           numberOfReviews: 100

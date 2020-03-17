@@ -5,7 +5,7 @@ import RouteGaurd from "./RouteGaurd";
 // Import the private and public routes
 import PrivateRoutes from "./PrivateRoutes";
 import PublicRoutes from "./PublicRoutes";
-import NotFound from "./404Route";
+import NotFound from "./404";
 
 // Attach use of vue route to the vue object instance
 Vue.use(VueRouter);
