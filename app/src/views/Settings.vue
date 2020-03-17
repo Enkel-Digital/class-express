@@ -3,7 +3,7 @@
     <!-- Add a loader banner showing the update process and notify user if failed. -->
 
     <v-toolbar color="orange lighten-1" flat dark>
-      <BackBtn class="ma-0 pa-0" />
+      <BackBtn />
 
       <v-toolbar-title>Settings</v-toolbar-title>
 
@@ -12,28 +12,53 @@
       <!-- </v-btn> -->
     </v-toolbar>
 
-    <br />
+    <v-row justify="center">
+      <v-col cols="12" sm="8" md="6">
+        <v-list>
+          <v-subheader colors="orange">
+            Notifications:
+          </v-subheader>
 
-    <div>
-      Notifications:
-      <v-divider></v-divider>
+          <div v-ripple @click="mobileNotification = !mobileNotification">
+            <v-checkbox
+              v-model="mobileNotification"
+              readonly
+              :label="'Mobile notifications'"
+              class="ma-1 pa-0"
+            ></v-checkbox>
+          </div>
 
-      <v-checkbox
-        v-model="mobileNotification"
-        :label="'Enable mobile notifications'"
-        class="ma-0 pa-0"
-      ></v-checkbox>
+          <div v-ripple @click="emailNotification = !emailNotification">
+            <v-checkbox
+              v-model="emailNotification"
+              readonly
+              :label="'Email notifications'"
+              class="ma-1 pa-0"
+            ></v-checkbox>
+          </div>
+        </v-list>
 
-      <v-checkbox
-        v-model="emailNotification"
-        :label="'Enable email notifications'"
-        class="ma-0 pa-0"
-      ></v-checkbox>
-    </div>
+        <v-divider></v-divider>
 
-    <v-divider></v-divider>
+        <v-list>
+          <v-subheader colors="orange">
+            Billing:
+          </v-subheader>
 
-    <v-btn @click="logout">Logout</v-btn>
+          <v-list-item ripple>
+            See Billing info
+          </v-list-item>
+
+          <v-list-item ripple>
+            View recent charges
+          </v-list-item>
+        </v-list>
+      </v-col>
+    </v-row>
+
+    <v-list-item @click="logout" ripple style="background-color: #ededed;">
+      Logout
+    </v-list-item>
   </v-content>
 </template>
 
