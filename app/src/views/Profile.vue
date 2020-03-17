@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import firebase from "firebase";
+import logout from "@/controllers/logout";
 
 export default {
   name: "profile",
@@ -91,15 +91,7 @@ export default {
     };
   },
   methods: {
-    logout() {
-      alert("You have now been logged out");
-
-      // Signout current user and redirect to welcome page afterwards.
-      firebase
-        .auth()
-        .signOut()
-        .then(() => this.$router.push({ name: "welcome" }));
-    }
+    logout
   }
 };
 </script>
