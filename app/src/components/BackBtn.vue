@@ -1,9 +1,7 @@
 <template>
-  <v-responsive class="ma-0 pa-0">
-    <v-btn icon @click="goBack">
-      <v-icon>mdi-keyboard-backspace</v-icon>
-    </v-btn>
-  </v-responsive>
+  <v-btn icon class="ma-0 pa-0" @click="goBack">
+    <v-icon>mdi-keyboard-backspace</v-icon>
+  </v-btn>
 </template>
 
 <script>
