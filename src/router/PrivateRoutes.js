@@ -4,6 +4,7 @@ import AuthType from "./AuthType";
 /** @notice Pre-Load all components for frequently used routes */
 import Home from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
+import Topup from "../views/Topup.vue";
 import Explore from "../views/Explore.vue";
 import Upcoming from "../views/Upcoming.vue";
 import ClassDetails from "../views/ClassDetails.vue";
@@ -44,6 +45,12 @@ const routes = [
     path: "/profile",
     name: "profile",
     component: Profile,
+    meta: { Auth_requirements: AuthType.private }
+  },
+  {
+    path: "/topup",
+    name: "topup",
+    component: Topup,
     meta: { Auth_requirements: AuthType.private }
   },
   {
