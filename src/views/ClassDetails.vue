@@ -1,19 +1,17 @@
 <template>
   <v-content class="ClassDetails">
-    <v-responsive>
-      <v-responsive id="class-image">
-        <v-img :src="clas.pictureSrc"></v-img>
-      </v-responsive>
-
-      <div class="d-flex flex-no-wrap justify-space-between">
-        <div>
-          <v-card-title class="headline" v-text="clas.name"></v-card-title>
-
-          <v-card-subtitle v-text="clas.provider.name"></v-card-subtitle>
-
-          <v-card-text v-text="clas.location"></v-card-text>
-        </div>
+    <v-responsive id="class-image-container">
+      <div style="text-align: left;">
+        <BackBtn class="ma-3" />
       </div>
+
+      <v-img id="class-image" :src="clas.pictureSrc" />
+    </v-responsive>
+
+    <v-responsive style="text-align: left;">
+      <h3 class="headline" v-text="clas.name"></h3>
+      <p class="ma-0 pa-0">{{ clas.provider.name }}</p>
+      <p class="ma-0 pa-0">{{ clas.location }}</p>
     </v-responsive>
 
     <v-divider></v-divider>
@@ -64,11 +62,12 @@
  *
  * view timing bar vs reserve class bar.
  */
+import BackBtn from "@/components/BackBtn";
 
 export default {
   name: "ClassDetails",
   components: {
-    // BackBtn
+    BackBtn
   },
   data() {
     return {
@@ -99,8 +98,25 @@ export default {
 </script>
 
 <style scoped>
+#class-image-container {
+  /*
+    General height guidelines for the image loaded
+    Max height is used to prevent the image being used to be too big
+    Min height ensures image will not collapse on itself into the height of the back button
+  */
+  max-height: 80vh;
+  min-height: 68vh;
+}
+
+/* Move image up to upper corners of screen, so back button is overlayed on top */
 #class-image {
-  max-height: 70vh;
+  display: block;
+  position: absolute;
+  top: 0vh;
+  right: 0vw;
+
+  /* Map image to height of entire parent div container */
+  height: 100%;
 }
 
 #reviews-card {
