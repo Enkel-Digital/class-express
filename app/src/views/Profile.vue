@@ -35,7 +35,7 @@
           </v-list-item-title>
         </v-list-item-content>
 
-        <v-btn color="primary">Add!</v-btn>
+        <v-btn :to="{ name: 'topup' }" color="primary">Add!</v-btn>
       </v-list-item>
     </v-card>
 
