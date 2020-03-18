@@ -2,7 +2,7 @@
   <v-content class="settings">
     <!-- Add a loader banner showing the update process and notify user if failed. -->
 
-    <v-toolbar color="orange lighten-1" flat dark>
+    <v-app-bar color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Settings</v-toolbar-title>
 
@@ -11,7 +11,7 @@
       <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
-    </v-toolbar>
+    </v-app-bar>
 
     <v-list>
       <v-subheader>

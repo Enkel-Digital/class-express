@@ -1,9 +1,9 @@
 <template>
   <v-content class="topup">
-    <v-toolbar color="orange lighten-1" flat dark>
+    <v-app-bar color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Topup</v-toolbar-title>
-    </v-toolbar>
+    </v-app-bar>
 
     <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ma-5 mb-0">
       Your Current plan and details

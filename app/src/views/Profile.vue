@@ -1,8 +1,8 @@
 <template>
   <v-content class="profile">
-    <v-toolbar color="orange lighten-1" flat dark>
+    <v-app-bar color="orange lighten-1" flat dark>
       <v-toolbar-title>Profile</v-toolbar-title>
-    </v-toolbar>
+    </v-app-bar>
 
     <v-responsive>
       <v-list-item id="user-details-card">
