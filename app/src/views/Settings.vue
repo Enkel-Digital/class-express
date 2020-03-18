@@ -14,6 +14,32 @@
     </v-toolbar>
 
     <v-list>
+      <v-subheader>
+        Account Details
+      </v-subheader>
+
+      <v-list-item ripple>
+        Update your email
+        <v-spacer />
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-list-item>
+
+      <v-list-item ripple>
+        Update your number
+        <v-spacer />
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-list-item>
+
+      <v-list-item ripple>
+        Emergency Contact
+        <v-spacer />
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-list-item>
+    </v-list>
+
+    <v-divider></v-divider>
+
+    <v-list>
       <v-subheader colors="orange">
         Notifications:
       </v-subheader>
@@ -40,16 +66,68 @@
     <v-divider></v-divider>
 
     <v-list>
-      <v-subheader colors="orange">
+      <v-subheader>
         Billing:
       </v-subheader>
 
       <v-list-item ripple>
         See Billing info
+        <v-spacer />
+        <v-icon>mdi-chevron-right</v-icon>
       </v-list-item>
 
       <v-list-item ripple>
         View recent charges
+        <v-spacer />
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-list-item>
+    </v-list>
+
+    <v-divider></v-divider>
+
+    <v-list>
+      <v-subheader>
+        Support
+      </v-subheader>
+
+      <v-list-item ripple>
+        Visit our F.A.Q page
+        <v-spacer />
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-list-item>
+
+      <v-list-item ripple>
+        Request for Support
+        <v-spacer />
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-list-item>
+
+      <!-- Opens as a dropdown menu with our contact number and email -->
+      <v-list-item ripple>
+        Contact us!
+        <v-spacer />
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-list-item>
+
+      <!-- Direct to website with this content -->
+      <v-list-item ripple>
+        <span
+          style="text-align: left; color: rgba(0, 0, 0, 0.6);"
+          v-html="
+            `Terms & Conditions
+            <br />
+            Community Guidelines`
+          "
+        ></span>
+        <v-spacer />
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-list-item>
+
+      <!-- Direct to website with this content -->
+      <v-list-item ripple>
+        <span style="color: rgba(0, 0, 0, 0.6);">Privacy Policy</span>
+        <v-spacer />
+        <v-icon>mdi-chevron-right</v-icon>
       </v-list-item>
     </v-list>
 
