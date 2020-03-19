@@ -23,12 +23,14 @@
 
           <v-list-item-subtitle>
             <!-- Do the star icon thing for the reviews -->
-            {{ clas.reviews.points }} / 5 from
-            {{ clas.reviews.numberOfReviews }} reviews
+            {{ clas.review.ratings }} / 5 based on
+            {{ clas.review.numberOfReviews }} reviews
           </v-list-item-subtitle>
         </v-list-item-content>
 
-        <v-btn text small color="primary">Read them!</v-btn>
+        <v-btn :to="{ name: 'reviews' }" text small color="primary">
+          Read them!
+        </v-btn>
       </v-list-item>
     </v-responsive>
 
@@ -74,12 +76,11 @@ export default {
       clas: {
         id: 12345,
         name: "advance guitar",
-        ratings: 3.8, // Ratings out of 5 stars
         classLength: "60", // Store classLength in minutes can show otherwise in hours as needed
         description:
           "Advance guitar lessons taught be the legendary Ichika Mo. Will be going through advanced music scores and includes 1 on 1 trainings for the students, alongside a chance to practice in front of a live audience",
-        reviews: {
-          points: 4.8,
+        review: {
+          ratings: 4.8, // Ratings out of 5 stars
           numberOfReviews: 100
         },
         provider: {
