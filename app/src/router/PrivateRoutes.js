@@ -36,6 +36,12 @@ const routes = [
     meta: { Auth_requirements: AuthType.private }
   },
   {
+    path: "/reviews",
+    name: "reviews",
+    component: () => import("@/views/Reviews.vue"),
+    meta: { Auth_requirements: AuthType.private }
+  },
+  {
     path: "/upcoming",
     name: "upcoming",
     component: Upcoming,
