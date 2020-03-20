@@ -5,12 +5,11 @@
 export default function initialState() {
   return {
     user: {
+      email: undefined,
       name: undefined,
       fname: undefined,
       lname: undefined,
-      fullName: undefined,
-
-      email: undefined
+      fullName: undefined
     },
     points: {
       left: undefined,

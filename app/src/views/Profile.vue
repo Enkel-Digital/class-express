@@ -7,8 +7,8 @@
     <v-responsive>
       <v-list-item id="user-details-card">
         <v-list-item-content>
-          <h3>{{ name }}</h3>
-          <p>{{ email }}</p>
+          <h3>{{ user.name }}</h3>
+          <p>{{ user.email }}</p>
         </v-list-item-content>
 
         <v-avatar>
@@ -27,11 +27,11 @@
           <p class="overline">Points</p>
 
           <v-list-item-subtitle>
-            Period ends on: {{ periodEndDate }}
+            Period ends on: {{ points.pointsPeriod.end }}
           </v-list-item-subtitle>
 
           <v-list-item-title class="headline mb-1">
-            {{ pointsLeft }} / {{ totalPoints }} points left
+            {{ points.left }} / {{ points.total }} points left
           </v-list-item-title>
         </v-list-item-content>
 
@@ -78,18 +78,11 @@
 
 <script>
 import logout from "@/controllers/logout";
+import { mapState } from "vuex";
 
 export default {
   name: "profile",
-  data() {
-    return {
-      name: "JJ Lee",
-      email: "JJ@enkeldigital.com",
-      periodEndDate: "20 / 4 / 2020",
-      pointsLeft: 20,
-      totalPoints: 45
-    };
-  },
+  computed: mapState(["user", "points"]),
   methods: {
     logout
   }
