@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar color="orange lighten-1" flat dark>
+    <v-app-bar app color="orange lighten-1" flat dark>
       <BackBtn />
       <v-toolbar-title>Page Not Found</v-toolbar-title>
     </v-app-bar>

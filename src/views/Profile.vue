@@ -1,6 +1,6 @@
 <template>
   <v-content class="profile">
-    <v-app-bar color="orange lighten-1" flat dark>
+    <v-app-bar app color="orange lighten-1" flat dark>
       <v-toolbar-title>Profile</v-toolbar-title>
     </v-app-bar>
 

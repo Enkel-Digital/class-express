@@ -2,7 +2,7 @@
   <v-content class="settings">
     <!-- Add a loader banner showing the update process and notify user if failed. -->
 
-    <v-app-bar color="orange lighten-1" flat dark fixed>
+    <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Settings</v-toolbar-title>
 

@@ -1,6 +1,6 @@
 <template>
   <v-content class="topup">
-    <v-app-bar color="orange lighten-1" flat dark fixed>
+    <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Topup</v-toolbar-title>
     </v-app-bar>
