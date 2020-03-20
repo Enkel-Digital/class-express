@@ -1,14 +1,9 @@
 <template>
   <v-content class="reviews">
-    <v-app-bar color="orange lighten-1" flat dark fixed>
+    <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>{{ clas.name }}</v-toolbar-title>
     </v-app-bar>
-
-    <!-- @todo Remove this after the scrolling issue is fixed to prevent content from being hidden under app bar -->
-    <br />
-    <br />
-    <br />
 
     <!-- Change this to use a universal error overlay instead. Moved the logic into script instead of template too. -->
     <div v-if="!reviewsCorrectlyLoaded">

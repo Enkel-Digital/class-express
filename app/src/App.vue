@@ -1,9 +1,7 @@
 <template>
   <v-app id="app">
-    <!-- Router view always on top -->
-    <v-content>
-      <router-view />
-    </v-content>
+    <!-- Router view for the main view -->
+    <router-view />
 
     <!-- Bottom navigation bar stays the same across the screens -->
     <v-bottom-navigation app v-if="showNavBar">

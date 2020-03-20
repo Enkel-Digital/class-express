@@ -10,6 +10,7 @@
         :show-arrows="false"
       >
         <v-carousel-item
+          :ripple="false"
           v-for="(item, i) in bannerImages"
           :key="i"
           :src="item.src"
