@@ -1,10 +1,17 @@
 <template>
   <v-content class="ClassDetails">
-    <v-responsive id="class-image-container">
-      <div style="text-align: left;">
-        <BackBtn class="ma-3" />
-      </div>
+    <v-app-bar app color="white" flat fixed>
+      <BackBtn />
 
+      <v-spacer></v-spacer>
+
+      <v-btn icon @click="toggleFavourite">
+        <v-icon v-if="favouritedClass" color="red">mdi-heart</v-icon>
+        <v-icon v-else>mdi-heart-outline</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-responsive id="class-image-container">
       <v-img id="class-image" :src="clas.pictureSrc" />
     </v-responsive>
 
@@ -73,6 +80,7 @@ export default {
   },
   data() {
     return {
+      favouritedClass: true,
       clas: {
         id: 12345,
         name: "advance guitar",
@@ -94,7 +102,14 @@ export default {
       }
     };
   },
-  methods: {}
+  methods: {
+    toggleFavourite() {
+      // Optimistic UI, show toggle first
+      this.favouritedClass = !this.favouritedClass;
+
+      // Call backend and handle error if any to change back favourite value
+    }
+  }
 };
 </script>
 
