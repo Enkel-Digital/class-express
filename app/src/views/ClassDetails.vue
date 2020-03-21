@@ -5,6 +5,11 @@
 
       <v-spacer></v-spacer>
 
+      <!-- @todo Implement PWA sharing and web share target code  -->
+      <v-btn icon>
+        <v-icon>mdi-share</v-icon>
+      </v-btn>
+
       <v-btn icon @click="toggleFavourite">
         <v-icon v-if="favouritedClass" color="red">mdi-heart</v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>
