@@ -39,7 +39,7 @@
  * @Todo - Add in browser's "required" attribute checker for input.
  */
 
-import firebase from "firebase";
+import { auth } from "firebase";
 
 // Function to map and return a given err.code to a user friendly message
 function error_msg(err) {
@@ -73,9 +73,10 @@ export default {
       try {
         // After signup, user will be automatically signed in, redirect to home
         // eslint-disable-next-line no-unused-vars
-        const usr = await firebase
-          .auth()
-          .createUserWithEmailAndPassword(this.email, this.password);
+        const usr = await auth().createUserWithEmailAndPassword(
+          this.email,
+          this.password
+        );
 
         this.$router.replace({ name: "home" });
       } catch (error) {

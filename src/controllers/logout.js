@@ -1,4 +1,4 @@
-import firebase from "firebase";
+import { auth } from "firebase";
 
 /**
  * Signout current user, clear vuex store state and redirect to welcome view.
@@ -6,7 +6,7 @@ import firebase from "firebase";
  */
 export default async function logout() {
   // Signout current user
-  await firebase.auth().signOut();
+  await auth().signOut();
 
   // Notify user that they are now logged out
   alert("You have now been logged out");
