@@ -31,7 +31,7 @@
  * @Todo - Add in browser's "required" attribute checker for input.
  */
 
-import firebase from "firebase";
+import { auth } from "firebase";
 
 // Function to map and return a given err.code to a user friendly message
 function error_msg(err) {
@@ -63,9 +63,10 @@ export default {
         // @todo Show loading screen while authenticating and loading user data
 
         // eslint-disable-next-line no-unused-vars
-        const usr = await firebase
-          .auth()
-          .signInWithEmailAndPassword(this.email, this.password);
+        const usr = await auth().signInWithEmailAndPassword(
+          this.email,
+          this.password
+        );
 
         // Await for async dispatch to ensure app only starts when user info is all available.
         await this.$store.dispatch("getUserDetails");
