@@ -2,7 +2,7 @@
   <v-content class="topup">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
-      <v-toolbar-title>Topup</v-toolbar-title>
+      <v-toolbar-title>Subscription</v-toolbar-title>
     </v-app-bar>
 
     <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ma-5 mb-0">
@@ -14,11 +14,6 @@
       <v-list-item id="user-details-card" class="mb-0 pb-0 mt-0 pt-0">
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-content>
-              <h3>{{ name }}</h3>
-              <p>{{ email }}</p>
-            </v-list-item-content>
-
             <p style="color: rgba(0, 0, 0, 0.8);">
               Topup your points to attend classes! This works on a subscription
               basis and just select your plan, and you will get a fix amount of
@@ -32,7 +27,7 @@
     <v-card id="points-card" class="mx-auto" max-width="344" outlined>
       <v-list-item>
         <v-list-item-content>
-          <p class="overline">Your Points</p>
+          <p class="overline">your points</p>
 
           <v-list-item-subtitle>
             Period ends on: {{ periodEndDate }}
@@ -49,8 +44,14 @@
     <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ml-5">
       Subscription Plans
     </h3>
+    <p style="color: rgba(0, 0, 0, 0.6); text-align: left;" class="ml-5 mb-0">
+      Click a different plan to change your plan!
+    </p>
+    <p style="color: rgba(0, 0, 0, 0.6); text-align: left;" class="ml-5  mb-0">
+      Your new plan will take effect the next month.
+    </p>
 
-    <v-radio-group v-model="selectedPlan">
+    <v-radio-group v-model="currentPlanID">
       <v-card
         v-for="(plan, i) in plans"
         :key="i"
@@ -81,43 +82,16 @@
       </v-card>
     </v-radio-group>
 
-    <!-- Old UI for buying or changing plans. Using confirm alert box for now -->
-    <!-- <v-card
-      v-if="selectedPlan && selectedPlan !== originalPlan"
-      class="mx-auto mb-4"
-      max-width="344"
-      outlined
-      style="text-align: left;"
-      color="orange lighten-2"
-      @click="updatePlan"
-    >
-      <v-list-item class="mt-0">
-        <v-list-item-content>
-          <v-list-item-title v-if="originalPlan" class="headline mb-1">
-            Change plan!
-          </v-list-item-title>
-
-          <v-list-item-title v-else class="headline mb-1">
-            Buy plan!
-          </v-list-item-title>
-
-          <v-list-item-subtitle>
-            SelectedPlan: {{ selectedPlan }}
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-    </v-card> -->
-
     <v-card
       class="mx-auto mb-4"
       max-width="344"
       outlined
       style="text-align: left;"
-      :to="{ name: 'test' }"
+      :to="{ name: 'topup' }"
     >
       <v-list-item>
         <v-list-item-content>
-          <p class="overline">Custom Plan?</p>
+          <p class="overline">Customise?</p>
 
           <v-list-item-title class="headline mb-1">
             Buy points whenever
@@ -167,12 +141,10 @@ export default {
       periodEndDate: "20 / 4 / 2020",
       pointsLeft: 20,
       totalPoints: 45,
-      // Original plan and selected plan is the same at the start.
-      originalPlan: 1,
-      selectedPlan: 1,
+      currentPlanID: 0,
       plans: [
         {
-          id: 1,
+          id: 0,
           description: "Starter Pack",
           copywriting:
             "Hate being tied down?<br />Start simple and topup anytime!",
@@ -183,7 +155,7 @@ export default {
           }
         },
         {
-          id: 2,
+          id: 1,
           description: "Gold members",
           copywriting: "A Better deal, A Better you!",
           totalPoints: 100,
@@ -193,7 +165,7 @@ export default {
           }
         },
         {
-          id: 3,
+          id: 2,
           description: "Platinum",
           copywriting:
             "Go platinum, or Go home.<br />Join platinum for exclusive in app deals!",
@@ -210,21 +182,20 @@ export default {
     logout,
     updatePlan(planID) {
       // If user selects own plan, ignore selection
-      if (this.selectedPlan === planID) return;
+      if (this.currentPlanID === planID) return;
 
       // Set the selected Plan to show on the radio buttons
-      console.log("Selected planID", planID);
+      console.log("Selected plan:", planID);
 
       if (confirm("Confirm change of Subscription Plan!")) {
+        // @todo Show loading bar before calling API for pessimistic UI
+
         // Call logic to update the plan
 
         console.log("Plan is updated");
 
         // Pessimistic UI, show after network update is complete
-        // @todo Show a loading bar first when clicked
-        this.selectedPlan = planID;
-      } else {
-        // Show some UI? Or just do nothing and reset the selection.
+        this.currentPlanID = planID;
       }
     }
   }
