@@ -1,6 +1,6 @@
 <template>
   <!-- Bottom navigation bar stays the same across the screens -->
-  <v-bottom-navigation app flat height>
+  <v-bottom-navigation app height>
     <v-btn to="/">
       <span>Home</span>
       <v-icon>mdi-home</v-icon>
@@ -8,6 +8,11 @@
 
     <v-btn to="/explore">
       <span>Explore</span>
+      <v-icon>mdi-magnify</v-icon>
+    </v-btn>
+
+    <v-btn to="/favourites">
+      <span>Favourites</span>
       <v-icon>mdi-heart</v-icon>
     </v-btn>
 

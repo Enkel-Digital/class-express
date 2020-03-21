@@ -2,6 +2,12 @@
   <v-content class="profile">
     <v-app-bar app color="orange lighten-1" flat dark>
       <v-toolbar-title>Profile</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon @click="refreshData">
+        <v-icon>mdi-reload</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-responsive>
@@ -84,7 +90,11 @@ export default {
   name: "profile",
   computed: mapState(["user", "points"]),
   methods: {
-    logout
+    logout,
+    refreshData() {
+      // Rely on the store to update the data asynchronously in the background
+      this.$store.dispatch("getUserDetails");
+    }
   }
 };
 </script>

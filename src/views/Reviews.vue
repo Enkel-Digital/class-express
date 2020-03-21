@@ -11,8 +11,7 @@
     </div>
 
     <!-- Show total / overall review -->
-    <!-- @todo Remove the max-width and make it fluid but like 90% of width instead -->
-    <v-card id="reviews-card" class="mx-auto" max-width="400">
+    <v-responsive id="reviews-card" class="mx-auto" max-width="400">
       <v-list-item>
         <v-list-item-content>
           <p class="overline">Overall Reviews</p>
@@ -35,24 +34,29 @@
         </v-list-item-content>
 
         <v-list-item-content>
-          <v-rating
-            v-model="clas.review.ratings"
-            half-increments
-            readonly
-            empty-icon=""
-            small
-            dense
-            color="orange"
-            style="opacity: 0.7;"
-          />
+          <v-list-item style="min-height: 0;" class="ma-0 pa-0">
+            <span
+              v-text="`${clas.review.ratings} / 5`"
+              class="caption ma-0 pa-0"
+            />
+            <v-rating
+              v-model="clas.review.ratings"
+              half-increments
+              readonly
+              empty-icon=""
+              small
+              dense
+              color="orange"
+              style="opacity: 0.7;"
+            />
+          </v-list-item>
 
           <v-list-item-subtitle>
-            {{ clas.review.ratings }} / 5 based on
-            {{ clas.review.numberOfReviews }} reviews
+            across {{ clas.review.numberOfReviews }} reviews
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
-    </v-card>
+    </v-responsive>
 
     <br />
     <div style="color: rgba(0, 0, 0, 0.6); text-align: left;">
