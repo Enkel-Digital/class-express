@@ -4,6 +4,8 @@
  */
 export default function initialState() {
   return {
+    currentPlanID: undefined,
+    nextPlanID: undefined,
     subscriptionPlans: []
   };
 }
