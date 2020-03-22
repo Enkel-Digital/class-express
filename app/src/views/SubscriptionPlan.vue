@@ -6,7 +6,7 @@
     </v-app-bar>
 
     <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ma-5 mb-0">
-      Your Current plan and details
+      Get more for less!
     </h3>
 
     <!-- Update below to show one of the cards what is your current plan -->
@@ -15,9 +15,7 @@
         <v-list-item>
           <v-list-item-content>
             <p style="color: rgba(0, 0, 0, 0.8);">
-              Topup your points to attend classes! This works on a subscription
-              basis and just select your plan, and you will get a fix amount of
-              points every single month!
+              We offer Monthly subscription plans to give you points for less!
             </p>
           </v-list-item-content>
         </v-list-item>
@@ -26,18 +24,89 @@
 
     <PointsCard />
 
+    <v-responsive v-if="nextPlanID !== currentPlanID">
+      <br />
+      <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ml-5">
+        Current plan
+      </h3>
+      <p
+        style="color: rgba(0, 0, 0, 0.6); text-align: left;"
+        class="ml-5  mb-0"
+      >
+        Your current plan ends on {{ periodEndDate }}
+      </p>
+      <v-card
+        id="plans-card"
+        class="mx-auto mb-4"
+        style="text-align: left;"
+        max-width="344"
+        outlined
+      >
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-subtitle>
+              {{ currentPlan.description }}
+            </v-list-item-subtitle>
+
+            <v-list-item-title class="headline mb-1">
+              {{ currentPlan.totalPoints }} points for
+              {{ currentPlan.price.currency }}
+              {{ currentPlan.price.value }}
+            </v-list-item-title>
+
+            <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em" class="mb-0">
+              <span v-html="currentPlan.copywriting"></span>
+            </p>
+          </v-list-item-content>
+        </v-list-item>
+      </v-card>
+
+      <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ml-5">
+        Next plan
+      </h3>
+      <p
+        style="color: rgba(0, 0, 0, 0.6); text-align: left;"
+        class="ml-5  mb-0"
+      >
+        Your new plan starts on {{ "21 / 4 / 2020" }}
+      </p>
+      <v-card
+        id="plans-card"
+        class="mx-auto mb-4"
+        style="text-align: left;"
+        max-width="344"
+        outlined
+      >
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-subtitle>
+              {{ nextPlan.description }}
+            </v-list-item-subtitle>
+
+            <v-list-item-title class="headline mb-1">
+              {{ nextPlan.totalPoints }} points for
+              {{ nextPlan.price.currency }}
+              {{ nextPlan.price.value }}
+            </v-list-item-title>
+
+            <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em" class="mb-0">
+              <span v-html="nextPlan.copywriting"></span>
+            </p>
+          </v-list-item-content>
+        </v-list-item>
+      </v-card>
+    </v-responsive>
+
     <br />
     <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ml-5">
       Subscription Plans
     </h3>
     <p style="color: rgba(0, 0, 0, 0.6); text-align: left;" class="ml-5 mb-0">
-      Click a different plan to change your plan!
-    </p>
-    <p style="color: rgba(0, 0, 0, 0.6); text-align: left;" class="ml-5  mb-0">
-      Your new plan will take effect the next month.
+      The selected plan is your next plan. Click to change your plan, and it
+      will take effect next month.
     </p>
 
-    <v-radio-group v-model="currentPlanID">
+    <v-radio-group v-model="selectedPlanID">
       <v-card
         v-for="(plan, i) in subscriptionPlans"
         :key="i"
@@ -115,17 +184,18 @@
 import logout from "@/controllers/logout";
 import BackBtn from "@/components/BackBtn";
 import PointsCard from "@/components/PointsCard";
-import { mapState } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
-  name: "topup",
+  name: "subscription",
   components: {
     BackBtn,
     PointsCard
   },
-  beforeCreate() {
+  beforeMount() {
+    // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
     // Request store to get and populate list of subscription plans
-    this.$store.dispatch("subscription/getPlans");
+    this.$store.dispatch("subscription/init");
   },
   data() {
     return {
@@ -133,33 +203,25 @@ export default {
       email: "JJ@enkeldigital.com",
       periodEndDate: "20 / 4 / 2020",
       pointsLeft: 20,
-      totalPoints: 45,
-      currentPlanID: 0
+      totalPoints: 45
     };
   },
   computed: {
-    ...mapState("subscription", ["subscriptionPlans"])
+    ...mapState("subscription", [
+      "subscriptionPlans",
+      "currentPlanID",
+      "nextPlanID"
+    ]),
+    ...mapGetters("subscription", ["currentPlan", "nextPlan"]),
+    selectedPlanID() {
+      return this.currentPlanID === this.nextPlanID
+        ? this.currentPlanID
+        : this.nextPlanID;
+    }
   },
   methods: {
     logout,
-    updatePlan(planID) {
-      // If user selects own plan, ignore selection
-      if (this.currentPlanID === planID) return;
-
-      // Set the selected Plan to show on the radio buttons
-      console.log("Selected plan:", planID);
-
-      if (confirm("Confirm change of Subscription Plan!")) {
-        // @todo Show loading bar before calling API for pessimistic UI
-
-        // Call logic to update the plan
-
-        console.log("Plan is updated");
-
-        // Pessimistic UI, show after network update is complete
-        this.currentPlanID = planID;
-      }
-    }
+    ...mapActions("subscription", ["updatePlan"])
   }
 };
 </script>
