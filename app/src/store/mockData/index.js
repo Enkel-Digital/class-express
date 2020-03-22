@@ -26,4 +26,10 @@ const paymentDetails = {
   paymentProvider: "" // Enum of credit card or SaaS like paypal/stripe
 };
 
-module.exports = { user, points, paymentDetails };
+module.exports = {
+  user,
+  points,
+  paymentDetails,
+  ...require("./exploreView"),
+  ...require("./subscriptionPlan")
+};
