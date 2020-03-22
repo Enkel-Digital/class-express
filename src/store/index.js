@@ -15,15 +15,23 @@ export default new Vuex.Store({
   modules: {
     subscription: subscriptionPlanModule
   },
-  mutations: {},
+  mutations: {
+    // See if there is any other way to do this type of setters
+    setUser(state, user) {
+      state.user = user;
+    },
+    setPoints(state, points) {
+      state.points = points;
+    }
+  },
   actions: {
     /**
      * Function to get all the user's details
      * @function getUserDetails
      */
-    async getUserDetails({ state }) {
-      state.user = mock.user;
-      state.points = mock.points;
+    async getUserDetails({ commit }) {
+      commit("setUser", mock.user);
+      commit("setPoints", mock.points);
     }
   },
   plugins: [createPersistedState()]

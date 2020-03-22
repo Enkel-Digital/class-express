@@ -55,7 +55,7 @@
         </v-list-item>
       </v-card>
 
-      <v-card :to="'/subscription'" ripple tile>
+      <v-card :to="{ name: 'subscription' }" ripple tile>
         <v-list-item>
           Subscription Plan
         </v-list-item>

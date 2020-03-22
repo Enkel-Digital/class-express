@@ -78,6 +78,11 @@ export default {
           this.password
         );
 
+        // @todo push data to the server and push the new data into vuex
+        // @todo perhaps can route them to a signup page, where instead of use 1 screen like now, we can do the UI below
+        // https://vuetifyjs.com/en/components/windows/#account-creation
+        // https://vuetifyjs.com/en/components/steppers/#usage
+
         this.$router.replace({ name: "home" });
       } catch (error) {
         // Set the message into the error box to show user the error
