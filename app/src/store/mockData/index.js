@@ -14,7 +14,7 @@ const user = {
 const points = {
   left: 20,
   total: 45,
-  pointsPeriod: {
+  period: {
     timezone: "",
     start: "",
     end: "20 / 4 / 2020" // To change to some other datetime format
