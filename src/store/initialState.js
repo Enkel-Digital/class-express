@@ -14,7 +14,7 @@ export default function initialState() {
     points: {
       left: undefined,
       total: undefined,
-      pointsPeriod: {
+      period: {
         timezone: undefined,
         start: undefined,
         end: undefined

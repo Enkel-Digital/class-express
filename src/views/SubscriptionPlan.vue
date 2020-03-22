@@ -197,16 +197,11 @@ export default {
     // Request store to get and populate list of subscription plans
     this.$store.dispatch("subscription/init");
   },
-  data() {
-    return {
-      name: "JJ Lee",
-      email: "JJ@enkeldigital.com",
-      periodEndDate: "20 / 4 / 2020",
-      pointsLeft: 20,
-      totalPoints: 45
-    };
-  },
   computed: {
+    periodEndDate() {
+      return this.$store.state.points.period.end;
+    },
+    ...mapState(["user", "points"]),
     ...mapState("subscription", [
       "subscriptionPlans",
       "currentPlanID",

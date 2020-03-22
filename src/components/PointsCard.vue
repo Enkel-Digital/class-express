@@ -9,7 +9,7 @@
         </v-list-item-title>
 
         <v-list-item-subtitle>
-          Period ends on: {{ points.pointsPeriod.end }}
+          Period ends on: {{ points.period.end }}
         </v-list-item-subtitle>
       </v-list-item-content>
 
