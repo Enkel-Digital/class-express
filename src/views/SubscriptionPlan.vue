@@ -24,21 +24,7 @@
       </v-list-item>
     </v-responsive>
 
-    <v-card id="points-card" class="mx-auto" max-width="344" outlined>
-      <v-list-item>
-        <v-list-item-content>
-          <p class="overline">your points</p>
-
-          <v-list-item-subtitle>
-            Period ends on: {{ periodEndDate }}
-          </v-list-item-subtitle>
-
-          <v-list-item-title class="headline mb-1">
-            {{ pointsLeft }} / {{ totalPoints }} points left
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-card>
+    <PointsCard />
 
     <br />
     <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ml-5">
@@ -128,12 +114,14 @@
 <script>
 import logout from "@/controllers/logout";
 import BackBtn from "@/components/BackBtn";
+import PointsCard from "@/components/PointsCard";
 import { mapState } from "vuex";
 
 export default {
   name: "topup",
   components: {
-    BackBtn
+    BackBtn,
+    PointsCard
   },
   beforeCreate() {
     // Request store to get and populate list of subscription plans

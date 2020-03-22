@@ -27,24 +27,7 @@
       </v-list-item>
     </v-responsive>
 
-    <v-card id="points-card" class="mx-auto" max-width="344" outlined>
-      <v-list-item>
-        <v-list-item-content>
-          <p class="overline">Points</p>
-
-          <v-list-item-subtitle>
-            Period ends on: {{ points.pointsPeriod.end }}
-          </v-list-item-subtitle>
-
-          <v-list-item-title class="headline mb-1">
-            {{ points.left }} / {{ points.total }} points left
-          </v-list-item-title>
-        </v-list-item-content>
-
-        <v-btn :to="{ name: 'topup' }" color="primary">Add!</v-btn>
-      </v-list-item>
-    </v-card>
-
+    <PointsCard />
     <br />
 
     <v-divider></v-divider>
@@ -84,10 +67,14 @@
 
 <script>
 import logout from "@/controllers/logout";
+import PointsCard from "@/components/PointsCard";
 import { mapState } from "vuex";
 
 export default {
   name: "profile",
+  components: {
+    PointsCard
+  },
   computed: mapState(["user", "points"]),
   methods: {
     logout,
@@ -104,9 +91,5 @@ export default {
   text-align: left;
   margin: 1em;
   margin-top: 2em;
-}
-
-#points-card {
-  text-align: left;
 }
 </style>
