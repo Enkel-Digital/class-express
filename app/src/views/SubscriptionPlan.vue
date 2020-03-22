@@ -1,5 +1,5 @@
 <template>
-  <v-content class="topup">
+  <v-content class="subscription">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Subscription</v-toolbar-title>
@@ -53,7 +53,7 @@
 
     <v-radio-group v-model="currentPlanID">
       <v-card
-        v-for="(plan, i) in plans"
+        v-for="(plan, i) in subscriptionPlans"
         :key="i"
         id="plans-card"
         class="mx-auto mb-4"
@@ -128,11 +128,16 @@
 <script>
 import logout from "@/controllers/logout";
 import BackBtn from "@/components/BackBtn";
+import { mapState } from "vuex";
 
 export default {
   name: "topup",
   components: {
     BackBtn
+  },
+  beforeCreate() {
+    // Request store to get and populate list of subscription plans
+    this.$store.dispatch("subscription/getPlans");
   },
   data() {
     return {
@@ -141,42 +146,11 @@ export default {
       periodEndDate: "20 / 4 / 2020",
       pointsLeft: 20,
       totalPoints: 45,
-      currentPlanID: 0,
-      plans: [
-        {
-          id: 0,
-          description: "Starter Pack",
-          copywriting:
-            "Hate being tied down?<br />Start simple and topup anytime!",
-          totalPoints: 50,
-          price: {
-            value: 59,
-            currency: "SGD"
-          }
-        },
-        {
-          id: 1,
-          description: "Gold members",
-          copywriting: "A Better deal, A Better you!",
-          totalPoints: 100,
-          price: {
-            value: 89,
-            currency: "SGD"
-          }
-        },
-        {
-          id: 2,
-          description: "Platinum",
-          copywriting:
-            "Go platinum, or Go home.<br />Join platinum for exclusive in app deals!",
-          totalPoints: 120,
-          price: {
-            value: 100,
-            currency: "SGD"
-          }
-        }
-      ]
+      currentPlanID: 0
     };
+  },
+  computed: {
+    ...mapState("subscription", ["subscriptionPlans"])
   },
   methods: {
     logout,
