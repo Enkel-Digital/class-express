@@ -5,7 +5,7 @@
 const user = {
   name: "JJ Lee",
   email: "JJ@enkeldigital.com",
-  picture: undefined,
+  imageSrc: "https://avatars2.githubusercontent.com/u/44993072?s=460",
   location: {
     country: "" // Used for the default search location
   }

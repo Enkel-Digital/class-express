@@ -9,11 +9,11 @@ export default function initialState() {
       name: undefined,
       fname: undefined,
       lname: undefined,
-      fullName: undefined
+      imageSrc: undefined
     },
     points: {
-      left: undefined,
-      total: undefined,
+      left: 0,
+      total: 0,
       period: {
         timezone: undefined,
         start: undefined,

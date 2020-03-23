@@ -78,6 +78,11 @@ export default {
           this.password
         );
 
+        const storeUser = this.$store.state.user;
+        storeUser.email = this.email;
+        storeUser.name = this.name;
+        this.$store.commit("setter", ["user", storeUser]);
+
         // @todo push data to the server and push the new data into vuex
         // @todo perhaps can route them to a signup page, where instead of use 1 screen like now, we can do the UI below
         // https://vuetifyjs.com/en/components/windows/#account-creation
