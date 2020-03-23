@@ -19,10 +19,7 @@
 
         <v-avatar>
           <!-- Profile pic here. Load image asynchronously from server during login -->
-          <img
-            alt="Avatar"
-            src="https://avatars2.githubusercontent.com/u/44993072?s=460"
-          />
+          <img alt="Avatar" :src="user.imageSrc" />
         </v-avatar>
       </v-list-item>
     </v-responsive>
