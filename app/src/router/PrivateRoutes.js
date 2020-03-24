@@ -4,8 +4,10 @@ import AuthType from "./AuthType";
 /** @notice Pre-Load all components for frequently used routes */
 import Home from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
+import Topup from "../views/Topup.vue";
 import Explore from "../views/Explore.vue";
 import Upcoming from "../views/Upcoming.vue";
+import ClassDetails from "../views/ClassDetails.vue";
 
 /**
  * @notice Some of these less frequented routes uses lazily loaded components
@@ -28,6 +30,18 @@ const routes = [
     meta: { Auth_requirements: AuthType.private }
   },
   {
+    path: "/classdetails",
+    name: "ClassDetails",
+    component: ClassDetails,
+    meta: { Auth_requirements: AuthType.private }
+  },
+  {
+    path: "/reviews",
+    name: "reviews",
+    component: () => import("@/views/Reviews.vue"),
+    meta: { Auth_requirements: AuthType.private }
+  },
+  {
     path: "/upcoming",
     name: "upcoming",
     component: Upcoming,
@@ -37,6 +51,18 @@ const routes = [
     path: "/profile",
     name: "profile",
     component: Profile,
+    meta: { Auth_requirements: AuthType.private }
+  },
+  {
+    path: "/topup",
+    name: "topup",
+    component: Topup,
+    meta: { Auth_requirements: AuthType.private }
+  },
+  {
+    path: "/subscription",
+    name: "subscription",
+    component: () => import("@/views/SubscriptionPlan.vue"),
     meta: { Auth_requirements: AuthType.private }
   },
   {

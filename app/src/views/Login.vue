@@ -31,7 +31,7 @@
  * @Todo - Add in browser's "required" attribute checker for input.
  */
 
-import firebase from "firebase";
+import { auth } from "firebase";
 
 // Function to map and return a given err.code to a user friendly message
 function error_msg(err) {
@@ -60,18 +60,16 @@ export default {
     },
     async login() {
       try {
+        // @todo Show loading screen while authenticating and loading user data
+
         // eslint-disable-next-line no-unused-vars
-        const usr = await firebase
-          .auth()
-          .signInWithEmailAndPassword(this.email, this.password);
+        const usr = await auth().signInWithEmailAndPassword(
+          this.email,
+          this.password
+        );
 
-        // Use a call to dispatch function to load the user into the vuex Store
-        // dispatch can be async while mutations are sync, so I should use mutations instead right...
-        // Still use async dispatch, but just await for it to ensure correct sequence
-
-        // Save user's email to vuex and update the user's name
-        // this.$store.commit("update_email", userDetails.email);
-        // this.$store.commit("update_name", userDetails.name);
+        // Await for async dispatch to ensure app only starts when user info is all available.
+        await this.$store.dispatch("getUserDetails");
 
         // Route to the user's home page, after login
         this.$router.replace({ name: "home", params: { user: name } });
