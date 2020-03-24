@@ -1,53 +1,57 @@
 <template>
-  <v-card max-width="400" class="mx-auto">
-    <v-app-bar dark color="blue">
-      <v-toolbar-title>My Upcoming Classes</v-toolbar-title>
+  <v-content class="upcoming">
+    <v-app-bar app color="orange lighten-1" flat dark>
+      <v-toolbar-title>Upcoming Classes</v-toolbar-title>
     </v-app-bar>
 
-    <v-container>
-      <v-row dense>
-        <v-col v-for="clas in upcomingClasses" :key="clas.className">
-          <v-card>
-            <v-avatar class="ma-3" size="300" tile>
-              <!-- <img v-bind:src="clas.locationImage" /> -->
-              <img v-bind:src="clas.locationImage" />
-            </v-avatar>
-            <div class="d-flex flex-no-wrap justify-space-between">
-              <div>
-                <v-card-title class="headline">{{
-                  clas.className
-                }}</v-card-title>
-                <v-card-subtitle
-                  >{{ moment(clas.time).format("MMMM Do, h:mm") }} to
-                  {{
-                    moment(clas.time + Date.parse(clas.classLength)).format(
-                      "MMMM Do, h:mm"
-                    )
-                  }}</v-card-subtitle
-                >
+    <br />
 
-                <v-card-text class="text-left --primary">
-                  <div>{{ clas.classProvider.name }}</div>
-                  <div>{{ clas.location.address }}</div>
-                </v-card-text>
-              </div>
-            </div>
-            <v-card-actions>
-              <v-btn color="orange" text>Class Details</v-btn>
-              <!-- TODO: LINK SOMEWHERE  -->
-              <v-btn color="orange" text>Share</v-btn>
-              <!-- TODO: LINK SOMEWHERE  -->
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-card>
+    <v-responsive>
+      <v-card
+        v-for="clas in upcomingClasses"
+        :key="clas.className"
+        class="mx-auto mb-4"
+        max-width="400"
+        outlined
+        @click="showClass(clas.id)"
+      >
+        <v-responsive>
+          <v-img id="class-image" :src="clas.locationImage" />
+        </v-responsive>
+        <div class="d-flex flex-no-wrap justify-space-between">
+          <div>
+            <v-card-title class="headline">{{ clas.className }}</v-card-title>
+            <v-card-subtitle>
+              {{ moment(clas.time).format("MMMM Do, h:mm") }} to
+              {{
+                moment(clas.time + Date.parse(clas.classLength)).format(
+                  "MMMM Do, h:mm"
+                )
+              }}
+            </v-card-subtitle>
+
+            <v-card-text class="text-left --primary">
+              <div>{{ clas.classProvider.name }}</div>
+              <div>{{ clas.location.address }}</div>
+            </v-card-text>
+          </div>
+        </div>
+
+        <v-card-actions>
+          <!-- @todo Remove this button -->
+          <v-btn color="orange" text>Class Details</v-btn>
+          <!-- @todo Extract out all share buttons to a common component -->
+          <v-btn color="orange" text>Share</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-responsive>
+  </v-content>
 </template>
 
 <script>
 let upcomingClasses = [
   {
+    id: 0,
     className: "Basic Guitar",
     time: Date.now(),
     classLength: "60", // Store classLength in minutes can show otherwise in hours as needed
@@ -61,6 +65,7 @@ let upcomingClasses = [
     }
   },
   {
+    id: 1,
     className: "Advanced Cooking",
     time: Date.now() + 1000000,
     classLength: "150", // Store classLength in minutes can show otherwise in hours as needed
@@ -84,7 +89,7 @@ const GmapsUrlConcat = (
 ) =>
   baseGMapsURL.concat(
     coordinates,
-    "&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7Clabel:C%7C",
+    "&zoom=17&size=600x300&maptype=roadmap&markers=color:red%7Clabel:C%7C",
     coordinates,
     "&key=",
     key
@@ -92,16 +97,19 @@ const GmapsUrlConcat = (
 
 export default {
   name: "upcoming",
-
   data() {
-    upcomingClasses = upcomingClasses.map(clas => {
-      clas.locationImage = GmapsUrlConcat(clas.location.coordinates, apiKey);
-      return clas;
-    });
-
     return {
-      upcomingClasses
+      upcomingClasses: upcomingClasses.map(clas => {
+        clas.locationImage = GmapsUrlConcat(clas.location.coordinates, apiKey);
+        return clas;
+      })
     };
+  },
+  methods: {
+    // @todo Redirect to class details page?
+    showClass(classID) {
+      console.log("requested to show class: ", classID);
+    }
   }
 };
 </script>
