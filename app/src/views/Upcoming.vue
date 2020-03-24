@@ -14,8 +14,17 @@
             </v-avatar>
             <div class="d-flex flex-no-wrap justify-space-between">
               <div>
-                <v-card-title class="headline">{{clas.className}}</v-card-title>
-                <v-card-subtitle>{{moment(clas.time).format('MMMM Do, h:mm')}} to {{moment((clas.time + Date.parse(clas.classLength))).format('MMMM Do, h:mm')}}</v-card-subtitle>
+                <v-card-title class="headline">{{
+                  clas.className
+                }}</v-card-title>
+                <v-card-subtitle
+                  >{{ moment(clas.time).format("MMMM Do, h:mm") }} to
+                  {{
+                    moment(clas.time + Date.parse(clas.classLength)).format(
+                      "MMMM Do, h:mm"
+                    )
+                  }}</v-card-subtitle
+                >
 
                 <v-card-text class="text-left --primary">
                   <div>{{ clas.classProvider.name }}</div>
@@ -35,7 +44,6 @@
     </v-container>
   </v-card>
 </template>
-
 
 <script>
 let upcomingClasses = [
