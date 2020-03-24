@@ -11,15 +11,15 @@
       >
         <v-carousel-item
           :ripple="false"
-          v-for="(item, i) in bannerImages"
+          v-for="(item, i) in newsBanners"
           :key="i"
           :src="item.src"
           @click="viewBanner(item.link)"
+          contain
         >
-          <v-row class="fill-height" align="center" justify="center">
-            <div class="display-1">{{ item.text }}</div>
-            <!-- Perhaps move the text to the delimiter -->
-          </v-row>
+          <h1 style="position:absolute;bottom:1em;">
+            {{ item.text }}
+          </h1>
         </v-carousel-item>
       </v-carousel>
     </v-responsive>
@@ -85,29 +85,24 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "home",
   data() {
     return {
       lastViewdBanner_tmp: undefined,
-      model: null,
-      bannerImages: [
-        {
-          src: "https://enkeldigital.com/images/hero.jpg",
-          text: "Checkout our company", // Optional text
-          link: "http://enkeldigital.com/"
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
-          text: "Our latest articles",
-          link: "https://medium.com/enkel-digital"
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
-          link: "https://www.linkedin.com/company/enkel-digital/"
-        }
-      ]
+      model: null
     };
+  },
+  beforeMount() {
+    // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
+    // Request store to get and populate list of news banners
+    // @todo remove and call all init actions in main.js or perhaps after login/signup
+    this.$store.dispatch("news/init");
+  },
+  computed: {
+    ...mapState("news", ["newsBanners"])
   },
   methods: {
     viewBanner(link) {
