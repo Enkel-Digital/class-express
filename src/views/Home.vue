@@ -4,14 +4,17 @@
       <!-- The carousel of images / latest news -->
       <v-carousel
         cycle
+        continuous
         height="400"
         hide-delimiter-background
-        show-arrows-on-hover
+        :show-arrows="false"
       >
         <v-carousel-item
+          :ripple="false"
           v-for="(item, i) in bannerImages"
           :key="i"
           :src="item.src"
+          @click="viewBanner(item.link)"
         >
           <v-row class="fill-height" align="center" justify="center">
             <div class="display-1">{{ item.text }}</div>
@@ -30,7 +33,7 @@
       max-width="800"
     >
       Recommended classes
-      <v-slide-group v-model="model" class="pa-4" :show-arrows="true">
+      <v-slide-group v-model="model" class="pa-4">
         <v-slide-item
           v-for="n in 5"
           :key="n"
@@ -57,7 +60,7 @@
       max-width="800"
     >
       Explore classes
-      <v-slide-group v-model="model" class="pa-4" :show-arrows="true">
+      <v-slide-group v-model="model" class="pa-4">
         <v-slide-item
           v-for="n in 5"
           :key="n"
@@ -86,6 +89,7 @@ export default {
   name: "home",
   data() {
     return {
+      lastViewdBanner_tmp: undefined,
       model: null,
       bannerImages: [
         {
@@ -96,15 +100,26 @@ export default {
         {
           src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
           text: "Our latest articles",
-          link: "http://enkeldigital.com/"
+          link: "https://medium.com/enkel-digital"
         },
         {
-          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg"
+          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
+          link: "https://www.linkedin.com/company/enkel-digital/"
         }
       ]
     };
+  },
+  methods: {
+    viewBanner(link) {
+      if (!link) return;
+
+      // @todo Fix this hack that prevents double click
+      console.log("clcked", link);
+      if (this.lastViewdBanner_tmp === link) return;
+      this.lastViewdBanner_tmp = link;
+
+      if (confirm("Checkout link?")) window.open(link);
+    }
   }
 };
 </script>
-
-<style scoped></style>

@@ -39,7 +39,7 @@
  * @Todo - Add in browser's "required" attribute checker for input.
  */
 
-import firebase from "firebase";
+import { auth } from "firebase";
 
 // Function to map and return a given err.code to a user friendly message
 function error_msg(err) {
@@ -73,9 +73,20 @@ export default {
       try {
         // After signup, user will be automatically signed in, redirect to home
         // eslint-disable-next-line no-unused-vars
-        const usr = await firebase
-          .auth()
-          .createUserWithEmailAndPassword(this.email, this.password);
+        const usr = await auth().createUserWithEmailAndPassword(
+          this.email,
+          this.password
+        );
+
+        const storeUser = this.$store.state.user;
+        storeUser.email = this.email;
+        storeUser.name = this.name;
+        this.$store.commit("setter", ["user", storeUser]);
+
+        // @todo push data to the server and push the new data into vuex
+        // @todo perhaps can route them to a signup page, where instead of use 1 screen like now, we can do the UI below
+        // https://vuetifyjs.com/en/components/windows/#account-creation
+        // https://vuetifyjs.com/en/components/steppers/#usage
 
         this.$router.replace({ name: "home" });
       } catch (error) {
