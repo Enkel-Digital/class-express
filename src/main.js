@@ -8,7 +8,7 @@ import "./registerServiceWorker";
 import vuetify from "./plugins/vuetify";
 import { initializeApp, auth } from "firebase";
 
-import moment from 'moment'
+import moment from "moment";
 Vue.prototype.moment = moment;
 Vue.config.productionTip = false;
 
@@ -37,6 +37,3 @@ auth().onAuthStateChanged(() => {
     render: h => h(App)
   }).$mount("#app");
 });
-
-
-
