@@ -8,6 +8,8 @@ import "./registerServiceWorker";
 import vuetify from "./plugins/vuetify";
 import { initializeApp, auth } from "firebase";
 
+import moment from 'moment'
+Vue.prototype.moment = moment;
 Vue.config.productionTip = false;
 
 // Register global custom directive called `v-autofocus`
@@ -35,3 +37,6 @@ auth().onAuthStateChanged(() => {
     render: h => h(App)
   }).$mount("#app");
 });
+
+
+
