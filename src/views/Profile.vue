@@ -29,7 +29,7 @@
 
     <v-divider></v-divider>
     <v-responsive class="mx-auto">
-      <v-card :to="'/settings'" ripple tile>
+      <v-card :to="{ name: 'settings' }" ripple tile>
         <v-list-item>
           Settings
         </v-list-item>
@@ -41,13 +41,13 @@
         </v-list-item>
       </v-card>
 
-      <v-card :to="'/favourite-classes'" ripple tile>
+      <v-card :to="{ name: 'favourites' }" ripple tile>
         <v-list-item>
           Favourite classes
         </v-list-item>
       </v-card>
 
-      <v-card :to="'/past-classes'" ripple tile>
+      <v-card :to="{ name: 'past-classes' }" ripple tile>
         <v-list-item>
           Past classes
         </v-list-item>
