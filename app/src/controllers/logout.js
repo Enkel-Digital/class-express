@@ -5,6 +5,8 @@ import { auth } from "firebase";
  * @function logout
  */
 export default async function logout() {
+  if (!confirm("Logout?")) return;
+
   // Signout current user
   await auth().signOut();
 

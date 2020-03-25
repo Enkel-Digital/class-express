@@ -31,5 +31,6 @@ module.exports = {
   points,
   paymentDetails,
   ...require("./exploreView"),
-  ...require("./subscriptionPlan")
+  ...require("./subscriptionPlan"),
+  ...require("./news")
 };
