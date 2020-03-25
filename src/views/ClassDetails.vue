@@ -61,6 +61,28 @@
 
     <v-divider></v-divider>
 
+    <!-- @todo Change this into a bottom toolbar and make it sticky -->
+    <v-container>
+      <v-row>
+        <v-col>
+          <h2 style="color: grey;">{{ clas.points }} points</h2>
+        </v-col>
+
+        <v-col>
+          <v-btn
+            v-if="clas.isReserved"
+            @click="cancelClass(clas.id)"
+            color="error"
+          >
+            cancel
+          </v-btn>
+          <v-btn v-else @click="reserveClass(clas.id)" color="primary">
+            reserve
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+
     <!-- Embedded Maps  -->
 
     <!-- put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
@@ -87,6 +109,8 @@ export default {
     return {
       favouritedClass: true,
       clas: {
+        points: 8,
+        isReserved: false,
         id: 12345,
         name: "advance guitar",
         classLength: "60", // Store classLength in minutes can show otherwise in hours as needed
@@ -113,6 +137,14 @@ export default {
       this.favouritedClass = !this.favouritedClass;
 
       // Call backend and handle error if any to change back favourite value
+      // Call the action from vuex.
+    },
+    reserveClass(classID) {
+      if (confirm(`Reserve this class for ${this.clas.points} points?`))
+        this.clas.isReserved = true;
+    },
+    cancelClass(classID) {
+      if (confirm("Cancel your reservation?")) this.clas.isReserved = false;
     }
   }
 };
