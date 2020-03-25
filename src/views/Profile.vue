@@ -53,6 +53,18 @@
         </v-list-item>
       </v-card>
 
+      <v-card :to="{ name: 'faq' }" style="text-align: left;" ripple tile>
+        <v-list-item>
+          <v-list-item-content>
+            <p class="overline">Want to learn more?</p>
+
+            <v-list-item-subtitle>
+              Checkout our F.A.Q page for more details!
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-card>
+
       <v-card ripple tile>
         <v-list-item @click="logout" style="background-color: #ededed;">
           Logout

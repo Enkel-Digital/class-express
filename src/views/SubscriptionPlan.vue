@@ -102,8 +102,9 @@
       Subscription Plans
     </h3>
     <p style="color: rgba(0, 0, 0, 0.6); text-align: left;" class="ml-5 mb-0">
-      The selected plan is your next plan. Click to change your plan, and it
-      will take effect next month.
+      <span v-if="nextPlanID === currentPlanID">This is your current plan</span>
+      <span v-else>This is your next month's plan</span>
+      <br />Click to change next month's plan
     </p>
 
     <v-radio-group v-model="selectedPlanID">

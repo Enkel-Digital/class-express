@@ -141,6 +141,7 @@
 
 <script>
 /**
+ * @todo https://vuetifyjs.com/en/components/expansion-panels/
  * @todo Use this https://vuetifyjs.com/en/components/lists/#expansion-lists for some of the nested settings
  *      Or perhaps use a diff view with nested routes.
  */
