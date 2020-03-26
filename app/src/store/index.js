@@ -25,6 +25,13 @@ export default new Vuex.Store({
   },
   actions: {
     /**
+     * Main init function of store that calls all the other init actions from all the modules
+     * @function init
+     */
+    async init({ dispatch }) {
+      console.log("Initializing vuex store...");
+    },
+    /**
      * Function to get all the user's details
      * @function getUserDetails
      */

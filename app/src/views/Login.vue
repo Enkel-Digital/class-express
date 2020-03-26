@@ -71,6 +71,8 @@ export default {
         // Await for async dispatch to ensure app only starts when user info is all available.
         await this.$store.dispatch("getUserDetails");
 
+        await this.$store.dispatch("init");
+
         // Route to the user's home page, after login
         this.$router.replace({ name: "home", params: { user: name } });
       } catch (error) {
