@@ -11,16 +11,6 @@ const user = {
   }
 };
 
-const points = {
-  left: 20,
-  total: 45,
-  period: {
-    timezone: "",
-    start: "",
-    end: "20 / 4 / 2020" // To change to some other datetime format
-  }
-};
-
 const paymentDetails = {
   userId: "",
   paymentProvider: "" // Enum of credit card or SaaS like paypal/stripe
@@ -28,8 +18,8 @@ const paymentDetails = {
 
 module.exports = {
   user,
-  points,
   paymentDetails,
+  ...require("./points"),
   ...require("./exploreView"),
   ...require("./subscriptionPlan"),
   ...require("./news")

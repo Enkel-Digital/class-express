@@ -11,15 +11,6 @@ export default function initialState() {
       lname: undefined,
       imageSrc: undefined
     },
-    points: {
-      left: 0,
-      total: 0,
-      period: {
-        timezone: undefined,
-        start: undefined,
-        end: undefined
-      }
-    },
     settings: {
       notifications: {
         mobileNotification: true,
