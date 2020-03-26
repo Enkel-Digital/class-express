@@ -5,11 +5,11 @@
         <p class="overline">your points</p>
 
         <v-list-item-title class="headline mb-1">
-          {{ points.left }} / {{ points.total }} points
+          {{ userPoints.left }} / {{ userPoints.total }} points
         </v-list-item-title>
 
         <v-list-item-subtitle>
-          Period ends on: {{ points.period.end }}
+          Period ends on: {{ userPoints.period.end }}
         </v-list-item-subtitle>
       </v-list-item-content>
 
@@ -24,7 +24,14 @@ import { mapState } from "vuex";
 
 export default {
   name: "profile",
-  computed: mapState(["points"])
+  beforeCreate() {
+    // @todo Remove this and initialize it elsewhere
+    this.$store.dispatch("points/init");
+  },
+  computed: {
+    ...mapState("points", ["userPoints"])
+    // ,...mapState("subscription", ["currentPlanID"])
+  }
 };
 </script>
 
