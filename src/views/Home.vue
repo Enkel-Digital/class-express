@@ -2,6 +2,7 @@
   <v-content class="home">
     <v-responsive>
       <!-- The carousel of images / latest news -->
+      <!-- @todo https://vuetifyjs.com/en/components/aspect-ratios/ -->
       <v-carousel
         cycle
         continuous
@@ -15,6 +16,8 @@
           :key="i"
           :src="item.src"
           @click="viewBanner(item.link)"
+          @click.prevent="true"
+          @submit.prevent="true"
           contain
         >
           <h1 style="position:absolute;bottom:1em;">
@@ -33,7 +36,7 @@
       max-width="800"
     >
       Recommended classes
-      <v-slide-group v-model="model" class="pa-4">
+      <v-slide-group class="pa-4">
         <v-slide-item
           v-for="n in 5"
           :key="n"
@@ -60,7 +63,7 @@
       max-width="800"
     >
       Explore classes
-      <v-slide-group v-model="model" class="pa-4">
+      <v-slide-group class="pa-4">
         <v-slide-item
           v-for="n in 5"
           :key="n"
@@ -85,16 +88,10 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "home",
-  data() {
-    return {
-      lastViewdBanner_tmp: undefined,
-      model: null
-    };
-  },
   beforeMount() {
     // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
     // Request store to get and populate list of news banners
@@ -105,16 +102,7 @@ export default {
     ...mapState("news", ["newsBanners"])
   },
   methods: {
-    viewBanner(link) {
-      if (!link) return;
-
-      // @todo Fix this hack that prevents double click
-      console.log("clcked", link);
-      if (this.lastViewdBanner_tmp === link) return;
-      this.lastViewdBanner_tmp = link;
-
-      if (confirm("Checkout link?")) window.open(link);
-    }
+    ...mapActions("news", ["viewBanner"])
   }
 };
 </script>

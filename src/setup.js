@@ -36,6 +36,7 @@ function checkOnline() {
   const isOnline = navigator.onLine;
 
   // @todo Attach event listeners to for when the connection changes
+  // Event listeners to set a network error flag in vuex store's flag object. Which will trigger an image overlay till netowrk is back
 
   console.log("Network connection: ", isOnline);
   if (!isOnline) {
