@@ -1,0 +1,23 @@
+{
+  "name": "billing",
+  "version": "0.0.1",
+  "description": "Billing Service",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "node ./src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Enkel-Digital/class-server.git"
+  },
+  "author": "JJ",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Enkel-Digital/class-server/issues"
+  },
+  "homepage": "https://github.com/Enkel-Digital/class-server#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
