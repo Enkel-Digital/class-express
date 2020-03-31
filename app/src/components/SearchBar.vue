@@ -11,10 +11,16 @@
       hide-details
       label="Search"
       solo-inverted
+      full-width
+      single-line
       light
       flat
       open-on-clear
       @keypress.enter="search"
+      @collapse="clearSearchResults"
+      clearable
+      color="grey"
+      background-color="grey"
     />
   </v-content>
 </template>
@@ -24,6 +30,7 @@ export default {
   name: "search",
   data() {
     return {
+      // @todo Move searchText to watch or computed, so when this is not empty, show search results
       searchText: "",
       loading: false,
       items: [],
@@ -52,8 +59,10 @@ export default {
 
       // Collapse suggestions dropdown
 
-      // Return the search result to the Explore page to show.
+      // Call the store to get search results into store for explore page to display
+      this.$store.dispatch("search/searchClass");
     },
+    clearSearchResults() {},
     /**
      * @function getSuggestions
      * To Simulate ajax query
