@@ -84,7 +84,7 @@ export default {
   components: {
     PointsCard
   },
-  computed: mapState(["user", "points"]),
+  computed: mapState(["user"]),
   methods: {
     logout,
     refreshData() {
