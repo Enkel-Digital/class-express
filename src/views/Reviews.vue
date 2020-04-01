@@ -70,7 +70,8 @@
     </div>
     <v-divider></v-divider>
 
-    <!-- @todo Do not display at once, load only when scrolled to. Look at v-img load on scroll for inspiration -->
+    <!-- @todo Do not display at once, load only when scrolled to. -->
+    <!-- https://css-tricks.com/preventing-content-reflow-from-lazy-loaded-images/ -->
     <v-responsive class="mx-auto">
       <v-card
         v-for="(review, i) in reviews.memberReviews"
@@ -116,39 +117,48 @@ export default {
         memberReviews: [
           {
             points: 5,
-            description: "Was really fun!"
+            description: "Was really fun!",
+            timestamp: 1584702021
           },
           {
             points: 5,
-            description: "Ichika is a great teacher!"
+            description: "Ichika is a great teacher!",
+            timestamp: 1584702020
           },
           {
             points: 4,
-            description: "Love the open classroom environment"
+            description: "Love the open classroom environment",
+            timestamp: 1584702019
           },
           {
             points: 5,
-            description: "Was really fun!"
+            description: "Was really fun!",
+            timestamp: 1584702018
           },
           {
             points: 5,
-            description: "Ichika is a great teacher!"
+            description: "Ichika is a great teacher!",
+            timestamp: 1584702017
           },
           {
             points: 4,
-            description: "Love the open classroom environment"
+            description: "Love the open classroom environment",
+            timestamp: 1584702016
           },
           {
             points: 5,
-            description: "Was really fun!"
+            description: "Was really fun!",
+            timestamp: 1584702015
           },
           {
             points: 5,
-            description: "Ichika is a great teacher!"
+            description: "Ichika is a great teacher!",
+            timestamp: 1584702014
           },
           {
             points: 4,
-            description: "Love the open classroom environment"
+            description: "Love the open classroom environment",
+            timestamp: 1584702013
           }
         ]
       }
