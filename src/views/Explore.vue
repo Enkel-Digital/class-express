@@ -2,10 +2,23 @@
   <v-content class="explore">
     <SearchBar />
 
-    <v-responsive v-if="searchResults.length">
+    <!-- Add smth to v-if
+          get text inside the search bar. If search is not empty then show the classes. 
+    -->
+    <!-- If users searched for something and there is valid results -->
+    <v-responsive v-if="searchResults && searchResults.length">
       <span style="text-align: left;">Search Results:</span>
 
-      <v-card outlined v-for="(searchResult, i) in searchResults" :key="i">
+      <!-- Lazy load search results:
+          - The harder way  https://css-tricks.com/preventing-content-reflow-from-lazy-loaded-images/
+          - The easier way (Use pagination, which is bad ux...)
+      -->
+      <v-card
+        outlined
+        :to="'/classdetails'"
+        v-for="(searchResult, i) in searchResults"
+        :key="i"
+      >
         <div class="d-flex flex-no-wrap justify-space-between">
           <div>
             <v-card-title
@@ -25,7 +38,13 @@
       </v-card>
     </v-responsive>
 
-    <v-responsive class="ma-4" v-if="!searchResults.length">
+    <!-- If the search result is an empty array-->
+    <v-responsive class="ma-4" v-if="searchResults && !searchResults.length">
+      <h4>No results for "{{ searchText }}"</h4>
+    </v-responsive>
+
+    <!-- If user did not search for anything and search results is of undefined -->
+    <v-responsive class="ma-4" v-if="!searchResults">
       <h4>Sort by Category</h4>
 
       <!-- Show all icons for the categories -->
@@ -43,53 +62,24 @@
 
 <script>
 import SearchBar from "@/components/SearchBar.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "explore",
   components: {
     SearchBar
   },
-  data() {
-    return {
-      searchResults: [
-        {
-          name: "basic guitar",
-          ratings: 4, // Ratings out of 5 stars
-          classLength: "60", // Store classLength in minutes can show otherwise in hours as needed
-          provider: {
-            name: "Guitar Studio 1", // Name of the provider
-            id: 123
-          },
-          location: "", // Location Coordinates so we can show on a Map insert
-          pictureSrc:
-            "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg"
-        },
-        {
-          name: "advance guitar",
-          ratings: 3.8, // Ratings out of 5 stars
-          classLength: "60", // Store classLength in minutes can show otherwise in hours as needed
-          provider: {
-            name: "Guitar Studio 2", // Name of the provider
-            id: 123
-          },
-          location: "", // Location Coordinates so we can show on a Map insert
-          pictureSrc:
-            "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg"
-        }
-      ],
-      categories: [
-        "tech",
-        "language",
-        "academics",
-        "cooking",
-        "music",
-        "sports"
-      ]
-    };
+  beforeMount() {
+    // Either mounted or before mount or created or smth
+    // Basically check if the store have state.category. if not, load it, else it is just a simple screen switch then just ignore and do nothing and continue component loading.
+    if (!this.$store.state.search.categories)
+      this.$store.dispatch("getCategories");
   },
+  computed: mapState("search", ["searchText", "searchResults", "categories"]),
   methods: {
     searchByCategory(category) {
       console.log("category:", category);
+      // Call vuex method to fill the state with search result. Then the computed here will re-load
     }
   }
 };
