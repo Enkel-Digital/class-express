@@ -72,7 +72,7 @@
             {{ topupOption.price.value }}
           </v-list-item-title>
 
-          <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em" class="mb-0">
+          <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;" class="mb-0">
             <span v-html="topupOption.copywriting"></span>
           </p>
         </v-list-item-content>
@@ -98,7 +98,7 @@
             Monthly plans available
           </v-list-item-title>
 
-          <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em" class="mb-0">
+          <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;" class="mb-0">
             Checkout our monthly plans for more discount.
           </p>
         </v-list-item-content>
