@@ -20,7 +20,7 @@
           @submit.prevent="true"
           contain
         >
-          <h1 style="position:absolute;bottom:1em;">
+          <h1 style="position: absolute; bottom: 1em;">
             {{ item.text }}
           </h1>
         </v-carousel-item>

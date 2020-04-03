@@ -29,10 +29,7 @@
       <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ml-5">
         Current plan
       </h3>
-      <p
-        style="color: rgba(0, 0, 0, 0.6); text-align: left;"
-        class="ml-5  mb-0"
-      >
+      <p style="color: rgba(0, 0, 0, 0.6); text-align: left;" class="ml-5 mb-0">
         Your current plan ends on {{ periodEndDate }}
       </p>
       <v-card
@@ -54,7 +51,10 @@
               {{ currentPlan.price.value }}
             </v-list-item-title>
 
-            <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em" class="mb-0">
+            <p
+              style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;"
+              class="mb-0"
+            >
               <span v-html="currentPlan.copywriting"></span>
             </p>
           </v-list-item-content>
@@ -64,10 +64,7 @@
       <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ml-5">
         Next plan
       </h3>
-      <p
-        style="color: rgba(0, 0, 0, 0.6); text-align: left;"
-        class="ml-5  mb-0"
-      >
+      <p style="color: rgba(0, 0, 0, 0.6); text-align: left;" class="ml-5 mb-0">
         Your new plan starts on {{ "21 / 4 / 2020" }}
       </p>
       <v-card
@@ -89,7 +86,10 @@
               {{ nextPlan.price.value }}
             </v-list-item-title>
 
-            <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em" class="mb-0">
+            <p
+              style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;"
+              class="mb-0"
+            >
               <span v-html="nextPlan.copywriting"></span>
             </p>
           </v-list-item-content>
@@ -130,7 +130,10 @@
               {{ plan.price.value }}
             </v-list-item-title>
 
-            <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em" class="mb-0">
+            <p
+              style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;"
+              class="mb-0"
+            >
               <span v-html="plan.copywriting"></span>
             </p>
           </v-list-item-content>
@@ -153,7 +156,7 @@
             Buy points whenever
           </v-list-item-title>
 
-          <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em" class="mb-0">
+          <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;" class="mb-0">
             Want a Custom plan? We got you covered!<br />Flexibility to
             experiment so you can do you!
           </p>

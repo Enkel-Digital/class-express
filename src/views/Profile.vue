@@ -19,6 +19,7 @@
 
         <v-avatar>
           <!-- Profile pic here. Load image asynchronously from server during login -->
+          <!-- @todo Display none if image cant be loaded -->
           <img alt="Avatar" :src="user.imageSrc" />
         </v-avatar>
       </v-list-item>
@@ -89,7 +90,7 @@ export default {
     logout,
     refreshData() {
       // Rely on the store to update the data asynchronously in the background
-      this.$store.dispatch("getUserDetails");
+      this.$store.dispatch("init");
     }
   }
 };
