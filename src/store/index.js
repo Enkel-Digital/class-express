@@ -4,6 +4,7 @@ import createPersistedState from "vuex-persistedstate";
 
 import initialState from "./initialState";
 import setter from "./utils/setter";
+import classesModule from "./module/classes";
 import searchModule from "./module/search";
 import pointsModule from "./module/points";
 import newsModule from "./module/news";
@@ -17,6 +18,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: initialState(),
   modules: {
+    classes: classesModule,
     search: searchModule,
     points: pointsModule,
     news: newsModule,
