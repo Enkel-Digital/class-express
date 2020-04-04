@@ -16,9 +16,16 @@ export default {
     setter
   },
   getters: {
+    /**
+     * @todo Sort by time the class was added as a favourite.
+     */
     favouriteClasses(state) {
-      // Use an array of favouriteClassesID to get the data from server
-      // return state.subscriptionPlans
+      const favouriteClasses = [];
+
+      for (const classID in state.favouriteClassesID)
+        favouriteClasses.push(state.classes[classID]);
+
+      return favouriteClasses;
     },
     /**
      * Generate an array of upcoming classes Object(s) from an array of IDs of upcoming classes
@@ -48,14 +55,14 @@ export default {
        */
       commit("setter", ["classes", mock.classes]);
 
-      await dispatch("getUpcomingClasses");
-      await dispatch("getFavouriteClasses");
+      await dispatch("getUpcomingClassesID");
+      await dispatch("getFavouriteClassesID");
     },
     /**
      * Get list of upcomingClassesID from API
      * @function getUpcomingClassesID
      */
-    async getUpcomingClasses({ commit }) {
+    async getUpcomingClassesID({ commit }) {
       // @todo Replace with API call
       const upcomingClassesID = mock.upcomingClassesID;
 
@@ -65,11 +72,11 @@ export default {
      * Get list of favouriteClasses from API
      * @function getFavouriteClasses
      */
-    async getFavouriteClasses({ commit }) {
+    async getFavouriteClassesID({ commit }) {
       // @todo Replace with API call
-      const favouriteClasses = mock.favouriteClasses;
+      const favouriteClassesID = mock.favouriteClassesID;
 
-      commit("setter", ["favouriteClasses", favouriteClasses]);
+      commit("setter", ["favouriteClassesID", favouriteClassesID]);
     },
     async toggleFavourite(classID) {
       console.log("toggle fav class: ", classID);
