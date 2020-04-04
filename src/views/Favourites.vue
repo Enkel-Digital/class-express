@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "favourites",
@@ -84,7 +84,8 @@ export default {
     // @todo Redirect to class details page?
     showClass(classID) {
       console.log("requested to show class: ", classID);
-    }
+    },
+    ...mapActions("classes", ["toggleFavourite"])
   }
 };
 </script>
