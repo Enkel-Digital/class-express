@@ -53,7 +53,7 @@
           <v-spacer></v-spacer>
 
           <v-btn icon @click="toggleFavourite(clas.id)">
-            <v-icon v-if="clas.favouritedClass" color="red">mdi-heart</v-icon>
+            <v-icon v-if="clas.favourite" color="red">mdi-heart</v-icon>
             <v-icon v-else>mdi-heart-outline</v-icon>
           </v-btn>
 
