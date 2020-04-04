@@ -53,6 +53,11 @@ export default {
 
       return Object.values(upcomingClasses).map(clas => {
         clas.locationImage = createGMapsImg(clas.location.coordinates);
+
+        /** @notice Explicit data setting needed to prevent data caching */
+        if (state.favouriteClassesID[clas.id]) clas.favourite = true;
+        else clas.favourite = false;
+
         return clas;
       });
     }
