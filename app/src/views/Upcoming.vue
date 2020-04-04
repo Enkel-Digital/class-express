@@ -15,7 +15,11 @@
         outlined
         :ripple="false"
       >
-        <v-responsive @click="showClass(clas.id)">
+        <v-responsive
+          @click="
+            $router.push({ name: 'ClassDetails', params: { classID: clas.id } })
+          "
+        >
           <v-img id="class-image" :src="clas.locationImage" />
 
           <v-list-item>
@@ -80,10 +84,6 @@ export default {
     ...mapGetters("classes", ["upcomingClasses"])
   },
   methods: {
-    // @todo Redirect to class details page?
-    showClass(classID) {
-      console.log("requested to show class: ", classID);
-    },
     ...mapActions("classes", ["toggleFavourite"])
   }
 };

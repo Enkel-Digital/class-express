@@ -15,7 +15,11 @@
         outlined
         :ripple="false"
       >
-        <v-responsive @click="showClass(clas.id)">
+        <v-responsive
+          @click="
+            $router.push({ name: 'ClassDetails', params: { classID: clas.id } })
+          "
+        >
           <!-- @todo Change to a image carousel -->
           <v-img id="class-image" :src="clas.pictureSources[0]" />
 
@@ -40,7 +44,6 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          {{ clas.id }}
           <!-- Change this to a remove icon only. Cos dont need to toggle, here means confirm favourites already -->
           <v-btn icon @click="toggleFavourite(clas.id)">
             <v-icon color="red">mdi-heart</v-icon>
@@ -71,10 +74,6 @@ export default {
     ...mapGetters("classes", ["favouriteClasses"])
   },
   methods: {
-    // @todo Redirect to class details page?
-    showClass(classID) {
-      console.log("requested to show class: ", classID);
-    },
     ...mapActions("classes", ["toggleFavourite"])
   }
 };
