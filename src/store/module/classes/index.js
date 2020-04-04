@@ -2,6 +2,7 @@
  * Vuex module for all things classes related
  */
 
+import Vue from "vue";
 import initialState from "./initialState";
 import setter from "../../utils/setter";
 import createGMapsImg from "./gMapsImage";
@@ -14,7 +15,19 @@ export default {
   state: initialState(),
   mutations: {
     setter,
-    toggleFavourite(state, classID) {}
+    toggleFavourite(state, classID) {
+      /** @notice Toggle the state using Vue methods for triggering reactive listeners */
+      if (state.favouriteClassesID[classID])
+        Vue.delete(state.favouriteClassesID, classID);
+      else Vue.set(state.favouriteClassesID, classID, true);
+
+      /** @notice Alternate solution to using Vue.set and Vue.delete is to do a shallow copy for reactive triggers */
+      // if (state.favouriteClassesID[classID])
+      //   delete state.favouriteClassesID[classID];
+      // else state.favouriteClassesID[classID] = true;
+      // // For reactivity
+      // state.favouriteClassesID = { ...state.favouriteClassesID };
+    }
   },
   getters: {
     /**

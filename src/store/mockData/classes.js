@@ -2,7 +2,6 @@ const classes = {
   0: {
     id: 0,
     className: "Basic Guitar",
-    favouritedClass: true,
     time: Date.now(),
     classLength: "60", // Store classLength in minutes can show otherwise in hours as needed
     classProvider: {
@@ -20,7 +19,6 @@ const classes = {
   1: {
     id: 1,
     className: "Advanced Cooking",
-    favouritedClass: false,
     time: Date.now() + 1000000,
     classLength: "150", // Store classLength in minutes can show otherwise in hours as needed
     classProvider: {

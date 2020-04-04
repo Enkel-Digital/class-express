@@ -9,7 +9,7 @@
     <v-responsive v-if="upcomingClasses.length">
       <v-card
         v-for="clas in upcomingClasses"
-        :key="clas.className"
+        :key="clas.id"
         class="mx-auto mb-4"
         max-width="400"
         outlined
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "upcoming",
@@ -83,7 +83,8 @@ export default {
     // @todo Redirect to class details page?
     showClass(classID) {
       console.log("requested to show class: ", classID);
-    }
+    },
+    ...mapActions("classes", ["toggleFavourite"])
   }
 };
 </script>
