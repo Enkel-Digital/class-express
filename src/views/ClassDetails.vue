@@ -105,6 +105,7 @@ export default {
   components: {
     BackBtn
   },
+  props: ["classID"],
   data() {
     return {
       favouritedClass: true,

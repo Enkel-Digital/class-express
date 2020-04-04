@@ -37,10 +37,11 @@ const routes = [
     meta: { Auth_requirements: AuthType.private }
   },
   {
-    path: "/classdetails",
+    path: "/classdetails/:classID",
     name: "ClassDetails",
     component: ClassDetails,
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
+    props: true
   },
   {
     path: "/reviews",
