@@ -37,8 +37,13 @@ const classes = {
   }
 };
 
-const upcomingClassesID = [0, 1];
+const upcomingClassesID = {
+  0: true,
+  1: true
+};
 
-const favouriteClassesID = [1];
+const favouriteClassesID = {
+  1: true
+};
 
 module.exports = { classes, upcomingClassesID, favouriteClassesID };

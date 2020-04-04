@@ -22,7 +22,7 @@ export default {
     favouriteClasses(state) {
       const favouriteClasses = [];
 
-      for (const classID in state.favouriteClassesID)
+      for (const classID in Object.keys(state.favouriteClassesID))
         favouriteClasses.push(state.classes[classID]);
 
       return favouriteClasses;
@@ -34,7 +34,7 @@ export default {
     upcomingClasses(state) {
       const upcomingClasses = {};
 
-      for (const classID in state.upcomingClassesID)
+      for (const classID in Object.keys(state.upcomingClassesID))
         upcomingClasses[classID] = state.classes[classID];
 
       return Object.values(upcomingClasses).map(clas => {
