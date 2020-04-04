@@ -13,7 +13,8 @@ export default {
   namespaced: true,
   state: initialState(),
   mutations: {
-    setter
+    setter,
+    toggleFavourite(state, classID) {}
   },
   getters: {
     /**
@@ -22,7 +23,7 @@ export default {
     favouriteClasses(state) {
       const favouriteClasses = [];
 
-      for (const classID in Object.keys(state.favouriteClassesID))
+      for (const classID of Object.keys(state.favouriteClassesID))
         favouriteClasses.push(state.classes[classID]);
 
       return favouriteClasses;
@@ -34,7 +35,7 @@ export default {
     upcomingClasses(state) {
       const upcomingClasses = {};
 
-      for (const classID in Object.keys(state.upcomingClassesID))
+      for (const classID of Object.keys(state.upcomingClassesID))
         upcomingClasses[classID] = state.classes[classID];
 
       return Object.values(upcomingClasses).map(clas => {
@@ -78,15 +79,14 @@ export default {
 
       commit("setter", ["favouriteClassesID", favouriteClassesID]);
     },
-    async toggleFavourite(classID) {
-      console.log("toggle fav class: ", classID);
+    async toggleFavourite({ commit }, classID) {
       // Optimistic UI, show toggle first
-
-      // Toggle the state of the favourite class in state.
-      if (this.favouriteClasses[classID]) delete this.favouriteClasses[classID];
-      else this.favouriteClasses[classID] = true;
+      commit("toggleFavourite", classID);
 
       // Call backend and handle error if any to change back favourite value
+
+      // If error from updating server, then call mutation again to toggleBack
+      // commit("toggleFavourite", classID);
     }
   }
 };
