@@ -16,7 +16,7 @@ export default {
   },
   actions: {
     /**
-     * Initializing function for this module
+     * Initialization function for this module
      * @function init
      */
     async init({ dispatch }) {
