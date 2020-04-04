@@ -31,4 +31,6 @@ const classes = {
   }
 };
 
-module.exports = { classes };
+const upcomingClassesID = [0, 1];
+
+module.exports = { classes, upcomingClassesID };

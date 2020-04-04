@@ -33,7 +33,9 @@ export default new Vuex.Store({
      * @function init
      */
     async init({ dispatch }) {
-      console.log("Initializing vuex store...");
+      console.log("Initializing vuex store and its modules...");
+
+      await dispatch("classes/init");
     },
     /**
      * Function to get all the user's details

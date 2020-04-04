@@ -4,6 +4,7 @@
 
 import initialState from "./initialState";
 import setter from "../../utils/setter";
+import createGMapsImg from "./gMapsImage";
 
 // @todo Remove mock data
 import mock from "../../mockData";
@@ -19,18 +20,46 @@ export default {
       // Use an array of favouriteClassesID to get the data from server
       // return state.subscriptionPlans
     },
+    /**
+     * Generate an array of upcoming classes Object(s) from an array of IDs of upcoming classes
+     * @todo Sort the classes by time of class.
+     */
     upcomingClasses(state) {
-      // Use an array of upcomingClassesID to get the data from server
-      // return state.subscriptionPlans.find(plan => plan.id === state.nextPlanID);
+      const upcomingClasses = {};
+
+      for (const classID in state.upcomingClassesID)
+        upcomingClasses[classID] = state.classes[classID];
+
+      return Object.values(upcomingClasses).map(clas => {
+        clas.locationImage = createGMapsImg(clas.location.coordinates);
+        return clas;
+      });
     }
   },
   actions: {
     /**
-     * Initializing function for this module
+     * Initialization function for this module
      * @function init
      */
-    async init({ dispatch }) {
-      dispatch("getFavouriteClasses");
+    async init({ commit, dispatch }) {
+      /**
+       * @todo Remove this once the class addition is built.
+       * @todo Edit "vuex-persistedstate" plugin to ignore class objects as they should be fetched everytime.
+       */
+      commit("setter", ["classes", mock.classes]);
+
+      await dispatch("getUpcomingClasses");
+      await dispatch("getFavouriteClasses");
+    },
+    /**
+     * Get list of upcomingClassesID from API
+     * @function getUpcomingClassesID
+     */
+    async getUpcomingClasses({ commit }) {
+      // @todo Replace with API call
+      const upcomingClassesID = mock.upcomingClassesID;
+
+      commit("setter", ["upcomingClassesID", upcomingClassesID]);
     },
     /**
      * Get list of favouriteClasses from API

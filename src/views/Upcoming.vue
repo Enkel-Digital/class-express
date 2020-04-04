@@ -6,7 +6,7 @@
 
     <br />
 
-    <v-responsive>
+    <v-responsive v-if="upcomingClasses.length">
       <v-card
         v-for="clas in upcomingClasses"
         :key="clas.className"
@@ -63,65 +63,21 @@
         </v-card-actions>
       </v-card>
     </v-responsive>
+
+    <!-- @todo Add copywriting for users to join classes if they have no upcoming classes -->
+    <v-responsive v-else>
+      No Upcoming Classes.
+    </v-responsive>
   </v-content>
 </template>
 
 <script>
-let upcomingClasses = [
-  {
-    id: 0,
-    className: "Basic Guitar",
-    time: Date.now(),
-    classLength: "60", // Store classLength in minutes can show otherwise in hours as needed
-    classProvider: {
-      name: "Guitar Studio 1", // Name of the provider
-      id: 123
-    },
-    location: {
-      coordinates: "1.300649, 103.855453",
-      address: "249B Victoria St, Bugis Village"
-    }
-  },
-  {
-    id: 1,
-    className: "Advanced Cooking",
-    time: Date.now() + 1000000,
-    classLength: "150", // Store classLength in minutes can show otherwise in hours as needed
-    classProvider: {
-      name: "Tampines CC", // Name of the providerx
-      id: 456
-    },
-    location: {
-      coordinates: "1.302481, 103.855448",
-      address: "117 Fidelio St"
-    }
-  }
-];
-
-const apiKey = "AIzaSyDLcotbAj1ymo_cxeuPXVpbE0M7GW1wedU";
-
-const GmapsUrlConcat = (
-  coordinates,
-  key,
-  baseGMapsURL = "https://maps.googleapis.com/maps/api/staticmap?"
-) =>
-  baseGMapsURL.concat(
-    coordinates,
-    "&zoom=17&size=600x300&maptype=roadmap&markers=color:red%7Clabel:C%7C",
-    coordinates,
-    "&key=",
-    key
-  );
+import { mapGetters } from "vuex";
 
 export default {
   name: "upcoming",
-  data() {
-    return {
-      upcomingClasses: upcomingClasses.map(clas => {
-        clas.locationImage = GmapsUrlConcat(clas.location.coordinates, apiKey);
-        return clas;
-      })
-    };
+  computed: {
+    ...mapGetters("classes", ["upcomingClasses"])
   },
   methods: {
     // @todo Redirect to class details page?
