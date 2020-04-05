@@ -1,10 +1,10 @@
 const classes = {
   0: {
     id: 0,
-    className: "Basic Guitar",
+    name: "Basic Guitar",
     time: Date.now(),
-    classLength: "60", // Store classLength in minutes can show otherwise in hours as needed
-    classProvider: {
+    length: "60", // Store classLength in minutes can show otherwise in hours as needed
+    provider: {
       name: "Guitar Studio 1", // Name of the provider
       id: 123
     },
@@ -18,10 +18,10 @@ const classes = {
   },
   1: {
     id: 1,
-    className: "Advanced Cooking",
+    name: "Advanced Cooking",
     time: Date.now() + 1000000,
-    classLength: "150", // Store classLength in minutes can show otherwise in hours as needed
-    classProvider: {
+    length: "150", // Store classLength in minutes can show otherwise in hours as needed
+    provider: {
       name: "Tampines CC", // Name of the providerx
       id: 456
     },

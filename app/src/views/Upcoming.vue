@@ -25,7 +25,7 @@
           <v-list-item>
             <div style="text-align: left;">
               <v-card-title class="headline pl-0">
-                {{ clas.className }}
+                {{ clas.name }}
               </v-card-title>
               <!-- @todo Add a points box beside the class name -->
               <!-- <p>7 points</p> -->
@@ -33,14 +33,14 @@
               <v-list-item-subtitle style="font-weight: bold;">
                 {{ moment(clas.time).format("MMMM Do, h:mm") }} to
                 {{
-                  moment(clas.time + Date.parse(clas.classLength)).format(
+                  moment(clas.time + Date.parse(clas.length)).format(
                     "MMMM Do, h:mm"
                   )
                 }}
               </v-list-item-subtitle>
 
               <v-list-item-subtitle>
-                <div>{{ clas.classProvider.name }}</div>
+                <div>{{ clas.provider.name }}</div>
                 <div>{{ clas.location.address }}</div>
               </v-list-item-subtitle>
             </div>

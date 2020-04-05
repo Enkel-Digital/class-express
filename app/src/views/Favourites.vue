@@ -26,14 +26,14 @@
           <v-list-item>
             <div style="text-align: left;">
               <v-card-title class="headline pl-0">
-                {{ clas.className }}
+                {{ clas.name }}
               </v-card-title>
               <!-- @todo Add a points box beside the class name -->
               <!-- <p>7 points</p> -->
 
               <v-list-item-subtitle>
                 <div style="font-weight: bold;">
-                  {{ clas.classProvider.name }}
+                  {{ clas.provider.name }}
                 </div>
                 <div>{{ clas.location.address }}</div>
               </v-list-item-subtitle>
