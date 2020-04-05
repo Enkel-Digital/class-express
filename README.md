@@ -1,4 +1,5 @@
-# app
+# Class Express App
+This is a PWA to help users find and attend classes.
 
 ## Project setup
 ```
@@ -25,5 +26,9 @@ npm run test
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## License, Author and Contributing
+This project is developed and made available under the "AGPL License"  
+If you have any questions, contact us via [email](mailto:developer@enkeldigital.com)  
+Authors:
+- [JJ](https://github.com/Jaimeloeuf)
+- [Joshua](https://github.com/leeszeray)
