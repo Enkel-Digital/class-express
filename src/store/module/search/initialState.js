@@ -18,7 +18,7 @@ export default function initialState() {
 const searchResultObjReference = {
   name: "advance guitar",
   ratings: 3.8, // Ratings out of 5 stars
-  classLength: "60", // Store classLength in minutes can show otherwise in hours as needed
+  length: "60", // Store classLength in minutes can show otherwise in hours as needed
   provider: {
     name: "Guitar Studio 2", // Name of the provider
     id: 123

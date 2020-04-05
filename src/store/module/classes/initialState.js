@@ -5,8 +5,8 @@
 export default function initialState() {
   return {
     classes: {},
-    upcomingClassesID: [],
-    favouriteClassesID: []
+    upcomingClassesID: {},
+    favouriteClassesID: {}
   };
 }
 
@@ -18,7 +18,7 @@ const classObject = {
   points: 8,
   isReserved: false, // Get this
   name: "advance guitar",
-  classLength: "60", // Store classLength in minutes can show otherwise in hours as needed
+  length: "60", // Store classLength in minutes can show otherwise in hours as needed
   description:
     "Advance guitar lessons taught be the legendary Ichika Mo. Will be going through advanced music scores and includes 1 on 1 trainings for the students, alongside a chance to practice in front of a live audience",
   review: {
