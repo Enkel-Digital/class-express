@@ -16,7 +16,7 @@ export default {
   mutations: {
     setter,
     toggleFavourite(state, classID) {
-      /** @notice Toggle the state using Vue methods for triggering reactive listeners */
+      /** @notice Toggle state using Vue methods to trigger reactive listeners */
       if (state.favouriteClassesID[classID])
         Vue.delete(state.favouriteClassesID, classID);
       else Vue.set(state.favouriteClassesID, classID, true);
@@ -27,6 +27,12 @@ export default {
       // else state.favouriteClassesID[classID] = true;
       // // For reactivity
       // state.favouriteClassesID = { ...state.favouriteClassesID };
+    },
+    setUpcomingClass(state, { classID, action, timestamp }) {
+      /** @notice Change state using Vue methods to trigger reactive listeners */
+      // @todo Change set and delete to use the specific timestamp of that class
+      if (action) Vue.set(state.upcomingClassesID, classID, true);
+      else Vue.delete(state.upcomingClassesID, classID);
     }
   },
   getters: {
@@ -105,6 +111,14 @@ export default {
 
       // If error from updating server, then call mutation again to toggleBack
       // commit("toggleFavourite", classID);
+    },
+    async reserveClass({ state, commit }, classID) {
+      if (confirm(`Reserve class for ${state.classes[classID].points} points?`))
+        commit("setUpcomingClass", { classID, action: true, timestamp: "" });
+    },
+    async cancelClass({ commit }, classID) {
+      if (confirm("Cancel your reservation?"))
+        commit("setUpcomingClass", { classID, action: false, timestamp: "" });
     }
   }
 };

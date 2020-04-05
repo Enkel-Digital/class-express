@@ -10,7 +10,7 @@
         <v-icon>mdi-share</v-icon>
       </v-btn>
 
-      <v-btn icon @click="toggleFavourite">
+      <v-btn icon @click="toggleFavourite(clas.id)">
         <v-icon v-if="favouritedClass" color="red">mdi-heart</v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
@@ -69,11 +69,7 @@
         </v-col>
 
         <v-col>
-          <v-btn
-            v-if="clas.isReserved"
-            @click="cancelClass(clas.id)"
-            color="error"
-          >
+          <v-btn v-if="isReserved" @click="cancelClass(clas.id)" color="error">
             cancel
           </v-btn>
           <v-btn v-else @click="reserveClass(clas.id)" color="primary">
@@ -98,6 +94,7 @@
  *
  * view timing bar vs reserve class bar.
  */
+import { mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 
 export default {
@@ -108,11 +105,10 @@ export default {
   props: ["classID"],
   data() {
     return {
-      favouritedClass: true,
+      // Get the base class object with classID from store
       clas: {
+        id: this.classID,
         points: 8,
-        isReserved: false,
-        id: 12345,
         name: "advance guitar",
         classLength: "60", // Store classLength in minutes can show otherwise in hours as needed
         description:
@@ -132,21 +128,27 @@ export default {
       }
     };
   },
-  methods: {
-    toggleFavourite() {
-      // Optimistic UI, show toggle first
-      this.favouritedClass = !this.favouritedClass;
+  computed: {
+    favouritedClass() {
+      if (this.$store.state.classes.favouriteClassesID[this.classID])
+        return true;
+      else return false;
+    },
+    isReserved() {
+      const upcomingClass = this.$store.state.classes.upcomingClassesID[
+        this.classID
+      ];
 
-      // Call backend and handle error if any to change back favourite value
-      // Call the action from vuex.
-    },
-    reserveClass(classID) {
-      if (confirm(`Reserve this class for ${this.clas.points} points?`))
-        this.clas.isReserved = true;
-    },
-    cancelClass(classID) {
-      if (confirm("Cancel your reservation?")) this.clas.isReserved = false;
+      // If there is a booking for this class, check if there is a booking for this timeslot
+      if (upcomingClass) {
+        // @todo Check for timeslot. Right now, assumes that there is only 1 session for the class thus return true
+
+        return true;
+      } else return false;
     }
+  },
+  methods: {
+    ...mapActions("classes", ["toggleFavourite", "reserveClass", "cancelClass"])
   }
 };
 </script>
