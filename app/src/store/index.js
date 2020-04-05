@@ -20,7 +20,7 @@ export default new Vuex.Store({
   modules: {
     classes: classesModule,
     search: searchModule,
-    points: pointsModule,
+    points: pointsModule, // User points and not all points related
     news: newsModule,
     subscription: subscriptionPlanModule
   },
