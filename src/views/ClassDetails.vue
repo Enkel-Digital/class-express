@@ -17,13 +17,14 @@
     </v-app-bar>
 
     <v-responsive id="class-image-container">
-      <v-img id="class-image" :src="clas.pictureSrc" />
+      <!-- @todo Change to a image carousel -->
+      <v-img id="class-image" :src="clas.pictureSources[0]" />
     </v-responsive>
 
     <v-responsive style="text-align: left;">
       <h3 class="headline" v-text="clas.name"></h3>
       <p class="ma-0 pa-0">{{ clas.provider.name }}</p>
-      <p class="ma-0 pa-0">{{ clas.location }}</p>
+      <p class="ma-0 pa-0">{{ clas.location.address }}</p>
     </v-responsive>
 
     <v-divider></v-divider>
@@ -33,14 +34,23 @@
         <v-list-item-content>
           <p class="overline">Reviews</p>
 
-          <v-list-item-subtitle>
+          <v-list-item-subtitle v-if="review">
             <!-- Do the star icon thing for the reviews -->
-            {{ clas.review.ratings }} / 5 based on
-            {{ clas.review.numberOfReviews }} reviews
+            {{ review.ratings }} / 5 based on
+            {{ review.numberOfReviews }} reviews
+          </v-list-item-subtitle>
+
+          <v-list-item-subtitle v-else>
+            Loading...
           </v-list-item-subtitle>
         </v-list-item-content>
 
-        <v-btn :to="{ name: 'reviews' }" text small color="primary">
+        <v-btn
+          :to="{ name: 'reviews', params: { classID: clas.id } }"
+          text
+          small
+          color="primary"
+        >
           Read them!
         </v-btn>
       </v-list-item>
@@ -102,31 +112,15 @@ export default {
   components: {
     BackBtn
   },
+  created() {
+    // Call action to fetch review of this class
+    this.$store.dispatch("classes/getReview", this.classID);
+  },
   props: ["classID"],
   data() {
-    return {
-      // Get the base class object with classID from store
-      clas: {
-        id: this.classID,
-        points: 8,
-        name: "advance guitar",
-        length: "60", // Store classLength in minutes can show otherwise in hours as needed
-        description:
-          "Advance guitar lessons taught be the legendary Ichika Mo. Will be going through advanced music scores and includes 1 on 1 trainings for the students, alongside a chance to practice in front of a live audience",
-        review: {
-          ratings: 4.8, // Ratings out of 5 stars
-          numberOfReviews: 100
-        },
-        provider: {
-          name: "Guitar Studio 2", // Name of the provider
-          id: 123,
-          description: "We offer world class guitar lessons for you!"
-        },
-        location: "Orchard road", // Location Coordinates so we can show on a Map insert
-        pictureSrc:
-          "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg"
-      }
-    };
+    // Classes is static via the data function as we do not want its reactivity
+    const clas = this.$store.state.classes.classes[this.classID];
+    return { clas };
   },
   computed: {
     favouritedClass() {
@@ -145,6 +139,9 @@ export default {
 
         return true;
       } else return false;
+    },
+    review() {
+      return this.$store.state.classes.review;
     }
   },
   methods: {

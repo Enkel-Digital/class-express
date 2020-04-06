@@ -2,8 +2,9 @@ const classes = {
   0: {
     id: 0,
     name: "Basic Guitar",
+    points: 5,
     time: Date.now(),
-    length: "60", // Store classLength in minutes can show otherwise in hours as needed
+    length: 60, // Store classLength in minutes can show otherwise in hours as needed
     provider: {
       name: "Guitar Studio 1", // Name of the provider
       id: 123
@@ -19,8 +20,9 @@ const classes = {
   1: {
     id: 1,
     name: "Advanced Cooking",
+    points: 6,
     time: Date.now() + 1000000,
-    length: "150", // Store classLength in minutes can show otherwise in hours as needed
+    length: 150, // Store classLength in minutes can show otherwise in hours as needed
     provider: {
       name: "Tampines CC", // Name of the providerx
       id: 456
@@ -32,16 +34,116 @@ const classes = {
     pictureSources: [
       "https://www.fetimes.co.kr/news/photo/201709/60017_41960_2138.jpg"
     ]
+  },
+  2: {
+    id: 2,
+    name: "Advanced Guitar",
+    points: 8,
+    time: Date.now() + 1000000,
+    length: 60, // Store classLength in minutes can show otherwise in hours as needed
+    description:
+      "Advance guitar lessons taught be the legendary Ichika Mo. Will be going through advanced music scores and includes 1 on 1 trainings for the students, alongside a chance to practice in front of a live audience",
+    provider: {
+      name: "Guitar Studio 2", // Name of the provider
+      id: 123,
+      description: "We offer world class guitar lessons for you!"
+    },
+    location: {
+      coordinates: "1.3006954, 103.84475",
+      address: "Orchard road, Plaza Singapura"
+    },
+    pictureSources: [
+      "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg"
+    ]
+  }
+};
+
+const reviews = {
+  0: {
+    classID: 0,
+    ratings: 4, // Ratings out of 5 stars
+    numberOfReviews: 2, // The reason why this is seperate instead of doing a userReviews.length is because userReviews may be too long and we do not want to load the whole thing at once and only the latest until the user scrolls for more.
+    userReviews: [
+      {
+        points: 4,
+        description: "Was really fun!",
+        timestamp: 1584702021
+      },
+      {
+        points: 4,
+        description: "Love the open classroom environment",
+        timestamp: 1584702019
+      }
+    ]
+  },
+  1: {
+    classID: 1,
+    ratings: 4.3, // Ratings out of 5 stars
+    numberOfReviews: 2,
+    userReviews: [
+      {
+        points: 5,
+        description: "Was really fun!",
+        timestamp: 1584702021
+      },
+      {
+        points: 4,
+        description: "Love the open classroom environment",
+        timestamp: 1584702019
+      }
+    ]
+  },
+  2: {
+    classID: 2,
+    ratings: 4.8, // Ratings out of 5 stars
+    numberOfReviews: 7,
+    userReviews: [
+      {
+        points: 5,
+        description: "Was really fun!",
+        timestamp: 1584702021
+      },
+      {
+        points: 4,
+        description: "Love the open classroom environment",
+        timestamp: 1584702019
+      },
+      {
+        points: 5,
+        description: "Was really fun!",
+        timestamp: 1584702018
+      },
+      {
+        points: 4,
+        description: "Love the open classroom environment",
+        timestamp: 1584702016
+      },
+      {
+        points: 5,
+        description: "Was really fun!",
+        timestamp: 1584702015
+      },
+      {
+        points: 5,
+        description: "Ichika is a great teacher!",
+        timestamp: 1584702014
+      },
+      {
+        points: 4,
+        description: "Love the open classroom environment",
+        timestamp: 1584702013
+      }
+    ]
   }
 };
 
 const upcomingClassesID = {
-  0: true,
-  1: true
+  0: true
 };
 
 const favouriteClassesID = {
-  1: true
+  1: true,
+  2: true
 };
 
-module.exports = { classes, upcomingClassesID, favouriteClassesID };
+module.exports = { classes, reviews, upcomingClassesID, favouriteClassesID };
