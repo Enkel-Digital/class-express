@@ -15,13 +15,15 @@
         outlined
         :ripple="false"
       >
+        <!-- @todo Make this redirect to maps on click -->
+        <!-- @todo Make this into an external component, that also handles the confirm popup and switch to maps -->
+        <v-img id="class-image" :src="clas.locationImage" />
+
         <v-responsive
           @click="
             $router.push({ name: 'ClassDetails', params: { classID: clas.id } })
           "
         >
-          <v-img id="class-image" :src="clas.locationImage" />
-
           <v-list-item>
             <div style="text-align: left;">
               <v-card-title class="headline pl-0">
