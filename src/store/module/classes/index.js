@@ -33,6 +33,10 @@ export default {
       // @todo Change set and delete to use the specific timestamp of that class
       if (action) Vue.set(state.upcomingClassesID, classID, true);
       else Vue.delete(state.upcomingClassesID, classID);
+    },
+    clearUserReview(state) {
+      // Clear reviews to prevent caching in memory
+      Vue.delete(state.review, "userReviews");
     }
   },
   getters: {

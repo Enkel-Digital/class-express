@@ -44,10 +44,11 @@ const routes = [
     props: true
   },
   {
-    path: "/reviews",
+    path: "/reviews/:classID",
     name: "reviews",
     component: () => import("@/views/Reviews.vue"),
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
+    props: true
   },
   {
     path: "/upcoming",

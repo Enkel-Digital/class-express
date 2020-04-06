@@ -2,12 +2,14 @@
   <v-content class="reviews">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
-      <v-toolbar-title>{{ clas.name }}</v-toolbar-title>
+      <v-toolbar-title>{{ className }}</v-toolbar-title>
     </v-app-bar>
 
     <!-- Change this to use a universal error overlay instead. Moved the logic into script instead of template too. -->
-    <div v-if="!reviewsCorrectlyLoaded">
-      Error! Reviews is not correctly loaded
+    <div v-if="!review">
+      Loading
+
+      <!-- Show a loading screen while we load reviews from server -->
     </div>
 
     <!-- Show total / overall review -->
@@ -35,12 +37,9 @@
 
         <v-list-item-content>
           <v-list-item style="min-height: 0;" class="ma-0 pa-0">
-            <span
-              v-text="`${clas.review.ratings} / 5`"
-              class="caption ma-0 pa-0"
-            />
+            <span v-text="`${review.ratings} / 5`" class="caption ma-0 pa-0" />
             <v-rating
-              v-model="clas.review.ratings"
+              v-model="review.ratings"
               half-increments
               readonly
               empty-icon=""
@@ -52,7 +51,7 @@
           </v-list-item>
 
           <v-list-item-subtitle>
-            across {{ clas.review.numberOfReviews }} reviews
+            across {{ review.numberOfReviews }} reviews
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -74,7 +73,7 @@
     <!-- https://css-tricks.com/preventing-content-reflow-from-lazy-loaded-images/ -->
     <v-responsive class="mx-auto">
       <v-card
-        v-for="(review, i) in reviews.memberReviews"
+        v-for="(review, i) in review.userReviews"
         :key="i"
         id="reviews-card"
         tile
@@ -96,78 +95,28 @@
 
 <script>
 import BackBtn from "@/components/BackBtn";
+import { mapState } from "vuex";
 
 export default {
   name: "reviews",
   components: {
     BackBtn
   },
+  props: ["classID"],
+  created() {
+    this.$store.dispatch("classes/getUserReview", this.classID);
+  },
+  destroyed() {
+    // Although this would be unnecessary if we do not store reviews into persistence state
+    // This can still help free up memory by removing userReviews.
+    this.$store.commit("classes/clearUserReview", this.classID);
+  },
   data() {
-    return {
-      clas: {
-        id: 12345,
-        name: "advance guitar",
-        review: {
-          ratings: 4.8, // Ratings out of 5 stars
-          numberOfReviews: 100
-        }
-      },
-      reviews: {
-        id: 12345,
-        memberReviews: [
-          {
-            points: 5,
-            description: "Was really fun!",
-            timestamp: 1584702021
-          },
-          {
-            points: 5,
-            description: "Ichika is a great teacher!",
-            timestamp: 1584702020
-          },
-          {
-            points: 4,
-            description: "Love the open classroom environment",
-            timestamp: 1584702019
-          },
-          {
-            points: 5,
-            description: "Was really fun!",
-            timestamp: 1584702018
-          },
-          {
-            points: 5,
-            description: "Ichika is a great teacher!",
-            timestamp: 1584702017
-          },
-          {
-            points: 4,
-            description: "Love the open classroom environment",
-            timestamp: 1584702016
-          },
-          {
-            points: 5,
-            description: "Was really fun!",
-            timestamp: 1584702015
-          },
-          {
-            points: 5,
-            description: "Ichika is a great teacher!",
-            timestamp: 1584702014
-          },
-          {
-            points: 4,
-            description: "Love the open classroom environment",
-            timestamp: 1584702013
-          }
-        ]
-      }
-    };
+    const className = this.$store.state.classes.classes[this.classID].name;
+    return { className };
   },
   computed: {
-    reviewsCorrectlyLoaded() {
-      return this.clas.id === this.reviews.id;
-    }
+    ...mapState("classes", ["review"])
   }
 };
 </script>
