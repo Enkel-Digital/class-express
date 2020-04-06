@@ -23,12 +23,11 @@ export default {
   },
   actions: {
     /**
-     * Initializing function for this module
+     * Initialization function for this module
      * @function init
      */
     async init({ dispatch }) {
-      dispatch("getPoints");
-      dispatch("getTopupOptions");
+      await dispatch("getPoints");
     },
     /**
      * Get list of available topup options from api
