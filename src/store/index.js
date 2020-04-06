@@ -35,7 +35,7 @@ export default new Vuex.Store({
     async init({ dispatch }) {
       console.log("Initializing vuex store and its modules...");
 
-      await dispatch("classes/points");
+      await dispatch("points/init");
       await dispatch("classes/init");
     },
     /**
@@ -44,7 +44,6 @@ export default new Vuex.Store({
      */
     async getUserDetails({ commit }) {
       commit("setter", ["user", mock.user]);
-      commit("setter", ["points", mock.points]);
     }
   },
   plugins: [createPersistedState()]
