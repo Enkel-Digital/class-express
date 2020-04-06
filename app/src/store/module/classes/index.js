@@ -119,6 +119,25 @@ export default {
     async cancelClass({ commit }, classID) {
       if (confirm("Cancel your reservation?"))
         commit("setUpcomingClass", { classID, action: false, timestamp: "" });
+    },
+    async getReview({ commit }, classID) {
+      // If the review is already in state, ignore it
+
+      // @todo Replace with API call
+      const review = mock.reviews[classID];
+
+      // @todo To remove once API is done, as API will return result without userReview
+      if (review) delete review.userReviews;
+
+      commit("setter", ["review", review]);
+    },
+    async getUserReview({ commit }, classID) {
+      // If the review is already in state, ignore it
+
+      // @todo Replace with API call
+      const review = mock.reviews[classID];
+
+      commit("setter", ["review", review]);
     }
   }
 };
