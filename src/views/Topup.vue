@@ -136,12 +136,10 @@ export default {
     BackBtn
   },
   beforeCreate() {
-    // @todo Remove this and initialize it elsewhere
-    this.$store.dispatch("points/init");
+    // Request vuex to update/populate list of topup options
+    this.$store.dispatch("points/getTopupOptions");
   },
-  computed: {
-    ...mapState("points", ["userPoints", "topupOptions"])
-  },
+  computed: mapState("points", ["userPoints", "topupOptions"]),
   methods: {
     logout,
     ...mapActions("points", ["buyPoints"])
