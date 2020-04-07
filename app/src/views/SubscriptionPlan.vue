@@ -138,7 +138,7 @@ export default {
   },
   computed: {
     periodEndDate() {
-      return this.$store.state.points.userPoints.period.end;
+      return this.$store.state.points.points.period.end;
     },
     ...mapState(["user", "points"]),
     ...mapState("subscription", [
