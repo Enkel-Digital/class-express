@@ -18,11 +18,11 @@
           <p class="overline">your points</p>
 
           <v-list-item-subtitle>
-            Period ends on: {{ userPoints.period.end }}
+            Period ends on: {{ points.period.end }}
           </v-list-item-subtitle>
 
           <v-list-item-title class="headline mb-1">
-            {{ userPoints.left }} / {{ userPoints.total }} points left
+            {{ points.left }} / {{ points.total }} points left
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -139,7 +139,7 @@ export default {
     // Request vuex to update/populate list of topup options
     this.$store.dispatch("points/getTopupOptions");
   },
-  computed: mapState("points", ["userPoints", "topupOptions"]),
+  computed: mapState("points", ["points", "topupOptions"]),
   methods: {
     logout,
     ...mapActions("points", ["buyPoints"])

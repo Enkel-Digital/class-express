@@ -6,11 +6,11 @@
           <p class="overline">your points</p>
 
           <v-list-item-title class="headline mb-1">
-            {{ userPoints.left }} / {{ userPoints.total }} points
+            {{ points.left }} / {{ points.total }} points
           </v-list-item-title>
 
           <v-list-item-subtitle>
-            Period ends on: {{ userPoints.period.end }}
+            Period ends on: {{ points.period.end }}
           </v-list-item-subtitle>
         </v-list-item-content>
 
@@ -75,7 +75,7 @@ export default {
     this.$store.dispatch("points/init");
   },
   computed: {
-    ...mapState("points", ["userPoints"])
+    ...mapState("points", ["points"])
     // ,...mapState("subscription", ["currentPlanID"])
   }
 };

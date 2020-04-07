@@ -4,7 +4,7 @@
  */
 export default function initialState() {
   return {
-    userPoints: {
+    points: {
       left: 0,
       total: 0,
       period: {

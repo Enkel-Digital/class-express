@@ -2,7 +2,7 @@
  * Export mock data from here for testing UI before backend is created
  */
 
-const userPoints = {
+const points = {
   left: 20,
   total: 45,
   period: {
@@ -47,4 +47,4 @@ const topupOptions = [
   }
 ];
 
-module.exports = { userPoints, topupOptions };
+module.exports = { points, topupOptions };

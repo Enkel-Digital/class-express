@@ -14,7 +14,7 @@ export default {
   mutations: {
     setter,
     topupPoints(state, pointsBought) {
-      state.userPoints.left += pointsBought;
+      state.points.left += pointsBought;
     }
   },
   getters: {
@@ -35,9 +35,9 @@ export default {
      */
     async getPoints({ commit }) {
       // @todo Replace with API call
-      const userPoints = mock.userPoints;
+      const points = mock.points;
 
-      commit("setter", ["userPoints", userPoints]);
+      commit("setter", ["points", points]);
     },
     /**
      * Get list of available topup options from api
