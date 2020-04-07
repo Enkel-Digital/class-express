@@ -1,5 +1,7 @@
 /**
  * Vuex module for the subscription plan view.
+ *
+ * @todo Remove this state from being cached by vuex-persistedstate
  */
 
 import initialState from "./initialState";
@@ -31,7 +33,7 @@ export default {
      */
     async init({ dispatch }) {
       dispatch("getPlans");
-      dispatch("getCurrentPlanID");
+      dispatch("getPlanIDs");
     },
     /**
      * Get list of available subscription plans from api
@@ -47,12 +49,13 @@ export default {
      * Get ID of current plan
      * @function getPlans
      */
-    async getCurrentPlanID({ commit }) {
+    async getPlanIDs({ commit }) {
       // @todo Replace with API call
-      const ID = 0;
+      const currentPlanID = 0;
+      const nextPlanID = 0;
 
-      commit("setter", ["currentPlanID", ID]);
-      commit("setter", ["nextPlanID", ID]);
+      commit("setter", ["currentPlanID", currentPlanID]);
+      commit("setter", ["nextPlanID", nextPlanID]);
     },
     /**
      * Update the user's plan
