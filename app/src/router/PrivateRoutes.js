@@ -9,6 +9,7 @@ import Explore from "../views/Explore.vue";
 import Favourites from "../views/Favourites.vue";
 import Upcoming from "../views/Upcoming.vue";
 import ClassDetails from "../views/ClassDetails.vue";
+import schedule from "../views/Schedule.vue";
 
 /**
  * @notice Some of these less frequented routes uses lazily loaded components
@@ -47,6 +48,13 @@ const routes = [
     path: "/reviews/:classID",
     name: "reviews",
     component: () => import("@/views/Reviews.vue"),
+    meta: { Auth_requirements: AuthType.private },
+    props: true
+  },
+  {
+    path: "/schedule/:classID",
+    name: "schedule",
+    component: schedule,
     meta: { Auth_requirements: AuthType.private },
     props: true
   },

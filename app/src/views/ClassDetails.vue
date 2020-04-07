@@ -77,12 +77,8 @@
 
     <v-divider></v-divider>
 
-    <!-- @todo Add the schdule button to choose / pick a time -->
-
-    <v-divider></v-divider>
-
     <!-- @todo Change this into a bottom toolbar and make it sticky -->
-    <v-container>
+    <v-container v-if="classTimeSelected">
       <v-row>
         <v-col>
           <h2 style="color: grey;">{{ clas.points }} points</h2>
@@ -97,6 +93,16 @@
           </v-btn>
         </v-col>
       </v-row>
+    </v-container>
+
+    <v-container v-else>
+      <v-btn
+        :to="{ name: 'schedule', params: { classID: clas.id } }"
+        color="primary"
+        block
+      >
+        view schedule
+      </v-btn>
     </v-container>
 
     <!-- Perhaps have a similiar classes/partners thing? -->
@@ -128,7 +134,7 @@ export default {
   data() {
     // Classes is static via the data function as we do not want its reactivity
     const clas = this.$store.state.classes.classes[this.classID];
-    return { clas };
+    return { clas, classTimeSelected: true };
   },
   computed: {
     favouritedClass() {
