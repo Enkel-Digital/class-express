@@ -64,7 +64,7 @@
           <p class="overline">Class Desciption</p>
 
           <!-- Change to a more readable font -->
-          <p>{{ clas.description }}</p>
+          <span v-html="clas.description"></span>
         </v-list-item-content>
       </v-list-item>
     </v-responsive>

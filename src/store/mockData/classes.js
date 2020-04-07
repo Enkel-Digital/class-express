@@ -5,6 +5,8 @@ const classes = {
     points: 5,
     time: Date.now(),
     length: 60, // Store classLength in minutes can show otherwise in hours as needed
+    description:
+      "Basic guitar lessons to help you get started with this wonderful musical instrument! This class covers all the basics from score reading to strumming techniques.",
     provider: {
       name: "Guitar Studio 1", // Name of the provider
       id: 123
@@ -23,6 +25,8 @@ const classes = {
     points: 6,
     time: Date.now() + 1000000,
     length: 150, // Store classLength in minutes can show otherwise in hours as needed
+    description:
+      "Like cooking but always feel like you are missing a magical ingredient? Well join our class to learn more and get ready to be amazed.",
     provider: {
       name: "Tampines CC", // Name of the providerx
       id: 456
@@ -42,7 +46,7 @@ const classes = {
     time: Date.now() + 1000000,
     length: 60, // Store classLength in minutes can show otherwise in hours as needed
     description:
-      "Advance guitar lessons taught be the legendary Ichika Mo. Will be going through advanced music scores and includes 1 on 1 trainings for the students, alongside a chance to practice in front of a live audience",
+      "Advance guitar lessons taught be the legendary Ichika Mo.<br />Will be going through advanced music scores and includes 1 on 1 trainings for the students, alongside a chance to practice in front of a live audience",
     provider: {
       name: "Guitar Studio 2", // Name of the provider
       id: 123,
@@ -134,6 +138,18 @@ const reviews = {
         timestamp: 1584702013
       }
     ]
+  }
+};
+
+const schedule = {
+  0: {
+    classID: 0
+  },
+  1: {
+    classID: 1
+  },
+  2: {
+    classID: 2
   }
 };
 
