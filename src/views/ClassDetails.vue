@@ -69,6 +69,16 @@
       </v-list-item>
     </v-responsive>
 
+    <h2 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ma-2 mb-0">
+      Getting here
+    </h2>
+    <MapImage :classID="clas.id" />
+    <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
+
+    <v-divider></v-divider>
+
+    <!-- @todo Add the schdule button to choose / pick a time -->
+
     <v-divider></v-divider>
 
     <!-- @todo Change this into a bottom toolbar and make it sticky -->
@@ -89,10 +99,6 @@
       </v-row>
     </v-container>
 
-    <!-- Embedded Maps  -->
-
-    <!-- put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
-
     <!-- Perhaps have a similiar classes/partners thing? -->
   </v-content>
 </template>
@@ -106,11 +112,13 @@
  */
 import { mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
+import MapImage from "@/components/MapImage";
 
 export default {
   name: "ClassDetails",
   components: {
-    BackBtn
+    BackBtn,
+    MapImage
   },
   created() {
     // Call action to fetch review of this class
