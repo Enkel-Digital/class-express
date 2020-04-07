@@ -15,9 +15,7 @@
         outlined
         :ripple="false"
       >
-        <!-- @todo Make this redirect to maps on click -->
-        <!-- @todo Make this into an external component, that also handles the confirm popup and switch to maps -->
-        <v-img id="class-image" :src="clas.locationImage" />
+        <MapImage :src="clas.locationImage" :classID="clas.id" />
 
         <v-responsive
           @click="
@@ -79,9 +77,13 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import MapImage from "@/components/MapImage";
 
 export default {
   name: "upcoming",
+  components: {
+    MapImage
+  },
   computed: {
     ...mapGetters("classes", ["upcomingClasses"])
   },
