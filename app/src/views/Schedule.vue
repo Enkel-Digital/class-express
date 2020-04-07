@@ -1,33 +1,35 @@
 <template>
   <v-content class="ClassDetails">
-    <!-- <v-app-bar app color="white" flat fixed> -->
-    <v-app-bar app color="orange" flat fixed>
+    <v-app-bar app color="white" flat fixed>
       <BackBtn />
 
       <v-spacer></v-spacer>
 
-      <!-- @todo Implement PWA sharing and web share target code  -->
+      <!-- <h3 class="headline">{{ "clas.name" }}</h3> -->
+      <h3>{{ "clas.name" }}</h3>
+
+      <v-spacer></v-spacer>
+
+      <!-- @todo Change this to show how many points you are left. Use a points icon component -->
       <v-btn icon>
         <v-icon>mdi-share</v-icon>
       </v-btn>
     </v-app-bar>
 
-    <v-tabs
-      v-model="tab"
-      background-color="orange"
-      dark
-      :icons-and-text="icons"
-    >
-      <v-tabs-slider></v-tabs-slider>
+    <v-tabs v-model="tab" background-color="white" :icons-and-text="icons">
+      <v-tabs-slider color="black"></v-tabs-slider>
 
       <v-tab v-for="i in tabs" :key="i" :href="`#tab-${i}`">
         Tab {{ i }}
-        <v-icon v-if="icons">mdi-phone</v-icon>
       </v-tab>
 
       <v-tab-item v-for="i in tabs" :key="i" :value="'tab-' + i">
         <v-card flat tile>
-          <v-card-text>{{ text }}</v-card-text>
+          <v-card-text
+            >{{ i }}
+            <br />
+            {{ text }}
+          </v-card-text>
         </v-card>
       </v-tab-item>
     </v-tabs>
