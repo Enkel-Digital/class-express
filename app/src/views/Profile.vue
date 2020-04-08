@@ -48,7 +48,7 @@
         </v-list-item>
       </v-card>
 
-      <v-card :to="{ name: 'past-classes' }" ripple tile>
+      <v-card :to="{ name: 'PastClasses' }" ripple tile>
         <v-list-item>
           Past classes
         </v-list-item>

@@ -52,6 +52,28 @@ export default {
       return favouriteClasses;
     },
     /**
+     * @todo Sort by time class was attended
+     */
+    pastClasses(state) {
+      // If pastClassesID is not loaded before getter is ran, skip getter.
+      if (!state.pastClassesID) return [];
+
+      const pastClasses = {};
+
+      for (const classID of Object.keys(state.pastClassesID))
+        pastClasses[classID] = state.classes[classID];
+
+      return Object.values(pastClasses).map(clas => {
+        clas.locationImage = createGMapsImg(clas.location.coordinates);
+
+        /** @notice Explicit data setting needed to prevent data caching */
+        if (state.favouriteClassesID[clas.id]) clas.favourite = true;
+        else clas.favourite = false;
+
+        return clas;
+      });
+    },
+    /**
      * Generate an array of upcoming classes Object(s) from an array of IDs of upcoming classes
      * @todo Sort the classes by time of class.
      */
@@ -96,6 +118,18 @@ export default {
       const upcomingClassesID = mock.upcomingClassesID;
 
       commit("setter", ["upcomingClassesID", upcomingClassesID]);
+    },
+    /**
+     * Get list of pastClassesID from API
+     * @function getPastClassesID
+     */
+    async getPastClassesID({ dispatch, commit }) {
+      // @todo Replace with API call
+      const pastClassesID = mock.pastClassesID;
+
+      commit("setter", ["pastClassesID", pastClassesID]);
+
+      dispatch("getClass", Object.keys(pastClassesID));
     },
     /**
      * Get list of favouriteClasses from API
