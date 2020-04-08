@@ -2,13 +2,21 @@
  * Export mock data from here for testing UI before backend is created
  */
 
+const moment = require("moment");
+
 const points = {
   left: 20,
   total: 45,
   period: {
     timezone: "",
-    start: "",
-    end: "20 / 4 / 2020" // To change to some other datetime format
+    // Timestamps
+    // Each period is 30 days long
+    start: moment()
+      .subtract(20, "days")
+      .unix(), // 20 days before
+    end: moment()
+      .add(10, "days")
+      .unix() // 10 days from now
   }
 };
 

@@ -10,7 +10,7 @@
           </v-list-item-title>
 
           <v-list-item-subtitle>
-            Period ends on: {{ points.period.end }}
+            Period ends on: {{ moment.unix(points.period.end).format("L") }}
           </v-list-item-subtitle>
         </v-list-item-content>
 
