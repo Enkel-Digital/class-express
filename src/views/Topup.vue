@@ -18,7 +18,7 @@
           <p class="overline">your points</p>
 
           <v-list-item-subtitle>
-            Period ends on: {{ points.period.end }}
+            Period ends on: {{ moment.unix(points.period.end).format("L") }}
           </v-list-item-subtitle>
 
           <v-list-item-title class="headline mb-1">
