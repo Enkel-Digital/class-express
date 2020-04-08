@@ -162,10 +162,15 @@ const favouriteClassesID = {
   2: true
 };
 
+const pastClassesID = {
+  2: true
+};
+
 module.exports = {
   classes,
   reviews,
   schedule,
   upcomingClassesID,
-  favouriteClassesID
+  favouriteClassesID,
+  pastClassesID
 };
