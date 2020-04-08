@@ -87,6 +87,12 @@ const routes = [
     name: "settings",
     component: () => import("@/views/Settings.vue"),
     meta: { Auth_requirements: AuthType.private }
+  },
+  {
+    path: "/past/classes",
+    name: "PastClasses",
+    component: () => import("@/views/PastClasses.vue"),
+    meta: { Auth_requirements: AuthType.private }
   }
 ];
 
