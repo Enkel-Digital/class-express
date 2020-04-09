@@ -1,8 +1,8 @@
 /**
- * Express Router for user related routes
- * Mounted on /user
+ * Express Router for class related routes
+ * Mounted on /class
  * @author JJ
- * @module User routes
+ * @module Class routes
  */
 
 const express = require("express");
@@ -10,14 +10,14 @@ const db = require("../utils/db");
 const router = express.Router();
 
 /**
- * Get user details object
- * @name GET /user/:userID
+ * Get class object
+ * @name GET /class/:classID
  * @function
- * @returns {object} User object
+ * @returns {object} Class object
  */
-router.get("/:userID", async (req, res) => {
+router.get("/:classID", async (req, res) => {
   try {
-    const snapshot = await db.collection("users").get();
+    const snapshot = await db.collection("class").get();
 
     // snapshot.forEach(doc => {
     //   console.log(doc.id, "=>", doc.data());
@@ -30,12 +30,12 @@ router.get("/:userID", async (req, res) => {
 });
 
 /**
- * Update user details object
- * @name PUT /user/:userID
+ * Update class object
+ * @name PUT /class/:classID
  * @function
  * @returns {object} success indicator
  */
-router.get("/", (req, res) => {
+router.get("/:classID", (req, res) => {
   res.json({ success: true });
 });
 
