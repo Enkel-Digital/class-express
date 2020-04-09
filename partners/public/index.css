@@ -1,0 +1,10 @@
+/* Configuring Body to make webpage more native like */
+body {
+  /* Disables pull-to-refresh but allows overscroll glow effects. */
+  overscroll-behavior: none !important;
+
+  /* Prevent users from selecting words in the app for a more native feel */
+  user-select: none;
+
+  margin: 0;
+}
