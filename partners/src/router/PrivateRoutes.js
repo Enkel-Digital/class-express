@@ -18,27 +18,27 @@ const routes = [
     path: "/home",
     name: "home",
     component: Home,
-    meta: { Auth_requirements: AuthType.private },
+    meta: { Auth_requirements: AuthType.private }
   },
   {
     path: "/schedule/:classID",
     name: "schedule",
     component: schedule,
     meta: { Auth_requirements: AuthType.private },
-    props: true,
+    props: true
   },
   {
     path: "/profile",
     name: "profile",
     component: Profile,
-    meta: { Auth_requirements: AuthType.private },
+    meta: { Auth_requirements: AuthType.private }
   },
   {
     path: "/settings",
     name: "settings",
     component: () => import("@/views/Settings.vue"),
-    meta: { Auth_requirements: AuthType.private },
-  },
+    meta: { Auth_requirements: AuthType.private }
+  }
 ];
 
 export default routes;

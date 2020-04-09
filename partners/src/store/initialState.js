@@ -9,7 +9,7 @@ export default function initialState() {
       name: undefined,
       fname: undefined,
       lname: undefined,
-      imageSrc: undefined,
+      imageSrc: undefined
     }
   };
 }

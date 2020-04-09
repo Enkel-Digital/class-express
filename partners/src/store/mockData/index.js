@@ -21,7 +21,6 @@ module.exports = {
   paymentDetails,
   ...require("./points"),
   ...require("./classes"),
-  ...require("./exploreView"),
   ...require("./subscriptionPlan"),
   ...require("./news")
 };

@@ -2,20 +2,14 @@
   <v-app id="app">
     <!-- Router view for the main view -->
     <router-view />
-
-    <BottomNavBar v-if="showNavBar" />
   </v-app>
 </template>
 
 <script>
 import AuthType from "@/router/AuthType";
-import BottomNavBar from "@/components/BottomNavBar";
 
 export default {
   name: "App",
-  components: {
-    BottomNavBar
-  },
   computed: {
     showNavBar() {
       return this.$route.meta.Auth_requirements !== AuthType.public_only;
