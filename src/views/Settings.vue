@@ -44,20 +44,32 @@
         Notifications:
       </v-subheader>
 
-      <div v-ripple @click="mobileNotification = !mobileNotification">
+      <div
+        v-ripple
+        @click="
+          settings.notifications.mobileNotification = !settings.notifications
+            .mobileNotification
+        "
+      >
         <v-checkbox
-          v-model="mobileNotification"
+          v-model="settings.notifications.mobileNotification"
           readonly
-          :label="'Mobile notifications'"
+          label="Mobile notifications"
           class="ma-1 pa-0"
         ></v-checkbox>
       </div>
 
-      <div v-ripple @click="emailNotification = !emailNotification">
+      <div
+        v-ripple
+        @click="
+          settings.notifications.emailNotification = !settings.notifications
+            .emailNotification
+        "
+      >
         <v-checkbox
-          v-model="emailNotification"
+          v-model="settings.notifications.emailNotification"
           readonly
-          :label="'Email notifications'"
+          label="Email notifications"
           class="ma-1 pa-0"
         ></v-checkbox>
       </div>
@@ -148,6 +160,8 @@
 
 import logout from "@/controllers/logout";
 import BackBtn from "@/components/BackBtn";
+import { mapState } from "vuex";
+import cloneDeep from "lodash.clonedeep";
 
 export default {
   name: "settings",
@@ -155,13 +169,24 @@ export default {
     BackBtn
   },
   data() {
+    // @notice Can use JSONify too since values in state are all JSONifyable without any complex structures.
+    const settings = cloneDeep(this.$store.state.settings.settings);
+
     return {
-      mobileNotification: true,
-      emailNotification: true
+      settings
     };
   },
+  watch: {
+    settings: {
+      // Deep watch to watch the nested properties too
+      deep: true,
+      handler() {
+        // Update the settings by passing in the whole settings object
+        this.$store.dispatch("settings/updateSettings", this.settings);
+      }
+    }
+  },
   methods: {
-    save() {},
     logout
   }
 };

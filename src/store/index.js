@@ -9,6 +9,7 @@ import searchModule from "./module/search";
 import pointsModule from "./module/points";
 import newsModule from "./module/news";
 import subscriptionPlanModule from "./module/subscriptionPlan";
+import settingsModule from "./module/settings";
 
 // @todo Remove these mock data
 import mock from "./mockData";
@@ -22,7 +23,8 @@ export default new Vuex.Store({
     search: searchModule,
     points: pointsModule, // User points and not all points related
     news: newsModule,
-    subscription: subscriptionPlanModule
+    subscription: subscriptionPlanModule,
+    settings: settingsModule
   },
   mutations: {
     setter
@@ -36,6 +38,7 @@ export default new Vuex.Store({
       console.log("Initializing vuex store and its modules...");
 
       await dispatch("points/init");
+      await dispatch("settings/init");
       await dispatch("classes/init");
     },
     /**
