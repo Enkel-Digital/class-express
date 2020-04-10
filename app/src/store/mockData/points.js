@@ -5,7 +5,7 @@
 const moment = require("moment");
 
 const points = {
-  left: 20,
+  left: 8,
   total: 45,
   period: {
     timezone: "",

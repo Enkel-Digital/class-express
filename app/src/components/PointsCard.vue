@@ -70,10 +70,6 @@ import { mapState } from "vuex";
 
 export default {
   name: "profile",
-  beforeCreate() {
-    // @todo Remove this and initialize it elsewhere
-    this.$store.dispatch("points/init");
-  },
   computed: {
     ...mapState("points", ["points"])
     // ,...mapState("subscription", ["currentPlanID"])
