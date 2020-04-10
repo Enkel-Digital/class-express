@@ -5,8 +5,7 @@
 
       <v-spacer></v-spacer>
 
-      <!-- <h3 class="headline">{{ "clas.name" }}</h3> -->
-      <h3>{{ "clas.name" }}</h3>
+      <h3>{{ className }}</h3>
 
       <v-spacer></v-spacer>
 
@@ -16,7 +15,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-tabs v-model="tab" background-color="white" :icons-and-text="icons">
+    <v-tabs v-model="dateTab" background-color="white" :icons-and-text="icons">
       <v-tabs-slider color="black"></v-tabs-slider>
 
       <v-tab v-for="i in tabs" :key="i" :href="`#tab-${i}`">
@@ -28,7 +27,12 @@
           <v-card-text
             >{{ i }}
             <br />
-            {{ text }}
+            {{
+              moment
+                .utc()
+                .startOf("day")
+                .format("L")
+            }}
           </v-card-text>
         </v-card>
       </v-tab-item>
@@ -47,7 +51,7 @@ export default {
   },
   created() {
     // Call action to fetch schedule of this class
-    this.$store.dispatch("classes/getSchedule", this.classID);
+    this.$store.dispatch("classes/getSchedule", { classID: this.classID });
   },
   props: ["classID"],
   data() {
@@ -56,14 +60,24 @@ export default {
     // return { clas };
 
     return {
-      tab: null,
+      dateTab: null,
       text:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ut labore et dolore.",
       icons: false,
       tabs: 3
     };
   },
-  computed: {},
+  computed: {
+    className() {
+      return this.$store.state.classes.classes[this.classID].name;
+    },
+    schedule() {
+      return this.$store.state.classes.schedule[this.classID];
+    }
+  },
+  watch() {
+    // Load schedule as user scrolls/swipes to view more
+  },
   methods: {
     ...mapMutations("classes", ["selectSchedule"])
   }
