@@ -150,13 +150,54 @@ export default {
       // If error from updating server, then call mutation again to toggleBack
       // commit("toggleFavourite", classID);
     },
-    async reserveClass({ state, commit }, classID) {
-      if (confirm(`Reserve class for ${state.classes[classID].points} points?`))
+    async reserveClass({ state, rootState, commit }, classID) {
+      const { points: classPoints } = state.classes[classID];
+      const userPoints = rootState.points.points;
+
+      // Check if user have enough points for the class
+      if (userPoints.left < classPoints) {
+        // redirect to topup view
+        if (confirm("Not enough points, topup?"))
+          router.push({ name: "topup" });
+      } else if (confirm(`Reserve class for ${classPoints} points?`)) {
+        // @todo Show loading UI while making call to API
+
+        // @todo Add API call to set upcoming class
+        // @notice API logic should deduct points too, but locally update it without checking API
+
+        /** @notice Pessimistic UI, commit changes after API call is successful */
         commit("setUpcomingClass", { classID, action: true, timestamp: "" });
+
+        // Deduct points
+        commit("points/deductPoints", classPoints, { root: true });
+
+        // @todo Handle API failures
+
+        // @todo Remove loading UI after API call is done
+      }
     },
-    async cancelClass({ commit }, classID) {
-      if (confirm("Cancel your reservation?"))
+    async cancelClass({ state, rootState, commit }, classID) {
+      const { points: classPoints } = state.classes[classID];
+
+      // @todo User obviously cannot cancel when the class is in progress or after it ended
+      // @todo Add time check to ensure user knows that we will charge him extra if cancelling late
+
+      if (confirm("Cancel your reservation?")) {
+        // @todo Show loading UI while making call to API
+
+        // @todo Add API call to cancel upcoming class
+        // @notice API logic should add back points too, but locally update it without checking API
+
+        /** @notice Pessimistic UI, commit changes after API call is successful */
         commit("setUpcomingClass", { classID, action: false, timestamp: "" });
+
+        // Refund back the points
+        commit("points/refundPoints", classPoints, { root: true });
+
+        // @todo Handle API failures
+
+        // @todo Remove loading UI after API call is done
+      }
     },
     async getReview({ commit }, classID) {
       // If the review is already in state, ignore it
