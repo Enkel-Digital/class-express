@@ -15,6 +15,24 @@ export default {
     setter,
     topupPoints(state, pointsBought) {
       state.points.left += pointsBought;
+    },
+    /**
+     * Function to deduct points needed to book a class
+     * @function deductPoints
+     * @param {*} state
+     * @param {number} classPoints Points needed for the class
+     */
+    deductPoints(state, classPoints) {
+      state.points.left -= classPoints;
+    },
+    /**
+     * Function to refund back points from a class booking
+     * @function refundPoints
+     * @param {*} state
+     * @param {number} classPoints Points needed for the class
+     */
+    refundPoints(state, classPoints) {
+      state.points.left += classPoints;
     }
   },
   getters: {
