@@ -203,10 +203,11 @@ export default {
       // If the review is already in state, ignore it
 
       // @todo Replace with API call
-      const review = mock.reviews[classID];
+      // @notice Using shallow copy to prevent deleting value from mock data
+      const review = { ...mock.reviews[classID] };
 
       // @todo To remove once API is done, as API will return result without userReview
-      if (review) delete review.userReviews;
+      delete review.userReviews;
 
       commit("setter", ["review", review]);
     },
