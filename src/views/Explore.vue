@@ -15,9 +15,9 @@
       -->
       <v-card
         outlined
-        :to="'/classdetails'"
         v-for="(searchResult, i) in searchResults"
         :key="i"
+        :to="{ name: 'ClassDetails', params: { classID: searchResult.id } }"
       >
         <div class="d-flex flex-no-wrap justify-space-between">
           <div>
@@ -32,7 +32,8 @@
           </div>
 
           <v-avatar class="ma-3" size="125" tile>
-            <v-img :src="searchResult.pictureSrc"></v-img>
+            <!-- Use the first image as there can be more than 1 image for classes -->
+            <v-img :src="searchResult.pictureSources[0]" />
           </v-avatar>
         </div>
       </v-card>

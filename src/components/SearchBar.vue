@@ -1,10 +1,9 @@
 <template>
   <v-content class="search">
     <v-autocomplete
-      v-model="searchText"
       :loading="loading"
       :items="items"
-      :search-input.sync="suggest"
+      :search-input.sync="searchText"
       cache-items
       class="mx-4"
       hide-no-data
@@ -17,7 +16,7 @@
       flat
       open-on-clear
       @keypress.enter="search"
-      @collapse="clearSearchResults"
+      @collapse="collapseSuggestions"
       clearable
       color="grey"
       background-color="grey"
@@ -32,9 +31,9 @@ export default {
     return {
       // @todo Move searchText to watch or computed, so when this is not empty, show search results
       searchText: "",
+      collapseSuggestions: false,
       loading: false,
       items: [],
-      suggest: null,
       select: null,
       classNames: [
         "cooking",
@@ -49,34 +48,45 @@ export default {
     };
   },
   watch: {
-    suggest(searchText) {
-      this.getSuggestions(searchText);
-    }
-  },
-  methods: {
-    search() {
-      console.log("searching ... ...");
+    searchText(searchText) {
+      // Allow suggestions again
+      this.collapseSuggestions = false;
 
-      // Collapse suggestions dropdown
-
-      // Call the store to get search results into store for explore page to display
-      this.$store.dispatch("search/searchClass");
-    },
-    clearSearchResults() {},
-    /**
-     * @function getSuggestions
-     * To Simulate ajax query
-     */
-    getSuggestions(search) {
       this.loading = true;
       setTimeout(() => {
         this.items = this.classNames.filter(
           e =>
-            (e || "").toLowerCase().indexOf((search || "").toLowerCase()) > -1
+            (e || "").toLowerCase().indexOf((searchText || "").toLowerCase()) >
+            -1
         );
         this.loading = false;
-      }, 1000);
+      }, 500);
     }
+  },
+  methods: {
+    search() {
+      console.log("searching ...");
+
+      // Collapse suggestions dropdown
+      this.collapseSuggestions = true;
+
+      // Call the store to get search results into store for explore page to display
+      this.$store.dispatch("search/searchClass");
+    }
+    /**
+     * @function getSuggestions
+     * To Simulate ajax query
+     */
+    // getSuggestions(search) {
+    //   this.loading = true;
+    //   setTimeout(() => {
+    //     this.items = this.classNames.filter(
+    //       e =>
+    //         (e || "").toLowerCase().indexOf((search || "").toLowerCase()) > -1
+    //     );
+    //     this.loading = false;
+    //   }, 500);
+    // }
   }
 };
 </script>
