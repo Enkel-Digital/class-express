@@ -7,6 +7,13 @@
 
     <br />
 
+    <v-rating
+      v-model="ratings"
+      background-color="orange lighten-3"
+      color="orange"
+      medium
+    />
+
     <v-textarea
       solo
       v-autofocus
@@ -19,9 +26,9 @@
     <v-btn
       @click="
         saveNewReview({
-          classID: classID,
-          ratings: 4,
-          description: description
+          classID,
+          ratings,
+          description
         })
       "
       color="primary"
@@ -44,6 +51,7 @@ export default {
     const className = this.$store.state.classes.classes[this.classID].name;
     return {
       className,
+      ratings: undefined,
       description: ""
     };
   },
