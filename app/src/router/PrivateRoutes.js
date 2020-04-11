@@ -52,6 +52,13 @@ const routes = [
     props: true
   },
   {
+    path: "/new-review/:classID",
+    name: "new-review",
+    component: () => import("@/views/NewReview.vue"),
+    meta: { Auth_requirements: AuthType.private },
+    props: true
+  },
+  {
     path: "/schedule/:classID",
     name: "schedule",
     component: schedule,

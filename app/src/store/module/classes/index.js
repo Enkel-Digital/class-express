@@ -220,6 +220,10 @@ export default {
       const review = mock.reviews[classID];
 
       commit("setter", ["review", review]);
+    },
+    async saveNewReview({ commit }, { classID, ratings, description }) {
+      // @todo Add API call to send review to server
+      console.log("hello in save", classID, ratings, description);
     }
   }
 };
