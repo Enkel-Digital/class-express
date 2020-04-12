@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  core:
+    restart: always
+    hostname: core
+    build:
+      context: ./core
+      dockerfile: .Dockerfile
+    # By passing in image along with build object, compose will build to "image" name before using it
+    image: ce-core
+    env_file:
+      - ./core/.env
+    ports:
+      - "2090:2090"
+
+  # partners:
+  #   restart: always
+  #   hostname: partners
+  #   build:
+  #     context: ./partners
+  #     dockerfile: .Dockerfile
+  #   # By passing in image along with build object, compose will build to "image" name before using it
+  #   image: ce-partners
+  #   env_file:
+  #     - ./partners/.env
+  #   ports:
+  #     - "2091:2090"
