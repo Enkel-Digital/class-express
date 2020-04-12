@@ -9,6 +9,9 @@ const express = require("express");
 const db = require("../utils/db");
 const router = express.Router();
 
+const createLogger = require("@lionellbriones/logging").default;
+const logger = createLogger("routes:users");
+
 /**
  * Get user details object
  * @name GET /user/:userID
@@ -17,17 +20,20 @@ const router = express.Router();
  */
 router.get("/:userID", async (req, res) => {
   try {
-    const snapshot = await db.collection("users").get();
+    const { userID } = req.params;
 
-    console.log("snapshot", snapshot);
+    const userDoc = await db
+      .collection("users")
+      .doc(userID)
+      .get();
 
-    // snapshot.forEach(doc => {
-    //   console.log(doc.id, "=>", doc.data());
-    // });
+    const user = userDoc.data();
+    if (!user) throw new Error("User does not exist");
 
-    res.json({ success: true, snapshot });
+    res.json({ success: true, user });
   } catch (error) {
-    console.log("Error getting documents", error);
+    logger.error(error);
+    res.json({ success: false, error });
   }
 });
 

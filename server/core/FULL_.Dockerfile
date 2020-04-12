@@ -1,7 +1,6 @@
 # To build and run the image from this Dockerfile, where x is the name of the worker node's JS file name
 # docker build -t ce-core -f ./.Dockerfile .
 # docker run -d --rm --name ce-core ce-core
-# Alternativly, use docker compose in root to run this service
 # 
 # Why the server needs to be built first before the image is built:
 #   - For performance and image size reasons, the code is built locally first before being sent to the daemon for building the image.
@@ -21,7 +20,19 @@ WORKDIR /app
 # Copy both package.json and package-lock.json in for installing dependencies with "npm ci"
 COPY package*.json ./
 
+# Increase the max memory limit of the node js process to 2GB
+ENV NODE_OPTIONS --max-old-space-size=2048
+
+# # Install items and build tools needed to install the npm packages
+# RUN apk add --no-cache --virtual .gyp \
+#         python \
+#         make \
+#         g++ \
+#         git
+
 # Install all production Node JS dependencies using the lock file for a deterministic dependency list
+# Delete .gyp files after installation
+# RUN npm ci --only=production && apk del .gyp
 RUN npm ci --only=production
 
 # Only copy the build file into current WORKDIR
