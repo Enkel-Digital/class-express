@@ -7,3 +7,4 @@
  * Example: "export * from "./sendEmailFunction";"
  */
 
+export * from "./newSignUp";
