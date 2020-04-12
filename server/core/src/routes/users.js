@@ -19,13 +19,15 @@ router.get("/:userID", async (req, res) => {
   try {
     const snapshot = await db.collection("users").get();
 
+    console.log("snapshot", snapshot);
+
     // snapshot.forEach(doc => {
     //   console.log(doc.id, "=>", doc.data());
     // });
 
     res.json({ success: true, snapshot });
   } catch (error) {
-    console.log("Error getting documents", err);
+    console.log("Error getting documents", error);
   }
 });
 

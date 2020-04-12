@@ -13,7 +13,7 @@ const nodeExternals = require("webpack-node-externals");
 module.exports = {
   mode: "production",
   target: "node",
-  entry: "./index.js",
+  entry: "./src/index.js",
   module: {
     rules: [{ test: /\.md$/, loader: "ignore-loader" }]
   },

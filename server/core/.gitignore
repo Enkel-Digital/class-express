@@ -73,3 +73,6 @@ build/
 
 # Allow tracking .env and .json files in sample folder
 !sample/**
+
+# GCP Service Account for firestore
+serviceAccountKey.json
