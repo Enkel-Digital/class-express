@@ -2,10 +2,13 @@
   <v-content class="reviews">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
-      <v-toolbar-title>{{ className }}</v-toolbar-title>
+      <v-toolbar-title>{{ clas.name }}</v-toolbar-title>
     </v-app-bar>
 
     <br />
+    <v-avatar size="100">
+      <v-img id="class-image" :src="clas.pictureSources[0]" />
+    </v-avatar>
 
     <v-rating
       v-model="ratings"
@@ -48,9 +51,10 @@ export default {
   },
   props: ["classID"],
   data() {
-    const className = this.$store.state.classes.classes[this.classID].name;
+    const clas = this.$store.state.classes.classes[this.classID];
+
     return {
-      className,
+      clas,
       ratings: undefined,
       description: ""
     };
