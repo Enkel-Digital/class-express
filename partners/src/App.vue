@@ -1,5 +1,6 @@
 <template>
   <v-app id="app">
+    <SideNavBar v-if="sideNavBar" />
     <!-- Router view for the main view -->
     <router-view />
   </v-app>
@@ -7,11 +8,14 @@
 
 <script>
 import AuthType from "@/router/AuthType";
-
+import SideNavBar from "@/components/SideNavBar";
 export default {
   name: "App",
+  components: {
+    SideNavBar
+  },
   computed: {
-    showNavBar() {
+    sideNavBar() {
       return this.$route.meta.Auth_requirements !== AuthType.public_only;
     }
   }

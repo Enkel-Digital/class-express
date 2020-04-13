@@ -5,6 +5,7 @@ import AuthType from "./AuthType";
 import Home from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
 import schedule from "../views/Schedule.vue";
+import PartnerHome from "../views/PartnerHome.vue";
 
 /**
  * @notice Some of these less frequented routes uses lazily loaded components
@@ -18,6 +19,12 @@ const routes = [
     path: "/home",
     name: "home",
     component: Home,
+    meta: { Auth_requirements: AuthType.private }
+  },
+  {
+    path: "/partnerhome",
+    name: "partnerHome",
+    component: PartnerHome,
     meta: { Auth_requirements: AuthType.private }
   },
   {
