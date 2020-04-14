@@ -1,10 +1,11 @@
 <template>
   <v-content class="upcoming">
-    <v-app-bar app color="orange lighten-1" flat dark>
-      <v-toolbar-title>Upcoming Classes</v-toolbar-title>
+    <!-- <v-app-bar app color="orange lighten-1" flat dark> -->
+    <v-app-bar app flat color="white">
+      <v-toolbar-title style="font-weight: bold;">
+        Upcoming Classes
+      </v-toolbar-title>
     </v-app-bar>
-
-    <br />
 
     <v-responsive v-if="upcomingClasses.length">
       <v-card
