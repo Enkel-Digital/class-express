@@ -221,7 +221,10 @@ export default {
 
       commit("setter", ["review", review]);
     },
-    async saveNewReview({ commit }, { classID, ratings, description }) {
+    async saveNewReview(
+      { commit },
+      { classID, ratings = 0, description = "" }
+    ) {
       // @todo Add API call to send review to server
       console.log("hello in save", classID, ratings, description);
     }
