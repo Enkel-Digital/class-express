@@ -1,108 +1,79 @@
 <template>
-  <v-content class="home">
-    <v-responsive>
-      <!-- The carousel of images / latest news -->
-      <!-- @todo https://vuetifyjs.com/en/components/aspect-ratios/ -->
-      <v-carousel
-        cycle
-        continuous
-        height="400"
-        hide-delimiter-background
-        :show-arrows="false"
-      >
-        <v-carousel-item
-          :ripple="false"
-          v-for="(item, i) in newsBanners"
-          :key="i"
-          :src="item.src"
-          @click="viewBanner(item.link)"
-          @click.prevent="true"
-          @submit.prevent="true"
-          contain
-        >
-          <h1 style="position: absolute; bottom: 1em;">
-            {{ item.text }}
-          </h1>
-        </v-carousel-item>
-      </v-carousel>
-    </v-responsive>
-
-    <v-divider></v-divider>
-
-    <v-sheet
-      id="recommended-classes-sheet"
-      class="mx-auto"
-      elevation="8"
-      max-width="800"
+  <v-content class="ClassDetails">
+    <div
+      class="v-responsive mx-auto overflow-visible"
+      style="max-width:1024px;"
     >
-      Recommended classes
-      <v-slide-group class="pa-4">
-        <v-slide-item
-          v-for="n in 5"
-          :key="n"
-          v-slot:default="{ active, toggle }"
-        >
-          <v-card
-            :color="'grey lighten-1'"
-            class="ma-4"
-            height="100"
-            width="100"
-            @click="toggle"
-          >
-          </v-card>
-        </v-slide-item>
-      </v-slide-group>
-    </v-sheet>
+      <div class="container">
+        <v-toolbar>
+          <img src="@/assets/logo.png" style="height: inherit;" />
+          <v-toolbar-title>Your Dashboard</v-toolbar-title>
+        </v-toolbar>
 
-    <br />
+        <div class="row">
+          <BookingsCard />
 
-    <v-sheet
-      id="explore-classes-sheet"
-      class="mx-auto"
-      elevation="8"
-      max-width="800"
-    >
-      Explore classes
-      <v-slide-group class="pa-4">
-        <v-slide-item
-          v-for="n in 5"
-          :key="n"
-          v-slot:default="{ active, toggle }"
-        >
-          <v-card
-            :color="'grey lighten-1'"
-            class="ma-4"
-            height="100"
-            width="100"
-            @click="toggle"
-          >
-          </v-card>
-        </v-slide-item>
-      </v-slide-group>
-    </v-sheet>
+          <div class="col-md-4 col-12">
+            <div class="v-card v-card--outlined v-sheet theme--light">
+              <a
+                href="/en/components/buttons/"
+                tabindex="0"
+                class="v-list-item--doc v-list-item v-list-item--link theme--light primary--text"
+              >
+                <v-avatar color="indigo">
+                  <v-icon color="white">
+                    mdi-view-dashboard
+                  </v-icon>
+                </v-avatar>
 
-    <br />
+                <div class="v-list-item__content">
+                  <div class="v-list-item__title">
+                    <span>{{ "2069" }}</span>
+                  </div>
+                  <div class="v-list-item__subtitle">
+                    <span>{{ "Points Earned This Week" }}</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
 
-    <p>Invite your friends to start learning new skills together!</p>
+          <div class="col-md-4 col-12">
+            <div class="v-card v-card--outlined v-sheet theme--light">
+              <a
+                href="/en/components/buttons/"
+                tabindex="0"
+                class="v-list-item--doc v-list-item v-list-item--link theme--light primary--text"
+              >
+                <v-avatar color="indigo">
+                  <v-icon color="white">
+                    mdi-view-dashboard
+                  </v-icon>
+                </v-avatar>
+                <div class="v-list-item__content">
+                  <div class="v-list-item__title">
+                    <span>{{ "1470" }}</span>
+                  </div>
+                  <div class="v-list-item__subtitle">
+                    <span>{{ "Profile Visits" }}</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </v-content>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import BookingsCard from "@/components/BookingsCard.vue";
 
 export default {
   name: "home",
-  beforeMount() {
-    // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
-    // Request store to get and populate list of news banners
-    // @todo remove and call all init actions in main.js or perhaps after login/signup
-    this.$store.dispatch("news/init");
-  },
-  computed: {
-    ...mapState("news", ["newsBanners"])
-  },
-  methods: {
-    ...mapActions("news", ["viewBanner"])
+  components: {
+    BookingsCard
   }
 };
 </script>

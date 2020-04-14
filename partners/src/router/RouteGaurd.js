@@ -38,7 +38,7 @@ function AuthChecker(to, from, next) {
   if (AuthType_required_is.private && !currentUser) next({ name: "welcome" });
   // If route is public only and user is logged in, redirect to default private route of home
   else if (AuthType_required_is.public_only && currentUser)
-    next({ name: "partnerHome" });
+    next({ name: "home" });
   // Else, just continue navigation as per user request.
   else next();
 }
