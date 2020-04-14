@@ -1,10 +1,11 @@
 <template>
   <v-content class="favourite">
-    <v-app-bar app color="orange lighten-1" flat dark>
-      <v-toolbar-title>Favourite Classes</v-toolbar-title>
+    <!-- <v-app-bar app color="orange lighten-1" flat dark> -->
+    <v-app-bar app flat color="white">
+      <v-toolbar-title style="font-weight: bold;">
+        Favourite Classes
+      </v-toolbar-title>
     </v-app-bar>
-
-    <br />
 
     <v-responsive v-if="favouriteClasses.length">
       <v-card
