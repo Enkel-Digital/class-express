@@ -1,9 +1,8 @@
 <template>
   <v-content class="reviews">
-    <!-- <v-app-bar app color="white" flat dark fixed> -->
     <!-- Allow user to skip writing a review -->
     <v-col cols="2" sm="3"></v-col>
-    <!-- </v-app-bar> -->
+
     <v-row class="mt-1">
       <v-col cols="1">
         <v-btn :to="{ name: 'home' }" text x-small>
@@ -11,16 +10,23 @@
         </v-btn>
       </v-col>
     </v-row>
+
     <br />
+
     <v-avatar size="90">
       <v-img id="class-image" :src="clas.pictureSources[0]" />
     </v-avatar>
+
     <hr style="height:15pt; visibility:hidden;" />
     <h2 style="color:#403D3D;">{{ clas.name }}</h2>
-
     <p style="font-size:75%; color:#625B5A;">How do you like the class?</p>
 
-    <v-rating v-model="ratings" background-color="orange lighten-3" color="orange" large />
+    <v-rating
+      v-model="ratings"
+      background-color="orange lighten-3"
+      color="orange"
+      large
+    />
 
     <v-textarea
       v-autofocus
@@ -44,7 +50,8 @@
       outlined
       block
       color="#F6B44E"
-    >submit</v-btn>
+      >submit</v-btn
+    >
   </v-content>
 </template>
 
