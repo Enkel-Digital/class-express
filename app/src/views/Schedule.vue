@@ -15,49 +15,28 @@
       </v-btn>
     </v-app-bar>
 
-    <v-tabs v-model="dateTab" background-color="white">
-      <v-tabs-slider color="black"></v-tabs-slider>
-
-      <v-tab v-for="i in tabs" :key="i" :href="`#tab-${i}`">
+    <!-- @todo Remove the arrows and the space left by the left arrow -->
+    <v-tabs
+      @change="dateCursorChanged"
+      background-color="white"
+      slider-color="black"
+      :show-arrows="true"
+    >
+      <v-tab v-for="i in tabs" :key="i">
         {{
-          moment
-            .utc()
-            .add(i - 1, "days")
-            .startOf("day")
-            .format("ddd") +
-            " " +
-            moment
-              .utc()
-              .add(i - 1, "days")
-              .startOf("day")
-              .format("D")
+          daysFromToday(i).format("ddd") + " " + daysFromToday(i).format("D")
         }}
       </v-tab>
 
-      <v-tab-item v-for="i in tabs" :key="i" :value="'tab-' + i">
+      <v-tab-item v-for="i in tabs" :key="i">
         <v-card flat tile>
           <v-card-text>
             {{ i }}
             <br />
-            <!-- {{
-              moment
-                .utc()
-                .startOf("day")
-                .format("L")
-            }} -->
-
             {{
-              moment
-                .utc()
-                .add(i - 1, "days")
-                .startOf("day")
-                .format("ddd") +
+              daysFromToday(i).format("ddd") +
                 " " +
-                moment
-                  .utc()
-                  .add(i - 1, "days")
-                  .startOf("day")
-                  .format("D")
+                daysFromToday(i).format("D")
             }}
           </v-card-text>
         </v-card>
@@ -71,7 +50,7 @@ import { mapMutations } from "vuex";
 import BackBtn from "@/components/BackBtn";
 
 export default {
-  name: "ClassDetails",
+  name: "schedule",
   components: {
     BackBtn
   },
@@ -81,11 +60,17 @@ export default {
   },
   props: ["classID"],
   data() {
+    // Create default tabs array of 7 element to display 7 dates and prefetch 7 days of schedule
+    const tabs = [...Array(7).keys()];
+
+    /** @notice Compute only once but use startOfDay method to clone it as moments are mutable */
+    const origStartOfDay = this.moment().startOf("day");
+
     return {
       // Classes is static via the data function as we do not want its reactivity
       className: this.$store.state.classes.classes[this.classID].name,
-      dateTab: null,
-      tabs: 3
+      tabs,
+      origStartOfDay
     };
   },
   computed: {
@@ -93,28 +78,20 @@ export default {
       return this.$store.state.classes.schedule[this.classID];
     }
   },
-  watch: {
-    // Load schedule as user scrolls/swipes to view more
-    dateCursor() {
-      this.tabs.push(
-        this.moment
-          .utc()
-          .add(1, "days")
-          .startOf("day")
-          .format("ddd") +
-          " " +
-          this.moment
-            .utc()
-            .add(1, "days")
-            .startOf("day")
-            .format("D")
-      );
-    }
-  },
   methods: {
-    ...mapMutations("classes", ["selectSchedule"])
+    ...mapMutations("classes", ["selectSchedule"]),
+    daysFromToday(days) {
+      return this.origStartOfDay.clone().add(days, "days");
+    },
+    // Load schedule as user scrolls/swipes to view more
+    dateCursorChanged(dateCursor) {
+      // Load 1 week more of schedules from selected date's cursor
+      for (const i of Array(dateCursor + 7 - this.tabs.length).keys()) {
+        this.tabs.push(this.tabs.length);
+      }
+
+      this.$store.dispatch("classes/getSchedule", { classID: this.classID });
+    }
   }
 };
 </script>
-
-<style scoped></style>
