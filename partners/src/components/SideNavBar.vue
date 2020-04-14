@@ -19,7 +19,11 @@
       <v-divider></v-divider>
 
       <v-list dense>
-        <v-list-item v-for="item in items" :key="item.title" @click="item.linksTo">
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          @click="item.linksTo"
+        >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -55,4 +59,5 @@ export default {
     };
   }
 };
-</script>>
+</script>
+>

@@ -1,6 +1,7 @@
 <template>
   <v-app id="app">
     <SideNavBar v-if="sideNavBar" />
+
     <!-- Router view for the main view -->
     <router-view />
   </v-app>
