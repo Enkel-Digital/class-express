@@ -15,23 +15,49 @@
       </v-btn>
     </v-app-bar>
 
-    <v-tabs v-model="dateTab" background-color="white" :icons-and-text="icons">
+    <v-tabs v-model="dateTab" background-color="white">
       <v-tabs-slider color="black"></v-tabs-slider>
 
       <v-tab v-for="i in tabs" :key="i" :href="`#tab-${i}`">
-        Tab {{ i }}
+        {{
+          moment
+            .utc()
+            .add(i - 1, "days")
+            .startOf("day")
+            .format("ddd") +
+            " " +
+            moment
+              .utc()
+              .add(i - 1, "days")
+              .startOf("day")
+              .format("D")
+        }}
       </v-tab>
 
       <v-tab-item v-for="i in tabs" :key="i" :value="'tab-' + i">
         <v-card flat tile>
-          <v-card-text
-            >{{ i }}
+          <v-card-text>
+            {{ i }}
             <br />
-            {{
+            <!-- {{
               moment
                 .utc()
                 .startOf("day")
                 .format("L")
+            }} -->
+
+            {{
+              moment
+                .utc()
+                .add(i - 1, "days")
+                .startOf("day")
+                .format("ddd") +
+                " " +
+                moment
+                  .utc()
+                  .add(i - 1, "days")
+                  .startOf("day")
+                  .format("D")
             }}
           </v-card-text>
         </v-card>
@@ -55,28 +81,35 @@ export default {
   },
   props: ["classID"],
   data() {
-    // Classes is static via the data function as we do not want its reactivity
-    // const clas = this.$store.state.classes.classes[this.classID];
-    // return { clas };
-
     return {
+      // Classes is static via the data function as we do not want its reactivity
+      className: this.$store.state.classes.classes[this.classID].name,
       dateTab: null,
-      text:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ut labore et dolore.",
-      icons: false,
       tabs: 3
     };
   },
   computed: {
-    className() {
-      return this.$store.state.classes.classes[this.classID].name;
-    },
     schedule() {
       return this.$store.state.classes.schedule[this.classID];
     }
   },
-  watch() {
+  watch: {
     // Load schedule as user scrolls/swipes to view more
+    dateCursor() {
+      this.tabs.push(
+        this.moment
+          .utc()
+          .add(1, "days")
+          .startOf("day")
+          .format("ddd") +
+          " " +
+          this.moment
+            .utc()
+            .add(1, "days")
+            .startOf("day")
+            .format("D")
+      );
+    }
   },
   methods: {
     ...mapMutations("classes", ["selectSchedule"])
