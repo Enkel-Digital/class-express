@@ -1,8 +1,10 @@
 <template>
   <v-content class="reviews">
-    <v-app-bar app color="orange lighten-1" flat dark fixed>
-      <BackBtn />
-      <v-toolbar-title>{{ clas.name }}</v-toolbar-title>
+    <v-app-bar app color="white" flat dark fixed>
+      <!-- Allow user to skip writing a review -->
+      <v-btn :to="{ name: 'home' }" text>
+        <v-icon color="black">mdi-close</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <br />
@@ -19,7 +21,7 @@
       v-model="ratings"
       background-color="orange lighten-3"
       color="orange"
-      size="30"
+      large
     />
 
     <v-textarea
@@ -49,14 +51,10 @@
 </template>
 
 <script>
-import BackBtn from "@/components/BackBtn";
 import { mapActions } from "vuex";
 
 export default {
   name: "reviews",
-  components: {
-    BackBtn
-  },
   props: ["classID"],
   data() {
     const clas = this.$store.state.classes.classes[this.classID];
@@ -68,7 +66,11 @@ export default {
     };
   },
   methods: {
-    ...mapActions("classes", ["saveNewReview"])
+    saveNewReview() {
+      this.$store.dispatch("classes/saveNewReview", ...arguments);
+      this.$router.push({ name: "home" });
+    }
   }
 };
 </script>
+<style scoped></style>
