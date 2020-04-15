@@ -27,10 +27,11 @@
 
     <v-list dense>
       <v-list-item
+        exact
         ripple
         v-for="item in items"
         :key="item.title"
-        @click="item.link"
+        :to="item.link"
       >
         <v-list-item-icon>
           <v-icon>{{ item.icon }}</v-icon>
@@ -71,13 +72,41 @@ export default {
   data() {
     return {
       items: [
-        { icon: "mdi-view-dashboard", text: "Dashboard", link: "./" },
-        { icon: "mdi-view-dashboard", text: "Earnings", link: "./" },
-        { icon: "mdi-calendar", text: "View Schedule", link: "./" },
-        { icon: "mdi-plus", text: "Add New Class", link: "./" },
-        { icon: "mdi-view-week", text: "Edit Class", link: "./" },
-        { icon: "mdi-account", text: "View Reviews", link: "./" },
-        { icon: "mdi-account-group-outline", text: "Withdrawal", link: "./" },
+        {
+          icon: "mdi-view-dashboard",
+          text: "Dashboard",
+          link: { name: "home" }
+        },
+        {
+          icon: "mdi-view-dashboard",
+          text: "Earnings",
+          link: { name: "earnings" }
+        },
+        {
+          icon: "mdi-calendar",
+          text: "View Schedule",
+          link: { name: "view-schedule" }
+        },
+        {
+          icon: "mdi-plus",
+          text: "Add New Class",
+          link: { name: "new-class" }
+        },
+        {
+          icon: "mdi-view-week",
+          text: "Edit Class",
+          link: { name: "edit-class" }
+        },
+        {
+          icon: "mdi-account",
+          text: "View Reviews",
+          link: { name: "view-reviews" }
+        },
+        {
+          icon: "mdi-account-group-outline",
+          text: "Withdrawal",
+          link: { name: "withdrawal" }
+        },
         {
           icon: "mdi-chevron-up",
           "icon-alt": "mdi-chevron-down",
@@ -102,11 +131,23 @@ export default {
             { text: "Other contacts" }
           ]
         },
-        { icon: "mdi-settings", text: "Settings" },
-        { icon: "mdi-account", text: "Contact Support", link: "./" },
-        { icon: "mdi-message", text: "Send feedback", link: "./" },
-        { icon: "mdi-help-circle", text: "Help & FAQs" },
-        { icon: "mdi-cellphone-link", text: "App downloads" }
+        { icon: "mdi-settings", text: "Settings", link: { name: "settings" } },
+        {
+          icon: "mdi-account",
+          text: "Contact Support",
+          link: { name: "contact-support" }
+        },
+        {
+          icon: "mdi-message",
+          text: "Send feedback",
+          link: { name: "feedback" }
+        },
+        { icon: "mdi-help-circle", text: "Help & FAQs", link: { name: "faq" } },
+        {
+          icon: "mdi-cellphone-link",
+          text: "App downloads",
+          link: { name: "downloads" }
+        }
       ]
     };
   }

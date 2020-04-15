@@ -2,7 +2,7 @@
   <v-app id="app">
     <SideNavBar v-if="sideNavBar" />
 
-    <v-app-bar app clipped-left="true" color="blue darken-2" dark flat>
+    <v-app-bar app :clipped-left="true" color="blue darken-2" dark flat>
       <!-- No toggling for now -->
       <!-- <v-app-bar-nav-icon @click.stop="showDrawer = !showDrawer"> -->
       <v-app-bar-nav-icon>
