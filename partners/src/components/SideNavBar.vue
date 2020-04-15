@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer :clipped="true" app>
+  <v-navigation-drawer id="side-nav-bar" :clipped="true" app>
     <!-- @todo Make this section clickable and link to account page of settings -->
     <v-list-item two-line>
       <!-- @todo Add a toggle, this might not be available -->
@@ -112,3 +112,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+#side-nav-bar {
+  text-align: left;
+}
+</style>
