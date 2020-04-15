@@ -1,8 +1,15 @@
 <template>
   <v-app id="app">
-    <SideNavBar v-if="sideNavBar" />
+    <SideNavBar v-if="signedInRoute" />
 
-    <v-app-bar app :clipped-left="true" color="blue darken-2" dark flat>
+    <v-app-bar
+      v-if="signedInRoute"
+      app
+      dark
+      flat
+      :clipped-left="true"
+      color="blue darken-2"
+    >
       <!-- No toggling for now -->
       <!-- <v-app-bar-nav-icon @click.stop="showDrawer = !showDrawer"> -->
       <v-app-bar-nav-icon>
@@ -110,7 +117,8 @@ export default {
     SideNavBar
   },
   computed: {
-    sideNavBar() {
+    // Compute if user is on a route that is only available after signing in.
+    signedInRoute() {
       return this.$route.meta.Auth_requirements !== AuthType.public_only;
     }
   }

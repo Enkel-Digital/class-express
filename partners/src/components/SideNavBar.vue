@@ -42,6 +42,7 @@
         </v-list-item-content>
       </v-list-item>
 
+      <!-- @todo Add support for child groups -->
       <!-- <v-list-group
         v-if="item.children"
         :key="item.text"
@@ -60,12 +61,27 @@
           </v-list-item-content>
         </v-list-item>
       </v-list-group> -->
+
+      <!-- Logout button at the bottom -->
+      <v-list-item ripple hover @click="logout">
+        <v-list-item-icon>
+          <v-icon>mdi-logout</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>Logout</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script>
-// https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/layouts/layouts/demos/google-contacts.vue
+// UI reference link https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/layouts/layouts/demos/google-contacts.vue
+
+// @todo Rewrite component to code the controls into the template directly.
+
+import logout from "@/controllers/logout";
 
 export default {
   name: "side-nav-bar",
@@ -150,6 +166,9 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    logout
   }
 };
 </script>
