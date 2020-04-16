@@ -13,6 +13,12 @@
         <PointsEarnedCard />
         <ProfileVisitsCard />
       </div>
+
+      <br />
+      <div class="row">
+        <DashboardEarningsSparkline />
+        <PastWeekEarningComparison />
+      </div>
     </v-container>
     <!-- </v-responsive> -->
   </v-content>
@@ -22,13 +28,17 @@
 import BookingsCard from "@/components/BookingsCard.vue";
 import PointsEarnedCard from "@/components/PointsEarnedCard.vue";
 import ProfileVisitsCard from "@/components/ProfileVisitsCard.vue";
+import DashboardEarningsSparkline from "@/components/DashboardEarningsSparkline.vue";
+import PastWeekEarningComparison from "@/components/PastWeekEarningComparisonCard.vue";
 
 export default {
   name: "home",
   components: {
     BookingsCard,
     PointsEarnedCard,
-    ProfileVisitsCard
+    ProfileVisitsCard,
+    DashboardEarningsSparkline,
+    PastWeekEarningComparison
   }
 };
 </script>
