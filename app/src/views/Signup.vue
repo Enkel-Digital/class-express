@@ -83,12 +83,12 @@ export default {
         storeUser.name = this.name;
         this.$store.commit("setter", ["user", storeUser]);
 
-        // @todo push data to the server and push the new data into vuex
-        // @todo perhaps can route them to a signup page, where instead of use 1 screen like now, we can do the UI below
-        // https://vuetifyjs.com/en/components/windows/#account-creation
-        // https://vuetifyjs.com/en/components/steppers/#usage
+        // @todo push new data into vuex and sync with server
 
-        this.$router.replace({ name: "home" });
+        // Signout the user and redirect to verifyEmail view
+        await auth().signOut();
+
+        this.$router.replace({ name: "verify-email" });
       } catch (error) {
         // Set the message into the error box to show user the error
         this.error_msg = error_msg(error);
