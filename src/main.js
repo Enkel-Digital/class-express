@@ -27,13 +27,35 @@ initializeApp({
   appId: "1:385087995070:web:7204f5d15cb9004c3072ef"
 });
 
-// Wait for firebase to finish initialization before creating the app.
-// So that the router navigation wont break due to invalid auth
-auth().onAuthStateChanged(() => {
-  new Vue({
-    router,
-    store,
-    vuetify,
-    render: h => h(App)
-  }).$mount("#app");
+/**
+ * User --> Null
+ * - When page first loads
+ * - When user logs out
+ *
+ * User --> User object
+ * - When user logs in
+ * - When user first signs up
+ *
+ * @notice Why new vue is wrapped in this.
+ * Wait for firebase to finish initialization before creating the app.
+ * So that the router navigation wont break due to invalid auth
+ *
+ * @todo Will this impact performance of waking up from freeze state when switching between apps?
+ */
+auth().onAuthStateChanged(user => {
+  console.log("Auth state changed", user);
+
+  if (user)
+    store.commit(
+      "setEmailVerificationStatus",
+      auth().currentUser.emailVerified
+    );
+  else {
+    new Vue({
+      router,
+      store,
+      vuetify,
+      render: h => h(App)
+    }).$mount("#app");
+  }
 });
