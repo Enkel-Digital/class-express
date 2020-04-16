@@ -9,7 +9,7 @@
       </v-list-item>
 
       <v-list class="transparent">
-        <v-list-item v-for="item in forecast" :key="item.day">
+        <v-list-item v-for="item in earnings" :key="item.day">
           <v-list-item-title>{{ item.week }}</v-list-item-title>
 
           <!-- <v-list-item-icon>
@@ -35,17 +35,13 @@ export default {
   name: "Past-Week-Earning-Comparison",
   data() {
     return {
-      labels: ["SU", "MO", "TU", "WED", "TH", "FR", "SA"],
-      time: 0,
-      forecast: [
+      earnings: [
         {
           week: "Last Week",
-          icon: "mdi-white-balance-sunny",
           earning: "266"
         },
         {
           week: "This Week",
-          icon: "mdi-white-balance-sunny",
           earning: "135"
         }
       ]
