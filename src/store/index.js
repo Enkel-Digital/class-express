@@ -27,7 +27,10 @@ export default new Vuex.Store({
     settings: settingsModule
   },
   mutations: {
-    setter
+    setter,
+    setEmailVerificationStatus(state, status) {
+      state.user.emailVerified = status;
+    }
   },
   actions: {
     /**
