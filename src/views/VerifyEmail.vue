@@ -28,8 +28,7 @@ export default {
       // Timeout data object that can be referenced to clear if user navigates away before timeout
       timeout: setTimeout(
         router => router.push({ name: "login" }), // Redirect user to login view
-        // 10000,
-        3000,
+        10000,
         this.$router
       )
     };
