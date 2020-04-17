@@ -8,7 +8,14 @@
     >
       <v-img height="20em" class="class-image" :src="clas.pictureSources[0]" />
 
-      <span>{{ clas.name }}</span>
+      <v-card-title class="title">
+        {{ clas.name }}
+
+        <v-spacer />
+
+        <!-- @todo Put the points number here -->
+        7
+      </v-card-title>
     </v-card>
   </v-content>
 </template>
