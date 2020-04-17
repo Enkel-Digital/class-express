@@ -94,7 +94,7 @@ export default {
           link: { name: "home" }
         },
         {
-          icon: "mdi-view-dashboard",
+          icon: "mdi-cash-usd",
           text: "Earnings",
           link: { name: "earnings" }
         },
@@ -147,18 +147,26 @@ export default {
             { text: "Other contacts" }
           ]
         },
-        { icon: "mdi-settings", text: "Settings", link: { name: "settings" } },
+        {
+          icon: "mdi-settings",
+          text: "Settings",
+          link: { name: "settings" }
+        },
         {
           icon: "mdi-account",
           text: "Contact Support",
           link: { name: "contact-support" }
         },
         {
+          icon: "mdi-help-circle",
+          text: "FAQs",
+          link: { name: "faq" }
+        },
+        {
           icon: "mdi-message",
           text: "Send feedback",
           link: { name: "feedback" }
         },
-        { icon: "mdi-help-circle", text: "Help & FAQs", link: { name: "faq" } },
         {
           icon: "mdi-cellphone-link",
           text: "App downloads",
