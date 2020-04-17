@@ -6,7 +6,7 @@ import Home from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
 import schedule from "../views/Schedule.vue";
 import AllClasses from "../views/AllClasses.vue";
-import Class from "../views/Class.vue";
+import ClassDetails from "../views/ClassDetails.vue";
 
 /**
  * @notice Some of these less frequented routes uses lazily loaded components
@@ -44,7 +44,7 @@ const routes = [
   {
     path: "/class/:classID",
     name: "class",
-    component: Class,
+    component: ClassDetails,
     meta: { Auth_requirements: AuthType.private },
     props: true
   },
