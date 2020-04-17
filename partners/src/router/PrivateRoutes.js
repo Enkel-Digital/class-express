@@ -5,6 +5,8 @@ import AuthType from "./AuthType";
 import Home from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
 import schedule from "../views/Schedule.vue";
+import AllClasses from "../views/AllClasses.vue";
+import Class from "../views/Class.vue";
 
 /**
  * @notice Some of these less frequented routes uses lazily loaded components
@@ -30,6 +32,19 @@ const routes = [
     path: "/schedule/:classID",
     name: "schedule",
     component: schedule,
+    meta: { Auth_requirements: AuthType.private },
+    props: true
+  },
+  {
+    path: "/class/all",
+    name: "all-classes",
+    component: AllClasses,
+    meta: { Auth_requirements: AuthType.private }
+  },
+  {
+    path: "/class/:classID",
+    name: "class",
+    component: Class,
     meta: { Auth_requirements: AuthType.private },
     props: true
   },

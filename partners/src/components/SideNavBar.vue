@@ -110,8 +110,8 @@ export default {
         },
         {
           icon: "mdi-view-week",
-          text: "Edit Class",
-          link: { name: "edit-class" }
+          text: "View all Classes",
+          link: { name: "all-classes" }
         },
         {
           icon: "mdi-account",
