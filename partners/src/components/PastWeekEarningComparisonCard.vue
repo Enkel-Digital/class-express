@@ -3,7 +3,9 @@
     <v-card class="mx-auto">
       <v-list-item two-line>
         <v-list-item-content>
-          <v-list-item-title class="headline">Earning Comparison with Past Week</v-list-item-title>
+          <v-list-item-title class="headline"
+            >Earning Comparison with Past Week</v-list-item-title
+          >
           <!-- <v-list-item-subtitle>Mon, 12:30 PM, Mostly sunny</v-list-item-subtitle> -->
         </v-list-item-content>
       </v-list-item>
@@ -16,7 +18,9 @@
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>-->
 
-          <v-list-item-action-text class="text-right">{{ item.earning }} credits</v-list-item-action-text>
+          <v-list-item-action-text class="text-right">
+            {{ item.earning }} points
+          </v-list-item-action-text>
         </v-list-item>
       </v-list>
 
@@ -28,7 +32,6 @@
     </v-card>
   </div>
 </template>
-
 
 <script>
 export default {
