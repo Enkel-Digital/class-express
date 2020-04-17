@@ -21,6 +21,12 @@ const routes = [
     meta: { Auth_requirements: AuthType.private }
   },
   {
+    path: "/schedule",
+    name: "view-schedule",
+    component: schedule,
+    meta: { Auth_requirements: AuthType.private }
+  },
+  {
     path: "/schedule/:classID",
     name: "schedule",
     component: schedule,
