@@ -5,6 +5,13 @@
       <v-toolbar-title style="font-weight: bold;">
         Upcoming Classes
       </v-toolbar-title>
+
+      <v-spacer />
+
+      <!-- @todo Icon to trigger attendance QR code scanner -->
+      <v-btn icon>
+        <v-icon>mdi-camera</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-responsive v-if="upcomingClasses.length">

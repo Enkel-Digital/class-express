@@ -8,6 +8,11 @@
       <v-btn icon @click="refreshData">
         <v-icon>mdi-reload</v-icon>
       </v-btn>
+
+      <!-- @todo Icon to trigger user QR code for attendance taking -->
+      <v-btn icon>
+        <v-icon>mdi-qrcode</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-responsive>
