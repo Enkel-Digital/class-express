@@ -1,10 +1,10 @@
 <template>
   <v-content class="upcoming">
-    <v-app-bar app color="orange lighten-1" flat dark>
-      <v-toolbar-title>Past Classes</v-toolbar-title>
+    <v-app-bar app flat color="white">
+      <v-toolbar-title style="font-weight: bold;">
+        Past Classes
+      </v-toolbar-title>
     </v-app-bar>
-
-    <br />
 
     <v-responsive v-if="pastClasses.length">
       <v-card
@@ -15,8 +15,6 @@
         outlined
         :ripple="false"
       >
-        <MapImage :src="clas.locationImage" :classID="clas.id" />
-
         <v-responsive
           @click="
             $router.push({ name: 'ClassDetails', params: { classID: clas.id } })
@@ -60,10 +58,6 @@
             <v-icon v-if="clas.favourite" color="red">mdi-heart</v-icon>
             <v-icon v-else>mdi-heart-outline</v-icon>
           </v-btn>
-
-          <v-btn icon>
-            <v-icon>mdi-calendar-today</v-icon>
-          </v-btn>
         </v-card-actions>
       </v-card>
     </v-responsive>
@@ -78,13 +72,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import MapImage from "@/components/MapImage";
 
 export default {
-  name: "upcoming",
-  components: {
-    MapImage
-  },
+  name: "past-classes",
   beforeCreate() {
     // Only get pastClasses ID from API when user navigates to this view.
     this.$store.dispatch("classes/getPastClassesID");
