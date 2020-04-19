@@ -3,7 +3,7 @@
     <v-app-bar app color="white" flat fixed>
       <BackBtn />
 
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <!-- @todo Implement PWA sharing and web share target code  -->
       <v-btn icon>
