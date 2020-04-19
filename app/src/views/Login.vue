@@ -40,6 +40,8 @@ function error_msg(err) {
       return "Invalid password or email.";
     case "auth/network-request-failed":
       return "Oops, check your internet connection!";
+    case "email/no-verify":
+      return "Email not verified. Please verify before trying again";
     default:
       return "Something went wrong! Please try again.";
   }
@@ -68,13 +70,25 @@ export default {
           this.password
         );
 
-        // Await for async dispatch to ensure app only starts when user info is all available.
-        await this.$store.dispatch("getUserDetails");
+        console.log("verified", auth().currentUser.emailVerified);
 
-        await this.$store.dispatch("init");
+        if (!auth().currentUser.emailVerified) {
+          // Signout the user and redirect to verifyEmail view
+          await auth().signOut();
 
-        // Route to the user's home page, after login
-        this.$router.replace({ name: "home", params: { user: name } });
+          // Throw new error with pre-defined code to get the right error_msg
+          const error = new Error();
+          error.code = "email/no-verify";
+          throw error;
+        } else {
+          // Await for async dispatch to ensure app only starts when user info is all available.
+          await this.$store.dispatch("getUserDetails");
+
+          await this.$store.dispatch("init");
+
+          // Route to the user's home page, after login
+          this.$router.replace({ name: "home", params: { user: name } });
+        }
       } catch (error) {
         // Set the message into the error box to show user the error
         this.error_msg = error_msg(error);

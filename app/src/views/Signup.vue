@@ -78,12 +78,14 @@ export default {
           this.password
         );
 
+        auth().currentUser.sendEmailVerification();
+
+        // Store user details to use store to sync data with server.
+        // @notice This must be completed before signing out since server needs auth verification.
         const storeUser = this.$store.state.user;
         storeUser.email = this.email;
         storeUser.name = this.name;
         this.$store.commit("setter", ["user", storeUser]);
-
-        // @todo push new data into vuex and sync with server
 
         // Signout the user and redirect to verifyEmail view
         await auth().signOut();
