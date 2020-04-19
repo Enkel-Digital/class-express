@@ -4,7 +4,7 @@
       <!-- @todo Change to a image carousel -->
       <v-img id="class-image" :src="clas.pictureSources[0]" />
     </v-responsive>
-
+    <p>test</p>
     <v-responsive style="text-align: left;">
       <v-row>
         <v-col>
@@ -37,9 +37,7 @@
             {{ review.numberOfReviews }} reviews
           </v-list-item-subtitle>
 
-          <v-list-item-subtitle v-else>
-            Loading...
-          </v-list-item-subtitle>
+          <v-list-item-subtitle v-else>Loading...</v-list-item-subtitle>
         </v-list-item-content>
 
         <v-btn
@@ -47,9 +45,7 @@
           text
           small
           color="primary"
-        >
-          Read them!
-        </v-btn>
+        >Read them!</v-btn>
       </v-list-item>
     </v-responsive>
 
@@ -66,9 +62,7 @@
       </v-list-item>
     </v-responsive>
 
-    <h2 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ma-2 mb-0">
-      Getting here
-    </h2>
+    <h2 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ma-2 mb-0">Getting here</h2>
     <MapImage :classID="clas.id" />
     <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
   </v-content>
