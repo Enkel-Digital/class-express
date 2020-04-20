@@ -24,8 +24,8 @@ COPY package*.json ./
 # Install all production Node JS dependencies using the lock file for a deterministic dependency list
 RUN npm ci --only=production
 
-# Only copy the build file into current WORKDIR
-COPY ./build/index.js ./src/
+# Copy source files into current WORKDIR's src/
+COPY ./src/ ./src/
 
 # Define exposed ports, acting only as documentation. You STILL need to map the ports with -p option with docker run
 EXPOSE 2090

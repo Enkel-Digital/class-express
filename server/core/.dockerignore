@@ -15,6 +15,8 @@
 # Allow package json files to be copied over for installing dependencies
 !package*.json
 
-# Allow webpack build output files in build/ as the only source files in the build context
-# Not specifying a specific build file as the Dockerfile is designed to build images for all worker nodes.
-!build/
+# Only allow src/ to be copied in
+!src/
+
+# Ignore the test files in src/
+src/test/

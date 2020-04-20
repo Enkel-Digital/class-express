@@ -1,3 +1,6 @@
+# Full dockerfile, for reference.
+
+
 # To build and run the image from this Dockerfile, where x is the name of the worker node's JS file name
 # docker build -t ce-core -f ./.Dockerfile .
 # docker run -d --rm --name ce-core ce-core
