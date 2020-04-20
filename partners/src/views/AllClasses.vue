@@ -4,14 +4,13 @@
       v-for="clas in classes"
       :key="clas.id"
       class="class-card"
-      @click="
-        $router.push({ name: 'ClassDetails', params: { classID: clas.id } })
-      "
+      @click="$router.push({ name: 'class', params: { classID: clas.id } })"
     >
       <v-img height="20em" class="class-image" :src="clas.pictureSources[0]" />
 
       <v-card-title class="title">
         {{ clas.name }}
+
         <v-spacer />
 
         <!-- @todo Put the points number here -->

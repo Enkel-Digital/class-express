@@ -45,7 +45,8 @@
           text
           small
           color="primary"
-        >Read them!</v-btn>
+          >Read them!</v-btn
+        >
       </v-list-item>
     </v-responsive>
 
@@ -62,7 +63,9 @@
       </v-list-item>
     </v-responsive>
 
-    <h2 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ma-2 mb-0">Getting here</h2>
+    <h2 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ma-2 mb-0">
+      Getting here
+    </h2>
     <MapImage :classID="clas.id" />
     <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
   </v-content>
