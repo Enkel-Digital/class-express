@@ -2,8 +2,8 @@
   <v-content id="AddClasses">
     <br />
     <v-form ref="form" v-model="valid" lazy-validation>
+      <h2 style="color:#455A64;">Add New Class</h2>
       <v-container>
-        <h2 style="color:#455A64;">Add New Class</h2>
         <v-row>
           <v-col cols="15" sm="6" md="5">
             <v-text-field

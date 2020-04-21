@@ -8,6 +8,7 @@ import schedule from "../views/Schedule.vue";
 import AllClasses from "../views/AllClasses.vue";
 import ClassDetails from "../views/ClassDetails.vue";
 import AddNewClass from "../views/AddNewClass.vue";
+// import Reviews from "../views/Reviews.vue";
 
 /**
  * @notice Some of these less frequented routes uses lazily loaded components
@@ -52,6 +53,14 @@ const routes = [
     path: "/classdetails/:classID",
     name: "ClassDetails",
     component: ClassDetails,
+    meta: { Auth_requirements: AuthType.private },
+    props: true
+  },
+  {
+    path: "/reviews/:classID",
+    name: "reviews",
+    // component: Reviews,
+    component: () => import("@/views/Reviews.vue"),
     meta: { Auth_requirements: AuthType.private },
     props: true
   },
