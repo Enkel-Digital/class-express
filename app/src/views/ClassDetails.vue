@@ -21,13 +21,51 @@
       <v-img id="class-image" :src="clas.pictureSources[0]" />
     </v-responsive>
 
-    <v-responsive style="text-align: left;">
+    <v-responsive style="text-align: left; margin: 1em;">
       <h3 class="headline" v-text="clas.name"></h3>
+
+      <v-row>
+        <v-col class="col-auto">
+          <!-- date of class -->
+          <v-list-item-subtitle>
+            <!-- Show year only if class is next year. -->
+            <span v-if="moment().year() === moment(clas.time).year()">
+              {{ moment(clas.time).format("dddd, MMM D") }}
+            </span>
+            <span v-else>
+              {{ moment(clas.time).format("dddd, MMM D YYYY") }}
+            </span>
+          </v-list-item-subtitle>
+
+          <!-- time of class -->
+          <v-list-item-subtitle>
+            {{ moment(clas.time).format("h:mm a") }} -
+            {{ moment(clas.time + Date.parse(clas.length)).format("h:mm a") }}
+          </v-list-item-subtitle>
+
+          <!-- Instructor name if any -->
+          <span v-if="clas.instructorName">{{ clas.instructorName }} </span>
+        </v-col>
+
+        <v-spacer />
+
+        <v-col class="col-auto">
+          <!-- @todo Implement add to calendar feature -->
+          <v-btn icon>
+            <v-icon>mdi-calendar-today</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-responsive>
+
+    <v-divider />
+
+    <v-responsive style="text-align: left; margin: 1em;">
       <p class="ma-0 pa-0">{{ clas.provider.name }}</p>
       <p class="ma-0 pa-0">{{ clas.location.address }}</p>
     </v-responsive>
 
-    <v-divider></v-divider>
+    <v-divider />
 
     <v-responsive id="reviews-card" class="mx-auto">
       <v-list-item>
