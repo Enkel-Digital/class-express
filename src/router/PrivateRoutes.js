@@ -9,6 +9,7 @@ import Explore from "../views/Explore.vue";
 import Favourites from "../views/Favourites.vue";
 import Upcoming from "../views/Upcoming.vue";
 import ClassDetails from "../views/ClassDetails.vue";
+import Partner from "../views/Partner.vue";
 import schedule from "../views/Schedule.vue";
 
 /**
@@ -36,6 +37,13 @@ const routes = [
     name: "favourites",
     component: Favourites,
     meta: { Auth_requirements: AuthType.private }
+  },
+  {
+    path: "/partner/:partnerID",
+    name: "partner",
+    component: Partner,
+    meta: { Auth_requirements: AuthType.private },
+    props: true
   },
   {
     path: "/classdetails/:classID",
