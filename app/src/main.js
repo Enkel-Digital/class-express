@@ -27,19 +27,24 @@ initializeApp({
   appId: "1:385087995070:web:7204f5d15cb9004c3072ef"
 });
 
+// App variable to store reference to the vue App object
+let app;
+
 /**
  * @notice Why new vue is wrapped in this.
  * Wait for firebase to finish initialization before creating the app.
  * So that the router navigation wont break due to invalid auth
  */
-const unsubscribe = auth().onAuthStateChanged(user => {
-  // Create the new vue app
-  new Vue({
-    router,
-    store,
-    vuetify,
-    render: h => h(App)
-  }).$mount("#app");
+const unsubscribe = auth().onAuthStateChanged(() => {
+  // Prevent app initialization from running more than once
+  if (!app)
+    // Create new vue app
+    app = new Vue({
+      router,
+      store,
+      vuetify,
+      render: h => h(App)
+    }).$mount("#app");
 
   // Use the firebase.Unsubscribe function returned from adding auth state change listner to unsubscribe
   // To prevent new Vue from running more than once
