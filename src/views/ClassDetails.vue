@@ -1,5 +1,5 @@
 <template>
-  <v-content class="ClassDetails">
+  <v-content id="ClassDetails">
     <v-app-bar app color="white" flat fixed>
       <BackBtn />
 
@@ -21,7 +21,7 @@
       <v-img id="class-image" :src="clas.pictureSources[0]" />
     </v-responsive>
 
-    <v-responsive style="text-align: left; margin: 1em;">
+    <v-responsive style="margin: 1em;">
       <h3 class="headline" v-text="clas.name"></h3>
 
       <v-row>
@@ -60,10 +60,16 @@
 
     <v-divider />
 
-    <v-responsive style="text-align: left; margin: 1em;">
-      <p class="ma-0 pa-0">{{ clas.provider.name }}</p>
-      <p class="ma-0 pa-0">{{ clas.location.address }}</p>
-    </v-responsive>
+    <v-list-item>
+      <v-list-item-content>
+        <p class="ma-0 mb-2 pa-0" style="font-weight: bold;">
+          {{ clas.provider.name }}
+        </p>
+        <p class="ma-0 pa-0">{{ clas.location.address }}</p>
+      </v-list-item-content>
+
+      <v-icon x-large>mdi-chevron-right</v-icon>
+    </v-list-item>
 
     <v-divider />
 
@@ -94,29 +100,46 @@
       </v-list-item>
     </v-responsive>
 
-    <v-divider></v-divider>
+    <v-divider />
 
     <v-responsive id="reviews-card" class="mx-auto">
       <v-list-item>
-        <v-list-item-content>
-          <p class="overline">Class Desciption</p>
+        <v-list-item-content class="mb-0 pb-0">
+          <p class="overline">about this class</p>
+
+          <br />
 
           <!-- Change to a more readable font -->
           <span v-html="clas.description"></span>
         </v-list-item-content>
       </v-list-item>
+
+      <v-list-item>
+        <v-divider />
+      </v-list-item>
+
+      <v-list-item>
+        <v-list-item-content class="mt-0 pt-0">
+          <p class="overline">about our partner</p>
+
+          <br />
+
+          <!-- Change to a more readable font -->
+          <span v-html="clas.provider.description"></span>
+        </v-list-item-content>
+      </v-list-item>
     </v-responsive>
 
-    <h2 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ma-2 mb-0">
+    <h2 style="color: rgba(0, 0, 0, 0.65);" class="ma-2 mb-0">
       Getting here
     </h2>
     <MapImage :classID="clas.id" />
     <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
 
-    <v-divider></v-divider>
+    <v-divider />
 
     <!-- @todo Change this into a bottom toolbar and make it sticky -->
-    <v-container v-if="classTimeSelected">
+    <v-container v-if="selectedTime" style="text-align: center;">
       <v-row>
         <v-col>
           <h2 style="color: grey;">{{ clas.points }} points</h2>
@@ -133,7 +156,7 @@
       </v-row>
     </v-container>
 
-    <v-container v-else>
+    <v-container v-else style="text-align: center;">
       <v-btn
         :to="{ name: 'schedule', params: { classID: clas.id } }"
         color="primary"
@@ -168,7 +191,7 @@ export default {
     // Call action to fetch review of this class
     this.$store.dispatch("classes/getReview", this.classID);
   },
-  props: ["classID"],
+  props: ["classID", "selectedTime"],
   data() {
     // Classes is static via the data function as we do not want its reactivity
     const clas = this.$store.state.classes.classes[this.classID];
@@ -203,6 +226,10 @@ export default {
 </script>
 
 <style scoped>
+#ClassDetails {
+  text-align: left;
+}
+
 #class-image-container {
   /*
     General height guidelines for the image loaded
@@ -222,9 +249,5 @@ export default {
 
   /* Map image to height of entire parent div container */
   height: 100%;
-}
-
-#reviews-card {
-  text-align: left;
 }
 </style>
