@@ -1,7 +1,6 @@
 <template>
-  <div class="signup">
+  <v-content id="signup">
     <v-img
-      eager
       alt="ClassExpress logo"
       src="../assets/logo.png"
       max-height="calc(100% - 1em)"
@@ -48,9 +47,24 @@
 
     <br />
     <br />
+
+    <div style="text-align: left; margin-left: 3em; opacity: 0.8;">
+      Already have an account?
+    </div>
+    <v-btn
+      :to="{ name: 'login' }"
+      width="calc(100% - 6em)"
+      color="blue darken-1"
+      dark
+    >
+      login now!
+    </v-btn>
+
     <br />
     <br />
-  </div>
+    <br />
+    <br />
+  </v-content>
 </template>
 
 <script>
