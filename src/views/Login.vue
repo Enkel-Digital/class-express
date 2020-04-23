@@ -1,6 +1,12 @@
 <template>
-  <div class="login">
-    <img alt="Login image" src="../assets/logo.png" width="360" height="360" />
+  <v-content id="login">
+    <v-img
+      eager
+      alt="ClassExpress logo"
+      src="../assets/logo.png"
+      max-height="calc(100% - 1em)"
+      max-width="calc(100% - 1em)"
+    />
 
     <input
       v-autofocus
@@ -20,10 +26,38 @@
     />
 
     <p class="error">{{ error_msg }}</p>
-    <button @click="login">Login</button>
+
+    <v-btn @click="login" width="calc(100% - 6em)" color="blue darken-1" dark>
+      Login
+    </v-btn>
+
     <br />
-    <button id="back-btn" @click="back">Back</button>
-  </div>
+    <br />
+
+    <v-btn @click="back" width="calc(100% - 6em)" color="grey" dark>
+      back
+    </v-btn>
+
+    <br />
+    <br />
+
+    <div style="text-align: left; margin-left: 3em; opacity: 0.8;">
+      Dont have an account?
+    </div>
+    <v-btn
+      :to="{ name: 'signup' }"
+      width="calc(100% - 6em)"
+      color="green darken-1"
+      dark
+    >
+      Signup now!
+    </v-btn>
+
+    <br />
+    <br />
+    <br />
+    <br />
+  </v-content>
 </template>
 
 <script>
@@ -70,6 +104,10 @@ export default {
           this.password
         );
 
+        const headers = {
+          Authorization: `Bearer ${await auth().currentUser.getIdToken()}`
+        };
+
         console.log("verified", auth().currentUser.emailVerified);
 
         if (!auth().currentUser.emailVerified) {
@@ -99,39 +137,18 @@ export default {
 </script>
 
 <style scoped>
-img {
-  background-size: cover;
-}
-
 input {
-  margin: 1em 0;
+  margin: 0.4em 0;
   padding: 1em;
 
-  width: 70%;
-  max-width: 20em;
+  width: calc(100% - 6em);
 
-  border-radius: 1em;
-}
-
-button {
-  margin: 1em 0 0 0;
-
-  width: 70%;
-  height: 3em;
-  max-width: 20em;
-
-  border-style: solid;
-  border-width: thin;
-  border-radius: 4em;
+  border: 1px solid turquoise;
+  border-radius: 0.4em;
 }
 
 .error {
   margin-top: 1em;
-}
-
-#back-btn {
-  border-style: solid;
-  border-width: thin;
-  border-radius: 4em;
+  margin-bottom: 1em;
 }
 </style>

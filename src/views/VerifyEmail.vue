@@ -1,21 +1,32 @@
 <template>
-  <div class="signup">
-    <img alt="Login image" src="../assets/logo.png" width="360" height="360" />
+  <v-content id="verify-email">
+    <v-img alt="ClassExpress logo" src="../assets/logo.png" />
 
     <h2>Hello! Plz login after<br />verifying ur emailz</h2>
 
     <br />
     <br />
 
-    <v-btn color="orange" @click="resendVerificationEmail">
+    <v-btn
+      @click="resendVerificationEmail"
+      width="calc(100% - 5em)"
+      color="orange darken-1"
+    >
       resend verification email
     </v-btn>
 
     <br />
     <br />
 
-    <v-btn color="primary" :to="{ name: 'login' }">login</v-btn>
-  </div>
+    <v-btn
+      :to="{ name: 'login' }"
+      width="calc(100% - 5em)"
+      color="blue darken-2"
+      dark
+    >
+      Login
+    </v-btn>
+  </v-content>
 </template>
 
 <script>
@@ -48,9 +59,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-img {
-  background-size: cover;
-}
-</style>
