@@ -38,14 +38,58 @@
               <!-- @todo Add a points box beside the class name -->
               <!-- <p>7 points</p> -->
 
+              <!-- Only bold the time to make it more readable -->
               <v-list-item-subtitle style="font-weight: bold;">
-                {{ moment(clas.time).format("MMMM Do, h:mm") }} to
+                <!--
+                  A few formats are used for showing the datetime of the class
+                  1) Today/Tomorrow + date + time
+                  1.1) Today/Tomorrow + date + year + time
+                  2) Day of the Week + date + time
+                  2.2) Day of the Week + date + year + time
+
+                  As seen above, since date and time are always shown,
+                  we spilt them out to reduce code duplication
+                -->
+
+                <!-- If the class is today -->
+                <span v-if="moment().isSame(moment(clas.time), 'day')">
+                  Today,
+                </span>
+                <!-- Else, if the class is tomorrow -->
+                <span
+                  v-else-if="
+                    moment()
+                      .add(moment.duration(1, 'd'))
+                      .isSame(
+                        moment(clas.time).add(moment.duration(1, 'd')),
+                        'day'
+                      )
+                  "
+                >
+                  Tomorrow,
+                </span>
+                <!-- Else just show day of the week -->
+                <span v-else>
+                  {{ moment(clas.time).format("dddd, ") }}
+                </span>
+
+                <!-- Date -->
+                {{ moment(clas.time).format("D MMM") }}
+
+                <!-- Show year only if class is next year -->
+                <span v-if="moment().year() !== moment(clas.time).year()">
+                  {{ moment(clas.time).format("YYYY") }}
+                </span>
+
+                <br />
+                <!-- Time -->
+                {{ moment(clas.time).format("h:mm a") }} -
                 {{
-                  moment(clas.time + Date.parse(clas.length)).format(
-                    "MMMM Do, h:mm"
-                  )
+                  moment(clas.time + Date.parse(clas.length)).format("h:mm a")
                 }}
               </v-list-item-subtitle>
+
+              <br />
 
               <v-list-item-subtitle>
                 <div>{{ clas.provider.name }}</div>
