@@ -2,7 +2,7 @@
   <v-content id="welcome">
     <v-img
       eager
-      alt="Login image"
+      alt="ClassExpress logo"
       src="../assets/logo.png"
       max-height="calc(100% - 1em)"
       max-width="calc(100% - 1em)"
