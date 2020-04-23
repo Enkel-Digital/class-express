@@ -22,9 +22,9 @@
     </v-responsive>
 
     <v-responsive style="margin: 1em;">
-      <h3 class="headline" v-text="clas.name"></h3>
+      <h3 class="headline" v-text="clas.name" />
 
-      <v-row>
+      <v-row v-if="selectedTime">
         <v-col class="col-auto">
           <!-- date of class -->
           <v-list-item-subtitle>
