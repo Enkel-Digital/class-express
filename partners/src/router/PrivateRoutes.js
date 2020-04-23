@@ -8,7 +8,8 @@ import schedule from "../views/Schedule.vue";
 import AllClasses from "../views/AllClasses.vue";
 import ClassDetails from "../views/ClassDetails.vue";
 import AddNewClass from "../views/AddNewClass.vue";
-// import Reviews from "../views/Reviews.vue";
+import AllReviews from "../views/AllReviews.vue";
+import Reviews from "../views/Reviews.vue";
 
 /**
  * @notice Some of these less frequented routes uses lazily loaded components
@@ -57,10 +58,15 @@ const routes = [
     props: true
   },
   {
+    path: "/reviews/all",
+    name: "all-reviews",
+    component: AllReviews,
+    meta: { Auth_requirements: AuthType.private }
+  },
+  {
     path: "/reviews/:classID",
     name: "reviews",
-    // component: Reviews,
-    component: () => import("@/views/Reviews.vue"),
+    component: Reviews,
     meta: { Auth_requirements: AuthType.private },
     props: true
   },

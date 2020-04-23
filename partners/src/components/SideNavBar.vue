@@ -13,13 +13,9 @@
       <v-list-item-content>
         <p class="overline">Account</p>
 
-        <v-list-item-title>
-          {{ "JJ Lee" }}
-        </v-list-item-title>
+        <v-list-item-title>{{ "JJ Lee" }}</v-list-item-title>
 
-        <v-list-item-subtitle>
-          {{ "JJ@enkeldigital.com" }}
-        </v-list-item-subtitle>
+        <v-list-item-subtitle>{{ "JJ@enkeldigital.com" }}</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 
@@ -60,7 +56,7 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-      </v-list-group> -->
+      </v-list-group>-->
 
       <!-- Logout button at the bottom -->
       <v-list-item ripple hover @click="logout">
@@ -116,7 +112,7 @@ export default {
         {
           icon: "mdi-account",
           text: "View Reviews",
-          link: { name: "view-reviews" }
+          link: { name: "all-reviews" }
         },
         {
           icon: "mdi-account-group-outline",
