@@ -46,7 +46,7 @@ const routes = [
     props: true
   },
   {
-    path: "/classdetails/:classID",
+    path: "/classdetails/:classID/:selectedTime?",
     name: "ClassDetails",
     component: ClassDetails,
     meta: { Auth_requirements: AuthType.private },
