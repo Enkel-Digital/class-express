@@ -12,7 +12,7 @@
         v-for="clas in favouriteClasses"
         :key="clas.id"
         class="mx-auto mb-4"
-        max-width="400"
+        max-width="calc(100% - 1.6em)"
         outlined
         :ripple="false"
       >

@@ -13,7 +13,7 @@
     </div>
 
     <!-- Show total / overall review -->
-    <v-responsive id="reviews-card" class="mx-auto" max-width="400">
+    <v-responsive id="reviews-card" class="mx-auto">
       <v-list-item>
         <v-list-item-content>
           <p class="overline">Overall Reviews</p>

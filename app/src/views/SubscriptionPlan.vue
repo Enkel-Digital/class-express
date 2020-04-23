@@ -40,7 +40,7 @@
         :key="i"
         id="plans-card"
         class="mx-auto mb-4"
-        max-width="344"
+        max-width="calc(100% - 3em)"
         outlined
         @click="updatePlan(plan.id)"
       >
@@ -78,7 +78,7 @@
 
     <v-card
       class="mx-auto mb-4"
-      max-width="344"
+      max-width="calc(100% - 3em)"
       outlined
       style="text-align: left;"
       :to="{ name: 'topup' }"
@@ -101,7 +101,7 @@
 
     <v-card
       class="mx-auto mb-4"
-      max-width="344"
+      max-width="calc(100% - 3em)"
       outlined
       style="text-align: left;"
       :to="{ name: 'faq' }"
