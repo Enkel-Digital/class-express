@@ -29,12 +29,7 @@
 
     <v-divider></v-divider>
 
-    <v-sheet
-      id="recommended-classes-sheet"
-      class="mx-auto"
-      elevation="8"
-      max-width="800"
-    >
+    <v-sheet id="recommended-classes-sheet" class="mx-auto" elevation="3">
       Recommended classes
       <v-slide-group class="pa-4">
         <v-slide-item
@@ -45,8 +40,8 @@
           <v-card
             :color="'grey lighten-1'"
             class="ma-4"
-            height="100"
-            width="100"
+            height="6em"
+            width="6em"
             @click="toggle"
           >
           </v-card>
@@ -56,12 +51,7 @@
 
     <br />
 
-    <v-sheet
-      id="explore-classes-sheet"
-      class="mx-auto"
-      elevation="8"
-      max-width="800"
-    >
+    <v-sheet id="explore-classes-sheet" class="mx-auto" elevation="3">
       Explore classes
       <v-slide-group class="pa-4">
         <v-slide-item
@@ -72,8 +62,8 @@
           <v-card
             :color="'grey lighten-1'"
             class="ma-4"
-            height="100"
-            width="100"
+            height="6em"
+            width="6em"
             @click="toggle"
           >
           </v-card>

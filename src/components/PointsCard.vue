@@ -1,6 +1,11 @@
 <template>
   <v-responsive>
-    <v-card id="points-card" class="mx-auto" max-width="344" outlined>
+    <v-card
+      id="points-card"
+      class="mx-auto"
+      max-width="calc(100% - 3em)"
+      outlined
+    >
       <v-list-item>
         <v-list-item-content>
           <p class="overline">your points</p>
@@ -23,7 +28,7 @@
       v-if="currentPlanID"
       id="points-card"
       class="mx-auto"
-      max-width="344"
+      max-width="calc(100% - 3em)"
       outlined
     >
       <v-list-item>
@@ -44,7 +49,7 @@
     </v-card> -->
 
     <!-- If the user does not have a plan yet -->
-    <!-- <v-card v-else id="points-card" class="mx-auto" max-width="344" outlined>
+    <!-- <v-card v-else id="points-card" class="mx-auto" max-width="calc(100% - 3em)" outlined>
       <v-list-item>
         <v-list-item-content>
           <p class="overline">no points nor plan yet?</p>

@@ -12,7 +12,12 @@
       Need more points? Topup anytime at flat rates!
     </p>
 
-    <v-card id="points-card" class="mx-auto mb-4" max-width="344" outlined>
+    <v-card
+      id="points-card"
+      class="mx-auto mb-4"
+      max-width="calc(100% - 3em)"
+      outlined
+    >
       <v-list-item>
         <v-list-item-content>
           <p class="overline">your points</p>
@@ -30,7 +35,7 @@
 
     <v-card
       class="mx-auto mb-4"
-      max-width="344"
+      max-width="calc(100% - 3em)"
       outlined
       style="text-align: left;"
       :to="{ name: 'subscription' }"
@@ -55,7 +60,7 @@
       :key="i"
       id="plans-card"
       class="mx-auto mb-4"
-      max-width="344"
+      max-width="calc(100% - 3em)"
       outlined
       @click="buyPoints(topupOption.id)"
       style="text-align: left;"
@@ -85,7 +90,7 @@
 
     <v-card
       class="mx-auto mb-4"
-      max-width="344"
+      max-width="calc(100% - 3em)"
       outlined
       style="text-align: left;"
       :to="{ name: 'subscription' }"
@@ -107,7 +112,7 @@
 
     <v-card
       class="mx-auto mb-4"
-      max-width="344"
+      max-width="calc(100% - 3em)"
       outlined
       style="text-align: left;"
       :to="{ name: 'faq' }"
