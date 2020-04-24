@@ -33,6 +33,8 @@
           <v-card-text>
             {{ i }}
             <br />
+            {{ daysFromToday(i).unix() }}
+            <br />
             {{
               daysFromToday(i).format("ddd") +
                 " " +
@@ -85,9 +87,15 @@ export default {
     },
     // Load schedule as user scrolls/swipes to view more
     dateCursorChanged(dateCursor) {
+      const numOfScheduleToBuffer = dateCursor + 7 - this.tabs.length;
+      if (numOfScheduleToBuffer < 1) return; // Skip when user moves dateCursor backwards in time
+
+      const dates = [];
+
       // Load 1 week more of schedules from selected date's cursor
-      for (const i of Array(dateCursor + 7 - this.tabs.length).keys()) {
+      for (const i of Array(numOfScheduleToBuffer).keys()) {
         this.tabs.push(this.tabs.length);
+        dates.push();
       }
 
       this.$store.dispatch("classes/getSchedule", { classID: this.classID });
