@@ -1,7 +1,6 @@
 <template>
   <v-content id="login">
     <v-img
-      eager
       alt="ClassExpress logo"
       src="../assets/logo.png"
       max-height="calc(100% - 1em)"
@@ -104,12 +103,6 @@ export default {
           this.password
         );
 
-        const headers = {
-          Authorization: `Bearer ${await auth().currentUser.getIdToken()}`
-        };
-
-        console.log("verified", auth().currentUser.emailVerified);
-
         if (!auth().currentUser.emailVerified) {
           // Signout the user and redirect to verifyEmail view
           await auth().signOut();
@@ -119,15 +112,26 @@ export default {
           error.code = "email/no-verify";
           throw error;
         } else {
-          // Await for async dispatch to ensure app only starts when user info is all available.
-          await this.$store.dispatch("getUserDetails");
-
+          /**
+           * Await for async dispatch to ensure app only starts when user info is all available.
+           * @notice This might cause some cascading failures issue if 1st call fails and throws.
+           * @notice Current fix is to sign user out if they are signed in, in catch block
+           * @todo To fix this, as this is not an ideal method.
+           */
+          await this.$store.dispatch("getUserDetails", this.email);
           await this.$store.dispatch("init");
 
           // Route to the user's home page, after login
           this.$router.replace({ name: "home", params: { user: name } });
         }
       } catch (error) {
+        /**
+         * If there is an error but user is somehow logged in, sign user out to try again
+         * @notice This is not ideal as if the store dispatch failed, then user can never ever login anymore
+         * @todo To optimize this.
+         */
+        if (auth().currentUser) await auth().signOut();
+
         // Set the message into the error box to show user the error
         this.error_msg = error_msg(error);
       }

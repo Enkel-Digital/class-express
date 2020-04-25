@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
+import fetch from "./utils/fetch";
 
 import initialState from "./initialState";
 import setter from "./utils/setter";
@@ -10,9 +11,6 @@ import pointsModule from "./module/points";
 import newsModule from "./module/news";
 import subscriptionPlanModule from "./module/subscriptionPlan";
 import settingsModule from "./module/settings";
-
-// @todo Remove these mock data
-import mock from "./mockData";
 
 Vue.use(Vuex);
 
@@ -48,8 +46,11 @@ export default new Vuex.Store({
      * Function to get all the user's details
      * @function getUserDetails
      */
-    async getUserDetails({ commit }) {
-      commit("setter", ["user", mock.user]);
+    async getUserDetails({ commit }, email) {
+      email = email.toLowerCase();
+
+      const data = await fetch(`/user/${email}`);
+      commit("setter", ["user", data.user]);
     }
   },
   plugins: [createPersistedState()]
