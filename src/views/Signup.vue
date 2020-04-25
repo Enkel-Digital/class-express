@@ -32,7 +32,7 @@
       required
     />
 
-    <p class="error">{{ error_msg }}</p>
+    <p class="error" v-html="error_msg"></p>
 
     <v-btn @click="signUp" width="calc(100% - 6em)" color="green darken-1" dark>
       Sign Up
@@ -80,7 +80,7 @@ function error_msg(err) {
     case "auth/wrong-password":
       return "Invalid password or email.";
     case "auth/email-already-in-use":
-      return "Email already in use, please log in instead. Reset password if you have forgotten it.";
+      return "Email already in use, please log in instead.<br />Reset password if you have forgotten it.";
     case "auth/network-request-failed":
       return "Oops, please check your internet connection!";
     default:
