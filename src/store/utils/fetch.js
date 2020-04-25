@@ -2,11 +2,23 @@
  * Module that extends the browser fetch method to auto prepend API URL
  */
 
+import { auth } from "firebase";
 import { apiUrl } from "@/config.js";
 
 async function fetch(url = "", init = {}) {
   try {
-    const response = await window.fetch(apiUrl + url, init);
+    // Call window fetch with prepended API URL and default request object
+    const response = await window.fetch(
+      apiUrl + url,
+      Object.assign(
+        {
+          headers: {
+            Authorization: `Bearer ${await auth().currentUser.getIdToken()}`
+          }
+        },
+        init
+      )
+    );
 
     const parsedResponse = response.json();
 
