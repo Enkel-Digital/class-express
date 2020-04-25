@@ -24,7 +24,7 @@
       required
     />
 
-    <p class="error">{{ error_msg }}</p>
+    <p class="error" v-html="error_msg"></p>
 
     <v-btn @click="login" width="calc(100% - 6em)" color="blue darken-1" dark>
       Login
@@ -70,11 +70,13 @@ import { auth } from "firebase";
 function error_msg(err) {
   switch (err.code) {
     case "auth/wrong-password":
-      return "Invalid password or email.";
+      return "Invalid password or email!";
     case "auth/network-request-failed":
       return "Oops, check your internet connection!";
+    case "auth/user-not-found":
+      return "Sorry but you dont have an account with us 😭<br />Signup now!";
     case "email/no-verify":
-      return "Email not verified. Please verify before trying again";
+      return "Email not verified.<br />Please verify before trying again";
     default:
       return "Something went wrong! Please try again.";
   }
