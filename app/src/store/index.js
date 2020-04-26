@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
-import fetch from "./utils/fetch";
+import api from "./utils/fetch";
 
 import initialState from "./initialState";
 import setter from "./utils/setter";
@@ -49,8 +49,10 @@ export default new Vuex.Store({
     async getUserDetails({ commit }, email) {
       email = email.toLowerCase();
 
-      const data = await fetch(`/user/${email}`);
-      commit("setter", ["user", data.user]);
+      const response = await api.get(`/user/${email}`);
+      // @todo Handle error cases
+      // if (!response.success) {}
+      commit("setter", ["user", response.user]);
     }
   },
   plugins: [createPersistedState()]
