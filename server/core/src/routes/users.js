@@ -34,7 +34,36 @@ router.get("/:userID", auth, async (req, res) => {
     res.json({ success: true, user });
   } catch (error) {
     logger.error(error);
-    res.json({ success: false, error });
+    res.status(error.code ? error.code : 500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Create new user details object
+ * @name POST /user/new/
+ * @function
+ * @param {String} userID
+ * @param {Object} user
+ * @returns {object} success indicator
+ */
+router.post("/new", auth, express.json(), async (req, res) => {
+  try {
+    // Ensure that the email used as userID is lowercase.
+    // Refer to notes for why we are enforcing this lowercase usage.
+    const userID = req.body.userID.toLowerCase();
+    req.body.user.email = req.body.user.email.toLowerCase();
+    const user = req.body.user;
+
+    // Create document in user with user's email as userID
+    await db
+      .collection("users")
+      .doc(userID)
+      .set(user);
+
+    res.status(201).json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
