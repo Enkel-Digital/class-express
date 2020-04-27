@@ -3,11 +3,11 @@
     <v-app-bar app color="white" flat fixed>
       <BackBtn />
 
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <h3>{{ className }}</h3>
 
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <!-- @todo Change this to show how many points you are left. Use a points icon component -->
       <v-btn icon>

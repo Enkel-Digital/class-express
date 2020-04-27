@@ -43,7 +43,7 @@
         </v-responsive>
 
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
 
           <!-- Change this to a remove icon only. Cos dont need to toggle, here means confirm favourites already -->
           <v-btn icon @click="toggleFavourite(clas.id)">

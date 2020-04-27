@@ -4,7 +4,7 @@
  */
 
 import { auth } from "firebase";
-import { apiUrl } from "@/config.js";
+import { apiUrl } from "@/config";
 
 /**
  * Inner fetch function used to prepend API base URL and parse the response
