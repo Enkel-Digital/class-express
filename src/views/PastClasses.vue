@@ -52,7 +52,7 @@
             <v-icon>mdi-share-variant</v-icon>
           </v-btn>
 
-          <v-spacer></v-spacer>
+          <v-spacer />
 
           <v-btn icon @click="toggleFavourite(clas.id)">
             <v-icon v-if="clas.favourite" color="red">mdi-heart</v-icon>

@@ -60,7 +60,9 @@
 
     <v-divider />
 
-    <v-list-item>
+    <v-list-item
+      :to="{ name: 'partner', params: { partnerID: clas.provider.id } }"
+    >
       <v-list-item-content>
         <p class="ma-0 mb-2 pa-0" style="font-weight: bold;">
           {{ clas.provider.name }}
@@ -191,8 +193,11 @@ export default {
     // Call action to fetch review of this class
     this.$store.dispatch("classes/getReview", this.classID);
   },
+  // @todo Run prop validation against data/server to ensure selected time is valid.
   props: ["classID", "selectedTime"],
   data() {
+    // @todo Generate calendar invite link for add to calendar button
+
     // Classes is static via the data function as we do not want its reactivity
     const clas = this.$store.state.classes.classes[this.classID];
     return { clas, classTimeSelected: true };
