@@ -73,6 +73,7 @@
  */
 
 import { auth } from "firebase";
+import api from "@/store/utils/fetch";
 
 // Function to map and return a given err.code to a user friendly message
 function error_msg(err) {
@@ -104,27 +105,55 @@ export default {
     },
     signUp: async function() {
       try {
-        // After signup, user will be automatically signed in, redirect to home
-        // eslint-disable-next-line no-unused-vars
-        const usr = await auth().createUserWithEmailAndPassword(
-          this.email,
-          this.password
-        );
+        // Make lowercase, refer to notes & faq on why this is lowercase.
+        // tl;dr Firebase auth like google ignores the email RFC and forces email case-insensitivity
+        this.email = this.email.toLowerCase();
 
+        // Create new user and send them a email verification email
+        await auth().createUserWithEmailAndPassword(this.email, this.password);
         auth().currentUser.sendEmailVerification();
 
-        // Store user details to use store to sync data with server.
-        // @notice This must be completed before signing out since server needs auth verification.
-        const storeUser = this.$store.state.user;
-        storeUser.email = this.email;
-        storeUser.name = this.name;
-        this.$store.commit("setter", ["user", storeUser]);
+        const newUser = {
+          // @todo Might need to destructure email and password from "this" then use it
+          userID: this.email,
+          user: {
+            userID: this.email,
+            email: this.email,
+            name: this.name,
+            fname: undefined,
+            lname: undefined,
+            imageSrc: undefined // For now, user cannot upload image during signup
+          }
+        };
 
-        // Signout the user and redirect to verifyEmail view
+        // @todo Replace this with a mutation watcher?
+        // This needs to be before signout, as we need the token to create a new user.
+        // Not awaiting as we do not need its response to continue signup flow, signing user out and redirecting
+        const res = api.post("/user/new", newUser);
+
+        // // @todo Use this if mutation watcher is implemented.
+        // // Store user details to use store to sync data with server.
+        // // @notice This must be completed before signing out since server needs auth verification.
+        // const storeUser = this.$store.state.user;
+        // storeUser.email = this.email;
+        // storeUser.name = this.name;
+        // this.$store.commit("setter", ["user", storeUser]);
+
+        // Sign user out and redirect to verifyEmail view
         await auth().signOut();
 
         this.$router.replace({ name: "verify-email" });
       } catch (error) {
+        /**
+         * If there is an error before user is signed out, sign user out to try again
+         * @notice This is not ideal as if the store dispatch / API failed then user needs to login directly instead of retry.
+         * @todo To optimize this.
+         */
+        if (auth().currentUser) await auth().signOut();
+
+        // @todo Remove before production
+        console.error(error);
+
         // Set the message into the error box to show user the error
         this.error_msg = error_msg(error);
       }
