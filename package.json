@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "npx cross-env NODE_ENV=development vue-cli-service serve",
+    "build": "npx cross-env NODE_ENV=production vue-cli-service build",
     "lint": "vue-cli-service lint",
     "deploy-firebase-hosting": "firebase deploy --only hosting",
     "deploy": "npm run build && npm run deploy-firebase-hosting"
@@ -28,6 +28,7 @@
     "@vue/cli-service": "^4.2.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.0.3",
+    "cross-env": "^7.0.2",
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-vue": "^6.1.2",
