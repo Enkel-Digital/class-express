@@ -11,7 +11,7 @@
       v-autofocus
       type="text"
       v-model="email"
-      placeholder="Username"
+      placeholder="Email"
       @keypress.enter="login"
       required
     />
