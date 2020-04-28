@@ -30,7 +30,9 @@
     </h3>
     <p style="color: rgba(0, 0, 0, 0.6); text-align: left;" class="ml-5 mb-0">
       Your current plan ends on
-      <span style="font-weight: bold;">{{ periodEndDate }}</span>
+      <span style="font-weight: bold;">
+        {{ moment.unix(periodEndDate).format("L") }}
+      </span>
       <br />Click to change next month's plan
     </p>
 
