@@ -6,6 +6,7 @@
 
 import initialState from "./initialState";
 import setter from "../../utils/setter";
+import api from "@/store/utils/fetch";
 
 // @todo Remove mock data
 import mock from "../../mockData";
@@ -74,6 +75,20 @@ export default {
 
         // Pessimistic UI, show after network update is complete
         commit("setter", ["nextPlanID", planID]);
+      }
+    },
+    async cancelPlan({ rootState, commit }, cancellationReasons) {
+      const response = await api.post("/subscription/cancel", {
+        userID: rootState.user.userID,
+        cancellationReasons
+      });
+
+      // @todo
+      if (response.success) {
+        // Indicate that this is the last plan and there will no longer be any next plan
+        commit("setter", ["nextPlanID", null]);
+      } else {
+        // error dialog
       }
     }
   }
