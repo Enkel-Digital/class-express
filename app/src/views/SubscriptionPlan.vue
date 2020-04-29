@@ -13,10 +13,8 @@
     <v-responsive>
       <v-list-item id="user-details-card" class="mb-0 pb-0 mt-0 pt-0">
         <v-list-item>
-          <v-list-item-content>
-            <p style="color: rgba(0, 0, 0, 0.8);">
-              We offer Monthly subscription plans to give you points for less!
-            </p>
+          <v-list-item-content style="color: rgba(0, 0, 0, 0.8);">
+            Our Monthly subscription plans gives you more points for less!
           </v-list-item-content>
         </v-list-item>
       </v-list-item>
@@ -79,6 +77,25 @@
     </v-radio-group>
 
     <v-card
+      v-if="currentPlanID !== undefined"
+      class="mx-auto mb-4"
+      max-width="calc(100% - 3em)"
+      outlined
+      style="text-align: left;"
+      :to="{ name: 'cancel-subscription' }"
+    >
+      <v-list-item>
+        <v-list-item-content>
+          <p class="overline">Want to cancel your plan instead?</p>
+
+          <v-list-item-subtitle>
+            Let us know why and cancel your plan here.
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </v-card>
+
+    <v-card
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
@@ -122,7 +139,6 @@
 </template>
 
 <script>
-import logout from "@/controllers/logout";
 import BackBtn from "@/components/BackBtn";
 import PointsCard from "@/components/PointsCard";
 import { mapState, mapGetters, mapActions } from "vuex";
@@ -156,7 +172,6 @@ export default {
     }
   },
   methods: {
-    logout,
     ...mapActions("subscription", ["updatePlan"])
   }
 };
