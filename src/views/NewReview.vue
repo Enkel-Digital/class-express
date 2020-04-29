@@ -1,9 +1,7 @@
 <template>
   <v-content class="reviews">
-    <!-- Allow user to skip writing a review -->
-    <v-col cols="2" sm="3"></v-col>
-
-    <v-row class="mt-1">
+    <!-- Allow user to skip review with exit to Home -->
+    <v-row class="mt-2">
       <v-col cols="1">
         <v-btn :to="{ name: 'home' }" text x-small>
           <v-icon large color="#625B5A">mdi-close</v-icon>
@@ -33,10 +31,9 @@
       type="text"
       v-model="description"
       filled
-      rows="2"
+      rows="4"
       placeholder="Tell us more!"
       no-resize
-      required
     />
 
     <v-btn
@@ -48,10 +45,11 @@
         })
       "
       outlined
-      block
       color="#F6B44E"
-      >submit</v-btn
+      block
     >
+      submit
+    </v-btn>
   </v-content>
 </template>
 
@@ -78,4 +76,3 @@ export default {
   }
 };
 </script>
-<style scoped></style>
