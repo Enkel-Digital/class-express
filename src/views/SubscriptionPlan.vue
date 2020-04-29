@@ -1,17 +1,17 @@
 <template>
-  <v-content class="subscription">
+  <v-content id="subscription">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Subscription</v-toolbar-title>
     </v-app-bar>
 
-    <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ma-5 mb-0">
+    <h3 style="color: rgba(0, 0, 0, 0.65);" class="ma-5 mb-0">
       Get more for less!
     </h3>
 
     <!-- Update below to show one of the cards what is your current plan -->
     <v-responsive>
-      <v-list-item id="user-details-card" class="mb-0 pb-0 mt-0 pt-0">
+      <v-list-item class="mb-0 pb-0 mt-0 pt-0">
         <v-list-item>
           <v-list-item-content style="color: rgba(0, 0, 0, 0.8);">
             Our Monthly subscription plans gives you more points for less!
@@ -23,10 +23,10 @@
     <PointsCard />
 
     <br />
-    <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ml-5">
+    <h3 style="color: rgba(0, 0, 0, 0.65);" class="ml-5">
       Subscription Plans
     </h3>
-    <p style="color: rgba(0, 0, 0, 0.6); text-align: left;" class="ml-5 mb-0">
+    <p style="color: rgba(0, 0, 0, 0.6);" class="ml-5 mb-0">
       Your current plan ends on
       <span style="font-weight: bold;">
         {{ moment.unix(periodEndDate).format("L") }}
@@ -76,6 +76,10 @@
       </v-card>
     </v-radio-group>
 
+    <!-- 
+      Using !== undefined as planID can be 0 
+      Delete field in DB once plan is cancelled
+    -->
     <v-card
       v-if="currentPlanID !== undefined"
       class="mx-auto mb-4"
@@ -178,13 +182,7 @@ export default {
 </script>
 
 <style scoped>
-#user-details-card {
-  text-align: left;
-  margin: 1em;
-  margin-top: 2em;
-}
-
-#points-card {
+#subscription {
   text-align: left;
 }
 </style>
