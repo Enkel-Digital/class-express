@@ -1,5 +1,8 @@
 "use strict"; // Enforce use of strict verion of JavaScript
 
+const createLogger = require("@lionellbriones/logging").default;
+const logger = createLogger("middleware:404");
+
 /**
  * @function 404 Handler for all not resource not founds
  * @notice Normal request middleware, called when no other route's are matched
@@ -9,13 +12,11 @@
  */
 module.exports = function(req, res, next) {
   try {
-    /// @Todo Log error either to error logs or to a logging service
+    // @Todo Log error either to stderr or to a service
+    logger.error(req.originalUrl); // log the request route
 
-    // Set status to indicate resource not found and send back the string representation of the HTTP code, i.e. "Not-Found"
-    // res.sendStatus(404);
-
-    // Send without the string representation. End the cycle right after setting with 404
-    res.status(404).end();
+    // res.status(404).end();
+    res.status(404).json({ success: false, error: "404" });
   } catch (err) {
     // 500 error middleware is called upon catching any errors
     next(err);
