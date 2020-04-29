@@ -32,6 +32,13 @@
       required
     />
 
+    <div id="termsAndCondition">
+      *By creating an account, you agree to the
+      <a href="https://terms.classexpress.com" target="_blank">
+        terms and conditions
+      </a>
+    </div>
+
     <p class="error" v-html="error_msg"></p>
 
     <v-btn @click="signUp" width="calc(100% - 6em)" color="green darken-1" dark>
@@ -171,6 +178,10 @@ input {
 
   border: 1px solid turquoise;
   border-radius: 0.4em;
+}
+
+#termsAndCondition {
+  font-size: 0.7em;
 }
 
 .error {
