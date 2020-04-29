@@ -98,6 +98,12 @@ const routes = [
     meta: { Auth_requirements: AuthType.private }
   },
   {
+    path: "/subscription/cancel",
+    name: "cancel-subscription",
+    component: () => import("@/views/CancelSubscription.vue"),
+    meta: { Auth_requirements: AuthType.private }
+  },
+  {
     path: "/settings",
     name: "settings",
     component: () => import("@/views/Settings.vue"),
