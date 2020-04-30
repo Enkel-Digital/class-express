@@ -23,7 +23,7 @@
         outlined
         :ripple="false"
       >
-        <MapImage :src="clas.locationImage" :classID="clas.id" />
+        <MapImage :classID="clas.id" />
 
         <v-responsive
           @click="
@@ -91,9 +91,19 @@
 
               <br />
 
-              <v-list-item-subtitle>
-                <div>{{ getPartnerName(clas.partnerID) }}</div>
-                <div>{{ clas.location.address }}</div>
+              <v-list-item-subtitle
+                :set="(partner = getPartner(clas.partnerID))"
+              >
+                <div style="font-weight: bold;">
+                  {{ partner.name }}
+                </div>
+                <div>
+                  {{
+                    clas.location
+                      ? clas.location.address
+                      : partner.location.address
+                  }}
+                </div>
               </v-list-item-subtitle>
             </div>
           </v-list-item>
@@ -141,8 +151,8 @@ export default {
   },
   methods: {
     ...mapActions("classes", ["toggleFavourite"]),
-    getPartnerName(partnerID) {
-      return this.$store.state.classes.partners[partnerID].name;
+    getPartner(partnerID) {
+      return this.$store.state.classes.partners[partnerID];
     }
   }
 };

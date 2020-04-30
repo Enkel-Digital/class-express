@@ -67,7 +67,9 @@
         <p class="ma-0 mb-2 pa-0" style="font-weight: bold;">
           {{ partner.name }}
         </p>
-        <p class="ma-0 pa-0">{{ clas.location.address }}</p>
+        <p class="ma-0 pa-0">
+          {{ clas.location ? clas.location.address : partner.location.address }}
+        </p>
       </v-list-item-content>
 
       <v-icon x-large>mdi-chevron-right</v-icon>
