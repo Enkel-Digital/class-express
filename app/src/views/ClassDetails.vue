@@ -61,11 +61,11 @@
     <v-divider />
 
     <v-list-item
-      :to="{ name: 'partner', params: { partnerID: clas.provider.id } }"
+      :to="{ name: 'partner', params: { partnerID: clas.partnerID } }"
     >
       <v-list-item-content>
         <p class="ma-0 mb-2 pa-0" style="font-weight: bold;">
-          {{ clas.provider.name }}
+          {{ partner.name }}
         </p>
         <p class="ma-0 pa-0">{{ clas.location.address }}</p>
       </v-list-item-content>
@@ -127,7 +127,7 @@
           <br />
 
           <!-- Change to a more readable font -->
-          <span v-html="clas.provider.description"></span>
+          <span v-html="partner.description"></span>
         </v-list-item-content>
       </v-list-item>
     </v-responsive>
@@ -168,7 +168,7 @@
       </v-btn>
     </v-container>
 
-    <!-- Perhaps have a similiar classes/partners thing? -->
+    <!-- @todo Perhaps have a similiar classes/partners thing? -->
   </v-content>
 </template>
 
@@ -198,9 +198,15 @@ export default {
   data() {
     // @todo Generate calendar invite link for add to calendar button
 
+    // @todo Might move this to computed since we need to load it
     // Classes is static via the data function as we do not want its reactivity
     const clas = this.$store.state.classes.classes[this.classID];
-    return { clas, classTimeSelected: true };
+
+    // @todo Might move this to computed since we need to load it
+    // Partners is static via the data function as we do not want its reactivity
+    const partner = this.$store.state.classes.partners[clas.partnerID];
+
+    return { clas, partner, classTimeSelected: true };
   },
   computed: {
     favouritedClass() {

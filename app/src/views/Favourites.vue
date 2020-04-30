@@ -34,7 +34,7 @@
 
               <v-list-item-subtitle>
                 <div style="font-weight: bold;">
-                  {{ clas.provider.name }}
+                  {{ getPartnerName(clas.partnerID) }}
                 </div>
                 <div>{{ clas.location.address }}</div>
               </v-list-item-subtitle>
@@ -75,7 +75,10 @@ export default {
     ...mapGetters("classes", ["favouriteClasses"])
   },
   methods: {
-    ...mapActions("classes", ["toggleFavourite"])
+    ...mapActions("classes", ["toggleFavourite"]),
+    getPartnerName(partnerID) {
+      return this.$store.state.classes.partners[partnerID].name;
+    }
   }
 };
 </script>
