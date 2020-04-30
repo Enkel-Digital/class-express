@@ -107,6 +107,7 @@ export default {
        * @todo Edit "vuex-persistedstate" plugin to ignore class objects as they should be fetched everytime.
        */
       commit("setter", ["classes", mock.classes]);
+      commit("setter", ["partners", mock.partners]);
 
       await dispatch("getUpcomingClassesID");
       await dispatch("getFavouriteClassesID");

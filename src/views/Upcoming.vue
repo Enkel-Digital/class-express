@@ -92,7 +92,7 @@
               <br />
 
               <v-list-item-subtitle>
-                <div>{{ clas.provider.name }}</div>
+                <div>{{ getPartnerName(clas.partnerID) }}</div>
                 <div>{{ clas.location.address }}</div>
               </v-list-item-subtitle>
             </div>
@@ -140,7 +140,10 @@ export default {
     ...mapGetters("classes", ["upcomingClasses"])
   },
   methods: {
-    ...mapActions("classes", ["toggleFavourite"])
+    ...mapActions("classes", ["toggleFavourite"]),
+    getPartnerName(partnerID) {
+      return this.$store.state.classes.partners[partnerID].name;
+    }
   }
 };
 </script>

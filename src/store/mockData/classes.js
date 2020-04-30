@@ -1,5 +1,25 @@
 const moment = require("moment");
 
+const partners = {
+  0: {
+    id: 0,
+    name: "Guitar Studio 1",
+    description: "Get started on your Guitar journey with us!"
+  },
+  1: {
+    id: 1,
+    name: "Tampines CC",
+    description:
+      "Located in the Heartlands of Tampines, we offer a wide variety of classes for our residents."
+  },
+  2: {
+    id: 2,
+    name: "Guitar Studio 2",
+    description:
+      "We offer world class guitar lessons for you!<br />Guitar Studio 2 is one of the leading Guitar Studios in Singapore and South East Asia boasting a whole list of celebrity instructors for you to learn more. We believe that the best instructors are what you need to get from amatuer  to pro just like the instructors themselves!"
+  }
+};
+
 const classes = {
   0: {
     id: 0,
@@ -9,10 +29,7 @@ const classes = {
     length: 60, // Store classLength in minutes can show otherwise in hours as needed
     description:
       "Basic guitar lessons to help you get started with this wonderful musical instrument! This class covers all the basics from score reading to strumming techniques.",
-    provider: {
-      name: "Guitar Studio 1", // Name of the provider
-      id: 123
-    },
+    partnerID: 0,
     location: {
       coordinates: "1.300649, 103.855453",
       address: "249B Victoria St, Bugis Village"
@@ -29,10 +46,7 @@ const classes = {
     length: 150, // Store classLength in minutes can show otherwise in hours as needed
     description:
       "Like cooking but always feel like you are missing a magical ingredient? Well join our class to learn more and get ready to be amazed.",
-    provider: {
-      name: "Tampines CC", // Name of the providerx
-      id: 456
-    },
+    partnerID: 1,
     location: {
       coordinates: "1.302481, 103.855448",
       address: "117 Fidelio St"
@@ -49,11 +63,7 @@ const classes = {
     length: 60, // Store classLength in minutes can show otherwise in hours as needed
     description:
       "Advance guitar lessons taught be the legendary Ichika Mo.<br />Will be going through advanced music scores and includes 1 on 1 trainings for the students, alongside a chance to practice in front of a live audience",
-    provider: {
-      name: "Guitar Studio 2", // Name of the provider
-      id: 123,
-      description: "We offer world class guitar lessons for you!"
-    },
+    partnerID: 2,
     location: {
       coordinates: "1.3006954, 103.84475",
       address: "Orchard road, Plaza Singapura"
@@ -170,6 +180,7 @@ const pastClassesID = {
 
 module.exports = {
   classes,
+  partners,
   reviews,
   schedule,
   upcomingClassesID,
