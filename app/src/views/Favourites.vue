@@ -32,11 +32,19 @@
               <!-- @todo Add a points box beside the class name -->
               <!-- <p>7 points</p> -->
 
-              <v-list-item-subtitle>
+              <v-list-item-subtitle
+                :set="(partner = getPartner(clas.partnerID))"
+              >
                 <div style="font-weight: bold;">
-                  {{ getPartnerName(clas.partnerID) }}
+                  {{ partner.name }}
                 </div>
-                <div>{{ clas.location.address }}</div>
+                <div>
+                  {{
+                    clas.location
+                      ? clas.location.address
+                      : partner.location.address
+                  }}
+                </div>
               </v-list-item-subtitle>
             </div>
           </v-list-item>
@@ -76,8 +84,8 @@ export default {
   },
   methods: {
     ...mapActions("classes", ["toggleFavourite"]),
-    getPartnerName(partnerID) {
-      return this.$store.state.classes.partners[partnerID].name;
+    getPartner(partnerID) {
+      return this.$store.state.classes.partners[partnerID];
     }
   }
 };

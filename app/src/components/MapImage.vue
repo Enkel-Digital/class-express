@@ -1,5 +1,4 @@
 <template>
-  <!-- <v-img :src="clas.locationImage" @click="openMaps" /> -->
   <v-img :src="locationImage" @click="openMaps" />
 </template>
 
@@ -13,19 +12,28 @@ import createGMapsImg from "../store/module/classes/gMapsImage";
  */
 
 export default {
-  name: "map",
+  name: "gMap",
   props: ["src", "classID"],
   computed: {
-    locationImage() {
-      if (!this.src)
-        return createGMapsImg(
-          this.$store.state.classes.classes[this.classID].location.coordinates
-        );
-      else return this.src;
-    },
     coordinates() {
-      return this.$store.state.classes.classes[this.classID].location
-        .coordinates;
+      // If image src is specified, ignore coordinates calculation
+      if (this.src) return;
+
+      const clas = this.$store.state.classes.classes[this.classID];
+
+      // Use the partner's location if there is no custom class location set
+      return clas.location
+        ? clas.location.coordinates
+        : this.$store.state.classes.partners[clas.partnerID].location
+            .coordinates;
+    },
+    locationImage() {
+      // Only if src is not specified, create the image source link
+      if (!this.src) {
+        // Coordinates may not be calculated finish before this property is triggered
+        if (!this.coordinates) return;
+        else return createGMapsImg(this.coordinates);
+      } else return this.src;
     }
   },
   methods: {

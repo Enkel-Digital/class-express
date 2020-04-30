@@ -4,17 +4,29 @@ const partners = {
   0: {
     id: 0,
     name: "Guitar Studio 1",
+    location: {
+      coordinates: "1.300649, 103.855453",
+      address: "249B Victoria St, Bugis Village"
+    },
     description: "Get started on your Guitar journey with us!"
   },
   1: {
     id: 1,
     name: "Tampines CC",
+    location: {
+      coordinates: "1.302481, 103.855448",
+      address: "117 Fidelio St"
+    },
     description:
       "Located in the Heartlands of Tampines, we offer a wide variety of classes for our residents."
   },
   2: {
     id: 2,
     name: "Guitar Studio 2",
+    location: {
+      coordinates: "1.3006954, 103.84475",
+      address: "Orchard road, Plaza Singapura"
+    },
     description:
       "We offer world class guitar lessons for you!<br />Guitar Studio 2 is one of the leading Guitar Studios in Singapore and South East Asia boasting a whole list of celebrity instructors for you to learn more. We believe that the best instructors are what you need to get from amatuer  to pro just like the instructors themselves!"
   }
@@ -30,9 +42,11 @@ const classes = {
     description:
       "Basic guitar lessons to help you get started with this wonderful musical instrument! This class covers all the basics from score reading to strumming techniques.",
     partnerID: 0,
+    // By default class is assumed to be held at partners venue.
+    // However, class can have an optional location to override the default one
     location: {
-      coordinates: "1.300649, 103.855453",
-      address: "249B Victoria St, Bugis Village"
+      coordinates: "1.3006954, 103.84475",
+      address: "Orchard road, Plaza Singapura"
     },
     pictureSources: [
       "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg"
@@ -47,10 +61,6 @@ const classes = {
     description:
       "Like cooking but always feel like you are missing a magical ingredient? Well join our class to learn more and get ready to be amazed.",
     partnerID: 1,
-    location: {
-      coordinates: "1.302481, 103.855448",
-      address: "117 Fidelio St"
-    },
     pictureSources: [
       "https://www.fetimes.co.kr/news/photo/201709/60017_41960_2138.jpg"
     ]
@@ -64,10 +74,6 @@ const classes = {
     description:
       "Advance guitar lessons taught be the legendary Ichika Mo.<br />Will be going through advanced music scores and includes 1 on 1 trainings for the students, alongside a chance to practice in front of a live audience",
     partnerID: 2,
-    location: {
-      coordinates: "1.3006954, 103.84475",
-      address: "Orchard road, Plaza Singapura"
-    },
     pictureSources: [
       "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg"
     ]

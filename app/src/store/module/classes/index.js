@@ -66,8 +66,6 @@ export default {
         pastClasses[classID] = state.classes[classID];
 
       return Object.values(pastClasses).map(clas => {
-        clas.locationImage = createGMapsImg(clas.location.coordinates);
-
         /** @notice Explicit data setting needed to prevent data caching */
         if (state.favouriteClassesID[clas.id]) clas.favourite = true;
         else clas.favourite = false;
@@ -86,8 +84,6 @@ export default {
         upcomingClasses[classID] = state.classes[classID];
 
       return Object.values(upcomingClasses).map(clas => {
-        clas.locationImage = createGMapsImg(clas.location.coordinates);
-
         /** @notice Explicit data setting needed to prevent data caching */
         if (state.favouriteClassesID[clas.id]) clas.favourite = true;
         else clas.favourite = false;
