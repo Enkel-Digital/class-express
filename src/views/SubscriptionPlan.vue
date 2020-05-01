@@ -122,6 +122,25 @@
       </v-list-item>
     </v-card>
 
+    <!-- @todo Update the contact/sales email -->
+    <v-card
+      class="mx-auto mb-4"
+      max-width="calc(100% - 3em)"
+      outlined
+      style="text-align: left;"
+      href="mailto:contact@enkeldigital.com"
+    >
+      <v-list-item>
+        <v-list-item-content>
+          <p class="overline">Interested in Enterprise offerings?</p>
+
+          <v-list-item-subtitle>
+            Reach out to us for more details!
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </v-card>
+
     <v-card
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
