@@ -32,11 +32,6 @@ module.exports = async function auth(req, res, next) {
       return next();
     } else throw new Error("Missing auth token");
   } catch (error) {
-    // Alternatively, use the 500 middleware
-    // error.message = error.message || "UNAUTHORIZED";
-    // res.status(401);
-    // next(error);
-
     return res.status(401).json({
       success: false,
       error: error.message || "UNAUTHORIZED"

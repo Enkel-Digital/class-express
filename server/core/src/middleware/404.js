@@ -13,7 +13,7 @@ const logger = createLogger("middleware:404");
 module.exports = function(req, res, next) {
   try {
     // @Todo Log error either to stderr or to a service
-    logger.error(req.originalUrl); // log the request route
+    logger.error(req.method, req.originalUrl);
 
     // res.status(404).end();
     res.status(404).json({ success: false, error: "404" });

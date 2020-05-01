@@ -24,7 +24,7 @@ router.get("/plans/all", auth, async (req, res) => {
     // Sort them by id asc
     const subscriptionPlansSnapshot = await db
       .collection("subscriptionPlans")
-      .orderBy("id")
+      .orderBy("id", "desc")
       .get();
     const subscriptionPlans = subscriptionPlansSnapshot.docs.map(doc => doc.data());
 
