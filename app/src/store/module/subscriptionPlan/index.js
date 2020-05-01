@@ -8,9 +8,6 @@ import initialState from "./initialState";
 import setter from "../../utils/setter";
 import api from "@/store/utils/fetch";
 
-// @todo Remove mock data
-import mock from "../../mockData";
-
 export default {
   namespaced: true,
   state: initialState(),
@@ -41,10 +38,10 @@ export default {
      * @function getPlans
      */
     async getPlans({ commit }) {
-      // @todo Replace with API call
-      const plans = mock.subscriptionPlans;
+      const response = await api.get("/subscription/plans/all");
+      if (!response.success); // @todo Handle error
 
-      commit("setter", ["subscriptionPlans", plans]);
+      commit("setter", ["subscriptionPlans", response.subscriptionPlans]);
     },
     /**
      * Get ID of current plan
