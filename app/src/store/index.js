@@ -5,6 +5,7 @@ import api from "./utils/fetch";
 
 import initialState from "./initialState";
 import setter from "./utils/setter";
+import errorModule from "./module/error";
 import classesModule from "./module/classes";
 import searchModule from "./module/search";
 import pointsModule from "./module/points";
@@ -17,6 +18,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: initialState(),
   modules: {
+    error: errorModule,
     classes: classesModule,
     search: searchModule,
     points: pointsModule, // User points and not all points related
