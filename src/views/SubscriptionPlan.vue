@@ -76,29 +76,6 @@
       </v-card>
     </v-radio-group>
 
-    <!-- 
-      Using !== undefined as planID can be 0 
-      Delete field in DB once plan is cancelled
-    -->
-    <v-card
-      v-if="currentPlanID !== undefined"
-      class="mx-auto mb-4"
-      max-width="calc(100% - 3em)"
-      outlined
-      style="text-align: left;"
-      :to="{ name: 'cancel-subscription' }"
-    >
-      <v-list-item>
-        <v-list-item-content>
-          <p class="overline">Want to cancel your plan instead?</p>
-
-          <v-list-item-subtitle>
-            Let us know why and cancel your plan here.
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-    </v-card>
-
     <v-card
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
@@ -118,6 +95,29 @@
             Want a Custom plan? We got you covered!<br />Flexibility to
             experiment so you can do you!
           </p>
+        </v-list-item-content>
+      </v-list-item>
+    </v-card>
+
+    <!-- 
+      Using !== undefined as planID can be 0 
+      Delete field in DB once plan is cancelled
+    -->
+    <v-card
+      v-if="currentPlanID !== undefined"
+      class="mx-auto mb-4"
+      max-width="calc(100% - 3em)"
+      outlined
+      style="text-align: left;"
+      :to="{ name: 'cancel-subscription' }"
+    >
+      <v-list-item>
+        <v-list-item-content>
+          <p class="overline">Want to cancel your plan instead?</p>
+
+          <v-list-item-subtitle>
+            Let us know why and cancel your plan here.
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-card>
