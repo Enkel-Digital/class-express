@@ -22,7 +22,11 @@
           "
         >
           <!-- @todo Change to a image carousel -->
-          <v-img id="class-image" :src="clas.pictureSources[0]" />
+          <v-img
+            id="class-image"
+            :src="clas.pictureSources[0]"
+            :aspect-ratio="16 / 9"
+          />
 
           <v-list-item>
             <div style="text-align: left;">
@@ -80,13 +84,15 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "favourites",
   computed: {
-    ...mapGetters("classes", ["favouriteClasses"])
+    ...mapGetters("classes", ["favouriteClasses"]),
   },
   methods: {
     ...mapActions("classes", ["toggleFavourite"]),
     getPartner(partnerID) {
       return this.$store.state.classes.partners[partnerID];
-    }
-  }
+    },
+  },
 };
 </script>
+
+<style scoped></style>
