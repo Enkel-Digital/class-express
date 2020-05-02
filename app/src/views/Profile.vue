@@ -33,7 +33,7 @@
     <PointsCard />
     <br />
 
-    <v-divider></v-divider>
+    <v-divider />
     <v-responsive class="mx-auto">
       <v-card :to="{ name: 'settings' }" ripple tile>
         <v-list-item>

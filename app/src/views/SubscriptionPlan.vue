@@ -69,7 +69,7 @@
               style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;"
               class="mb-0"
             >
-              <span v-html="plan.copywriting"></span>
+              <span v-html="plan.copywriting" />
             </p>
           </v-list-item-content>
         </v-list-item>

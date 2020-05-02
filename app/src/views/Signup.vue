@@ -39,7 +39,7 @@
       </a>
     </div>
 
-    <p class="error" v-html="error_msg"></p>
+    <p class="error" v-html="error_msg" />
 
     <v-btn @click="signUp" width="calc(100% - 6em)" color="green darken-1" dark>
       Sign Up

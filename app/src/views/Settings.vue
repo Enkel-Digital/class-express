@@ -37,7 +37,7 @@
       </v-list-item>
     </v-list>
 
-    <v-divider></v-divider>
+    <v-divider />
 
     <v-list>
       <v-subheader colors="orange">
@@ -56,7 +56,7 @@
           readonly
           label="Mobile notifications"
           class="ma-1 pa-0"
-        ></v-checkbox>
+        />
       </div>
 
       <div
@@ -71,11 +71,11 @@
           readonly
           label="Email notifications"
           class="ma-1 pa-0"
-        ></v-checkbox>
+        />
       </div>
     </v-list>
 
-    <v-divider></v-divider>
+    <v-divider />
 
     <v-list>
       <v-subheader>
@@ -95,7 +95,7 @@
       </v-list-item>
     </v-list>
 
-    <v-divider></v-divider>
+    <v-divider />
 
     <v-list>
       <v-subheader>
@@ -130,7 +130,7 @@
             <br />
             Community Guidelines`
           "
-        ></span>
+        />
         <v-spacer />
         <v-icon>mdi-chevron-right</v-icon>
       </v-list-item>
@@ -192,4 +192,3 @@ export default {
 };
 </script>
 
-<style scoped></style>
