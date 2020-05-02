@@ -32,6 +32,17 @@ async function _fetch(url = "", init) {
 }
 
 /**
+ * Only returns authentication header if user is authenticated.
+ * Split out so if user is unauthenticated, this does not throw if currenUser is null
+ * @function getAuthHeader
+ * @returns {String} Authentication header or nothing.
+ */
+async function getAuthHeader() {
+  if (auth().currentUser)
+    return `Bearer ${await auth().currentUser.getIdToken()}`;
+}
+
+/**
  * GET curried function that takes a init object before an URL
  */
 function _get(init = {}) {
@@ -42,7 +53,7 @@ function _get(init = {}) {
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${await auth().currentUser.getIdToken()}`
+            Authorization: await getAuthHeader()
           }
         },
         init
@@ -65,7 +76,7 @@ function _post(init = {}) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${await auth().currentUser.getIdToken()}`
+            Authorization: await getAuthHeader()
           }
         },
         init
