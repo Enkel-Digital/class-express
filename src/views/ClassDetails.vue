@@ -114,7 +114,7 @@
           <br />
 
           <!-- Change to a more readable font -->
-          <span v-html="clas.description"></span>
+          <span v-html="clas.description" />
         </v-list-item-content>
       </v-list-item>
 
@@ -129,7 +129,7 @@
           <br />
 
           <!-- Change to a more readable font -->
-          <span v-html="partner.description"></span>
+          <span v-html="partner.description" />
         </v-list-item-content>
       </v-list-item>
     </v-responsive>

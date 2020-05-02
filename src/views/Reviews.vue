@@ -67,7 +67,7 @@
       -->
       <i>Sorted by latest first</i>
     </div>
-    <v-divider></v-divider>
+    <v-divider />
 
     <!-- @todo Do not display at once, load only when scrolled to. -->
     <!-- https://css-tricks.com/preventing-content-reflow-from-lazy-loaded-images/ -->

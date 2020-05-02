@@ -78,7 +78,7 @@
           </v-list-item-title>
 
           <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;" class="mb-0">
-            <span v-html="topupOption.copywriting"></span>
+            <span v-html="topupOption.copywriting" />
           </p>
         </v-list-item-content>
       </v-list-item>

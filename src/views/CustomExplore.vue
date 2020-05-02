@@ -21,14 +21,8 @@
       >
         <div class="d-flex flex-no-wrap justify-space-between">
           <div>
-            <v-card-title
-              class="headline"
-              v-text="searchResult.name"
-            ></v-card-title>
-
-            <v-card-subtitle
-              v-text="searchResult.provider.name"
-            ></v-card-subtitle>
+            <v-card-title class="headline" v-text="searchResult.name" />
+            <v-card-subtitle v-text="searchResult.provider.name" />
           </div>
 
           <v-avatar class="ma-3" size="125" tile>

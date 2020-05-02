@@ -22,12 +22,12 @@
     </v-responsive>
 
     <v-responsive style="text-align: left;">
-      <h3 class="headline" v-text="clas.name"></h3>
+      <h3 class="headline" v-text="clas.name" />
       <p class="ma-0 pa-0">{{ clas.provider.name }}</p>
       <p class="ma-0 pa-0">{{ clas.location.address }}</p>
     </v-responsive>
 
-    <v-divider></v-divider>
+    <v-divider />
 
     <v-responsive id="reviews-card" class="mx-auto">
       <v-list-item>
@@ -56,7 +56,7 @@
       </v-list-item>
     </v-responsive>
 
-    <v-divider></v-divider>
+    <v-divider />
 
     <v-responsive id="reviews-card" class="mx-auto">
       <v-list-item>
@@ -64,7 +64,7 @@
           <p class="overline">Class Desciption</p>
 
           <!-- Change to a more readable font -->
-          <span v-html="clas.description"></span>
+          <span v-html="clas.description" />
         </v-list-item-content>
       </v-list-item>
     </v-responsive>
@@ -75,7 +75,7 @@
     <MapImage :classID="clas.id" />
     <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
 
-    <v-divider></v-divider>
+    <v-divider />
 
     <!-- @todo Change this into a bottom toolbar and make it sticky -->
     <v-container v-if="classTimeSelected">

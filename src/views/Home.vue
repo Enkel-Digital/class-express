@@ -27,7 +27,7 @@
       </v-carousel>
     </v-responsive>
 
-    <v-divider></v-divider>
+    <v-divider />
 
     <v-sheet id="recommended-classes-sheet" class="mx-auto" elevation="3">
       Recommended classes

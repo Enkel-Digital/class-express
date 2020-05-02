@@ -24,7 +24,7 @@
       required
     />
 
-    <p class="error" v-html="error_msg"></p>
+    <p class="error" v-html="error_msg" />
 
     <v-btn @click="login" width="calc(100% - 6em)" color="blue darken-1" dark>
       Login
@@ -133,6 +133,9 @@ export default {
          * @todo To optimize this.
          */
         if (auth().currentUser) await auth().signOut();
+
+        // @todo Remove before production
+        console.error(error);
 
         // Set the message into the error box to show user the error
         this.error_msg = error_msg(error);
