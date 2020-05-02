@@ -10,6 +10,7 @@ import ClassDetails from "../views/ClassDetails.vue";
 import AddNewClass from "../views/AddNewClass.vue";
 import AllReviews from "../views/AllReviews.vue";
 import Reviews from "../views/Reviews.vue";
+import Earnings from "../views/Earnings.vue";
 
 /**
  * @notice Some of these less frequented routes uses lazily loaded components
@@ -61,6 +62,12 @@ const routes = [
     path: "/reviews/all",
     name: "all-reviews",
     component: AllReviews,
+    meta: { Auth_requirements: AuthType.private }
+  },
+  {
+    path: "/earnings",
+    name: "earnings",
+    component: Earnings,
     meta: { Auth_requirements: AuthType.private }
   },
   {
