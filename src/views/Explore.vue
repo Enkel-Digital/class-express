@@ -123,11 +123,6 @@ h1 {
   padding: 0;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-}
-
 .ais-Highlight-highlighted {
   background: cyan;
   font-style: normal;
