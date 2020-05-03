@@ -1,29 +1,36 @@
 <template>
-  <div class="login">
-    <img alt="Login image" src="../assets/logo.png" width="360" height="360" />
+  <v-row justify="center">
+    <div class="login">
+      <img
+        alt="Login image"
+        src="../assets/logo.png"
+        width="360 "
+        height="360"
+      />
 
-    <input
-      v-autofocus
-      type="text"
-      v-model="email"
-      placeholder="Username"
-      @keypress.enter="login"
-      required
-    />
-    <br />
-    <input
-      type="password"
-      v-model="password"
-      placeholder="Password"
-      @keypress.enter="login"
-      required
-    />
+      <input
+        v-autofocus
+        type="text"
+        v-model="email"
+        placeholder="Username"
+        @keypress.enter="login"
+        required
+      />
+      <br />
+      <input
+        type="password"
+        v-model="password"
+        placeholder="Password"
+        @keypress.enter="login"
+        required
+      />
 
-    <p class="error">{{ error_msg }}</p>
-    <button @click="login">Login</button>
-    <br />
-    <button id="back-btn" @click="back">Back</button>
-  </div>
+      <p class="error">{{ error_msg }}</p>
+      <button @click="login">Login</button>
+      <br />
+      <button id="back-btn" @click="back">Back</button>
+    </div>
+  </v-row>
 </template>
 
 <script>
