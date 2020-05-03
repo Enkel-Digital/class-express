@@ -17,8 +17,8 @@ export default {
       if (isVisible && !this.state.isLastPage) {
         this.state.showMore();
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
