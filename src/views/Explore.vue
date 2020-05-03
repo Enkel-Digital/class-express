@@ -26,7 +26,7 @@
                         @click="
                           $router.push({
                             name: 'ClassDetails',
-                            params: { classID: item.objectID },
+                            params: { classID: item.objectID }
                           })
                         "
                       >
@@ -110,9 +110,9 @@ export default {
       searchClient: algoliasearch(
         "MIG150ZYJX",
         "d18e0d7563d406863fb469d00796266e"
-      ),
+      )
     };
-  },
+  }
 };
 </script>
 

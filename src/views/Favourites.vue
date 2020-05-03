@@ -84,15 +84,13 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "favourites",
   computed: {
-    ...mapGetters("classes", ["favouriteClasses"]),
+    ...mapGetters("classes", ["favouriteClasses"])
   },
   methods: {
     ...mapActions("classes", ["toggleFavourite"]),
     getPartner(partnerID) {
       return this.$store.state.classes.partners[partnerID];
-    },
-  },
+    }
+  }
 };
 </script>
-
-<style scoped></style>
