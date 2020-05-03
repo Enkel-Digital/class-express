@@ -1,5 +1,5 @@
 # Class App backend services
-Monorepo for all the backend services used to power the [Class App](https://github.com/Enkel-Digital/class-app).
+Monorepo for all the backend services used to power the [Class App](https://github.com/Enkel-Digital/class-express-app).
 
 ## Running the services
 - Start the services individually
