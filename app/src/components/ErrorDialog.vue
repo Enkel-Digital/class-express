@@ -1,5 +1,13 @@
 <template>
-  <v-dialog v-model="showDialog" persistent>
+  <!-- @notice Normal way to trigger the dialog to show -->
+  <!-- <v-dialog v-model="error" persistent> -->
+
+  <!--
+      @notice Add conditional rendering plus alwaysShow = true to ensure that,
+      the component is only rendered/created when there is an error and not always created but hidden.
+      This presumably reduces memory usage as the component is not create yet.
+    -->
+  <v-dialog v-if="error" v-model="alwaysShow" persistent>
     <v-card>
       <p class="overline ma-4 pa-4 mb-0 pb-0" style="color: red;">
         sadly, there is an error
@@ -38,31 +46,27 @@
 
 <script>
 export default {
-  name: "error",
+  name: "ErrorDialog",
   beforeMount() {
     // @todo Remove this tmp solution to clear error when the page first loads.
     this.$store.dispatch("error/clear");
   },
   data() {
-    // @example Error object
-    // @todo Delete and integrate with the error handler vuex module
-    const error = {
-      name: "Network connection failed",
-      description: "Failed to connect to API.",
-      // Should the error be displayed on the errorDialog?
-      display: true,
-      // Can this error be dismissed via the errorDialog?
-      dismissable: true
-    };
-
     return {
-      // @todo Remove the temporary error shown
-      error
+      alwaysShow: true
     };
   },
   computed: {
-    showDialog() {
-      return this.$store.state.error.error;
+    error() {
+      const error = this.$store.state.error.errors[0];
+      if (!error) return false; // If no error return false to prevent component from rendering
+
+      // Add defaults UI flags if not available
+      if (!error.name) error.name = "UNKNOWN";
+      if (!error.description) error.description = "Unknown error occurred 😫";
+      if (!error.dismissable) error.dismissable = true;
+
+      return error;
     }
   },
   methods: {
