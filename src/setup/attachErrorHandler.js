@@ -4,31 +4,28 @@
  *
  * Notes:
  * - When Vue.config.errorHandler is defined, it will not throw an error to window.onerror
- * - However that only applies to errors originating from within vue. So any other JS errors will still be caught
+ * - However this only applies to errors within vue. So other JS errors are still caught by window.onerror or unhandledrejection window events
  */
 
 import Vue from "vue";
-import api from "@/store/utils/fetch";
+
+// Store is used to dispatch errors to the error handler.
+import store from "@/store";
 
 /**
  * @param {object} err The error thrown
  * @param {object} vm Component in which the error is thrown from
  * @param {String} info Vue-specific error info, e.g. which lifecycle hook the error was found in.
  */
-Vue.config.errorHandler = async function(err, vm, info) {
+Vue.config.errorHandler = async function(err, vueComponent, info) {
+  // @todo Remove for production
+  console.error("vue.config.errorHandler: ", arguments);
+
   // Discarding stack as not very useful and hard to send over to server
   // console.error(err.stack);
 
-  try {
-    // @todo store error to vuex?
-
-    // Try reporting error to API if possible
-    const resp = await api.post("/error", { error: err.message, info });
-    // @todo Remove for production?
-    if (resp.success) console.log(resp);
-  } catch (error) {
-    console.error(error);
-  }
+  // Dispatch without awaitng for store to handle all error logging/reporting logic
+  store.dispatch("error/new", { error: err.message, info });
 };
 
 /**
@@ -36,9 +33,16 @@ Vue.config.errorHandler = async function(err, vm, info) {
  * event.reason contains the reason for the rejection
  */
 window.addEventListener("unhandledrejection", function(event) {
-  console.error("unhandledrejection error handler: ", arguments);
+  // @todo Remove for production
+  console.error("unhandledrejection error event: ", arguments);
+
+  // Dispatch without awaitng for store to handle all error logging/reporting logic
+  store.dispatch("error/new", event);
 });
 
 window.onerror = function(message, source, lineno, colno, error) {
+  // @todo Remove for production
   console.error("window.onerror: ", arguments);
+
+  store.dispatch("error/new", error);
 };
