@@ -6,21 +6,11 @@
       <v-container>
         <v-row>
           <v-col cols="15" sm="6" md="5">
-            <v-text-field
-              :rules="nameRules"
-              label="Class Name"
-              required
-              outlined
-            ></v-text-field>
+            <v-text-field :rules="nameRules" label="Class Name" required outlined></v-text-field>
           </v-col>
 
           <v-col cols="15" sm="6" md="3">
-            <v-text-field
-              :rules="addressRules"
-              label="Address Line 1"
-              outlined
-              required
-            ></v-text-field>
+            <v-text-field :rules="addressRules" label="Address Line 1" outlined required></v-text-field>
           </v-col>
           <v-col cols="15" sm="6" md="3">
             <v-text-field label="Address Line 2" outlined></v-text-field>
@@ -43,28 +33,13 @@
           </v-col>
 
           <v-col cols="15" sm="6" md="2">
-            <v-text-field
-              :rules="addressRules"
-              label="Unit No. (eg. 01-02)"
-              outlined
-              required
-            ></v-text-field>
+            <v-text-field :rules="addressRules" label="Unit No. (eg. 01-02)" outlined required></v-text-field>
           </v-col>
           <v-col cols="15" sm="6" md="2">
-            <v-text-field
-              :rules="addressRules"
-              label="Postal Code"
-              outlined
-              required
-            ></v-text-field>
+            <v-text-field :rules="addressRules" label="Postal Code" outlined required></v-text-field>
           </v-col>
           <v-col cols="15" sm="6" md="2">
-            <v-text-field
-              :rules="addressRules"
-              label="Country"
-              outlined
-              required
-            ></v-text-field>
+            <v-text-field :rules="addressRules" label="Country" outlined required></v-text-field>
           </v-col>
         </v-row>
 
@@ -83,10 +58,7 @@
           </v-col>
 
           <v-col cols="10" sm="6" md="3">
-            <v-checkbox
-              v-model="checkbox"
-              :label="`Allow walk-in (${checkbox.toString()})`"
-            ></v-checkbox>
+            <v-checkbox v-model="checkbox" :label="`Allow walk-in (${checkbox.toString()})`"></v-checkbox>
             <!-- <v-checkbox v-model="checkbox" :label="`Recurring (${checkbox.toString()})`"></v-checkbox> -->
           </v-col>
         </v-row>
@@ -94,22 +66,12 @@
         <v-row>
           <v-col style="width: 300px; flex: 0 1 auto;">
             <h3 style="color:#455A64;">Start</h3>
-            <v-time-picker
-              v-model="start"
-              :max="end"
-              full-width
-              color="#455A64"
-            ></v-time-picker>
+            <v-time-picker v-model="start" :max="end" full-width color="#455A64"></v-time-picker>
           </v-col>
 
           <v-col style="width: 300px; flex: 0 1 auto;">
             <h3 style="color:#455A64;">End</h3>
-            <v-time-picker
-              v-model="end"
-              :min="start"
-              full-width
-              color="#455A64"
-            ></v-time-picker>
+            <v-time-picker v-model="end" :min="start" full-width color="#455A64"></v-time-picker>
           </v-col>
 
           <v-col style="width: 900px;flex: 0 1 auto;">

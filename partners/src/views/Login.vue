@@ -1,12 +1,7 @@
 <template>
   <v-row justify="center">
     <div class="login">
-      <img
-        alt="Login image"
-        src="../assets/logo.png"
-        width="360 "
-        height="360"
-      />
+      <img alt="Login image" src="../assets/logo.png" width="360" height="360" />
 
       <input
         v-autofocus

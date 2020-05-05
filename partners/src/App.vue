@@ -2,14 +2,7 @@
   <v-app id="app">
     <SideNavBar v-if="signedInRoute" />
 
-    <v-app-bar
-      v-if="signedInRoute"
-      app
-      dark
-      flat
-      :clipped-left="true"
-      color="blue darken-2"
-    >
+    <v-app-bar v-if="signedInRoute" app dark flat :clipped-left="true" color="blue darken-2">
       <!-- No toggling for now -->
       <!-- <v-app-bar-nav-icon @click.stop="showDrawer = !showDrawer"> -->
       <v-app-bar-nav-icon>
@@ -18,9 +11,7 @@
         </v-avatar>
       </v-app-bar-nav-icon>
 
-      <v-toolbar-title @click="$router.push({ name: 'home' })">
-        Class Express Partners
-      </v-toolbar-title>
+      <v-toolbar-title @click="$router.push({ name: 'home' })">Class Express Partners</v-toolbar-title>
 
       <v-spacer />
 
@@ -103,7 +94,7 @@
           <v-btn text @click="dialog = false">Save</v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog> -->
+    </v-dialog>-->
   </v-app>
 </template>
 
