@@ -10,6 +10,7 @@ const router = express.Router();
 const db = require("../utils/db");
 const auth = require("../middleware/auth");
 const admin = require("../utils/firebaseAdmin");
+const sendMail = require("../utils/sendMail");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:users");
@@ -27,17 +28,29 @@ router.post("/resendVerificationEmail/:email", async (req, res) => {
   try {
     const { email } = req.params;
 
-    // const link = await admin.auth().generateEmailVerificationLink(email);
+    // Create a email verification link with a continue URL back to the app
     const link = await admin.auth().generateEmailVerificationLink(email, { url: "https://classes-ekd.firebaseapp.com" });
 
-    // @todo Email this link to the user instead of sending it back directly
-    // console.log("link", link);
+    // Send user email verification link
+    // await to ensure only respond with success once the mail has been sent
+    // @todo To use sendgrid template instead of this in code mail template
+    await sendMail({
+      to: email,
+      from: "Accounts@classexpress.com",
+      subject: "Email Verification required",
+      html:
+        `A email verification link was requested for the Class Express account linked to this email address!<br />` +
+        "<br />Click the link to verify now, or safely ignore this email if you did not request for this.<br />" +
+        "<br />" +
+        link
+    });
 
     res.json({ success: true });
   } catch (error) {
     logger.error(error);
 
-    // Choose a different status code
+    // @todo Choose a different status code
+    // The firebase auth error code is also included
     res.status(500).json({ success: false, error: { message: error.message, code: error.code } });
   }
 });
