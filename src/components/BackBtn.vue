@@ -1,13 +1,21 @@
 <template>
-  <v-btn icon id="button" @click="goBack">
-    <!-- <v-icon>mdi-keyboard-backspace</v-icon> -->
-    <v-icon large>mdi-chevron-left</v-icon>
-  </v-btn>
+  <!-- This is also a nice icon -->
+  <!-- <v-icon>mdi-keyboard-backspace</v-icon> -->
+  <span id="button">
+    <v-btn v-if="to" :to="to" icon>
+      <v-icon large>mdi-chevron-left</v-icon>
+    </v-btn>
+
+    <v-btn v-else @click="goBack" icon>
+      <v-icon large>mdi-chevron-left</v-icon>
+    </v-btn>
+  </span>
 </template>
 
 <script>
 export default {
   name: "BackBtn",
+  props: ["to"],
   methods: {
     goBack() {
       this.$router.back();
