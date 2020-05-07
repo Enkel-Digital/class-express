@@ -25,7 +25,7 @@
       <h3 class="headline" v-text="clas.name" />
 
       <v-row v-if="selectedTime">
-        <v-col class="col-auto">
+        <v-col class="col-auto" style="font-weight: bold;">
           <!-- date of class -->
           <v-list-item-subtitle>
             <!-- Show year only if class is next year. -->
@@ -49,10 +49,10 @@
 
         <v-spacer />
 
-        <v-col class="col-auto">
+        <v-col class="col-auto mt-2">
           <!-- @todo Implement add to calendar feature -->
           <v-btn icon>
-            <v-icon>mdi-calendar-today</v-icon>
+            <v-icon large>mdi-calendar-today</v-icon>
           </v-btn>
         </v-col>
       </v-row>
@@ -113,7 +113,7 @@
 
           <br />
 
-          <!-- Change to a more readable font -->
+          <!-- @todo Change to a more readable font -->
           <span v-html="clas.description" />
         </v-list-item-content>
       </v-list-item>
@@ -128,7 +128,7 @@
 
           <br />
 
-          <!-- Change to a more readable font -->
+          <!-- @todo Change to a more readable font -->
           <span v-html="partner.description" />
         </v-list-item-content>
       </v-list-item>
@@ -175,12 +175,6 @@
 </template>
 
 <script>
-/**
- * This screen can be for both Class Details screen for the class in general, or a particular class date.
- * 1 with and 1 without the date set.
- *
- * view timing bar vs reserve class bar.
- */
 import { mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 import MapImage from "@/components/MapImage";
