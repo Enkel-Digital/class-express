@@ -162,7 +162,7 @@
 
     <v-container v-else style="text-align: center;">
       <v-btn
-        :to="{ name: 'schedule', params: { classID: clas.id } }"
+        :to="{ name: 'schedule-class', params: { classID: clas.id } }"
         color="primary"
         block
       >

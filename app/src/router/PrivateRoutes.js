@@ -67,8 +67,15 @@ const routes = [
     props: true
   },
   {
-    path: "/schedule/:classID",
-    name: "schedule",
+    path: "/schedule/class/:classID",
+    name: "schedule-class",
+    component: schedule,
+    meta: { Auth_requirements: AuthType.private },
+    props: true
+  },
+  {
+    path: "/schedule/partner/:partnerID",
+    name: "schedule-partner",
     component: schedule,
     meta: { Auth_requirements: AuthType.private },
     props: true
