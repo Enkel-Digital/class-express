@@ -31,17 +31,6 @@ export default {
       const newsBanners = mock.newsBanners;
 
       commit("setter", ["newsBanners", newsBanners]);
-    },
-    viewBanner(_, link) {
-      if (!link) return;
-
-      // // @todo Fix this hack that prevents double click
-      // console.log("testing");
-      // console.log("clcked", link);
-      // if (this.lastViewdBanner_tmp === link) return;
-      // this.lastViewdBanner_tmp = link;
-
-      if (confirm("Checkout link?")) window.open(link);
     }
   }
 };
