@@ -8,7 +8,10 @@ const partners = {
       coordinates: "1.300649, 103.855453",
       address: "249B Victoria St, Bugis Village"
     },
-    description: "Get started on your Guitar journey with us!"
+    description: "Get started on your Guitar journey with us!",
+    pictureSources: [
+      "https://rezaglobalpro.com/wp-content/uploads/Reza-Global-Productions-Music-Studio-3.2-1.jpg"
+    ]
   },
   1: {
     id: 1,
@@ -18,7 +21,10 @@ const partners = {
       address: "117 Fidelio St"
     },
     description:
-      "Located in the Heartlands of Tampines, we offer a wide variety of classes for our residents."
+      "Located in the Heartlands of Tampines, we offer a wide variety of classes for our residents.",
+    pictureSources: [
+      "https://www.pa.gov.sg/images/default-source/module/community-clubs/tampines-west-community-club"
+    ]
   },
   2: {
     id: 2,
@@ -28,7 +34,10 @@ const partners = {
       address: "Orchard road, Plaza Singapura"
     },
     description:
-      "We offer world class guitar lessons for you!<br />Guitar Studio 2 is one of the leading Guitar Studios in Singapore and South East Asia boasting a whole list of celebrity instructors for you to learn more. We believe that the best instructors are what you need to get from amatuer  to pro just like the instructors themselves!"
+      "We offer world class guitar lessons for you!<br />Guitar Studio 2 is one of the leading Guitar Studios in Singapore and South East Asia boasting a whole list of celebrity instructors for you to learn more. We believe that the best instructors are what you need to get from amatuer  to pro just like the instructors themselves!",
+    pictureSources: [
+      "https://media.timeout.com/images/105537588/630/472/image.jpg"
+    ]
   }
 };
 

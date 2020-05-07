@@ -102,7 +102,8 @@ export default {
   components: {
     BackBtn
   },
-  props: ["classID"],
+  // @todo Support both types of reviews.
+  props: ["classID", "partnerID"],
   created() {
     this.$store.dispatch("classes/getUserReview", this.classID);
   },

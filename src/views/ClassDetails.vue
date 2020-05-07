@@ -94,7 +94,7 @@
         </v-list-item-content>
 
         <v-btn
-          :to="{ name: 'reviews', params: { classID: clas.id } }"
+          :to="{ name: 'reviews-class', params: { classID: clas.id } }"
           text
           small
           color="primary"
