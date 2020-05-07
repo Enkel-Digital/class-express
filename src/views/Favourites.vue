@@ -1,11 +1,32 @@
 <template>
   <v-content class="favourite">
-    <!-- <v-app-bar app color="orange lighten-1" flat dark> -->
     <v-app-bar app flat color="white">
-      <v-toolbar-title style="font-weight: bold;">
-        Favourite Classes
-      </v-toolbar-title>
+      <v-toolbar-title style="font-weight: bold;">Favourites</v-toolbar-title>
+
+      <v-spacer />
+
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
+
+      <!-- Use slot to place tabs on the next line -->
+      <template v-slot:extension>
+        <!--
+          Does not require an active item. Using v-tab with router navigation
+          Using replace attribute to use vue router replace when switching between tabs
+        -->
+        <v-tabs centered grow>
+          <v-tab replace append>Classes</v-tab>
+          <v-tab replace append>Partners</v-tab>
+        </v-tabs>
+      </template>
     </v-app-bar>
+
+    <br />
 
     <v-responsive v-if="favouriteClasses.length">
       <v-card
