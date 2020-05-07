@@ -10,7 +10,8 @@
         <v-icon>mdi-share</v-icon>
       </v-btn>
 
-      <v-btn icon @click="toggleFavourite(clas.id)">
+      <!-- @todo Update to use toggleFavouritePartner -->
+      <v-btn icon @click="toggleFavourite(partner.id)">
         <v-icon v-if="favourited" color="red">mdi-heart</v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
@@ -18,12 +19,12 @@
 
     <v-responsive id="class-image-container">
       <!-- @todo Change to a image carousel -->
-      <v-img id="class-image" :src="clas.pictureSources[0]" />
+      <v-img id="class-image" :src="partner.pictureSources[0]" />
     </v-responsive>
 
     <v-responsive style="margin: 1em;">
-      <h3 class="headline" v-text="clas.name" />
-      <p class="ma-0 pa-0">{{ clas.location.address }}</p>
+      <h3 class="headline" v-text="partner.name" />
+      <p class="ma-0 pa-0">{{ partner.location.address }}</p>
     </v-responsive>
 
     <v-divider />
@@ -45,7 +46,7 @@
         </v-list-item-content>
 
         <v-btn
-          :to="{ name: 'reviews', params: { classID: clas.id } }"
+          :to="{ name: 'reviews-partner', params: { classID: partner.id } }"
           text
           small
           color="primary"
@@ -65,7 +66,7 @@
           <p class="overline">About Us</p>
 
           <!-- @todo Change to a more readable font -->
-          <span v-html="clas.description" />
+          <span v-html="partner.description" />
         </v-list-item-content>
       </v-list-item>
     </v-responsive>
@@ -73,7 +74,7 @@
     <h2 style="color: rgba(0, 0, 0, 0.65);" class="ma-2 mb-0">
       Getting here
     </h2>
-    <MapImage :classID="clas.id" />
+    <MapImage :classID="partner.id" />
     <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
 
     <v-divider />
@@ -82,7 +83,7 @@
     <v-container>
       <!-- Change this to the button that goes to the partners schedule instead of just that of a class -->
       <v-btn
-        :to="{ name: 'schedule', params: { classID: clas.id } }"
+        :to="{ name: 'schedule-partner', params: { partnerID: partner.id } }"
         color="primary"
         block
       >
@@ -112,11 +113,8 @@ export default {
   props: ["partnerID"],
   data() {
     // Partners is static via the data function as we do not want its reactivity
-    const clas = this.$store.state.classes.partners[this.partnerID];
-
-    console.log("clas", clas);
-
-    return { clas };
+    const partner = this.$store.state.classes.partners[this.partnerID];
+    return { partner };
   },
   computed: {
     favourited() {

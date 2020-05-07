@@ -53,8 +53,15 @@ const routes = [
     props: true
   },
   {
-    path: "/reviews/:classID",
-    name: "reviews",
+    path: "/reviews/class/:classID",
+    name: "reviews-class",
+    component: () => import("@/views/Reviews.vue"),
+    meta: { Auth_requirements: AuthType.private },
+    props: true
+  },
+  {
+    path: "/reviews/partner/:partnerID",
+    name: "reviews-partner",
     component: () => import("@/views/Reviews.vue"),
     meta: { Auth_requirements: AuthType.private },
     props: true
