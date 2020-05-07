@@ -11,7 +11,7 @@
       </v-btn>
 
       <v-btn icon @click="toggleFavourite(clas.id)">
-        <v-icon v-if="favouritedClass" color="red">mdi-heart</v-icon>
+        <v-icon v-if="favourited" color="red">mdi-heart</v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
     </v-app-bar>
@@ -21,9 +21,8 @@
       <v-img id="class-image" :src="clas.pictureSources[0]" />
     </v-responsive>
 
-    <v-responsive style="text-align: left;">
+    <v-responsive style="margin: 1em;">
       <h3 class="headline" v-text="clas.name" />
-      <p class="ma-0 pa-0">{{ clas.provider.name }}</p>
       <p class="ma-0 pa-0">{{ clas.location.address }}</p>
     </v-responsive>
 
@@ -58,18 +57,20 @@
 
     <v-divider />
 
+    <!-- @todo Show a list of categories that this class operates in -->
+
     <v-responsive id="reviews-card" class="mx-auto">
       <v-list-item>
         <v-list-item-content>
-          <p class="overline">Class Desciption</p>
+          <p class="overline">About Us</p>
 
-          <!-- Change to a more readable font -->
+          <!-- @todo Change to a more readable font -->
           <span v-html="clas.description" />
         </v-list-item-content>
       </v-list-item>
     </v-responsive>
 
-    <h2 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ma-2 mb-0">
+    <h2 style="color: rgba(0, 0, 0, 0.65);" class="ma-2 mb-0">
       Getting here
     </h2>
     <MapImage :classID="clas.id" />
@@ -78,24 +79,8 @@
     <v-divider />
 
     <!-- @todo Change this into a bottom toolbar and make it sticky -->
-    <v-container v-if="classTimeSelected">
-      <v-row>
-        <v-col>
-          <h2 style="color: grey;">{{ clas.points }} points</h2>
-        </v-col>
-
-        <v-col>
-          <v-btn v-if="isReserved" @click="cancelClass(clas.id)" color="error">
-            cancel
-          </v-btn>
-          <v-btn v-else @click="reserveClass(clas.id)" color="primary">
-            reserve
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
-
-    <v-container v-else>
+    <v-container>
+      <!-- Change this to the button that goes to the partners schedule instead of just that of a class -->
       <v-btn
         :to="{ name: 'schedule', params: { classID: clas.id } }"
         color="primary"
@@ -110,12 +95,6 @@
 </template>
 
 <script>
-/**
- * This screen can be for both Class Details screen for the class in general, or a particular class date.
- * 1 with and 1 without the date set.
- *
- * view timing bar vs reserve class bar.
- */
 import { mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 import MapImage from "@/components/MapImage";
@@ -132,41 +111,35 @@ export default {
   },
   props: ["partnerID"],
   data() {
-    this.classID = this.partnerID;
+    // Partners is static via the data function as we do not want its reactivity
+    const clas = this.$store.state.classes.partners[this.partnerID];
 
-    // Classes is static via the data function as we do not want its reactivity
-    const clas = this.$store.state.classes.classes[this.classID];
-    return { clas, classTimeSelected: true };
+    console.log("clas", clas);
+
+    return { clas };
   },
   computed: {
-    favouritedClass() {
+    favourited() {
       if (this.$store.state.classes.favouriteClassesID[this.classID])
         return true;
       else return false;
-    },
-    isReserved() {
-      const upcomingClass = this.$store.state.classes.upcomingClassesID[
-        this.classID
-      ];
-
-      // If there is a booking for this class, check if there is a booking for this timeslot
-      if (upcomingClass) {
-        // @todo Check for timeslot. Right now, assumes that there is only 1 session for the class thus return true
-
-        return true;
-      } else return false;
     },
     review() {
       return this.$store.state.classes.review;
     }
   },
   methods: {
+    // @todo Instead of toggle favourite, change to toggle favourite class and toggleFavourite partner
     ...mapActions("classes", ["toggleFavourite", "reserveClass", "cancelClass"])
   }
 };
 </script>
 
 <style scoped>
+#partner {
+  text-align: left;
+}
+
 #class-image-container {
   /*
     General height guidelines for the image loaded
@@ -186,9 +159,5 @@ export default {
 
   /* Map image to height of entire parent div container */
   height: 100%;
-}
-
-#reviews-card {
-  text-align: left;
 }
 </style>
