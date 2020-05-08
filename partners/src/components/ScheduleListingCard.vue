@@ -11,7 +11,12 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-data-table :headers="headers" :items="classItem" :items-per-page="5" class="elevation-1"></v-data-table>
+      <v-data-table
+        :headers="headers"
+        :items="classItem"
+        :items-per-page="5"
+        class="elevation-1"
+      />
       <v-card-actions>
         <v-btn text>Full Report</v-btn>
       </v-card-actions>
