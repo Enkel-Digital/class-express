@@ -54,6 +54,17 @@ export default {
       return favouriteClasses;
     },
     /**
+     * @todo Sort by time the class was added as a favourite.
+     */
+    favouritePartners(state) {
+      const favouritePartners = [];
+
+      for (const partnerID of Object.keys(state.favouritePartnersID))
+        favouritePartners.push(state.partners[partnerID]);
+
+      return favouritePartners;
+    },
+    /**
      * @todo Sort by time class was attended
      */
     pastClasses(state) {
