@@ -1,8 +1,9 @@
 <template>
-  <v-row justify="center">
+  <v-row>
     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Contact Us</v-btn>
+        <!-- <v-btn color="primary" dark v-on="on">Contact Us</v-btn> -->
+        <v-btn color="white" text rounded class="my-2" v-on="on">Contact Us</v-btn>
       </template>
       <v-card>
         <v-toolbar dark color="primary">
@@ -11,22 +12,8 @@
           </v-btn>
           <v-toolbar-title>Raise a ticket</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <!-- TODO: fix send here to be disabled when first opened -->
-            <v-btn v-if="valid == false" disabled dark text>Send</v-btn>
-            <v-btn v-else dark text @click="dialog = false, snackbar = true">Send</v-btn>
-            <!-- Link to actual function -->
-          </v-toolbar-items>
+          <v-toolbar-items></v-toolbar-items>
         </v-toolbar>
-        <!-- <v-list three-line subheader>
-          <v-subheader>User Controls</v-subheader>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Password</v-list-item-title>
-              <v-list-item-subtitle>Require password for purchase or use password to restrict purchase</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>-->
         <v-divider></v-divider>
         <v-list three-line subheader>
           <v-subheader>General</v-subheader>
@@ -39,40 +26,38 @@
               <v-select
                 v-model="select"
                 :items="items"
-                :rules="[v => !!v || 'Item is required']"
+                :rules="[v => !!v || 'Topic is required']"
                 label="Ticket Topic"
                 required
               ></v-select>
 
               <v-checkbox
                 v-model="checkbox"
-                :rules="[v => !!v || 'You give consent to continue!']"
+                :rules="[v => !!v || 'You must give consent to continue!']"
                 required
                 label="I hereby consent to the Class Express Support Team to contacting me at the above given email address."
               ></v-checkbox>
-              <br />
 
-              <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Validate</v-btn>
-
-              <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
-
-              <v-btn color="warning" @click="resetValidation">Reset Validation</v-btn>
+              <div v-if="validate">
+                <!-- TODO: fix send here to be disabled when first opened -->
+                <!-- Link to actual function -->
+                <v-btn
+                  :disabled="!valid"
+                  color="success"
+                  class="mr-4"
+                  @click="dialog = false, snackbar = true"
+                >Send</v-btn>
+              </div>
+              <!-- <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
+              <v-btn color="warning" @click="resetValidation">Reset Validation</v-btn>-->
             </v-form>
           </v-list-item>
-          <v-list-item>
-            <!-- <v-list-item-action>
-              <v-checkbox v-model="Agree"></v-checkbox>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Consent to contact</v-list-item-title>
-              <v-list-item-subtitle>I hereby consent to the Class Express Support Team to contacting me at the above given email address.</v-list-item-subtitle>
-            </v-list-item-content>-->
-          </v-list-item>
+          <v-list-item></v-list-item>
         </v-list>
       </v-card>
     </v-dialog>
 
-    <v-snackbar v-model="snackbar" :timeout="timeout">
+    <v-snackbar v-model="snackbar" :timeout="snackbarTimeOut">
       {{ snackbarText }}
       <v-btn color="blue" text @click="snackbar = false">Close</v-btn>
     </v-snackbar>

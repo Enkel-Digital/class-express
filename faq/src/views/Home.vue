@@ -27,9 +27,7 @@
 
           <v-divider></v-divider>
 
-          <v-content>
-            <FAQProvider />
-          </v-content>
+          <FAQProvider />
         </v-card>
       </v-container>
     </v-content>
@@ -93,20 +91,6 @@ export default {
       // Call the store to get search results into store for explore page to display
       this.$store.dispatch("search/searchClass");
     }
-    /**
-     * @function getSuggestions
-     * To Simulate ajax query
-     */
-    // getSuggestions(search) {
-    //   this.loading = true;
-    //   setTimeout(() => {
-    //     this.items = this.classNames.filter(
-    //       e =>
-    //         (e || "").toLowerCase().indexOf((search || "").toLowerCase()) > -1
-    //     );
-    //     this.loading = false;
-    //   }, 500);
-    // }
   }
 };
 </script>
