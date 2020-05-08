@@ -1,9 +1,9 @@
 <template>
   <v-content style="padding: 0;">
-    <v-responsive v-if="favouriteClasses.length">
+    <v-responsive v-if="favouritePartners.length">
       <v-card
-        v-for="clas in favouriteClasses"
-        :key="clas.id"
+        v-for="partner in favouritePartners"
+        :key="partner.id"
         class="mx-auto mb-4"
         max-width="calc(100% - 1.6em)"
         outlined
@@ -13,35 +13,24 @@
           @click="
             $router.push({
               name: 'ClassDetails',
-              params: { classID: clas.id }
+              params: { classID: partner.id }
             })
           "
         >
           <!-- @todo Change to a image carousel -->
-          <v-img id="class-image" :src="clas.pictureSources[0]" />
+          <v-img id="class-image" :src="partner.pictureSources[0]" />
 
           <v-list-item>
             <div style="text-align: left;">
               <v-card-title class="headline pl-0">
-                {{ clas.name }}
+                {{ partner.name }}
               </v-card-title>
-              <!-- @todo Add a points box beside the class name -->
-              <!-- <p>7 points</p> -->
 
-              <v-list-item-subtitle
-                :set="(partner = getPartner(clas.partnerID))"
-              >
-                <div style="font-weight: bold;">
-                  {{ partner.name }}
-                </div>
-                <div>
-                  {{
-                    clas.location
-                      ? clas.location.address
-                      : partner.location.address
-                  }}
-                </div>
+              <v-list-item-subtitle>
+                {{ partner.location.address }}
               </v-list-item-subtitle>
+
+              <!-- @todo Add list of categories of classes the partner offers. -->
             </div>
           </v-list-item>
         </v-responsive>
@@ -50,7 +39,7 @@
           <v-spacer />
 
           <!-- Change this to a remove icon only. Cos dont need to toggle, here means confirm favourites already -->
-          <v-btn icon @click="toggleFavourite(clas.id)">
+          <v-btn icon @click="toggleFavourite(partner.id)">
             <v-icon color="red">mdi-heart</v-icon>
           </v-btn>
 
@@ -76,7 +65,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "favourite-partners",
   computed: {
-    ...mapGetters("classes", ["favouriteClasses"])
+    ...mapGetters("classes", ["favouritePartners"])
   },
   methods: {
     ...mapActions("classes", ["toggleFavourite"]),
