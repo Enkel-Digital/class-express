@@ -118,7 +118,7 @@
 
           <v-spacer />
 
-          <v-btn icon @click="toggleFavourite(clas.id)">
+          <v-btn icon @click="toggleFavouriteClass(clas.id)">
             <v-icon v-if="clas.favourite" color="red">mdi-heart</v-icon>
             <v-icon v-else>mdi-heart-outline</v-icon>
           </v-btn>
@@ -150,7 +150,7 @@ export default {
     ...mapGetters("classes", ["upcomingClasses"])
   },
   methods: {
-    ...mapActions("classes", ["toggleFavourite"]),
+    ...mapActions("classes", ["toggleFavouriteClass"]),
     getPartner(partnerID) {
       return this.$store.state.classes.partners[partnerID];
     }

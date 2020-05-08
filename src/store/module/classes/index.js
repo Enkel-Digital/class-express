@@ -17,7 +17,7 @@ export default {
   state: initialState(),
   mutations: {
     setter,
-    toggleFavourite(state, classID) {
+    toggleFavouriteClass(state, classID) {
       /** @notice Toggle state using Vue methods to trigger reactive listeners */
       if (state.favouriteClassesID[classID])
         Vue.delete(state.favouriteClassesID, classID);
@@ -153,14 +153,14 @@ export default {
       commit("setter", ["favouriteClassesID", favouriteClassesID]);
       commit("setter", ["favouritePartnersID", favouritePartnersID]);
     },
-    async toggleFavourite({ commit }, classID) {
+    async toggleFavouriteClass({ commit }, classID) {
       // Optimistic UI, show toggle first
-      commit("toggleFavourite", classID);
+      commit("toggleFavouriteClass", classID);
 
       // Call backend and handle error if any to change back favourite value
 
       // If error from updating server, then call mutation again to toggleBack
-      // commit("toggleFavourite", classID);
+      // commit("toggleFavouriteClass", classID);
     },
     async reserveClass({ state, rootState, commit }, classID) {
       const { points: classPoints } = state.classes[classID];

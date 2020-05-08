@@ -10,7 +10,7 @@
         <v-icon>mdi-share</v-icon>
       </v-btn>
 
-      <v-btn icon @click="toggleFavourite(clas.id)">
+      <v-btn icon @click="toggleFavouriteClass(clas.id)">
         <v-icon v-if="favouritedClass" color="red">mdi-heart</v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
@@ -227,7 +227,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions("classes", ["toggleFavourite", "reserveClass", "cancelClass"])
+    ...mapActions("classes", [
+      "toggleFavouriteClass",
+      "reserveClass",
+      "cancelClass"
+    ])
   }
 };
 </script>
