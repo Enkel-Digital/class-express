@@ -11,7 +11,7 @@
       </v-btn>
 
       <!-- @todo Update to use toggleFavouritePartner -->
-      <v-btn icon @click="toggleFavourite(partner.id)">
+      <v-btn icon @click="toggleFavouritePartner(partner.id)">
         <v-icon v-if="favourited" color="red">mdi-heart</v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
@@ -127,8 +127,11 @@ export default {
     }
   },
   methods: {
-    // @todo Instead of toggle favourite, change to toggle favourite class and toggleFavourite partner
-    ...mapActions("classes", ["toggleFavourite", "reserveClass", "cancelClass"])
+    ...mapActions("classes", [
+      "toggleFavouritePartner",
+      "reserveClass",
+      "cancelClass"
+    ])
   }
 };
 </script>
