@@ -22,13 +22,12 @@ export default {
       if (state.favouriteClassesID[classID])
         Vue.delete(state.favouriteClassesID, classID);
       else Vue.set(state.favouriteClassesID, classID, true);
-
-      /** @notice Alternate solution to using Vue.set and Vue.delete is to do a shallow copy for reactive triggers */
-      // if (state.favouriteClassesID[classID])
-      //   delete state.favouriteClassesID[classID];
-      // else state.favouriteClassesID[classID] = true;
-      // // For reactivity
-      // state.favouriteClassesID = { ...state.favouriteClassesID };
+    },
+    toggleFavouritePartner(state, partnerID) {
+      /** @notice Toggle state using Vue methods to trigger reactive listeners */
+      if (state.favouritePartnersID[partnerID])
+        Vue.delete(state.favouritePartnersID, partnerID);
+      else Vue.set(state.favouritePartnersID, partnerID, true);
     },
     setUpcomingClass(state, { classID, action, timestamp }) {
       /** @notice Change state using Vue methods to trigger reactive listeners */
@@ -157,10 +156,17 @@ export default {
       // Optimistic UI, show toggle first
       commit("toggleFavouriteClass", classID);
 
-      // Call backend and handle error if any to change back favourite value
-
+      // @todo Call backend and handle error if any to change back favourite value
       // If error from updating server, then call mutation again to toggleBack
       // commit("toggleFavouriteClass", classID);
+    },
+    async toggleFavouritePartner({ commit }, partnerID) {
+      // Optimistic UI, show toggle first
+      commit("toggleFavouritePartner", partnerID);
+
+      // @todo Call backend and handle error if any to change back favourite value
+      // If error from updating server, then call mutation again to toggleBack
+      // commit("toggleFavouritePartner", partnerID);
     },
     async reserveClass({ state, rootState, commit }, classID) {
       const { points: classPoints } = state.classes[classID];
