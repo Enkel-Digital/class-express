@@ -4,9 +4,8 @@
 
 import initialState from "./initialState";
 import setter from "../../utils/setter";
-
-// @todo Remove mock data
-import mock from "../../mockData";
+import api from "@/store/utils/fetch";
+import sleep from "../../../utils/sleep";
 
 export default {
   namespaced: true,
@@ -45,27 +44,31 @@ export default {
      * @function init
      */
     async init({ dispatch }) {
-      await dispatch("getPoints");
+      dispatch("getPoints");
     },
     /**
      * Get list of available topup options from api
      * @function getPlans
      */
-    async getPoints({ commit }) {
-      // @todo Replace with API call
-      const points = mock.points;
+    async getPoints({ commit, rootState }) {
+      // Wait until email is available.
+      // @todo Might cause issues if the user API fails this will continue looping forever.
+      while (!rootState.user.email) await sleep.milli(100);
 
-      commit("setter", ["points", points]);
+      const response = api.get(`/points/${rootState.user.email}`);
+      if (!response.success); // @todo Handle error
+
+      commit("setter", ["points", response.points]);
     },
     /**
      * Get list of available topup options from api
      * @function getPlans
      */
     async getTopupOptions({ commit }) {
-      // @todo Replace with API call
-      const topupOptions = mock.topupOptions;
+      const response = await api.get("/topup/options");
+      if (!response.success); // @todo Handle error
 
-      commit("setter", ["topupOptions", topupOptions]);
+      commit("setter", ["topupOptions", response.topupOptions]);
     },
     /**
      * Buy/Topup points

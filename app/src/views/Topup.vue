@@ -12,6 +12,7 @@
       Need more points? Topup anytime at flat rates!
     </p>
 
+    <!-- @todo If user does not have a plan, show card to ask user to buy a subscription plan -->
     <v-card
       id="points-card"
       class="mx-auto mb-4"
