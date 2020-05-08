@@ -50,7 +50,7 @@
           <v-spacer />
 
           <!-- Change this to a remove icon only. Cos dont need to toggle, here means confirm favourites already -->
-          <v-btn icon @click="toggleFavourite(clas.id)">
+          <v-btn icon @click="toggleFavouriteClass(clas.id)">
             <v-icon color="red">mdi-heart</v-icon>
           </v-btn>
 
@@ -79,7 +79,7 @@ export default {
     ...mapGetters("classes", ["favouriteClasses"])
   },
   methods: {
-    ...mapActions("classes", ["toggleFavourite"]),
+    ...mapActions("classes", ["toggleFavouriteClass"]),
     getPartner(partnerID) {
       return this.$store.state.classes.partners[partnerID];
     }
