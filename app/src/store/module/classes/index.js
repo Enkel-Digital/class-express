@@ -106,7 +106,7 @@ export default {
       commit("setter", ["partners", mock.partners]);
 
       await dispatch("getUpcomingClassesID");
-      await dispatch("getFavouriteClassesID");
+      await dispatch("getFavourites");
     },
     /**
      * Get list of upcomingClassesID from API
@@ -131,14 +131,16 @@ export default {
       dispatch("getClass", Object.keys(pastClassesID));
     },
     /**
-     * Get list of favouriteClasses from API
-     * @function getFavouriteClasses
+     * Get favourite classes and partners
+     * @function getFavourites
      */
-    async getFavouriteClassesID({ commit }) {
+    async getFavourites({ dispatch, commit }) {
       // @todo Replace with API call
-      const favouriteClassesID = mock.favouriteClassesID;
+      const favouriteClassesID = mock.favourites.classes;
+      const favouritePartnersID = mock.favourites.partners;
 
       commit("setter", ["favouriteClassesID", favouriteClassesID]);
+      commit("setter", ["favouritePartnersID", favouritePartnersID]);
     },
     async toggleFavourite({ commit }, classID) {
       // Optimistic UI, show toggle first
