@@ -12,8 +12,8 @@
         <v-responsive
           @click="
             $router.push({
-              name: 'ClassDetails',
-              params: { classID: partner.id }
+              name: 'partner',
+              params: { partnerID: partner.id }
             })
           "
         >
