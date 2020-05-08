@@ -9,6 +9,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../utils/db");
 const auth = require("../middleware/auth");
+const onlyOwnResource = require("../middleware/onlyOwnResource");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:users");
@@ -19,7 +20,7 @@ const logger = createLogger("routes:users");
  * @function
  * @returns {object} User object
  */
-router.get("/:userID", auth, async (req, res) => {
+router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
   try {
     const { userID } = req.params;
 
