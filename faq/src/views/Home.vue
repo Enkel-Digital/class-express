@@ -5,6 +5,8 @@
         <v-card class="mx-auto" max-width="900" style="margin-top: -64px;">
           <v-toolbar flat>
             <v-icon>mdi-magnify</v-icon>
+            <!-- TODO: Non functional autocomplete -->
+            <!-- Search bar to look for topic issue -->
             <v-autocomplete
               :loading="loading"
               :items="items"
@@ -24,14 +26,13 @@
               clearable
             />
           </v-toolbar>
-
           <v-divider></v-divider>
-
+          <!-- TODO: Integrate FAQ Provider with autocomplete -->
+          <!-- Displays FAQ using tabs and expansion panels, through a component -->
           <FAQProvider />
         </v-card>
       </v-container>
     </v-content>
-    <ContactUs />
   </div>
 </template>
 
@@ -82,6 +83,7 @@ export default {
     }
   },
   methods: {
+    //Search method for autocomplete
     search() {
       console.log("searching ...");
 

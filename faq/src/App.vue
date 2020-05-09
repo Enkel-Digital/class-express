@@ -2,7 +2,6 @@
   <v-app>
     <v-card flat fixed>
       <v-toolbar color="primary" dark extended flat>
-        <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
         <v-toolbar-title>Class Express FAQ</v-toolbar-title>
         <v-spacer></v-spacer>
         <!-- <v-btn to="/login" text>
@@ -14,8 +13,9 @@
     <v-footer color="primary lighten-1" padless fixed>
       <v-row justify="center" no-gutters>
         <v-spacer></v-spacer>
+        <!-- Button that allows for one to raise support tickets -->
         <ContactUs />
-
+        <!-- Links to our main website/portal -->
         <v-btn
           href="https://class-express.com/"
           target="_blank"
@@ -28,6 +28,7 @@
           <v-icon>mdi-open-in-new</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
+        <!-- Gets current year for show: 2020 - Class Express -->
         <v-col class="primary lighten-2 py-4 text-center white--text" cols="12">
           {{ new Date().getFullYear() }} —
           <strong>Class Express</strong>
