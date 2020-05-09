@@ -7,11 +7,12 @@
         <v-row>
           <v-col cols="15" sm="6" md="5">
             <v-text-field
+              v-model="name"
               :rules="nameRules"
               label="Class Name"
               required
               outlined
-            ></v-text-field>
+            />
           </v-col>
 
           <v-col cols="15" sm="6" md="3">
@@ -20,7 +21,7 @@
               label="Address Line 1"
               outlined
               required
-            ></v-text-field>
+            />
           </v-col>
           <v-col cols="15" sm="6" md="3">
             <v-text-field label="Address Line 2" outlined></v-text-field>
@@ -127,7 +128,7 @@
         <br />
         <v-row>
           <v-col cols="15" sm="6" md="1">
-            <v-btn depressed large @click="validate">Add Class</v-btn>
+            <v-btn depressed large @click="addClass">Add Class</v-btn>
           </v-col>
 
           <v-col cols="15" sm="6" md="1">
@@ -141,27 +142,37 @@
 
 <script>
 export default {
-  data: () => ({
-    time: "11:15",
-    date: new Date().toISOString().substr(0, 10),
-    checkbox: true,
-    valid: true,
-    name: "",
-    nameRules: [
-      (v) => !!v || "Name is required",
-      (v) => (v && v.length <= 20) || "Please fill is the required space",
-    ],
-    rules: [
-      (value) =>
-        !value ||
-        value.size < 2000000 ||
-        "Avatar size should be less than 2 MB!",
-    ],
-    addressRules: [(v) => !!v || "Please fill is the required space"],
-  }),
+  data() {
+    return {
+      name: null,
+      files: null,
+      start: null,
+      end: null,
+      date: null,
+      description: null,
+      checkbox: "",
+      valid: null,
+      nameRules: [
+        (v) => !!v || "Name is required",
+        (v) => (v && v.length <= 20) || "Please fill is the required space",
+      ],
+      rules: [
+        (value) =>
+          !value ||
+          value.size < 2000000 ||
+          "Avatar size should be less than 2 MB!",
+      ],
+      addressRules: [(v) => !!v || "Please fill is the required space"],
+    };
+  },
   methods: {
+    addClass() {
+      if (!this.validate()) return;
+
+      // this.$store.dispatch("classes/newClass")
+    },
     validate() {
-      this.$refs.form.validate();
+      return this.$refs.form.validate();
     },
     reset() {
       this.$refs.form.reset();
