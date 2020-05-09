@@ -46,9 +46,6 @@ export default {
   name: "App",
   components: {
     ContactUs
-  },
-  data: () => ({
-    sheet: false
-  })
+  }
 };
 </script>

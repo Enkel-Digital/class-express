@@ -86,12 +86,8 @@ export default {
     //Search method for autocomplete
     search() {
       console.log("searching ...");
-
       // Collapse suggestions dropdown
       this.collapseSuggestions = true;
-
-      // Call the store to get search results into store for explore page to display
-      this.$store.dispatch("search/searchClass");
     }
   }
 };

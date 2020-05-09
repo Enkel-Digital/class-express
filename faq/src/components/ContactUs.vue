@@ -36,7 +36,6 @@
                 required
                 label="I hereby consent to the Class Express Support Team to contacting me at the above given email address."
               ></v-checkbox>
-
               <div v-if="validate">
                 <!-- TODO: fix send here to be disabled when first opened -->
                 <!-- Link to actual function -->
@@ -49,7 +48,6 @@
               </div>
             </v-form>
           </v-list-item>
-          <v-list-item></v-list-item>
         </v-list>
       </v-card>
     </v-dialog>
