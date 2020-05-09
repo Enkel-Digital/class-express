@@ -11,11 +11,12 @@
         <h1>Let's Get Started!</h1>
       </v-col>
 
+      <!-- stepper for owner -->
       <v-col cols="15" sm="6" md="7">
         <v-stepper v-model="e6" vertical>
-          <v-stepper-step :complete="e6 > 1" step="1"
-            >Personal Information</v-stepper-step
-          >
+          <v-stepper-step :complete="e6 > 1" step="1">
+            Login Details
+          </v-stepper-step>
 
           <v-stepper-content step="1">
             <v-form>
@@ -157,7 +158,7 @@
               </v-row>
             </v-form>
 
-            <v-btn color="primary" @click="validate">Continue</v-btn>
+            <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
             <v-btn text @click="e6 -= 1">Back</v-btn>
           </v-stepper-content>
 
@@ -166,38 +167,97 @@
             <h2>You're Set to Go!</h2>
             <p>Please check your inbox and verify your email</p>
             <v-btn color="primary" @click="e6 = 4">Finish</v-btn>
-            <v-btn text @click="e6 -= 1">Back</v-btn>
           </v-stepper-content>
         </v-stepper>
       </v-col>
+      <!-- stepper for owner end -->
+
+      <!-- stepper for employee -->
+      <!-- <v-col cols="15" sm="6" md="7">
+        <v-stepper v-model="e6" vertical>
+          <v-stepper-step :complete="e6 > 1" step="1"
+          >
+
+          <v-stepper-content step="1">
+            <v-form>
+              <v-row>
+                <v-col cols="15" sm="6" md="10">
+                  <v-text-field
+                    v-model="name"
+                    label="Name"
+                    :rules="nameRules"
+                    prepend-icon="mdi-account"
+                  ></v-text-field>
+                </v-col>
+
+                <v-col cols="15" sm="6" md="10">
+                  <v-text-field
+                    v-model="email"
+                    :rules="emailRules"
+                    label="Email"
+                    prepend-icon="mdi-email"
+                    :error-messages="emailErrors"
+                    required
+                    @input="$v.email.$touch()"
+                    @blur="$v.email.$touch()"
+                  ></v-text-field>
+                </v-col>
+
+                <v-col cols="15" sm="6" md="10">
+                  <v-text-field
+                    v-model="password"
+                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :rules="[rules.required, rules.min]"
+                    :type="show1 ? 'text' : 'password'"
+                    name="input-10-1"
+                    label="Password"
+                    prepend-icon="mdi-lock"
+                    hint="At least 8 characters"
+                    counter
+                    @click:append="show1 = !show1"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-form>
+
+            <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-step :complete="e6 > 2" step="2"
+            >Your Company</v-stepper-step
+          >
+          <v-stepper-content step="2">
+            <v-form>
+              <v-row>
+                <v-col cols="15" sm="6" md="10">
+                  <v-autocomplete
+                    :items="company"
+                    :filter="customFilter"
+                    color="white"
+                    item-text="name"
+                    prepend-icon="mdi-card-account-details"
+                    label="Select your company"
+                  ></v-autocomplete>
+                </v-col>
+              </v-row>
+            </v-form>
+
+            <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
+            <v-btn text @click="e6 -= 1">Back</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-step :complete="e6 > 3" step="3">Finish</v-stepper-step>
+          <v-stepper-content step="3">
+            <h2>You're Set to Go!</h2>
+            <p>Please check your inbox and verify your email</p>
+            <v-btn color="primary" @click="e6 = 4">Finish</v-btn>
+          </v-stepper-content>
+        </v-stepper>
+      </v-col> -->
+      <!-- stepper for employee end -->
     </v-row>
   </div>
 </template>
-<!-- <img alt="Login image" src="../assets/logo.png" width="360" height="360" />
-
-    <input
-      v-autofocus
-      type="text"
-      v-model="name"
-      placeholder="Name"
-      @keypress.enter="signUp"
-      required
-    />
-    <br />
-    <input type="text" v-model="email" placeholder="Email" @keypress.enter="signUp" required />
-
-    <input
-      type="password"
-      v-model="password"
-      placeholder="Password"
-      @keypress.enter="signUp"
-      required
-    />
-
-    <p class="error">{{ error_msg }}</p>
-    <button @click="signUp">Sign Up</button>
-    <br />
-    <button id="back-btn" @click="back">Back</button>-->
 
 <script>
 /**
@@ -256,6 +316,16 @@ export default {
         "Dance",
         "Cooking",
       ],
+      hasSaved: false,
+      isEditing: null,
+      model: null,
+      company: [
+        { name: "Florida", abbr: "FL", id: 1 },
+        { name: "Georgia", abbr: "GA", id: 2 },
+        { name: "Nebraska", abbr: "NE", id: 3 },
+        { name: "California", abbr: "CA", id: 4 },
+        { name: "New York", abbr: "NY", id: 5 },
+      ],
     };
   },
   methods: {
@@ -264,6 +334,15 @@ export default {
     },
     validate() {
       this.$refs.form.validate();
+    },
+    customFilter(item, queryText, itemText) {
+      const textOne = item.name.toLowerCase();
+      const textTwo = item.abbr.toLowerCase();
+      const searchText = queryText.toLowerCase();
+
+      return (
+        textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
+      );
     },
     signUp: async function () {
       try {
