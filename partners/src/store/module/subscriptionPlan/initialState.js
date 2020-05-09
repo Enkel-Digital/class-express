@@ -6,7 +6,7 @@ export default function initialState() {
   return {
     currentPlanID: undefined,
     nextPlanID: undefined,
-    subscriptionPlans: []
+    subscriptionPlans: [],
   };
 }
 
@@ -20,6 +20,6 @@ const subscriptionPlanElementReference = {
   totalPoints: 50,
   price: {
     value: 59,
-    currency: "SGD"
-  }
+    currency: "SGD",
+  },
 };

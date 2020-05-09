@@ -58,7 +58,7 @@ export default {
     return {
       email: "",
       password: "",
-      error_msg: ""
+      error_msg: "",
     };
   },
   methods: {
@@ -86,8 +86,8 @@ export default {
         // Set the message into the error box to show user the error
         this.error_msg = error_msg(error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -14,17 +14,19 @@ export default {
   namespaced: true,
   state: initialState(),
   mutations: {
-    setter
+    setter,
   },
   getters: {
     currentPlan(state) {
       return state.subscriptionPlans.find(
-        plan => plan.id === state.currentPlanID
+        (plan) => plan.id === state.currentPlanID
       );
     },
     nextPlan(state) {
-      return state.subscriptionPlans.find(plan => plan.id === state.nextPlanID);
-    }
+      return state.subscriptionPlans.find(
+        (plan) => plan.id === state.nextPlanID
+      );
+    },
   },
   actions: {
     /**
@@ -75,6 +77,6 @@ export default {
         // Pessimistic UI, show after network update is complete
         commit("setter", ["nextPlanID", planID]);
       }
-    }
-  }
+    },
+  },
 };

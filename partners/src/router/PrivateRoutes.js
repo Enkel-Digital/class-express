@@ -24,71 +24,71 @@ const routes = [
     path: "/home",
     name: "home",
     component: Home,
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/schedule",
     name: "view-schedule",
     component: schedule,
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/schedule/:classID",
     name: "schedule",
     component: schedule,
     meta: { Auth_requirements: AuthType.private },
-    props: true
+    props: true,
   },
   {
     path: "/class/all",
     name: "all-classes",
     component: AllClasses,
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/class/add",
     name: "new-class",
     component: AddNewClass,
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/classdetails/:classID",
     name: "ClassDetails",
     component: ClassDetails,
     meta: { Auth_requirements: AuthType.private },
-    props: true
+    props: true,
   },
   {
     path: "/reviews/all",
     name: "all-reviews",
     component: AllReviews,
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/earnings",
     name: "earnings",
     component: Earnings,
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/reviews/:classID",
     name: "reviews",
     component: Reviews,
     meta: { Auth_requirements: AuthType.private },
-    props: true
+    props: true,
   },
   {
     path: "/profile",
     name: "profile",
     component: Profile,
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/settings",
     name: "settings",
     component: () => import("@/views/Settings.vue"),
-    meta: { Auth_requirements: AuthType.private }
-  }
+    meta: { Auth_requirements: AuthType.private },
+  },
 ];
 
 export default routes;

@@ -11,7 +11,7 @@ import NotFound from "./NotFound";
 Vue.use(VueRouter);
 
 const router = new VueRouter({
-  routes: [...PrivateRoutes, ...PublicRoutes, ...NotFound]
+  routes: [...PrivateRoutes, ...PublicRoutes, ...NotFound],
 });
 
 // Attach Router Gaurd Middleware function to run when navigation is made before the actual navigation.

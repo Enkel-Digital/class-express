@@ -10,9 +10,9 @@ export default function initialState() {
       period: {
         timezone: undefined,
         start: undefined,
-        end: undefined
-      }
+        end: undefined,
+      },
     },
-    topupOptions: []
+    topupOptions: [],
   };
 }

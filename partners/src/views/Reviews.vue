@@ -130,8 +130,8 @@ export default {
     return { className };
   },
   computed: {
-    ...mapState("classes", ["review"])
-  }
+    ...mapState("classes", ["review"]),
+  },
 };
 </script>
 

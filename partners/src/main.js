@@ -24,7 +24,7 @@ initializeApp({
   projectId: "classes-ekd",
   storageBucket: "classes-ekd.appspot.com",
   messagingSenderId: "385087995070",
-  appId: "1:385087995070:web:7204f5d15cb9004c3072ef"
+  appId: "1:385087995070:web:7204f5d15cb9004c3072ef",
 });
 
 // Wait for firebase to finish initialization before creating the app.
@@ -34,6 +34,6 @@ auth().onAuthStateChanged(() => {
     router,
     store,
     vuetify,
-    render: h => h(App)
+    render: (h) => h(App),
   }).$mount("#app");
 });

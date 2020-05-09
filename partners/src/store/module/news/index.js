@@ -12,7 +12,7 @@ export default {
   namespaced: true,
   state: initialState(),
   mutations: {
-    setter
+    setter,
   },
   actions: {
     /**
@@ -42,6 +42,6 @@ export default {
       // this.lastViewdBanner_tmp = link;
 
       if (confirm("Checkout link?")) window.open(link);
-    }
-  }
+    },
+  },
 };

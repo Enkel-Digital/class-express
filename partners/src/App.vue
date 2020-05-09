@@ -114,14 +114,14 @@ import SideNavBar from "@/components/SideNavBar";
 export default {
   name: "App",
   components: {
-    SideNavBar
+    SideNavBar,
   },
   computed: {
     // Compute if user is on a route that is only available after signing in.
     signedInRoute() {
       return this.$route.meta.Auth_requirements !== AuthType.public_only;
-    }
-  }
+    },
+  },
 };
 </script>
 

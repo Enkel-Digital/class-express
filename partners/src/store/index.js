@@ -22,10 +22,10 @@ export default new Vuex.Store({
     search: searchModule,
     points: pointsModule, // User points and not all points related
     news: newsModule,
-    subscription: subscriptionPlanModule
+    subscription: subscriptionPlanModule,
   },
   mutations: {
-    setter
+    setter,
   },
   actions: {
     /**
@@ -44,7 +44,7 @@ export default new Vuex.Store({
      */
     async getUserDetails({ commit }) {
       commit("setter", ["user", mock.user]);
-    }
+    },
   },
-  plugins: [createPersistedState()]
+  plugins: [createPersistedState()],
 });

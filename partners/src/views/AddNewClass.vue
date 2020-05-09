@@ -2,7 +2,7 @@
   <v-content id="AddClasses">
     <br />
     <v-form ref="form" v-model="valid" lazy-validation>
-      <h2 style="color:#455A64;">Add New Class</h2>
+      <h2 style="color: #455a64;">Add New Class</h2>
       <v-container>
         <v-row>
           <v-col cols="15" sm="6" md="5">
@@ -93,7 +93,7 @@
 
         <v-row>
           <v-col style="width: 300px; flex: 0 1 auto;">
-            <h3 style="color:#455A64;">Start</h3>
+            <h3 style="color: #455a64;">Start</h3>
             <v-time-picker
               v-model="start"
               :max="end"
@@ -103,7 +103,7 @@
           </v-col>
 
           <v-col style="width: 300px; flex: 0 1 auto;">
-            <h3 style="color:#455A64;">End</h3>
+            <h3 style="color: #455a64;">End</h3>
             <v-time-picker
               v-model="end"
               :min="start"
@@ -112,8 +112,8 @@
             ></v-time-picker>
           </v-col>
 
-          <v-col style="width: 900px;flex: 0 1 auto;">
-            <h3 style="color:#455A64;">Date</h3>
+          <v-col style="width: 900px; flex: 0 1 auto;">
+            <h3 style="color: #455a64;">Date</h3>
             <v-date-picker
               v-model="date"
               full-width
@@ -148,16 +148,16 @@ export default {
     valid: true,
     name: "",
     nameRules: [
-      v => !!v || "Name is required",
-      v => (v && v.length <= 20) || "Please fill is the required space"
+      (v) => !!v || "Name is required",
+      (v) => (v && v.length <= 20) || "Please fill is the required space",
     ],
     rules: [
-      value =>
+      (value) =>
         !value ||
         value.size < 2000000 ||
-        "Avatar size should be less than 2 MB!"
+        "Avatar size should be less than 2 MB!",
     ],
-    addressRules: [v => !!v || "Please fill is the required space"]
+    addressRules: [(v) => !!v || "Please fill is the required space"],
   }),
   methods: {
     validate() {
@@ -165,8 +165,8 @@ export default {
     },
     reset() {
       this.$refs.form.reset();
-    }
-  }
+    },
+  },
 };
 </script>
 

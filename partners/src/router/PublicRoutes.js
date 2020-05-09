@@ -13,26 +13,26 @@ const routes = [
     path: "/",
     name: "welcome",
     component: () => import("@/views/Welcome.vue"),
-    meta: { Auth_requirements: AuthType.public_only }
+    meta: { Auth_requirements: AuthType.public_only },
   },
   {
     path: "/login",
     name: "login",
     component: () => import("@/views/Login.vue"),
-    meta: { Auth_requirements: AuthType.public_only }
+    meta: { Auth_requirements: AuthType.public_only },
   },
   {
     path: "/signup",
     name: "signup",
     component: () => import("@/views/Signup.vue"),
-    meta: { Auth_requirements: AuthType.public_only }
+    meta: { Auth_requirements: AuthType.public_only },
   },
   {
     path: "/about",
     name: "About",
     component: () => import("../views/About.vue"),
-    meta: { Auth_requirements: AuthType.public_only }
-  }
+    meta: { Auth_requirements: AuthType.public_only },
+  },
 ];
 
 export default routes;

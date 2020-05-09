@@ -15,11 +15,13 @@ export default {
     setter,
     topupPoints(state, pointsBought) {
       state.points.left += pointsBought;
-    }
+    },
   },
   getters: {
-    topupOption: state => topupOptionID =>
-      state.topupOptions.find(topupOption => topupOption.id === topupOptionID)
+    topupOption: (state) => (topupOptionID) =>
+      state.topupOptions.find(
+        (topupOption) => topupOption.id === topupOptionID
+      ),
   },
   actions: {
     /**
@@ -69,6 +71,6 @@ export default {
         // Pessimistic UI, show after network update is complete
         commit("topupPoints", points);
       }
-    }
-  }
+    },
+  },
 };

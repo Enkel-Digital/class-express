@@ -36,26 +36,26 @@ export default {
           text: "ClassName",
           align: "start",
           sortable: false,
-          value: "itemName"
+          value: "itemName",
         },
         { text: "Class Timing (h)", value: "classTiming" },
-        { text: "Attendee Count", value: "numAttendees" }
+        { text: "Attendee Count", value: "numAttendees" },
       ],
       classItem: [
         {
           itemIndex: "0",
           itemName: "Begineer Guitar",
           classTiming: "1-3pm",
-          numAttendees: "6"
+          numAttendees: "6",
         },
         {
           itemIndex: "1",
           itemName: "Advanced Guitar",
           classTiming: "6-8pm",
-          numAttendees: "10"
-        }
-      ]
+          numAttendees: "10",
+        },
+      ],
     };
-  }
+  },
 };
 </script>

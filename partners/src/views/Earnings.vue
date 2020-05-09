@@ -1,6 +1,6 @@
 <template>
   <v-content id="AllClasses">
-    <h1 style="font-size:200px" class="display-1 text-md-center">Earnings</h1>
+    <h1 style="font-size: 200px;" class="display-1 text-md-center">Earnings</h1>
 
     <br />
 
@@ -103,7 +103,7 @@
 <script>
 export default {
   data: () => ({
-    value: [423, 446, 675, 510, 590, 610, 760]
+    value: [423, 446, 675, 510, 590, 610, 760],
   }),
   name: "AllClasses",
   beforeMount() {
@@ -118,26 +118,26 @@ export default {
           id: 0,
           name: "Basic guitar",
           pictureSources: [
-            "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg"
-          ]
+            "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg",
+          ],
         },
         {
           id: 1,
           name: "Intermediate guitar",
           pictureSources: [
-            "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg"
-          ]
+            "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg",
+          ],
         },
         {
           id: 2,
           name: "Advance guitar",
           pictureSources: [
-            "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg"
-          ]
-        }
+            "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg",
+          ],
+        },
       ];
-    }
-  }
+    },
+  },
 };
 </script>
 

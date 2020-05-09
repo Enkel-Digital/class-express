@@ -22,7 +22,7 @@ export default {
     updateSettings(state, newSettings) {
       newSettings.modifiedAt = Date.now();
       state.settings = newSettings;
-    }
+    },
   },
   actions: {
     /**
@@ -57,6 +57,6 @@ export default {
     async syncSettings({ state }) {
       // Get settings from server and update local state if remote modifiedAt is later than local modifiedAt, else update remote state
       // const remote_modifiedAt = api.settings.getModifiedAt(/* user id here */);
-    }
-  }
+    },
+  },
 };

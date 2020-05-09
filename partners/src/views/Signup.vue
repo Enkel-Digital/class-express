@@ -2,13 +2,20 @@
   <div class="owner">
     <v-row>
       <v-col cols="15" sm="6" md="4">
-        <img alt="Login image" src="../assets/logo.png" width="360" height="360" />
+        <img
+          alt="Login image"
+          src="../assets/logo.png"
+          width="360"
+          height="360"
+        />
         <h1>Let's Get Started!</h1>
       </v-col>
 
       <v-col cols="15" sm="6" md="7">
         <v-stepper v-model="e6" vertical>
-          <v-stepper-step :complete="e6 > 1" step="1">Personal Information</v-stepper-step>
+          <v-stepper-step :complete="e6 > 1" step="1"
+            >Personal Information</v-stepper-step
+          >
 
           <v-stepper-content step="1">
             <v-form>
@@ -66,7 +73,9 @@
             <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
           </v-stepper-content>
 
-          <v-stepper-step :complete="e6 > 2" step="2">Company Information</v-stepper-step>
+          <v-stepper-step :complete="e6 > 2" step="2"
+            >Company Information</v-stepper-step
+          >
           <v-stepper-content step="2">
             <v-form>
               <v-row>
@@ -110,7 +119,11 @@
                 </v-col>
 
                 <v-col cols="15" sm="6" md="5">
-                  <v-text-field v-model="Location" label="Address Line 2 (optional)" prepend-icon></v-text-field>
+                  <v-text-field
+                    v-model="Location"
+                    label="Address Line 2 (optional)"
+                    prepend-icon
+                  ></v-text-field>
                 </v-col>
 
                 <v-col cols="15" sm="6" md="5">
@@ -219,19 +232,19 @@ export default {
       show1: false,
       password: "Password",
       rules: {
-        required: value => !!value || "Required.",
-        min: v => v.length >= 8 || "Min 8 characters"
+        required: (value) => !!value || "Required.",
+        min: (v) => v.length >= 8 || "Min 8 characters",
       },
-      nameRules: [v => !!v || "Name is required"],
+      nameRules: [(v) => !!v || "Name is required"],
       emailRules: [
-        v => !!v || "E-mail is required",
-        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+        (v) => !!v || "E-mail is required",
+        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
       ],
       phoneRules: [
-        v => !!v || "Number is required",
-        v => (v && v.length <= 8) || "Number is invalid"
+        (v) => !!v || "Number is required",
+        (v) => (v && v.length <= 8) || "Number is invalid",
       ],
-      postalRules: [v => (v && v.length <= 6) || "Postal code is invalid"],
+      postalRules: [(v) => (v && v.length <= 6) || "Postal code is invalid"],
 
       businessTypes: [
         "Sports",
@@ -241,8 +254,8 @@ export default {
         "Lifestyle",
         "Fitness",
         "Dance",
-        "Cooking"
-      ]
+        "Cooking",
+      ],
     };
   },
   methods: {
@@ -252,7 +265,7 @@ export default {
     validate() {
       this.$refs.form.validate();
     },
-    signUp: async function() {
+    signUp: async function () {
       try {
         // After signup, user will be automatically signed in, redirect to home
         // eslint-disable-next-line no-unused-vars
@@ -276,8 +289,8 @@ export default {
         // Set the message into the error box to show user the error
         this.error_msg = error_msg(error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
