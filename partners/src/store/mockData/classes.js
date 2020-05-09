@@ -11,15 +11,15 @@ const classes = {
       "Basic guitar lessons to help you get started with this wonderful musical instrument! This class covers all the basics from score reading to strumming techniques.",
     provider: {
       name: "Guitar Studio 1", // Name of the provider
-      id: 123
+      id: 123,
     },
     location: {
       coordinates: "1.300649, 103.855453",
-      address: "249B Victoria St, Bugis Village"
+      address: "249B Victoria St, Bugis Village",
     },
     pictureSources: [
-      "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg"
-    ]
+      "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg",
+    ],
   },
   1: {
     id: 1,
@@ -31,15 +31,15 @@ const classes = {
       "Like cooking but always feel like you are missing a magical ingredient? Well join our class to learn more and get ready to be amazed.",
     provider: {
       name: "Tampines CC", // Name of the providerx
-      id: 456
+      id: 456,
     },
     location: {
       coordinates: "1.302481, 103.855448",
-      address: "117 Fidelio St"
+      address: "117 Fidelio St",
     },
     pictureSources: [
-      "https://www.fetimes.co.kr/news/photo/201709/60017_41960_2138.jpg"
-    ]
+      "https://www.fetimes.co.kr/news/photo/201709/60017_41960_2138.jpg",
+    ],
   },
   2: {
     id: 2,
@@ -52,16 +52,16 @@ const classes = {
     provider: {
       name: "Guitar Studio 2", // Name of the provider
       id: 123,
-      description: "We offer world class guitar lessons for you!"
+      description: "We offer world class guitar lessons for you!",
     },
     location: {
       coordinates: "1.3006954, 103.84475",
-      address: "Orchard road, Plaza Singapura"
+      address: "Orchard road, Plaza Singapura",
     },
     pictureSources: [
-      "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg"
-    ]
-  }
+      "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg",
+    ],
+  },
 };
 
 const reviews = {
@@ -73,14 +73,14 @@ const reviews = {
       {
         points: 4,
         description: "Was really fun!",
-        timestamp: 1584702021
+        timestamp: 1584702021,
       },
       {
         points: 4,
         description: "Love the open classroom environment",
-        timestamp: 1584702019
-      }
-    ]
+        timestamp: 1584702019,
+      },
+    ],
   },
   1: {
     classID: 1,
@@ -90,14 +90,14 @@ const reviews = {
       {
         points: 5,
         description: "Was really fun!",
-        timestamp: 1584702021
+        timestamp: 1584702021,
       },
       {
         points: 4,
         description: "Love the open classroom environment",
-        timestamp: 1584702019
-      }
-    ]
+        timestamp: 1584702019,
+      },
+    ],
   },
   2: {
     classID: 2,
@@ -107,40 +107,40 @@ const reviews = {
       {
         points: 5,
         description: "Was really fun!",
-        timestamp: 1584702021
+        timestamp: 1584702021,
       },
       {
         points: 4,
         description: "Love the open classroom environment",
-        timestamp: 1584702019
+        timestamp: 1584702019,
       },
       {
         points: 5,
         description: "Was really fun!",
-        timestamp: 1584702018
+        timestamp: 1584702018,
       },
       {
         points: 4,
         description: "Love the open classroom environment",
-        timestamp: 1584702016
+        timestamp: 1584702016,
       },
       {
         points: 5,
         description: "Was really fun!",
-        timestamp: 1584702015
+        timestamp: 1584702015,
       },
       {
         points: 5,
         description: "Ichika is a great teacher!",
-        timestamp: 1584702014
+        timestamp: 1584702014,
       },
       {
         points: 4,
         description: "Love the open classroom environment",
-        timestamp: 1584702013
-      }
-    ]
-  }
+        timestamp: 1584702013,
+      },
+    ],
+  },
 };
 
 // const schedule = {
@@ -166,16 +166,16 @@ const reviews = {
 // };
 
 const upcomingClassesID = {
-  0: true
+  0: true,
 };
 
 const favouriteClassesID = {
   1: true,
-  2: true
+  2: true,
 };
 
 const pastClassesID = {
-  2: true
+  2: true,
 };
 
 module.exports = {
@@ -184,5 +184,5 @@ module.exports = {
   // schedule,
   upcomingClassesID,
   favouriteClassesID,
-  pastClassesID
+  pastClassesID,
 };

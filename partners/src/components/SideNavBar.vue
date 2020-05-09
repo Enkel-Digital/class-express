@@ -13,13 +13,9 @@
       <v-list-item-content>
         <p class="overline">Account</p>
 
-        <v-list-item-title>
-          {{ "JJ Lee" }}
-        </v-list-item-title>
+        <v-list-item-title>{{ "JJ Lee" }}</v-list-item-title>
 
-        <v-list-item-subtitle>
-          {{ "JJ@enkeldigital.com" }}
-        </v-list-item-subtitle>
+        <v-list-item-subtitle>{{ "JJ@enkeldigital.com" }}</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 
@@ -60,7 +56,7 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-      </v-list-group> -->
+      </v-list-group>-->
 
       <!-- Logout button at the bottom -->
       <v-list-item ripple hover @click="logout">
@@ -91,37 +87,37 @@ export default {
         {
           icon: "mdi-view-dashboard",
           text: "Dashboard",
-          link: { name: "home" }
+          link: { name: "home" },
         },
         {
           icon: "mdi-cash-usd",
           text: "Earnings",
-          link: { name: "earnings" }
+          link: { name: "earnings" },
         },
         {
           icon: "mdi-calendar",
           text: "View Schedule",
-          link: { name: "view-schedule" }
+          link: { name: "view-schedule" },
         },
         {
           icon: "mdi-plus",
           text: "Add New Class",
-          link: { name: "new-class" }
+          link: { name: "new-class" },
         },
         {
           icon: "mdi-view-week",
           text: "View all Classes",
-          link: { name: "all-classes" }
+          link: { name: "all-classes" },
         },
         {
           icon: "mdi-account",
           text: "View Reviews",
-          link: { name: "view-reviews" }
+          link: { name: "all-reviews" },
         },
         {
           icon: "mdi-account-group-outline",
           text: "Withdrawal",
-          link: { name: "withdrawal" }
+          link: { name: "withdrawal" },
         },
         {
           icon: "mdi-chevron-up",
@@ -131,8 +127,8 @@ export default {
           children: [
             { icon: "mdi-account-group-outline", text: "View all users" },
             { icon: "mdi-account-plus", text: "Add user" },
-            { icon: "mdi-account-minus", text: "Delete user" }
-          ]
+            { icon: "mdi-account-minus", text: "Delete user" },
+          ],
         },
         {
           icon: "mdi-chevron-up",
@@ -144,40 +140,40 @@ export default {
             { text: "Export" },
             { text: "Print" },
             { text: "Undo changes" },
-            { text: "Other contacts" }
-          ]
+            { text: "Other contacts" },
+          ],
         },
         {
           icon: "mdi-settings",
           text: "Settings",
-          link: { name: "settings" }
+          link: { name: "settings" },
         },
         {
           icon: "mdi-account",
           text: "Contact Support",
-          link: { name: "contact-support" }
+          link: { name: "contact-support" },
         },
         {
           icon: "mdi-help-circle",
           text: "FAQs",
-          link: { name: "faq" }
+          link: { name: "faq" },
         },
         {
           icon: "mdi-message",
           text: "Send feedback",
-          link: { name: "feedback" }
+          link: { name: "feedback" },
         },
         {
           icon: "mdi-cellphone-link",
           text: "App downloads",
-          link: { name: "downloads" }
-        }
-      ]
+          link: { name: "downloads" },
+        },
+      ],
     };
   },
   methods: {
-    logout
-  }
+    logout,
+  },
 };
 </script>
 

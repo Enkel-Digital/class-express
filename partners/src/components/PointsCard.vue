@@ -75,9 +75,9 @@ export default {
     this.$store.dispatch("points/init");
   },
   computed: {
-    ...mapState("points", ["points"])
+    ...mapState("points", ["points"]),
     // ,...mapState("subscription", ["currentPlanID"])
-  }
+  },
 };
 </script>
 

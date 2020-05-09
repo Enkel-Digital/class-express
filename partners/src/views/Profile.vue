@@ -83,7 +83,7 @@ import { mapState } from "vuex";
 export default {
   name: "profile",
   components: {
-    PointsCard
+    PointsCard,
   },
   computed: mapState(["user"]),
   methods: {
@@ -91,8 +91,8 @@ export default {
     refreshData() {
       // Rely on the store to update the data asynchronously in the background
       this.$store.dispatch("init");
-    }
-  }
+    },
+  },
 };
 </script>
 

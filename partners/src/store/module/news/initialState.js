@@ -9,8 +9,8 @@ export default function initialState() {
       {
         src: "https://enkeldigital.com/images/hero.jpg",
         text: "Checkout our company", // Optional text
-        link: "http://enkeldigital.com/"
-      }
-    ]
+        link: "http://enkeldigital.com/",
+      },
+    ],
   };
 }

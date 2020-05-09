@@ -4,7 +4,7 @@
       <!-- @todo Change to a image carousel -->
       <v-img id="class-image" :src="clas.pictureSources[0]" />
     </v-responsive>
-
+    <p>test</p>
     <v-responsive style="text-align: left;">
       <v-row>
         <v-col>
@@ -37,9 +37,7 @@
             {{ review.numberOfReviews }} reviews
           </v-list-item-subtitle>
 
-          <v-list-item-subtitle v-else>
-            Loading...
-          </v-list-item-subtitle>
+          <v-list-item-subtitle v-else>Loading...</v-list-item-subtitle>
         </v-list-item-content>
 
         <v-btn
@@ -47,9 +45,8 @@
           text
           small
           color="primary"
+          >Read them!</v-btn
         >
-          Read them!
-        </v-btn>
       </v-list-item>
     </v-responsive>
 
@@ -87,7 +84,7 @@ import MapImage from "@/components/MapImage";
 export default {
   name: "ClassDetails",
   components: {
-    MapImage
+    MapImage,
   },
   created() {
     // Call action to fetch review of this class
@@ -119,8 +116,8 @@ export default {
     },
     review() {
       return this.$store.state.classes.review;
-    }
-  }
+    },
+  },
 };
 </script>
 

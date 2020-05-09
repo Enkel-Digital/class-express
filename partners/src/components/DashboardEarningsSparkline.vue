@@ -32,7 +32,7 @@ export default {
   name: "dashboard-earnings-sparkline",
   data: () => ({
     labels: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"],
-    value: [200, 675, 410, 390, 310, 460, 250]
-  })
+    value: [200, 675, 410, 390, 310, 460, 250],
+  }),
 };
 </script>

@@ -38,7 +38,7 @@ export default {
     PointsEarnedCard,
     ProfileVisitsCard,
     DashboardEarningsSparkline,
-    PastWeekEarningComparison
-  }
+    PastWeekEarningComparison,
+  },
 };
 </script>

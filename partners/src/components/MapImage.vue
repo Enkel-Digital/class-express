@@ -26,7 +26,7 @@ export default {
     coordinates() {
       return this.$store.state.classes.classes[this.classID].location
         .coordinates;
-    }
+    },
   },
   methods: {
     openMaps() {
@@ -35,7 +35,7 @@ export default {
           `https://www.google.com/maps/search/${this.coordinates}?hl=en`,
           "_blank"
         );
-    }
-  }
+    },
+  },
 };
 </script>

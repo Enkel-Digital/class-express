@@ -25,6 +25,6 @@
 
 <script>
 export default {
-  name: "bookings-card"
+  name: "bookings-card",
 };
 </script>

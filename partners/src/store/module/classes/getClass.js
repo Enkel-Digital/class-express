@@ -17,7 +17,7 @@ function getClass({ state, commit }, classID) {
   const fakeFetch = (url, callback) =>
     setTimeout(() => callback(mock.classes[classID]), 4000);
 
-  fakeFetch("testing url", classObject => {
+  fakeFetch("testing url", (classObject) => {
     console.log("setting now", state.classes[classID]);
 
     // state.classes[classID] = classObject;

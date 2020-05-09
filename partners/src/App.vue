@@ -14,7 +14,7 @@
       <!-- <v-app-bar-nav-icon @click.stop="showDrawer = !showDrawer"> -->
       <v-app-bar-nav-icon>
         <v-avatar size="2.6em" item>
-          <v-img src="@/assets/logo.png" alt="Vuetify" />
+          <v-img src="@/assets/logo.png" alt="Logo" />
         </v-avatar>
       </v-app-bar-nav-icon>
 
@@ -103,7 +103,7 @@
           <v-btn text @click="dialog = false">Save</v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog> -->
+    </v-dialog>-->
   </v-app>
 </template>
 
@@ -114,14 +114,14 @@ import SideNavBar from "@/components/SideNavBar";
 export default {
   name: "App",
   components: {
-    SideNavBar
+    SideNavBar,
   },
   computed: {
     // Compute if user is on a route that is only available after signing in.
     signedInRoute() {
       return this.$route.meta.Auth_requirements !== AuthType.public_only;
-    }
-  }
+    },
+  },
 };
 </script>
 

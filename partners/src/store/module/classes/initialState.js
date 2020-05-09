@@ -6,7 +6,7 @@ export default function initialState() {
   return {
     classes: {},
     upcomingClassesID: {},
-    favouriteClassesID: {}
+    favouriteClassesID: {},
   };
 }
 
@@ -24,14 +24,14 @@ const classObject = {
     "Advance guitar lessons taught be the legendary Ichika Mo. Will be going through advanced music scores and includes 1 on 1 trainings for the students, alongside a chance to practice in front of a live audience",
   review: {
     ratings: 4.8, // Ratings out of 5 stars
-    numberOfReviews: 100
+    numberOfReviews: 100,
   },
   provider: {
     name: "Guitar Studio 2", // Name of the provider
     id: 123,
-    description: "We offer world class guitar lessons for you!"
+    description: "We offer world class guitar lessons for you!",
   },
   location: "Orchard road", // Location Coordinates so we can show on a Map insert
   pictureSrc:
-    "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg"
+    "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg",
 };

@@ -17,7 +17,7 @@ export default {
      */
     clearSearch({ state }) {
       delete state.searchResults;
-    }
+    },
   },
   actions: {
     /**
@@ -36,6 +36,6 @@ export default {
       // Usually u need to use mutation, and the vuex-persist only works when you use mutations.
       // But for this, if the page reloads or app restarts, do I want the search result to be persisted?
       state.searchResults = mock.searchResults;
-    }
-  }
+    },
+  },
 };

@@ -129,7 +129,7 @@ export default {
   name: "subscription",
   components: {
     BackBtn,
-    PointsCard
+    PointsCard,
   },
   beforeMount() {
     // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
@@ -144,19 +144,19 @@ export default {
     ...mapState("subscription", [
       "subscriptionPlans",
       "currentPlanID",
-      "nextPlanID"
+      "nextPlanID",
     ]),
     ...mapGetters("subscription", ["currentPlan", "nextPlan"]),
     selectedPlanID() {
       return this.currentPlanID === this.nextPlanID
         ? this.currentPlanID
         : this.nextPlanID;
-    }
+    },
   },
   methods: {
     logout,
-    ...mapActions("subscription", ["updatePlan"])
-  }
+    ...mapActions("subscription", ["updatePlan"]),
+  },
 };
 </script>
 

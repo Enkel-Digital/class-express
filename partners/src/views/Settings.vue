@@ -165,7 +165,7 @@ import { mapState } from "vuex";
 export default {
   name: "settings",
   components: {
-    BackBtn
+    BackBtn,
   },
   data() {
     // Use JSONify since the values in state are all JSONifyable without any complex structures.
@@ -175,7 +175,7 @@ export default {
 
     return {
       // settingsChanged: false,
-      settings
+      settings,
     };
   },
   watch: {
@@ -184,12 +184,12 @@ export default {
       handler() {
         console.log("settings changed");
         this.$store.dispatch("settings/updateSettings", this.settings);
-      }
-    }
+      },
+    },
   },
   methods: {
-    logout
-  }
+    logout,
+  },
 };
 </script>
 

@@ -11,13 +11,9 @@ const points = {
     timezone: "",
     // Timestamps
     // Each period is 30 days long
-    start: moment()
-      .subtract(20, "days")
-      .unix(), // 20 days before
-    end: moment()
-      .add(10, "days")
-      .unix() // 10 days from now
-  }
+    start: moment().subtract(20, "days").unix(), // 20 days before
+    end: moment().add(10, "days").unix(), // 10 days from now
+  },
 };
 
 const topupOptions = [
@@ -29,8 +25,8 @@ const topupOptions = [
     totalPoints: 5,
     price: {
       value: 10,
-      currency: "SGD"
-    }
+      currency: "SGD",
+    },
   },
   {
     id: 1,
@@ -39,8 +35,8 @@ const topupOptions = [
     totalPoints: 15,
     price: {
       value: 27,
-      currency: "SGD"
-    }
+      currency: "SGD",
+    },
   },
   {
     id: 2,
@@ -50,9 +46,9 @@ const topupOptions = [
     totalPoints: 30,
     price: {
       value: 50,
-      currency: "SGD"
-    }
-  }
+      currency: "SGD",
+    },
+  },
 ];
 
 module.exports = { points, topupOptions };

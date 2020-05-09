@@ -41,14 +41,14 @@ export default {
       earnings: [
         {
           week: "Last Week",
-          earning: "266"
+          earning: "266",
         },
         {
           week: "This Week",
-          earning: "135"
-        }
-      ]
+          earning: "135",
+        },
+      ],
     };
-  }
+  },
 };
 </script>

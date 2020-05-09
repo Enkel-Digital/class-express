@@ -68,7 +68,7 @@ export default {
       if (add) Vue.set(state.classes, classObject.id, classObject);
       else if (remove) Vue.delete(state.classes, classObject.id);
       else throw new Error("Invalid action used on updateClassesToFetch");
-    }
+    },
   },
   getters: {
     /**
@@ -94,7 +94,7 @@ export default {
       for (const classID of Object.keys(state.pastClassesID))
         pastClasses[classID] = state.classes[classID];
 
-      return Object.values(pastClasses).map(clas => {
+      return Object.values(pastClasses).map((clas) => {
         clas.locationImage = createGMapsImg(clas.location.coordinates);
 
         /** @notice Explicit data setting needed to prevent data caching */
@@ -122,7 +122,7 @@ export default {
       for (const classID of Object.keys(state.upcomingClassesID))
         upcomingClasses[classID] = state.classes[classID];
 
-      return Object.values(upcomingClasses).map(clas => {
+      return Object.values(upcomingClasses).map((clas) => {
         clas.locationImage = createGMapsImg(clas.location.coordinates);
 
         /** @notice Explicit data setting needed to prevent data caching */
@@ -131,7 +131,7 @@ export default {
 
         return clas;
       });
-    }
+    },
   },
   actions: {
     /**
@@ -257,6 +257,6 @@ export default {
       const schedule = mock.schedule[classID];
 
       commit("setter", ["schedule", schedule]);
-    }
-  }
+    },
+  },
 };

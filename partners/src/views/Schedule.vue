@@ -4,14 +4,9 @@
       <v-col>
         <v-sheet height="64">
           <v-toolbar flat color="white">
-            <v-btn
-              outlined
-              class="mr-4"
-              color="grey darken-2"
-              @click="setToday"
+            <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday"
+              >Today</v-btn
             >
-              Today
-            </v-btn>
             <v-btn fab text small color="grey darken-2" @click="prev">
               <v-icon small>mdi-chevron-left</v-icon>
             </v-btn>
@@ -82,9 +77,9 @@
                 <span v-html="selectedEvent.details"></span>
               </v-card-text>
               <v-card-actions>
-                <v-btn text color="secondary" @click="selectedOpen = false">
-                  Cancel
-                </v-btn>
+                <v-btn text color="secondary" @click="selectedOpen = false"
+                  >Cancel</v-btn
+                >
               </v-card-actions>
             </v-card>
           </v-menu>
@@ -103,7 +98,7 @@ export default {
       month: "Month",
       week: "Week",
       day: "Day",
-      "4day": "4 Days"
+      "4day": "4 Days",
     },
     start: null,
     end: null,
@@ -118,7 +113,7 @@ export default {
       "cyan",
       "green",
       "orange",
-      "grey darken-1"
+      "grey darken-1",
     ],
     names: [
       "Meeting",
@@ -128,8 +123,8 @@ export default {
       "Event",
       "Birthday",
       "Conference",
-      "Party"
-    ]
+      "Party",
+    ],
   }),
   computed: {
     title() {
@@ -163,9 +158,9 @@ export default {
     monthFormatter() {
       return this.$refs.calendar.getFormatter({
         timeZone: "UTC",
-        month: "long"
+        month: "long",
       });
-    }
+    },
   },
   mounted() {
     this.$refs.calendar.checkChange();
@@ -222,7 +217,7 @@ export default {
           name: this.names[this.rnd(0, this.names.length - 1)],
           start: this.formatDate(first, !allDay),
           end: this.formatDate(second, !allDay),
-          color: this.colors[this.rnd(0, this.colors.length - 1)]
+          color: this.colors[this.rnd(0, this.colors.length - 1)],
         });
       }
 
@@ -240,11 +235,12 @@ export default {
     },
     formatDate(a, withTime) {
       return withTime
-        ? `${a.getFullYear()}-${a.getMonth() +
-            1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`
+        ? `${a.getFullYear()}-${
+            a.getMonth() + 1
+          }-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`
         : `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()}`;
-    }
-  }
+    },
+  },
 };
 </script>
 
