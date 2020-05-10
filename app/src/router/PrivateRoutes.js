@@ -3,14 +3,9 @@ import AuthType from "./AuthType";
 
 /** @notice Pre-Load all components for frequently used routes */
 import Home from "../views/Home.vue";
-import Profile from "../views/Profile.vue";
-import Topup from "../views/Topup.vue";
 import Explore from "../views/Explore.vue";
 import Favourites from "../views/Favourites.vue";
 import Upcoming from "../views/Upcoming.vue";
-import ClassDetails from "../views/ClassDetails.vue";
-import Partner from "../views/Partner.vue";
-import schedule from "../views/Schedule.vue";
 
 /**
  * @notice Some of these less frequented routes uses lazily loaded components
@@ -39,22 +34,35 @@ const routes = [
     meta: { Auth_requirements: AuthType.private }
   },
   {
+    path: "/upcoming",
+    name: "upcoming",
+    component: Upcoming,
+    meta: { Auth_requirements: AuthType.private }
+  },
+  {
     path: "/partner/:partnerID",
     name: "partner",
-    component: Partner,
+    component: () => import("@/views/Partner.vue"),
     meta: { Auth_requirements: AuthType.private },
     props: true
   },
   {
     path: "/classdetails/:classID/:selectedTime?",
     name: "ClassDetails",
-    component: ClassDetails,
+    component: () => import("@/views/ClassDetails.vue"),
     meta: { Auth_requirements: AuthType.private },
     props: true
   },
   {
-    path: "/reviews/:classID",
-    name: "reviews",
+    path: "/reviews/class/:classID",
+    name: "reviews-class",
+    component: () => import("@/views/Reviews.vue"),
+    meta: { Auth_requirements: AuthType.private },
+    props: true
+  },
+  {
+    path: "/reviews/partner/:partnerID",
+    name: "reviews-partner",
     component: () => import("@/views/Reviews.vue"),
     meta: { Auth_requirements: AuthType.private },
     props: true
@@ -67,28 +75,29 @@ const routes = [
     props: true
   },
   {
-    path: "/schedule/:classID",
-    name: "schedule",
-    component: schedule,
+    path: "/schedule/class/:classID",
+    name: "schedule-class",
+    component: () => import("@/views/Schedule.vue"),
     meta: { Auth_requirements: AuthType.private },
     props: true
   },
   {
-    path: "/upcoming",
-    name: "upcoming",
-    component: Upcoming,
-    meta: { Auth_requirements: AuthType.private }
+    path: "/schedule/partner/:partnerID",
+    name: "schedule-partner",
+    component: () => import("@/views/Schedule.vue"),
+    meta: { Auth_requirements: AuthType.private },
+    props: true
   },
   {
     path: "/profile",
     name: "profile",
-    component: Profile,
+    component: () => import("@/views/Profile.vue"),
     meta: { Auth_requirements: AuthType.private }
   },
   {
     path: "/topup",
     name: "topup",
-    component: Topup,
+    component: () => import("@/views/Topup.vue"),
     meta: { Auth_requirements: AuthType.private }
   },
   {

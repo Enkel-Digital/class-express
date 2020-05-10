@@ -1,4 +1,5 @@
-import setupOutcome from "./setup"; // Returns either true or false
+import "./setup/attachErrorHandler"; // Import for its side effects
+import setupOutcome from "./setup/index"; // Returns either true or false
 
 import Vue from "vue";
 import App from "./App.vue";

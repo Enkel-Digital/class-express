@@ -17,18 +17,17 @@ export default {
   state: initialState(),
   mutations: {
     setter,
-    toggleFavourite(state, classID) {
+    toggleFavouriteClass(state, classID) {
       /** @notice Toggle state using Vue methods to trigger reactive listeners */
       if (state.favouriteClassesID[classID])
         Vue.delete(state.favouriteClassesID, classID);
       else Vue.set(state.favouriteClassesID, classID, true);
-
-      /** @notice Alternate solution to using Vue.set and Vue.delete is to do a shallow copy for reactive triggers */
-      // if (state.favouriteClassesID[classID])
-      //   delete state.favouriteClassesID[classID];
-      // else state.favouriteClassesID[classID] = true;
-      // // For reactivity
-      // state.favouriteClassesID = { ...state.favouriteClassesID };
+    },
+    toggleFavouritePartner(state, partnerID) {
+      /** @notice Toggle state using Vue methods to trigger reactive listeners */
+      if (state.favouritePartnersID[partnerID])
+        Vue.delete(state.favouritePartnersID, partnerID);
+      else Vue.set(state.favouritePartnersID, partnerID, true);
     },
     setUpcomingClass(state, { classID, action, timestamp }) {
       /** @notice Change state using Vue methods to trigger reactive listeners */
@@ -52,6 +51,17 @@ export default {
         favouriteClasses.push(state.classes[classID]);
 
       return favouriteClasses;
+    },
+    /**
+     * @todo Sort by time the class was added as a favourite.
+     */
+    favouritePartners(state) {
+      const favouritePartners = [];
+
+      for (const partnerID of Object.keys(state.favouritePartnersID))
+        favouritePartners.push(state.partners[partnerID]);
+
+      return favouritePartners;
     },
     /**
      * @todo Sort by time class was attended
@@ -106,7 +116,7 @@ export default {
       commit("setter", ["partners", mock.partners]);
 
       await dispatch("getUpcomingClassesID");
-      await dispatch("getFavouriteClassesID");
+      await dispatch("getFavourites");
     },
     /**
      * Get list of upcomingClassesID from API
@@ -131,23 +141,32 @@ export default {
       dispatch("getClass", Object.keys(pastClassesID));
     },
     /**
-     * Get list of favouriteClasses from API
-     * @function getFavouriteClasses
+     * Get favourite classes and partners
+     * @function getFavourites
      */
-    async getFavouriteClassesID({ commit }) {
+    async getFavourites({ dispatch, commit }) {
       // @todo Replace with API call
-      const favouriteClassesID = mock.favouriteClassesID;
+      const favouriteClassesID = mock.favourites.classes;
+      const favouritePartnersID = mock.favourites.partners;
 
       commit("setter", ["favouriteClassesID", favouriteClassesID]);
+      commit("setter", ["favouritePartnersID", favouritePartnersID]);
     },
-    async toggleFavourite({ commit }, classID) {
+    async toggleFavouriteClass({ commit }, classID) {
       // Optimistic UI, show toggle first
-      commit("toggleFavourite", classID);
+      commit("toggleFavouriteClass", classID);
 
-      // Call backend and handle error if any to change back favourite value
-
+      // @todo Call backend and handle error if any to change back favourite value
       // If error from updating server, then call mutation again to toggleBack
-      // commit("toggleFavourite", classID);
+      // commit("toggleFavouriteClass", classID);
+    },
+    async toggleFavouritePartner({ commit }, partnerID) {
+      // Optimistic UI, show toggle first
+      commit("toggleFavouritePartner", partnerID);
+
+      // @todo Call backend and handle error if any to change back favourite value
+      // If error from updating server, then call mutation again to toggleBack
+      // commit("toggleFavouritePartner", partnerID);
     },
     async reserveClass({ state, rootState, commit }, classID) {
       const { points: classPoints } = state.classes[classID];

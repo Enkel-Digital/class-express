@@ -1,3 +1,8 @@
 module.exports = {
-  transpileDependencies: ["vuetify"]
+  transpileDependencies: ["vuetify"],
+  configureWebpack: {
+    module: {
+      noParse: /\.md$/
+    }
+  }
 };

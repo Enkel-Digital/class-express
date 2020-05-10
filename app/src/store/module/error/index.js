@@ -4,59 +4,86 @@
 
 import Vue from "vue";
 import initialState from "./initialState";
-// import setter from "../../utils/setter";
-// import router from "@/router";
+import api from "@/store/utils/fetch";
 
 export default {
   namespaced: true,
   state: initialState(),
   mutations: {
-    // setter,
-    newError(state, { errorIndex, error }) {
-      // If none specified, append it
-      if (!errorIndex) errorIndex = state.errors.length;
-
-      // Might wanna use splice since I dont wanna replace the element, but rather add to it
-      Vue.set(state.errors, errorIndex, error);
+    newError(state, error) {
+      // https://vuejs.org/v2/guide/reactivity.html#For-Arrays
+      // Append new error to the end of errors array
+      Vue.set(state.errors, state.errors.length, error);
     },
-    // Use mutation to clear an error once it is resolved.
-    deleteError(state, { errorIndex = 0 }) {
-      // Will these 2 have the same effect?
-
+    deleteError(state, { errorIndex = 0 } = {}) {
       Vue.delete(state.errors, errorIndex);
-      // Delete the first element
-      state.errors.splice(0, 1);
     }
   },
   actions: {
     /**
      * Initialization function for this module
+     * Clear all errors
      * @function init
      */
     async init({ commit, dispatch }) {
-      /**
-       * Clear all errors
-       * @todo Remove this once the class addition is built.
-       * @todo Edit "vuex-persistedstate" plugin to ignore class objects as they should be fetched everytime.
-       */
-    },
-    async newError({ commit, dispatch }, error) {
-      // Push this into a global error queue like the original snack bar idea that I had
-      //
+      // This will not work if the error is triggered before the vuex mod's init is ran
+      // How to run clear state on startup / page load/reload ?
+      commit("error", false);
     },
     /**
-     * Add a classID to "Queue" to get the details fetched
-     * @function getClass
-     *
-     * @example this.$store.dispatch("points/getClass", classID); // When using from a component
-     * @example dispatch("getClass", classID); // When using in actions from this module
-     *
-     * @todo remove setter call in init action
-     * @todo everytime I need a class, trigger this action to push classID in and fetch the class from API
+     * @example this.$store.dispatch("error/new", error); // Where error is either an instance of Error or custom error object
+     * by default push all errors to server? Other than a few errors like network errors and stuff.
+     * If there is a network error, how can I even push the error to the server?
+     * Have a internal error tracker then?
      */
-    async updateServer({ state, commit }, classID) {
-      // Instead of a vuex action, make this into a standalone function. Since vuex action are methods that are publicly accessible
-      // Whereas this will only be used internally.
+    async new({ commit }, error) {
+      // @example Error object
+      const exampleErrorObj = {
+        name: "Network connection failed",
+        description: "Failed to connect to API.",
+        // Should the error be displayed on the errorDialog?
+        // Defaults to true
+        display: true,
+        // Can this error be dismissed via the errorDialog?
+        // Defaults to true
+        dismissable: true,
+        // Timestamp when the error was received in the error handling module
+        time: Date.now()
+      };
+
+      try {
+        // @todo Remove for production
+        console.error("error mod:", error instanceof Error, error);
+
+        // If error class instance, use the message alone
+        if (error instanceof Error) error = { error: error.message };
+
+        // Push this into a global error queue like the original snack bar idea that I had
+
+        // Add timestamp to error object
+        error.time = Date.now();
+
+        // After error object is created, push it into errors list
+        commit("newError", error);
+
+        // Try reporting error to API if possible
+        const resp = await api.post("/error", error);
+
+        // @todo Remove for production?
+        if (resp.success) console.log(resp);
+        else throw new Error("ERROR Reporting failed");
+      } catch (error) {
+        console.error("errored out in vuex action error/new");
+        // @todo Then show the error dialog with a non dismissable error
+      }
+    },
+    /**
+     * @example this.$store.dispatch("error/clear"); // Clear the current latest error
+     */
+    async clear({ commit }) {
+      // commit("error", false);
+      // After error object is created, push it into errors list
+      commit("deleteError");
     }
   }
 };
