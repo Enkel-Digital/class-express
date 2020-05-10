@@ -5,7 +5,7 @@
 
 function setter(state, newState) {
   if (newState instanceof Array) state[newState[0]] = newState[1];
-  else if (newState instanceof Array) state[newState.key] = newState.value;
+  else if (newState.key && newState.value) state[newState.key] = newState.value;
   else throw new Error("Invalid data type passed to setter");
 }
 
