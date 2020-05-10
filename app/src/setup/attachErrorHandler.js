@@ -25,7 +25,11 @@ Vue.config.errorHandler = async function(err, vueComponent, info) {
   // console.error(err.stack);
 
   // Dispatch without awaitng for store to handle all error logging/reporting logic
-  store.dispatch("error/new", { error: err.message, info });
+  store.dispatch("error/new", {
+    error: err.message,
+    info,
+    via: "Vue.config.errorHandler"
+  });
 };
 
 /**
@@ -37,12 +41,15 @@ window.addEventListener("unhandledrejection", function(event) {
   console.error("unhandledrejection error event: ", arguments);
 
   // Dispatch without awaitng for store to handle all error logging/reporting logic
-  store.dispatch("error/new", event);
+  store.dispatch("error/new", {
+    event,
+    via: "window.addEventListener.unhandledrejection"
+  });
 });
 
 window.onerror = function(message, source, lineno, colno, error) {
   // @todo Remove for production
   console.error("window.onerror: ", arguments);
 
-  store.dispatch("error/new", error);
+  store.dispatch("error/new", { error, via: "window.onerror" });
 };
