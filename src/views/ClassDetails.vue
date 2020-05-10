@@ -10,7 +10,7 @@
         <v-icon>mdi-share</v-icon>
       </v-btn>
 
-      <v-btn icon @click="toggleFavourite(clas.id)">
+      <v-btn icon @click="toggleFavouriteClass(clas.id)">
         <v-icon v-if="favouritedClass" color="red">mdi-heart</v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
@@ -25,7 +25,7 @@
       <h3 class="headline" v-text="clas.name" />
 
       <v-row v-if="selectedTime">
-        <v-col class="col-auto">
+        <v-col class="col-auto" style="font-weight: bold;">
           <!-- date of class -->
           <v-list-item-subtitle>
             <!-- Show year only if class is next year. -->
@@ -49,10 +49,10 @@
 
         <v-spacer />
 
-        <v-col class="col-auto">
+        <v-col class="col-auto mt-2">
           <!-- @todo Implement add to calendar feature -->
           <v-btn icon>
-            <v-icon>mdi-calendar-today</v-icon>
+            <v-icon large>mdi-calendar-today</v-icon>
           </v-btn>
         </v-col>
       </v-row>
@@ -94,7 +94,7 @@
         </v-list-item-content>
 
         <v-btn
-          :to="{ name: 'reviews', params: { classID: clas.id } }"
+          :to="{ name: 'reviews-class', params: { classID: clas.id } }"
           text
           small
           color="primary"
@@ -113,7 +113,7 @@
 
           <br />
 
-          <!-- Change to a more readable font -->
+          <!-- @todo Change to a more readable font -->
           <span v-html="clas.description" />
         </v-list-item-content>
       </v-list-item>
@@ -128,7 +128,7 @@
 
           <br />
 
-          <!-- Change to a more readable font -->
+          <!-- @todo Change to a more readable font -->
           <span v-html="partner.description" />
         </v-list-item-content>
       </v-list-item>
@@ -162,7 +162,7 @@
 
     <v-container v-else style="text-align: center;">
       <v-btn
-        :to="{ name: 'schedule', params: { classID: clas.id } }"
+        :to="{ name: 'schedule-class', params: { classID: clas.id } }"
         color="primary"
         block
       >
@@ -175,12 +175,6 @@
 </template>
 
 <script>
-/**
- * This screen can be for both Class Details screen for the class in general, or a particular class date.
- * 1 with and 1 without the date set.
- *
- * view timing bar vs reserve class bar.
- */
 import { mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 import MapImage from "@/components/MapImage";
@@ -233,7 +227,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions("classes", ["toggleFavourite", "reserveClass", "cancelClass"])
+    ...mapActions("classes", [
+      "toggleFavouriteClass",
+      "reserveClass",
+      "cancelClass"
+    ])
   }
 };
 </script>

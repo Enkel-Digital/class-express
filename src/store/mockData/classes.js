@@ -8,17 +8,23 @@ const partners = {
       coordinates: "1.300649, 103.855453",
       address: "249B Victoria St, Bugis Village"
     },
-    description: "Get started on your Guitar journey with us!"
+    description: "Get started on your Guitar journey with us!",
+    pictureSources: [
+      "https://rezaglobalpro.com/wp-content/uploads/Reza-Global-Productions-Music-Studio-3.2-1.jpg"
+    ]
   },
   1: {
     id: 1,
     name: "Tampines CC",
     location: {
-      coordinates: "1.302481, 103.855448",
-      address: "117 Fidelio St"
+      coordinates: "1.348979, 103.935787",
+      address: "5 Tampines Ave 3"
     },
     description:
-      "Located in the Heartlands of Tampines, we offer a wide variety of classes for our residents."
+      "Located in the Heartlands of Tampines, we offer a wide variety of classes for our residents.",
+    pictureSources: [
+      "https://www.pa.gov.sg/images/default-source/module/community-clubs/tampines-west-community-club"
+    ]
   },
   2: {
     id: 2,
@@ -28,7 +34,10 @@ const partners = {
       address: "Orchard road, Plaza Singapura"
     },
     description:
-      "We offer world class guitar lessons for you!<br />Guitar Studio 2 is one of the leading Guitar Studios in Singapore and South East Asia boasting a whole list of celebrity instructors for you to learn more. We believe that the best instructors are what you need to get from amatuer  to pro just like the instructors themselves!"
+      "We offer world class guitar lessons for you!<br />Guitar Studio 2 is one of the leading Guitar Studios in Singapore and South East Asia boasting a whole list of celebrity instructors for you to learn more. We believe that the best instructors are what you need to get from amatuer  to pro just like the instructors themselves!",
+    pictureSources: [
+      "https://media.timeout.com/images/105537588/630/472/image.jpg"
+    ]
   }
 };
 
@@ -76,6 +85,19 @@ const classes = {
     partnerID: 2,
     pictureSources: [
       "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg"
+    ]
+  },
+  3: {
+    id: 3,
+    name: "Basic Cooking",
+    points: 3,
+    time: Date.now() + 1000000,
+    length: 150, // Store classLength in minutes can show otherwise in hours as needed
+    description:
+      "Want to get started in the magical world of cooking? Well join our class to learn more and get ready to be amazed.",
+    partnerID: 1,
+    pictureSources: [
+      "https://d2ga8dje9bus38.cloudfront.net/0QTxUDcDSYaU0951YubV_verlocal_cooking_basics_class_workshop_in_oakland_900_600.jpg"
     ]
   }
 };
@@ -175,9 +197,15 @@ const upcomingClassesID = {
   0: true
 };
 
-const favouriteClassesID = {
-  1: true,
-  2: true
+const favourites = {
+  classes: {
+    1: true,
+    2: true
+  },
+  partners: {
+    0: true,
+    1: true
+  }
 };
 
 const pastClassesID = {
@@ -190,6 +218,6 @@ module.exports = {
   reviews,
   schedule,
   upcomingClassesID,
-  favouriteClassesID,
+  favourites,
   pastClassesID
 };

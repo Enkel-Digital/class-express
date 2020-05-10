@@ -20,6 +20,8 @@
           @submit.prevent="true"
           contain
         >
+          <!-- @click="viewBanner(item.link)"
+              try wrapping item in empty div and assign this instead of on the carousel item -->
           <h1 style="position: absolute; bottom: 1em;">
             {{ item.text }}
           </h1>
@@ -92,7 +94,17 @@ export default {
     ...mapState("news", ["newsBanners"])
   },
   methods: {
-    ...mapActions("news", ["viewBanner"])
+    viewBanner(link) {
+      if (!link) return;
+
+      // // @todo Fix this hack that prevents double click
+      // console.log("testing");
+      // console.log("clcked", link);
+      // if (this.lastViewdBanner_tmp === link) return;
+      // this.lastViewdBanner_tmp = link;
+
+      if (confirm("Checkout link?")) window.open(link);
+    }
   }
 };
 </script>

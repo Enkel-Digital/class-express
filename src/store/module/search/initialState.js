@@ -4,9 +4,6 @@
  */
 export default function initialState() {
   return {
-    searchText: "",
-    // Set to undefined to indicate user did not search for anything.
-    searchResults: undefined,
     // Default categories
     categories: ["tech", "language", "academics", "cooking", "music", "sports"]
   };
@@ -14,6 +11,7 @@ export default function initialState() {
 
 /**
  * Example/Reference on how a searchResult element would be
+ * @todo Might not need this anymore as will be relying on service like algolia for search
  */
 const searchResultObjReference = {
   name: "advance guitar",

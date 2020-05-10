@@ -1,5 +1,7 @@
 <template>
   <v-app id="app">
+    <ErrorDialog />
+
     <!-- Router view for the main view -->
     <router-view />
 
@@ -10,11 +12,13 @@
 <script>
 import AuthType from "@/router/AuthType";
 import BottomNavBar from "@/components/BottomNavBar";
+import ErrorDialog from "@/components/ErrorDialog";
 
 export default {
   name: "App",
   components: {
-    BottomNavBar
+    BottomNavBar,
+    ErrorDialog
   },
   computed: {
     showNavBar() {
