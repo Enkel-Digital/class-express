@@ -6,6 +6,9 @@ import Vue from "vue";
 import initialState from "./initialState";
 import api from "@/store/utils/fetch";
 
+// Router used to get current route info when error is recieved
+import router from "@/router";
+
 export default {
   namespaced: true,
   state: initialState(),
@@ -37,20 +40,6 @@ export default {
      * Have a internal error tracker then?
      */
     async new({ commit }, error) {
-      // @example Error object
-      const exampleErrorObj = {
-        name: "Network connection failed",
-        description: "Failed to connect to API.",
-        // Should the error be displayed on the errorDialog?
-        // Defaults to true
-        display: true,
-        // Can this error be dismissed via the errorDialog?
-        // Defaults to true
-        dismissable: true,
-        // Timestamp when the error was received in the error handling module
-        time: Date.now()
-      };
-
       try {
         // @todo Remove for production
         console.error("error mod:", error instanceof Error, error);
@@ -63,17 +52,26 @@ export default {
         // Add timestamp to error object
         error.time = Date.now();
 
+        // Store route info about current route to help with replicating issue
+        error.routeInfo = {
+          fullPath: router.currentRoute.fullPath,
+          name: router.currentRoute.name,
+          params: router.currentRoute.params,
+          query: router.currentRoute.query
+        };
+
         // After error object is created, push it into errors list
         commit("newError", error);
 
         // Try reporting error to API if possible
-        const resp = await api.post("/error", error);
+        const response = await api.post("/error", error);
 
         // @todo Remove for production?
-        if (resp.success) console.log(resp);
+        if (response.success) console.log(response);
         else throw new Error("ERROR Reporting failed");
       } catch (error) {
-        console.error("errored out in vuex action error/new");
+        console.error("errored out in vuex action error/new", error);
+
         // @todo Then show the error dialog with a non dismissable error
       }
     },

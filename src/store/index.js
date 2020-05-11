@@ -5,6 +5,7 @@ import api from "./utils/fetch";
 
 import initialState from "./initialState";
 import setter from "./utils/setter";
+
 import errorModule from "./module/error";
 import classesModule from "./module/classes";
 import searchModule from "./module/search";
@@ -16,6 +17,7 @@ import settingsModule from "./module/settings";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  strict: process.env.NODE_ENV.toLowerCase() !== "production",
   state: initialState(),
   modules: {
     error: errorModule,
