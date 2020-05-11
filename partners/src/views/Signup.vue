@@ -9,17 +9,23 @@
           height="360"
         />
         <h1>Let's Get Started!</h1>
+        <v-btn :disabled="employee || owner" @click="owner = true"
+          >I am an Owner</v-btn
+        >
+        <v-btn :disabled="employee || owner" @click="employee = true"
+          >I am an Employee</v-btn
+        >
       </v-col>
 
       <!-- stepper for owner -->
       <v-col cols="15" sm="6" md="7">
-        <v-stepper v-model="e6" vertical>
-          <v-stepper-step :complete="e6 > 1" step="1">
+        <v-stepper v-if="owner" v-model="step" vertical>
+          <v-stepper-step :complete="step > 1" step="1">
             Login Details
           </v-stepper-step>
 
           <v-stepper-content step="1">
-            <v-form>
+            <v-form ref="ownerLoginDetails" v-model="valid">
               <v-row>
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
@@ -71,14 +77,16 @@
               </v-row>
             </v-form>
 
-            <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
+            <v-btn color="primary" @click="validateOwnerLoginDetails"
+              >Continue</v-btn
+            >
           </v-stepper-content>
 
-          <v-stepper-step :complete="e6 > 2" step="2"
+          <v-stepper-step :complete="step > 2" step="2"
             >Company Information</v-stepper-step
           >
           <v-stepper-content step="2">
-            <v-form>
+            <v-form ref="ownerCompanyDetails" v-model="valid">
               <v-row>
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
@@ -114,6 +122,7 @@
                   <v-text-field
                     v-model="Location"
                     label="Address Line 1"
+                    :rules="nameRules"
                     prepend-icon="mdi-map-marker"
                     required
                   ></v-text-field>
@@ -130,6 +139,7 @@
                 <v-col cols="15" sm="6" md="5">
                   <v-text-field
                     v-model="Location"
+                    :rules="nameRules"
                     label="Blk/Unit No."
                     hint="e.g. 100/01-02"
                     prepend-icon="map-marker"
@@ -152,109 +162,122 @@
                     :items="businessTypes"
                     label="Type of Business"
                     prepend-icon="mdi-format-list-bulleted-type"
-                    required
+                    :rules="[(v) => !!v || 'Selection is required']"
                   ></v-select>
                 </v-col>
               </v-row>
             </v-form>
 
-            <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
-            <v-btn text @click="e6 -= 1">Back</v-btn>
+            <v-btn color="primary" @click="validateOwnerCompanyDetails"
+              >Continue</v-btn
+            >
+            <v-btn text @click="step -= 1">Back</v-btn>
           </v-stepper-content>
 
-          <v-stepper-step :complete="e6 > 3" step="3">Finish</v-stepper-step>
+          <v-stepper-step :complete="step > 3" step="3">Finish</v-stepper-step>
           <v-stepper-content step="3">
             <h2>You're Set to Go!</h2>
             <p>Please check your inbox and verify your email</p>
-            <v-btn color="primary" @click="e6 = 4">Finish</v-btn>
+            <v-btn color="primary" @click="$router.push({ name: 'home' })"
+              >Finish</v-btn
+            >
           </v-stepper-content>
         </v-stepper>
+        <!-- end of stepper for owner -->
+
+        <!-- stepper for employee -->
+        <v-col cols="15" sm="6" md="7">
+          <v-stepper v-if="employee" v-model="step" vertical>
+            <v-stepper-step :complete="step > 1" step="1"
+              >Login Details
+            </v-stepper-step>
+            <v-stepper-content step="1">
+              <v-form ref="employeeLoginDetails" v-model="valid">
+                <v-row>
+                  <v-col cols="15" sm="6" md="10">
+                    <v-text-field
+                      v-model="name"
+                      label="Name"
+                      :rules="nameRules"
+                      prepend-icon="mdi-account"
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="15" sm="6" md="10">
+                    <v-text-field
+                      v-model="email"
+                      :rules="emailRules"
+                      label="Email"
+                      prepend-icon="mdi-email"
+                      :error-messages="emailErrors"
+                      required
+                      @input="$v.email.$touch()"
+                      @blur="$v.email.$touch()"
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="15" sm="6" md="10">
+                    <v-text-field
+                      v-model="password"
+                      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[rules.required, rules.min]"
+                      :type="show1 ? 'text' : 'password'"
+                      name="input-10-1"
+                      label="Password"
+                      prepend-icon="mdi-lock"
+                      hint="At least 8 characters"
+                      counter
+                      @click:append="show1 = !show1"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-form>
+
+              <v-btn color="primary" @click="validateEmployeeLoginDetails"
+                >Continue
+              </v-btn>
+            </v-stepper-content>
+
+            <v-stepper-step :complete="step > 2" step="2"
+              >Your Company</v-stepper-step
+            >
+            <v-stepper-content step="2">
+              <v-form ref="employeeCompanyDetails" v-model="valid">
+                <v-row>
+                  <v-col cols="15" sm="6" md="10">
+                    <v-autocomplete
+                      :items="company"
+                      :filter="customFilter"
+                      :rules="[(v) => !!v || 'Selection is required']"
+                      color="white"
+                      item-text="name"
+                      prepend-icon="mdi-card-account-details"
+                      label="Select your company"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+              </v-form>
+
+              <v-btn color="primary" @click="validateEmployeeCompanyDetails"
+                >Continue
+              </v-btn>
+              <v-btn text @click="step -= 1">Back</v-btn>
+            </v-stepper-content>
+
+            <v-stepper-step :complete="step > 3" step="3"
+              >Finish</v-stepper-step
+            >
+            <v-stepper-content step="3">
+              <h2>You're Set to Go!</h2>
+              <p>Please check your inbox and verify your email</p>
+              <v-btn color="primary" @click="$router.push({ name: 'home' })"
+                >Finish</v-btn
+              >
+            </v-stepper-content>
+          </v-stepper>
+        </v-col>
+        <!-- end of stepper fot employee -->
       </v-col>
-      <!-- stepper for owner end -->
-
-      <!-- stepper for employee -->
-      <!-- <v-col cols="15" sm="6" md="7">
-        <v-stepper v-model="e6" vertical>
-          <v-stepper-step :complete="e6 > 1" step="1"
-          >
-
-          <v-stepper-content step="1">
-            <v-form>
-              <v-row>
-                <v-col cols="15" sm="6" md="10">
-                  <v-text-field
-                    v-model="name"
-                    label="Name"
-                    :rules="nameRules"
-                    prepend-icon="mdi-account"
-                  ></v-text-field>
-                </v-col>
-
-                <v-col cols="15" sm="6" md="10">
-                  <v-text-field
-                    v-model="email"
-                    :rules="emailRules"
-                    label="Email"
-                    prepend-icon="mdi-email"
-                    :error-messages="emailErrors"
-                    required
-                    @input="$v.email.$touch()"
-                    @blur="$v.email.$touch()"
-                  ></v-text-field>
-                </v-col>
-
-                <v-col cols="15" sm="6" md="10">
-                  <v-text-field
-                    v-model="password"
-                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[rules.required, rules.min]"
-                    :type="show1 ? 'text' : 'password'"
-                    name="input-10-1"
-                    label="Password"
-                    prepend-icon="mdi-lock"
-                    hint="At least 8 characters"
-                    counter
-                    @click:append="show1 = !show1"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-form>
-
-            <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
-          </v-stepper-content>
-
-          <v-stepper-step :complete="e6 > 2" step="2"
-            >Your Company</v-stepper-step
-          >
-          <v-stepper-content step="2">
-            <v-form>
-              <v-row>
-                <v-col cols="15" sm="6" md="10">
-                  <v-autocomplete
-                    :items="company"
-                    :filter="customFilter"
-                    color="white"
-                    item-text="name"
-                    prepend-icon="mdi-card-account-details"
-                    label="Select your company"
-                  ></v-autocomplete>
-                </v-col>
-              </v-row>
-            </v-form>
-
-            <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
-            <v-btn text @click="e6 -= 1">Back</v-btn>
-          </v-stepper-content>
-
-          <v-stepper-step :complete="e6 > 3" step="3">Finish</v-stepper-step>
-          <v-stepper-content step="3">
-            <h2>You're Set to Go!</h2>
-            <p>Please check your inbox and verify your email</p>
-            <v-btn color="primary" @click="e6 = 4">Finish</v-btn>
-          </v-stepper-content>
-        </v-stepper>
-      </v-col> -->
-      <!-- stepper for employee end -->
     </v-row>
   </div>
 </template>
@@ -265,7 +288,6 @@
  */
 
 import { auth } from "firebase";
-
 // Function to map and return a given err.code to a user friendly message
 function error_msg(err) {
   switch (err.code) {
@@ -284,10 +306,12 @@ export default {
   name: "signUp",
   data() {
     return {
+      owner: false,
+      employee: false,
       name: "",
       email: "Email",
       error_msg: "",
-      e6: 1,
+      step: 1,
 
       show1: false,
       password: "Password",
@@ -295,7 +319,7 @@ export default {
         required: (value) => !!value || "Required.",
         min: (v) => v.length >= 8 || "Min 8 characters",
       },
-      nameRules: [(v) => !!v || "Name is required"],
+      nameRules: [(v) => !!v || "Required"],
       emailRules: [
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
@@ -332,8 +356,29 @@ export default {
     back() {
       this.$router.push({ name: "welcome" });
     },
-    validate() {
-      this.$refs.form.validate();
+    validateOwnerLoginDetails() {
+      this.$refs.ownerLoginDetails.validate();
+      if (this.$refs.ownerLoginDetails.validate()) {
+        this.step++;
+      }
+    },
+    validateOwnerCompanyDetails() {
+      this.$refs.ownerCompanyDetails.validate();
+      if (this.$refs.ownerCompanyDetails.validate()) {
+        this.step++;
+      }
+    },
+    validateEmployeeLoginDetails() {
+      this.$refs.employeeLoginDetails.validate();
+      if (this.$refs.employeeLoginDetails.validate()) {
+        this.step++;
+      }
+    },
+    validateEmployeeCompanyDetails() {
+      this.$refs.employeeCompanyDetails.validate();
+      if (this.$refs.employeeCompanyDetails.validate()) {
+        this.step++;
+      }
     },
     customFilter(item, queryText, itemText) {
       const textOne = item.name.toLowerCase();
