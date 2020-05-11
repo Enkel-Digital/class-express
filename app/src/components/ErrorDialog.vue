@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import cloneDeep from "lodash.clonedeep";
+
 export default {
   name: "ErrorDialog",
   beforeMount() {
@@ -57,8 +59,12 @@ export default {
     };
   },
   computed: {
+    // @todo If we use array of errors, what if there is one that is non dismissable?
+    // @todo In that case, should we allow users to page through all the errors to see them all?
     error() {
-      const error = this.$store.state.error.errors[0];
+      // Clone earliest error from the errors array
+      // Cloning error to display to prevent modifying state
+      const error = cloneDeep(this.$store.state.error.errors[0]);
       if (!error) return false; // If no error return false to prevent component from rendering
 
       // Add defaults UI flags if not available
@@ -71,6 +77,13 @@ export default {
   },
   methods: {
     dismiss() {
+      /**
+       * @todo Clear an error by passing in an ID
+       * So I can keep showing all the error in the errors array till it is no more.
+       * But by default clear with ID === 0 since we are reading errors[0] makes sense to delete errors[0]
+       * Error shown and error deleted needs to be the same....
+       * Perhaps we should have another computed property or smth to decide which error to show from the array
+       */
       this.$store.dispatch("error/clear");
     }
   }
