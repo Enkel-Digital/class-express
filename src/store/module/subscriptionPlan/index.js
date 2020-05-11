@@ -30,7 +30,9 @@ export default {
      * @function init
      */
     async init({ dispatch }) {
+      // @todo Only call when loading the subscriptionPlans view
       dispatch("getPlans");
+
       dispatch("getPlanIDs");
     },
     /**
@@ -47,13 +49,12 @@ export default {
      * Get ID of current plan
      * @function getPlans
      */
-    async getPlanIDs({ commit }) {
-      // @todo Replace with API call
-      const currentPlanID = 0;
-      const nextPlanID = 0;
+    async getPlanIDs({ commit, rootState }) {
+      const response = await api.get(`/subscription/${rootState.user.email}`);
+      if (!response.success); // @todo Handle error
 
-      commit("setter", ["currentPlanID", currentPlanID]);
-      commit("setter", ["nextPlanID", nextPlanID]);
+      commit("setter", ["currentPlanID", response.plans.currentPlanID]);
+      commit("setter", ["nextPlanID", response.plans.nextPlanID]);
     },
     /**
      * Update the user's plan
