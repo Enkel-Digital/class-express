@@ -45,6 +45,13 @@
           <v-img src="@/assets/logo.png" alt="Vuetify" />
         </v-avatar>
       </v-btn>
+
+      <!-- @todo Remove before production -->
+      <v-btn icon large @click="$store.dispatch('init')">
+        <v-icon>
+          mdi-reload
+        </v-icon>
+      </v-btn>
     </v-app-bar>
 
     <!-- Router view for the main view -->

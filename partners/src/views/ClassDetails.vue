@@ -1,73 +1,109 @@
 <template>
   <v-content class="ClassDetails">
-    <v-responsive id="class-image-container">
-      <!-- @todo Change to a image carousel -->
-      <v-img id="class-image" :src="clas.pictureSources[0]" />
-    </v-responsive>
-    <p>test</p>
-    <v-responsive style="text-align: left;">
-      <v-row>
+    <!-- <v-responsive id="class-image-container"> -->
+    <!-- @todo Change to a image carousel -->
+    <v-container fluid>
+      <v-row no-gutters>
         <v-col>
-          <h3 class="headline" v-text="clas.name"></h3>
-          <p class="ma-0 pa-0">{{ clas.provider.name }}</p>
-          <p class="ma-0 pa-0">{{ clas.location.address }}</p>
+          <v-card max width="450">
+            <v-carousel height="400">
+              <v-carousel-item
+                v-for="(pictureSrc, i) in clas.pictureSources"
+                :key="i"
+                :src="pictureSrc"
+                reverse-transition="fade-transition"
+                transition="fade-transition"
+              ></v-carousel-item>
+            </v-carousel>
+          </v-card>
         </v-col>
-
-        <v-spacer />
-
+        <!-- <v-img id="class-image" :src="clas.pictureSources[0]" /> -->
+        <!-- </v-responsive> -->
         <v-col>
-          <!-- @todo Implement sharing dialog popup  -->
-          <v-btn icon>
-            <v-icon>mdi-share</v-icon>
-          </v-btn>
+          <v-card height="400">
+            <v-responsive style="text-align: left;" class="ma-0 pa-4">
+              <v-row>
+                <v-col>
+                  <h3 class="headline" v-text="clas.name"></h3>
+                  <p>{{ clas.provider.name }}</p>
+                  <p c>{{ clas.location.address }}</p>
+                </v-col>
+
+                <v-spacer />
+
+                <v-col>
+                  <!-- @todo Implement sharing dialog popup  -->
+                  <v-btn icon>
+                    <v-icon>mdi-share</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-responsive>
+
+            <v-divider></v-divider>
+
+            <v-responsive id="reviews-card" class="mx-auto">
+              <v-list-item>
+                <v-list-item-content>
+                  <p class="overline">
+                    Reviews based on {{ review.numberOfReviews }} reviews
+                  </p>
+
+                  <v-list-item-subtitle v-if="review">
+                    <!-- Do the star icon thing for the reviews -->
+                    <v-rating
+                      :value="review.ratings"
+                      color="amber"
+                      dense
+                      half-increments
+                      readonly
+                      size="14"
+                    ></v-rating>
+                    <!-- {{ review.ratings }} / 5 based on
+                {{ review.numberOfReviews }} reviews -->
+                  </v-list-item-subtitle>
+
+                  <v-list-item-subtitle v-else>Loading...</v-list-item-subtitle>
+                </v-list-item-content>
+
+                <v-btn
+                  :to="{ name: 'reviews', params: { classID: clas.id } }"
+                  text
+                  small
+                  color="primary"
+                  >Read them!</v-btn
+                >
+              </v-list-item>
+            </v-responsive>
+
+            <v-divider></v-divider>
+
+            <v-responsive id="reviews-card" class="mx-auto">
+              <v-list-item>
+                <v-list-item-content>
+                  <p class="overline">Class Desciption</p>
+
+                  <!-- Change to a more readable font -->
+                  <span v-html="clas.description"></span>
+                </v-list-item-content>
+              </v-list-item>
+            </v-responsive>
+          </v-card>
         </v-col>
       </v-row>
-    </v-responsive>
 
-    <v-divider></v-divider>
-
-    <v-responsive id="reviews-card" class="mx-auto">
-      <v-list-item>
-        <v-list-item-content>
-          <p class="overline">Reviews</p>
-
-          <v-list-item-subtitle v-if="review">
-            <!-- Do the star icon thing for the reviews -->
-            {{ review.ratings }} / 5 based on
-            {{ review.numberOfReviews }} reviews
-          </v-list-item-subtitle>
-
-          <v-list-item-subtitle v-else>Loading...</v-list-item-subtitle>
-        </v-list-item-content>
-
-        <v-btn
-          :to="{ name: 'reviews', params: { classID: clas.id } }"
-          text
-          small
-          color="primary"
-          >Read them!</v-btn
+      <v-card width="450">
+        <h2
+          style="color: rgba(0, 0, 0, 0.65); text-align: left;"
+          class="ma-2 mb-0"
         >
-      </v-list-item>
-    </v-responsive>
+          Getting here
+        </h2>
 
-    <v-divider></v-divider>
-
-    <v-responsive id="reviews-card" class="mx-auto">
-      <v-list-item>
-        <v-list-item-content>
-          <p class="overline">Class Desciption</p>
-
-          <!-- Change to a more readable font -->
-          <span v-html="clas.description"></span>
-        </v-list-item-content>
-      </v-list-item>
-    </v-responsive>
-
-    <h2 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ma-2 mb-0">
-      Getting here
-    </h2>
-    <MapImage :classID="clas.id" />
-    <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
+        <MapImage :classID="clas.id" />
+        <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
+      </v-card>
+    </v-container>
   </v-content>
 </template>
 
