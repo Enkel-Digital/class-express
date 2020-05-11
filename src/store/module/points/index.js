@@ -55,7 +55,7 @@ export default {
       // @todo Might cause issues if the user API fails this will continue looping forever.
       while (!rootState.user.email) await sleep.milli(100);
 
-      const response = api.get(`/points/${rootState.user.email}`);
+      const response = await api.get(`/points/${rootState.user.email}`);
       if (!response.success); // @todo Handle error
 
       commit("setter", ["points", response.points]);

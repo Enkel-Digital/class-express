@@ -4,22 +4,6 @@
 
 const moment = require("moment");
 
-const points = {
-  left: 8,
-  total: 45,
-  period: {
-    timezone: "",
-    // Timestamps
-    // Each period is 30 days long
-    start: moment()
-      .subtract(20, "days")
-      .unix(), // 20 days before
-    end: moment()
-      .add(10, "days")
-      .unix() // 10 days from now
-  }
-};
-
 const topupOptions = [
   {
     id: 0,
@@ -55,4 +39,4 @@ const topupOptions = [
   }
 ];
 
-module.exports = { points, topupOptions };
+module.exports = { topupOptions };
