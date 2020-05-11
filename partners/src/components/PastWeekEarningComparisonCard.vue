@@ -1,6 +1,6 @@
 <template>
-  <div class="col-md-4 col-12" align="left">
-    <v-card class="mx-auto">
+  <div align="left">
+    <v-card width="500">
       <v-list-item two-line>
         <v-list-item-content>
           <v-list-item-title class="headline"

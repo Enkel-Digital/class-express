@@ -119,35 +119,31 @@ export default {
           text: "Withdrawal",
           link: { name: "withdrawal" },
         },
-        {
-          icon: "mdi-chevron-up",
-          "icon-alt": "mdi-chevron-down",
-          text: "Labels",
-          model: true,
-          children: [
-            { icon: "mdi-account-group-outline", text: "View all users" },
-            { icon: "mdi-account-plus", text: "Add user" },
-            { icon: "mdi-account-minus", text: "Delete user" },
-          ],
-        },
-        {
-          icon: "mdi-chevron-up",
-          "icon-alt": "mdi-chevron-down",
-          text: "More",
-          model: false,
-          children: [
-            { text: "Import" },
-            { text: "Export" },
-            { text: "Print" },
-            { text: "Undo changes" },
-            { text: "Other contacts" },
-          ],
-        },
-        {
-          icon: "mdi-settings",
-          text: "Settings",
-          link: { name: "settings" },
-        },
+        // {
+        //   icon: "mdi-chevron-up",
+        //   "icon-alt": "mdi-chevron-down",
+        //   text: "Labels",
+        //   model: true,
+        //   children: [
+        //     { icon: "mdi-account-group-outline", text: "View all users" },
+        //     { icon: "mdi-account-plus", text: "Add user" },
+        //     { icon: "mdi-account-minus", text: "Delete user" },
+        //   ],
+        // },
+        // {
+        //   icon: "mdi-chevron-up",
+        //   "icon-alt": "mdi-chevron-down",
+        //   text: "More",
+        //   model: false,
+        //   children: [
+        //     { text: "Import" },
+        //     { text: "Export" },
+        //     { text: "Print" },
+        //     { text: "Undo changes" },
+        //     { text: "Other contacts" },
+        //   ],
+        // },
+
         {
           icon: "mdi-account",
           text: "Contact Support",
@@ -158,10 +154,15 @@ export default {
           text: "FAQs",
           link: { name: "faq" },
         },
+        // {
+        //   icon: "mdi-message",
+        //   text: "Send feedback",
+        //   link: { name: "feedback" },
+        // },
         {
-          icon: "mdi-message",
-          text: "Send feedback",
-          link: { name: "feedback" },
+          icon: "mdi-settings",
+          text: "Settings",
+          link: { name: "settings" },
         },
         {
           icon: "mdi-cellphone-link",
@@ -180,5 +181,9 @@ export default {
 <style scoped>
 #side-nav-bar {
   text-align: left;
+}
+body {
+  overflow: hidden;
+  height: 100vh;
 }
 </style>

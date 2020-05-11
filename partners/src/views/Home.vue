@@ -13,15 +13,17 @@
       </div>
 
       <br />
-      <div class="row">
-        <WeeklyEarningsChart
-          width="800"
-          height="300"
-          :chartdata="chartdata"
-          :options="options"
-        />
-        <PastWeekEarningComparison />
-      </div>
+
+      <WeeklyEarningsChart
+        width="1200"
+        height="300"
+        :chartdata="chartdata"
+        :options="options"
+      />
+
+      <br />
+
+      <PastWeekEarningComparison width="600" height="300" />
     </v-container>
     <!-- </v-responsive> -->
   </v-content>
@@ -69,15 +71,6 @@ export default {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: true,
-            },
-          },
-        ],
-      },
     },
   }),
 };
