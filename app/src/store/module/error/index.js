@@ -5,6 +5,7 @@
 import Vue from "vue";
 import initialState from "./initialState";
 import api from "@/store/utils/fetch";
+import postToErrorService from "./postToErrorService";
 
 // Router used to get current route info when error is recieved
 import router from "@/router";
@@ -63,8 +64,8 @@ export default {
         // After error object is created, push it into errors list
         commit("newError", error);
 
-        // Try reporting error to API if possible
-        const response = await api.post("/error", error);
+        // Try reporting error to API if possible using the custom API caller instead. Refer to function's for doc on why.
+        const response = await postToErrorService(error);
 
         // @todo Remove for production?
         if (response.success) console.log(response);
