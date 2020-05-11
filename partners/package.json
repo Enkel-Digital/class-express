@@ -16,7 +16,6 @@
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-router": "^3.1.6",
-    "vuelidate": "^0.7.5",
     "vuetify": "^2.2.27",
     "vuex": "^3.3.0",
     "vuex-persistedstate": "^3.0.1"
