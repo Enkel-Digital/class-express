@@ -100,11 +100,34 @@
     </v-card>
 
     <!-- 
-      Using !== undefined as planID can be 0 
+      Using !== null as planID can be 0 
       Delete field in DB once plan is cancelled
     -->
     <v-card
-      v-if="currentPlanID !== undefined"
+      v-if="currentPlanID !== null"
+      class="mx-auto mb-4"
+      max-width="calc(100% - 3em)"
+      outlined
+      style="text-align: left;"
+      @click="pauseSubscriptionPlan"
+    >
+      <v-list-item>
+        <v-list-item-content>
+          <p class="overline">Need to pause your plan?</p>
+
+          <v-list-item-subtitle>
+            Pause your plan, e.g. when you are traveling!
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </v-card>
+
+    <!-- 
+      Using !== null as planID can be 0 
+      Delete field in DB once plan is cancelled
+    -->
+    <v-card
+      v-if="currentPlanID !== null"
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
@@ -195,7 +218,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions("subscription", ["updatePlan"])
+    ...mapActions("subscription", ["updatePlan"]),
+    pauseSubscriptionPlan() {
+      alert("This feature is not supported yet!");
+    }
   }
 };
 </script>
