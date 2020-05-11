@@ -5,7 +5,7 @@
 
       <v-spacer />
 
-      <h3>{{ className }}</h3>
+      <h3>{{ name }}</h3>
 
       <v-spacer />
 
@@ -48,7 +48,18 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+/**
+ * schedule view have 2 functions.
+ * 1. Show all schedules of all classes by that partner.
+ *   - triggered by clicking schedule button in partner details screen
+ * 2. Show all schedules of a selected class
+ *   - triggered by clicking schedule button in class details screen
+ *
+ * always show loading icon the turning thing before we load the schedule in.
+ *   Use the global loading component via the store.
+ */
+
+import { mapMutations, mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 
 export default {
@@ -57,27 +68,42 @@ export default {
     BackBtn
   },
   created() {
+    if (this.classID === undefined && this.partnerID === undefined)
+      throw new Error("Missing Schedule view props");
+
     // Call action to fetch schedule of this class
-    this.$store.dispatch("classes/getSchedule", { classID: this.classID });
+    if (this.classID)
+      this.$store.dispatch("classes/getSchedule", { classID: this.classID });
+    else if (this.partnerID)
+      this.$store.dispatch("classes/getSchedule", {
+        partnerID: this.partnerID
+      });
   },
-  props: ["classID"],
+  props: ["classID", "partnerID"],
   data() {
-    // Create default tabs array of 7 element to display 7 dates and prefetch 7 days of schedule
-    const tabs = [...Array(7).keys()];
+    // Allow users to view classes up to 1 month from today, with 1 day as 1 tab
+    // Like points, instead of repeating on the same day every month, just assume a month === 30days
+    const tabs = [...Array(30).keys()];
 
     /** @notice Compute only once but use startOfDay method to clone it as moments are mutable */
     const origStartOfDay = this.moment().startOf("day");
 
     return {
       // Classes is static via the data function as we do not want its reactivity
-      className: this.$store.state.classes.classes[this.classID].name,
+      name: this.classID // @todo dont use ternary, since classID can be 0
+        ? this.$store.state.classes.classes[this.classID].name
+        : this.$store.state.classes.partners[this.partnerID].name,
       tabs,
       origStartOfDay
     };
   },
   computed: {
     schedule() {
-      return this.$store.state.classes.schedule[this.classID];
+      if (this.classID) return this.$store.state.classes.schedule[this.classID];
+      else if (this.partnerID)
+        // @todo Change this to partner schedule
+        return this.$store.state.classes.schedule[this.partnerID];
+      else return false;
     }
   },
   methods: {
