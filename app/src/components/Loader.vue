@@ -1,0 +1,55 @@
+<template>
+  <!-- Using an inline component as a container -->
+  <span>
+    <!--
+      Using a higher z-index to overlay on top of v-bottom-navigation and v-app-bar components
+      at z-index of 4 and 5 respectively
+      Defaults to 5 if not set.
+
+      Using v-if for conditional rendering instead of value's conditional display
+    -->
+    <v-overlay v-if="showFullLoader" :value="true" z-index="6">
+      <!-- Size 64 is in px ~ around 4em -->
+      <v-progress-circular indeterminate size="64" />
+    </v-overlay>
+
+    <!--
+      Using system-bar with app attribute to ensure loader appears on top of v-app-bar components.
+      Since v-app-bar will be placed at the top when used with app attributes.
+      Using height attribute of "4" to match the default height of v-progress-linear
+      Set height to be the same to prevent showing extra spaces beneath the progress bar.
+    -->
+    <v-system-bar app v-else-if="showTopLoader" height="4">
+      <v-progress-linear indeterminate absolute top />
+    </v-system-bar>
+  </span>
+</template>
+
+<script>
+/**
+ * Global loader/loading component to show loading status.
+ * Can be used by any component/module to indicate loading in progress.
+ * Prevents duplicate implementation
+ *
+ *
+ * There are 2 types of loaders,
+ * There is the full screen overlay circular loader,
+ * And there is the top level linear loader on top of app bars.
+ *
+ * The full screen overlay loader have priority over the top level linear loader
+ * But by default show loading requests shows the top level linear loader
+ */
+
+export default {
+  name: "loader",
+  computed: {
+    // @todo Implement these properties
+    showFullLoader() {
+      return false;
+    },
+    showTopLoader() {
+      return false;
+    }
+  }
+};
+</script>

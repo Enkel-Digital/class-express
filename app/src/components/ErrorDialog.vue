@@ -70,7 +70,7 @@ export default {
       // Add defaults UI flags if not available
       if (!error.name) error.name = "UNKNOWN";
       if (!error.description) error.description = "Unknown error occurred 😫";
-      if (!error.dismissable) error.dismissable = true;
+      if (!error.dismissable) error.dismissable = true; // Dismissable by default
 
       return error;
     }
