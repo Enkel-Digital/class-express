@@ -1,6 +1,7 @@
 <template>
   <v-app id="app">
     <ErrorDialog />
+    <Loader />
 
     <!-- Router view for the main view -->
     <router-view />
@@ -13,12 +14,14 @@
 import AuthType from "@/router/AuthType";
 import BottomNavBar from "@/components/BottomNavBar";
 import ErrorDialog from "@/components/ErrorDialog";
+import Loader from "@/components/Loader";
 
 export default {
   name: "App",
   components: {
     BottomNavBar,
-    ErrorDialog
+    ErrorDialog,
+    Loader
   },
   computed: {
     showNavBar() {
