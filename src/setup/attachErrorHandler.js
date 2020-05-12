@@ -51,5 +51,5 @@ window.onerror = function(message, source, lineno, colno, error) {
   // @todo Remove for production
   console.error("window.onerror: ", arguments);
 
-  store.dispatch("error/new", { error, via: "window.onerror" });
+  store.dispatch("error/new", { error: error.message, via: "window.onerror" });
 };

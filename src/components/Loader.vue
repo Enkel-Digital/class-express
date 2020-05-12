@@ -40,16 +40,12 @@
  * But by default show loading requests shows the top level linear loader
  */
 
+import { mapGetters } from "vuex";
+
 export default {
   name: "loader",
   computed: {
-    // @todo Implement these properties
-    showFullLoader() {
-      return false;
-    },
-    showTopLoader() {
-      return false;
-    }
+    ...mapGetters("loader", ["showFullLoader", "showTopLoader"])
   }
 };
 </script>

@@ -29,10 +29,8 @@ export default {
      * Clear all errors
      * @function init
      */
-    async init({ commit, dispatch }) {
-      // This will not work if the error is triggered before the vuex mod's init is ran
-      // How to run clear state on startup / page load/reload ?
-      commit("error", false);
+    async init({ dispatch }) {
+      dispatch("clearAll");
     },
     /**
      * @example this.$store.dispatch("error/new", error); // Where error is either an instance of Error or custom error object
@@ -77,11 +75,19 @@ export default {
       }
     },
     /**
-     * @example this.$store.dispatch("error/clear"); // Clear the current latest error
+     * @example
+     * // Clear the current latest error
+     * this.$store.dispatch("error/clear");
      */
     async clear({ commit }) {
-      // commit("error", false);
-      // After error object is created, push it into errors list
+      commit("deleteError");
+    },
+    /**
+     * @example
+     * // Clear the current latest error
+     * this.$store.dispatch("error/clearAll");
+     */
+    async clearAll({ commit }) {
       commit("deleteError");
     }
   }

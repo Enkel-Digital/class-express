@@ -49,10 +49,6 @@ import cloneDeep from "lodash.clonedeep";
 
 export default {
   name: "ErrorDialog",
-  beforeMount() {
-    // @todo Remove this tmp solution to clear error when the page first loads.
-    this.$store.dispatch("error/clear");
-  },
   data() {
     return {
       alwaysShow: true
