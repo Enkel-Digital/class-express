@@ -3,12 +3,14 @@
  * Mounted on /user
  * @author JJ
  * @module User routes
+ *
+ * This router is mounted on a auth protected route,
+ * thus individual auth verifier middleware not needed
  */
 
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/db");
-const auth = require("../middleware/auth");
 const onlyOwnResource = require("../middleware/onlyOwnResource");
 
 const createLogger = require("@lionellbriones/logging").default;
@@ -20,7 +22,7 @@ const logger = createLogger("routes:users");
  * @function
  * @returns {object} User object
  */
-router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
+router.get("/:userID", onlyOwnResource, async (req, res) => {
   try {
     const { userID } = req.params;
 
@@ -47,7 +49,7 @@ router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
  * @param {Object} user
  * @returns {object} success indicator
  */
-router.post("/new", auth, express.json(), async (req, res) => {
+router.post("/new", express.json(), async (req, res) => {
   try {
     // Ensure that the email used as userID is lowercase.
     // Refer to notes for why we are enforcing this lowercase usage.

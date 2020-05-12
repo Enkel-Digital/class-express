@@ -2,12 +2,14 @@
  * Mounted on /points
  * @author JJ
  * @module points routes
+ *
+ * This router is mounted on a auth protected route,
+ * thus individual auth verifier middleware not needed
  */
 
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/db");
-const auth = require("../middleware/auth");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:subscription");
@@ -18,7 +20,7 @@ const logger = createLogger("routes:subscription");
  * @function
  * @returns {object} User's points object
  */
-router.get("/:userID", auth, async (req, res) => {
+router.get("/:userID", async (req, res) => {
   try {
     const { userID } = req.params;
 
