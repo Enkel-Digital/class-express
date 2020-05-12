@@ -7,6 +7,10 @@
       Defaults to 5 if not set.
 
       Using v-if for conditional rendering instead of value's conditional display
+
+      @todo
+      right now top-level loader is masked behind the ErrorDialog
+      ErrorDialog have a "202" z-index so we must use "203" for overlay
     -->
     <v-overlay v-if="showFullLoader" :value="true" z-index="6">
       <!-- Size 64 is in px ~ around 4em -->
