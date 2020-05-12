@@ -60,19 +60,25 @@ export default {
      * Update the user's plan
      * @function updatePlan
      */
-    async updatePlan({ state, commit }, planID) {
+    async updatePlan({ state, commit, rootState }, planID) {
       // If user selects own plan, ignore selection
       if (state.nextPlanID === planID) return;
 
       if (confirm("Confirm change of Subscription Plan!")) {
         // @todo Show loading bar before calling API for pessimistic UI
 
-        // Call logic to update the plan
+        // Call API to update the plan
+        const response = await api.post("/subscription/plans/update", {
+          userID: rootState.user.email,
+          subscriptionPlanID: planID
+        });
 
+        // @todo Remove before beta
         console.log("Plan is updated");
 
-        // Pessimistic UI, show after network update is complete
-        commit("setter", ["nextPlanID", planID]);
+        // Pessimistic UI, show after network update is complete, using the users' plans the API returned
+        commit("setter", ["currentPlanID", response.plans.currentPlanID]);
+        commit("setter", ["nextPlanID", response.plans.nextPlanID]);
       }
     },
     async cancelPlan({ rootState, commit }, cancellationReasons) {
