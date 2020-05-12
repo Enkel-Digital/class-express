@@ -10,11 +10,13 @@
     "deploy": "npm run build && npm run deploy-firebase-hosting"
   },
   "dependencies": {
+    "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
     "firebase": "^7.14.3",
     "moment": "^2.25.3",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
+    "vue-chartjs": "^3.5.0",
     "vue-router": "^3.1.6",
     "vuetify": "^2.2.27",
     "vuex": "^3.3.0",
