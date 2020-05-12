@@ -4,6 +4,7 @@
     <!-- @todo Change to a image carousel -->
     <v-container fluid>
       <v-row no-gutters>
+        <v-col></v-col>
         <v-col>
           <v-card max width="450">
             <v-carousel height="400">
@@ -16,12 +17,12 @@
               ></v-carousel-item>
             </v-carousel>
           </v-card>
-        </v-col>
-        <!-- <v-img id="class-image" :src="clas.pictureSources[0]" /> -->
-        <!-- </v-responsive> -->
-        <v-col>
-          <v-card height="400">
-            <v-responsive style="text-align: left;" class="ma-0 pa-4">
+
+          <!-- <v-img id="class-image" :src="clas.pictureSources[0]" /> -->
+          <!-- </v-responsive> -->
+
+          <v-card max width="450" class="my-2">
+            <v-responsive style="text-align: left;" class="mx-4 pa-0">
               <v-row>
                 <v-col>
                   <h3 class="headline" v-text="clas.name"></h3>
@@ -89,20 +90,32 @@
               </v-list-item>
             </v-responsive>
           </v-card>
+
+          <v-card width="450">
+            <h2
+              style="color: rgba(0, 0, 0, 0.65); text-align: left;"
+              class="ma-2 mb-0"
+            >
+              Getting here
+            </h2>
+
+            <MapImage :classID="clas.id" />
+            <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
+          </v-card>
+        </v-col>
+        <v-col>
+          <div class="text-left ma-2">
+            <v-btn small outlined fab color="success">
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
+            <v-spacer />
+
+            <v-btn class="my-1" small outlined fab color="success">
+              <v-icon>mdi-close-circle</v-icon>
+            </v-btn>
+          </div>
         </v-col>
       </v-row>
-
-      <v-card width="450">
-        <h2
-          style="color: rgba(0, 0, 0, 0.65); text-align: left;"
-          class="ma-2 mb-0"
-        >
-          Getting here
-        </h2>
-
-        <MapImage :classID="clas.id" />
-        <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
-      </v-card>
     </v-container>
   </v-content>
 </template>
