@@ -13,6 +13,7 @@ import pointsModule from "./module/points";
 import newsModule from "./module/news";
 import subscriptionPlanModule from "./module/subscriptionPlan";
 import settingsModule from "./module/settings";
+import loaderModule from "./module/loader";
 
 Vue.use(Vuex);
 
@@ -26,7 +27,8 @@ export default new Vuex.Store({
     points: pointsModule, // User points and not all points related
     news: newsModule,
     subscription: subscriptionPlanModule,
-    settings: settingsModule
+    settings: settingsModule,
+    loader: loaderModule
   },
   mutations: {
     setter,
@@ -42,6 +44,8 @@ export default new Vuex.Store({
     async init({ dispatch }) {
       console.log("Initializing vuex store and its modules...");
 
+      dispatch("error/init");
+      dispatch("loader/init");
       await dispatch("points/init");
       await dispatch("settings/init");
       await dispatch("classes/init");
