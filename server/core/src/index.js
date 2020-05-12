@@ -38,7 +38,8 @@ async function setup(resolve) {
 
   // setup cors middleware
   const corsOptions = {
-    //   origin: ["https://localhost:3000", /\.tor\.us$/],
+    // @todo To change the origin policy. Probs move this into a config module to read from env.
+    // origin: ["https://localhost:3000", /\.tor\.us$/],
     origin: "*",
     credentials: false
   };
