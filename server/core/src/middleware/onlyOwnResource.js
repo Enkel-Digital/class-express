@@ -9,10 +9,20 @@
 module.exports = async function onlyOwnResource(req, res, next) {
   const { userID } = req.params;
 
-  if (userID !== req.authenticatedUser.email) {
+  /**
+   * Only if route did not use auth middleware but used this middleware will this fail,
+   * else if the auth middleware did not attach these values to use downstream.
+   */
+  if (!req.authenticatedUser)
+    return res.status(500).json({
+      success: false,
+      error: "Missing authenticated user data from token"
+    });
+
+  if (userID !== req.authenticatedUser.email)
     return res.status(403).json({
       success: false,
       error: "Forbidden"
     });
-  } else return next();
+  else return next();
 };
