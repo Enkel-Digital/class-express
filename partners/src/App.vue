@@ -8,43 +8,55 @@
       dark
       flat
       :clipped-left="true"
-      color="blue darken-2"
+      color="#546E7A"
     >
       <!-- No toggling for now -->
       <!-- <v-app-bar-nav-icon @click.stop="showDrawer = !showDrawer"> -->
-      <v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="$router.push({ name: 'home' })">
         <v-avatar size="2.6em" item>
           <v-img src="@/assets/logo.png" alt="Logo" />
         </v-avatar>
       </v-app-bar-nav-icon>
 
-      <v-toolbar-title @click="$router.push({ name: 'home' })">
-        Class Express Partners
-      </v-toolbar-title>
-
-      <v-spacer />
+      <span />
 
       <v-text-field
         flat
         solo-inverted
         hide-details
+        dense
         prepend-inner-icon="mdi-magnify"
+        color="#CFD8DC"
         label="Search"
       />
 
       <v-spacer />
 
+      <v-btn class="ma-2" outlined color="#CFD8DC">
+        <v-icon left>mdi-cellphone-link</v-icon>APP Download</v-btn
+      >
+      <!-- 
       <v-btn icon>
-        <v-icon>mdi-apps</v-icon>
-      </v-btn>
+        <v-icon color="#CFD8DC">mdi-apps</v-icon>
+      </v-btn> -->
+
       <v-btn icon>
-        <v-icon>mdi-bell</v-icon>
+        <v-icon color="#CFD8DC">mdi-bell</v-icon>
       </v-btn>
-      <v-btn icon large>
-        <v-avatar size="2.6em" item>
-          <v-img src="@/assets/logo.png" alt="Vuetify" />
-        </v-avatar>
-      </v-btn>
+
+      <v-menu bottom left content-class="my-menu">
+        <template v-slot:activator="{ on }">
+          <v-btn dark icon v-on="on" color="#CFD8DC">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item v-for="(item, i) in items" :key="i">
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <!-- Router view for the main view -->
@@ -113,6 +125,15 @@ import SideNavBar from "@/components/SideNavBar";
 
 export default {
   name: "App",
+  data() {
+    return {
+      items: [
+        { title: "Settings" },
+        { title: "Contact Support" },
+        { title: "Logout" },
+      ],
+    };
+  },
   components: {
     SideNavBar,
   },
@@ -131,5 +152,25 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+}
+.my-menu {
+  margin-top: 40px;
+  contain: initial;
+  overflow: visible;
+}
+.my-menu::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 10px;
+  transform: translateY(-100%);
+  width: 10px;
+  height: 13px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 13px solid #fff;
+}
+span {
+  width: 20px;
 }
 </style>

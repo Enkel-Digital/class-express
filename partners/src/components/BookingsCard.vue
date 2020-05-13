@@ -3,7 +3,7 @@
     <!-- <v-card outlined :to="{name: 'bookings'}"> -->
     <v-card outlined text>
       <v-list-item>
-        <v-icon color="red">
+        <v-icon color="#C62828">
           mdi-heart
         </v-icon>
 

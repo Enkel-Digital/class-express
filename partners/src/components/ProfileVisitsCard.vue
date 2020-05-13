@@ -3,9 +3,9 @@
     <!-- <v-card outlined :to="{name: 'bookings'}"> -->
     <v-card outlined text>
       <v-list-item>
-        <v-avatar color="indigo">
+        <v-avatar color="#F57C00">
           <v-icon color="white">
-            mdi-view-dashboard
+            mdi-account
           </v-icon>
         </v-avatar>
 

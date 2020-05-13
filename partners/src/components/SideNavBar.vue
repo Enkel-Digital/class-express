@@ -11,7 +11,8 @@
       </v-list-item-avatar>
 
       <v-list-item-content>
-        <p class="overline">Account</p>
+        <!-- Indicate whether the user is an owner or employee -->
+        <p class="overline">Owner</p>
 
         <v-list-item-title>{{ "JJ Lee" }}</v-list-item-title>
 
@@ -90,25 +91,27 @@ export default {
           link: { name: "home" },
         },
         {
-          icon: "mdi-cash-usd",
-          text: "Earnings",
-          link: { name: "earnings" },
-        },
-        {
           icon: "mdi-calendar",
           text: "View Schedule",
           link: { name: "view-schedule" },
         },
         {
-          icon: "mdi-plus",
-          text: "Add New Class",
-          link: { name: "new-class" },
+          icon: "mdi-cash-usd",
+          text: "Earnings",
+          link: { name: "earnings" },
         },
         {
           icon: "mdi-view-week",
           text: "View all Classes",
           link: { name: "all-classes" },
         },
+
+        {
+          icon: "mdi-plus",
+          text: "Add New Class",
+          link: { name: "new-class" },
+        },
+
         {
           icon: "mdi-account",
           text: "View Reviews",
@@ -118,6 +121,11 @@ export default {
           icon: "mdi-account-group-outline",
           text: "Withdrawal",
           link: { name: "withdrawal" },
+        },
+        {
+          icon: "mdi-help-circle",
+          text: "FAQs",
+          link: { name: "faq" },
         },
         // {
         //   icon: "mdi-chevron-up",
@@ -143,32 +151,21 @@ export default {
         //     { text: "Other contacts" },
         //   ],
         // },
-
-        {
-          icon: "mdi-account",
-          text: "Contact Support",
-          link: { name: "contact-support" },
-        },
-        {
-          icon: "mdi-help-circle",
-          text: "FAQs",
-          link: { name: "faq" },
-        },
+        // {
+        //   icon: "mdi-account",
+        //   text: "Contact Support",
+        //   link: { name: "contact-support" },
+        // },
         // {
         //   icon: "mdi-message",
         //   text: "Send feedback",
         //   link: { name: "feedback" },
         // },
-        {
-          icon: "mdi-settings",
-          text: "Settings",
-          link: { name: "settings" },
-        },
-        {
-          icon: "mdi-cellphone-link",
-          text: "App downloads",
-          link: { name: "downloads" },
-        },
+        // {
+        //   icon: "mdi-cog",
+        //   text: "Settings",
+        //   link: { name: "settings" },
+        // },
       ],
     };
   },

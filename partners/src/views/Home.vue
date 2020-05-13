@@ -15,7 +15,7 @@
       <br />
 
       <WeeklyEarningsChart
-        width="1200"
+        width="1400"
         height="300"
         :chartdata="chartdata"
         :options="options"
@@ -23,7 +23,7 @@
 
       <br />
 
-      <PastWeekEarningComparison width="600" height="300" />
+      <PastWeekEarningComparison />
     </v-container>
     <!-- </v-responsive> -->
   </v-content>
