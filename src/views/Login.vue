@@ -24,6 +24,7 @@
       required
     />
 
+    <!-- @todo Replace this with ErrorDialog -->
     <p class="error" v-html="error_msg" />
 
     <v-btn @click="login" width="calc(100% - 6em)" color="blue darken-1" dark>
@@ -134,11 +135,18 @@ export default {
          */
         if (auth().currentUser) await auth().signOut();
 
-        // @todo Remove before production
-        console.error(error);
+        // @todo Instead of changing route, perhaps, show via ErrorDialog and let user know they need to verify their email
+        // @todo Then use internal notification dialog to show email verification after user signup.
+        if (error.code === "email/no-verify")
+          return this.$router.replace({
+            name: "verify-email",
+            params: { emailAddress: this.email }
+          });
 
         // Set the message into the error box to show user the error
         this.error_msg = error_msg(error);
+
+        this.$store.dispatch("error/new", error);
       }
     }
   }
