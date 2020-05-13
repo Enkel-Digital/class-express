@@ -5,7 +5,7 @@
       <v-toolbar-title>Subscription</v-toolbar-title>
     </v-app-bar>
 
-    <h3 style="color: rgba(0, 0, 0, 0.65);" class="ma-5 mb-0">
+    <h3 class="opacity7 ma-5 mb-0">
       Get more for less!
     </h3>
 
@@ -13,25 +13,34 @@
     <v-responsive>
       <v-list-item class="mb-0 pb-0 mt-0 pt-0">
         <v-list-item>
-          <v-list-item-content style="color: rgba(0, 0, 0, 0.8);">
+          <v-list-item-content>
             Our Monthly subscription plans gives you more points for less!
+            😁💪🏻<br />
+            <span class="opacity6 fontsize8">
+              *A month is always 30 days for affordable AND predicatable pricing
+            </span>
           </v-list-item-content>
         </v-list-item>
       </v-list-item>
     </v-responsive>
 
-    <PointsCard />
+    <!-- Hide action button when user have no plan -->
+    <PointsCard :hideActionButton="currentPlanID === null" />
 
     <br />
-    <h3 style="color: rgba(0, 0, 0, 0.65);" class="ml-5">
+    <h3 class="opacity7 ml-5">
       Subscription Plans
     </h3>
-    <p style="color: rgba(0, 0, 0, 0.6);" class="ml-5 mb-0">
+
+    <p v-if="currentPlanID !== null" class="opacity6 ml-5 mb-0">
       Your current plan ends on
       <span style="font-weight: bold;">
         {{ moment.unix(periodEndDate).format("L") }}
       </span>
       <br />Click to change next month's plan
+    </p>
+    <p v-else class="opacity6 ml-5 mb-0">
+      Click a plan to buy it now!
     </p>
 
     <v-radio-group v-model="selectedPlanID">
@@ -65,10 +74,7 @@
               {{ plan.price.value }}
             </v-list-item-title>
 
-            <p
-              style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;"
-              class="mb-0"
-            >
+            <p class="opacity7 fontsize8 mb-0">
               <span v-html="plan.copywriting" />
             </p>
           </v-list-item-content>
@@ -76,7 +82,12 @@
       </v-card>
     </v-radio-group>
 
+    <!-- 
+      Using !== null as planID can be 0 
+      Dont show this when user does not have a plan
+    -->
     <v-card
+      v-if="currentPlanID !== null"
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
@@ -91,7 +102,7 @@
             Buy points whenever
           </v-list-item-title>
 
-          <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;" class="mb-0">
+          <p class="opacity7 fontsize8 mb-0">
             Want a Custom plan? We got you covered!<br />Flexibility to
             experiment so you can do you!
           </p>
@@ -220,6 +231,7 @@ export default {
   methods: {
     ...mapActions("subscription", ["updatePlan"]),
     pauseSubscriptionPlan() {
+      // @todo Implement this
       alert("This feature is not supported yet!");
     }
   }
@@ -229,5 +241,17 @@ export default {
 <style scoped>
 #subscription {
   text-align: left;
+}
+
+.opacity6 {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.opacity7 {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.fontsize8 {
+  font-size: 0.8em;
 }
 </style>

@@ -20,7 +20,9 @@
           </v-list-item-subtitle>
         </v-list-item-content>
 
-        <v-btn :to="{ name: 'topup' }" color="primary">topup</v-btn>
+        <v-btn v-if="!hideActionButton" :to="{ name: 'topup' }" color="primary">
+          topup
+        </v-btn>
       </v-list-item>
     </v-card>
 
@@ -28,18 +30,24 @@
     <v-card v-else class="mx-auto" max-width="calc(100% - 3em)" outlined>
       <v-list-item>
         <v-list-item-content>
-          <p class="overline">no points nor plan yet?</p>
+          <p class="overline">you are not on a plan yet?!</p>
 
           <v-list-item-title class="headline mb-1">
-            Join a plan!
+            Join a plan now!
           </v-list-item-title>
 
           <v-list-item-subtitle>
-            Each plan lasts for a month
+            *Each plan lasts 30 days
           </v-list-item-subtitle>
         </v-list-item-content>
 
-        <v-btn :to="{ name: 'subscription' }" color="primary">plans</v-btn>
+        <v-btn
+          v-if="!hideActionButton"
+          :to="{ name: 'subscription' }"
+          color="primary"
+        >
+          plans
+        </v-btn>
       </v-list-item>
     </v-card>
   </v-responsive>
@@ -51,6 +59,7 @@ import { mapState } from "vuex";
 
 export default {
   name: "profile",
+  props: ["hideActionButton"],
   computed: {
     ...mapState("points", ["points"]),
     ...mapState("subscription", ["currentPlanID"])
