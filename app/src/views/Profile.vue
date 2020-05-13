@@ -3,7 +3,7 @@
     <v-app-bar app color="orange lighten-1" flat dark>
       <v-toolbar-title>Profile</v-toolbar-title>
 
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <v-btn icon @click="refreshData">
         <v-icon>mdi-reload</v-icon>

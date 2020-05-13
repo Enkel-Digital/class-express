@@ -20,7 +20,7 @@
       </v-card-text>
 
       <v-card-text style="text-align: left;">
-        Issue has been reported to the developer 🙏🏻
+        Issue is reported to the developer 🙏🏻
         <br />
         Working on it now 💪🏻😁
       </v-card-text>
