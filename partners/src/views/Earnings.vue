@@ -1,37 +1,21 @@
 <template>
   <v-content id="AllClasses">
-    <h1 style="font-size: 200px;" class="display-1 text-md-center">Earnings</h1>
+    <v-btn class="ma-2" outlined color="#546E7A"> Weekly</v-btn>
 
-    <br />
+    <EarningsChart
+      width="1400"
+      height="300"
+      :chartdata="weeklyChartData"
+      :options="weeklyChartOptions"
+    />
 
-    <v-card class="mx-auto" color="#455A64" dark max-width="900">
-      <v-card-text>
-        <v-sheet color="rgba(0, 0, 0, .12)">
-          <v-sparkline
-            :value="value"
-            color="rgba(255, 255, 255, .7)"
-            height="100"
-            padding="24"
-            stroke-linecap="round"
-            smooth
-          >
-            <template v-slot:label="item">${{ item.value }}</template>
-          </v-sparkline>
-        </v-sheet>
-      </v-card-text>
-
-      <v-card-text>
-        <div class="display-1 font-weight-thin text-md-center">
-          Sales Last 24h
-        </div>
-      </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-actions class="justify-center">
-        <v-btn block text>Go to Report</v-btn>
-      </v-card-actions>
-    </v-card>
+    <v-btn class="ma-2" outlined color="#546E7A"> Monthly</v-btn>
+    <EarningsChart
+      width="1400"
+      height="300"
+      :chartdata="monthlyChartData"
+      :options="monthlyChartOptions"
+    />
 
     <br />
 
@@ -101,11 +85,103 @@
 </template>
 
 <script>
+import EarningsChart from "@/components/EarningsChart.vue";
+
 export default {
-  data: () => ({
-    value: [423, 446, 675, 510, 590, 610, 760],
-  }),
   name: "AllClasses",
+  data: () => ({
+    weeklyChartData: {
+      labels: ["May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7"],
+      datasets: [
+        {
+          label: "Points Earned",
+          backgroundColor: "#78909C",
+          borderColor: "#455A64",
+          borderWidth: "2",
+          fill: false,
+          data: [60, 50, 60, 90, 50, 43, 54, 70],
+        },
+      ],
+    },
+    weeklyChartOptions: {
+      responsive: true,
+      maintainAspectRatio: false,
+      legend: {
+        onClick: (e) => e.stopPropagation(),
+      },
+    },
+
+    monthlyChartData: {
+      labels: [
+        "May 1",
+        "May 2",
+        "May 3",
+        "May 4",
+        "May 5",
+        "May 6",
+        "May 7",
+        "May 8",
+        "May 9",
+        "May 10",
+        "May 11",
+        "May 12",
+        "May 13",
+        "May 14",
+        "May 15",
+        "May 16",
+        "May 17",
+        "May 18",
+        "May 19",
+        "May 20",
+        "May 21",
+        "May 22",
+      ],
+      datasets: [
+        {
+          label: "Points Earned",
+          backgroundColor: "#78909C",
+          borderColor: "#455A64",
+          borderWidth: "2",
+          fill: false,
+          data: [
+            60,
+            50,
+            60,
+            90,
+            50,
+            43,
+            54,
+            70,
+            60,
+            50,
+            60,
+            90,
+            50,
+            43,
+            54,
+            70,
+            60,
+            50,
+            60,
+            90,
+            70,
+            50,
+          ],
+        },
+      ],
+    },
+    monthlyChartOptions: {
+      responsive: true,
+      maintainAspectRatio: false,
+      // Make chart label unclickable
+      legend: {
+        onClick: (e) => e.stopPropagation(),
+      },
+    },
+  }),
+  components: {
+    EarningsChart,
+  },
   beforeMount() {
     // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
     // Request store to get and populate all classes of partner

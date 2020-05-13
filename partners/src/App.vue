@@ -43,20 +43,6 @@
       <v-btn icon>
         <v-icon color="#CFD8DC">mdi-bell</v-icon>
       </v-btn>
-
-      <v-menu bottom left content-class="my-menu">
-        <template v-slot:activator="{ on }">
-          <v-btn dark icon v-on="on" color="#CFD8DC">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item v-for="(item, i) in items" :key="i">
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
     </v-app-bar>
 
     <!-- Router view for the main view -->
@@ -125,15 +111,7 @@ import SideNavBar from "@/components/SideNavBar";
 
 export default {
   name: "App",
-  data() {
-    return {
-      items: [
-        { title: "Settings" },
-        { title: "Contact Support" },
-        { title: "Logout" },
-      ],
-    };
-  },
+
   components: {
     SideNavBar,
   },

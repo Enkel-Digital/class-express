@@ -27,7 +27,7 @@
       <v-divider></v-divider>
 
       <v-card-actions>
-        <v-btn text>Full Report</v-btn>
+        <v-btn text @click="showFullReport">Full Report</v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -49,6 +49,11 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    showFullReport() {
+      alert("Not implemented yet");
+    },
   },
 };
 </script>

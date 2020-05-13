@@ -117,11 +117,11 @@ export default {
           text: "View Reviews",
           link: { name: "all-reviews" },
         },
-        {
-          icon: "mdi-account-group-outline",
-          text: "Withdrawal",
-          link: { name: "withdrawal" },
-        },
+        // {
+        //   icon: "mdi-account-group-outline",
+        //   text: "Withdrawal",
+        //   link: { name: "withdrawal" },
+        // },
         {
           icon: "mdi-help-circle",
           text: "FAQs",
@@ -151,21 +151,21 @@ export default {
         //     { text: "Other contacts" },
         //   ],
         // },
-        // {
-        //   icon: "mdi-account",
-        //   text: "Contact Support",
-        //   link: { name: "contact-support" },
-        // },
+        {
+          icon: "mdi-account",
+          text: "Contact Support",
+          link: { name: "contact-support" },
+        },
         // {
         //   icon: "mdi-message",
         //   text: "Send feedback",
         //   link: { name: "feedback" },
         // },
-        // {
-        //   icon: "mdi-cog",
-        //   text: "Settings",
-        //   link: { name: "settings" },
-        // },
+        {
+          icon: "mdi-cog",
+          text: "Settings",
+          link: { name: "settings" },
+        },
       ],
     };
   },

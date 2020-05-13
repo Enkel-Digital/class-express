@@ -2,7 +2,7 @@
   <v-content class="ClassDetails">
     <!-- <v-responsive class="mx-auto" style="max-width:1024px;"> -->
     <v-container>
-      <v-toolbar>
+      <v-toolbar dense class="elevation-1">
         <v-toolbar-title>Your Dashboard</v-toolbar-title>
       </v-toolbar>
 
@@ -14,7 +14,7 @@
 
       <br />
 
-      <WeeklyEarningsChart
+      <EarningsChart
         width="1400"
         height="300"
         :chartdata="chartdata"
@@ -33,7 +33,7 @@
 import BookingsCard from "@/components/BookingsCard.vue";
 import PointsEarnedCard from "@/components/PointsEarnedCard.vue";
 import ProfileVisitsCard from "@/components/ProfileVisitsCard.vue";
-import WeeklyEarningsChart from "@/components/WeeklyEarningsChart.vue";
+import EarningsChart from "@/components/EarningsChart.vue";
 import PastWeekEarningComparison from "@/components/PastWeekEarningComparisonCard.vue";
 
 export default {
@@ -42,21 +42,12 @@ export default {
     BookingsCard,
     PointsEarnedCard,
     ProfileVisitsCard,
-    WeeklyEarningsChart,
+    EarningsChart,
     PastWeekEarningComparison,
   },
   data: () => ({
     chartdata: {
-      labels: [
-        "May 1",
-        "May 2",
-        "May 3",
-        "May 4",
-        "May 5",
-        "May 6",
-        "May 7",
-        "May 8",
-      ],
+      labels: ["May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7"],
       datasets: [
         {
           label: "Points Earned",
@@ -71,6 +62,9 @@ export default {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      legend: {
+        onClick: (e) => e.stopPropagation(),
+      },
     },
   }),
 };
