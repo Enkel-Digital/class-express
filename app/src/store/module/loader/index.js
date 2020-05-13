@@ -1,5 +1,11 @@
 /**
  * Vuex module for a global loader component
+ *
+ * @todo make sure state is not persisted across app launches, if not at least, run clearAll on launch or something
+ * @todo Implement timeout on loaders, removing after a fixed time
+ * @todo All loader callers need to clear themselves, else should specify a timestamp of when to timeout
+ * @todo If they specify a timestamp to delete remove the loader, they do not have the loader removal theselves.
+ * @todo Built a auto clean up algorithm to figure out when to delete the loaders
  */
 
 import Vue from "vue";
@@ -17,10 +23,7 @@ export default {
       Vue.delete(state.loaderRequests, loaderRequestID);
     },
     clearAll(state) {
-      for (const loaderRequestID of Object.keys(state.loaderRequests))
-        Vue.delete(state.loaderRequests, loaderRequestID);
-    },
-    clearAll2(state) {
+      // Reset state by clearing it directly
       Vue.delete(state, "loaderRequests");
       Vue.set(state, "loaderRequests", {});
     }
@@ -55,9 +58,10 @@ export default {
     /**
      * @example
      * // Submit a new loader request to get back a request ID
-     * this.$store.dispatch("loader/new", loaderRequest);
+     * // You always need to await for vuex actions, so await to get back the loader request ID
+     * const await loaderID = this.$store.dispatch("loader/new", loaderRequest, { root: true });
      */
-    new({ commit, state }, loaderRequest = {}) {
+    async new({ commit, state }, loaderRequest = {}) {
       // IIFE to ensure loaderRequestID can be a const in this current context
       const loaderRequestID = (function() {
         // Keep generating rand ID till no more collisions
@@ -77,7 +81,7 @@ export default {
     /**
      * @example
      * // Clear the specified loader request
-     * this.$store.dispatch("loader/clear");
+     * this.$store.dispatch("loader/clear", loaderID, { root: true });
      */
     clear({ commit }, loaderRequestID) {
       commit("clear", loaderRequestID);
