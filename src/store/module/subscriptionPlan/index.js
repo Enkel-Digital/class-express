@@ -6,6 +6,7 @@
 
 import initialState from "./initialState";
 import setter from "../../utils/setter";
+import loader from "../../utils/loader";
 import api from "@/store/utils/fetch";
 
 export default {
@@ -60,18 +61,25 @@ export default {
      * Update the user's plan
      * @function updatePlan
      */
-    async updatePlan({ state, commit, rootState }, planID) {
+    async updatePlan({ state, commit, dispatch, rootState }, planID) {
       // If user selects own plan, ignore selection
       if (state.nextPlanID === planID) return;
 
       if (confirm("Confirm change of Subscription Plan!")) {
-        // @todo Show loading bar before calling API for pessimistic UI
+        // Show loading bar before calling API for pessimistic UI
+        const loaderID = await loader.new();
 
         // Call API to update the plan
         const response = await api.post("/subscription/plans/update", {
           userID: rootState.user.email,
           subscriptionPlanID: planID
         });
+
+        // Remove loader after API responds
+        loader.clear(loaderID);
+
+        // @todo Handle error
+        if (!response.success);
 
         // @todo Remove before beta
         console.log("Plan is updated");
