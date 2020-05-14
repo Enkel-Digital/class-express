@@ -4,7 +4,7 @@
     <v-card outlined text>
       <v-list-item>
         <v-icon color="#C62828">
-          mdi-heart
+          mdi-folder-account
         </v-icon>
 
         <v-list-item-content>

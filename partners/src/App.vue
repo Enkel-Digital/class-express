@@ -18,7 +18,7 @@
         </v-avatar>
       </v-app-bar-nav-icon>
 
-      <span />
+      <span style="width: 250px;"> </span>
 
       <v-text-field
         flat

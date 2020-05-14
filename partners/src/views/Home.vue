@@ -8,8 +8,20 @@
 
       <div class="row">
         <BookingsCard />
-        <PointsEarnedCard />
+        <ActiveClassCard />
         <ProfileVisitsCard />
+        <PointsEarnedCard
+          :label="pointCardLabels.weekly"
+          :points="pointCardPoints.weekly"
+        />
+        <PointsEarnedCard
+          :label="pointCardLabels.monthly"
+          :points="pointCardPoints.monthly"
+        />
+        <PointsEarnedCard
+          :label="pointCardLabels.total"
+          :points="pointCardPoints.total"
+        />
       </div>
 
       <br />
@@ -25,7 +37,6 @@
 
       <PastWeekEarningComparison />
     </v-container>
-    <!-- </v-responsive> -->
   </v-content>
 </template>
 
@@ -35,6 +46,7 @@ import PointsEarnedCard from "@/components/PointsEarnedCard.vue";
 import ProfileVisitsCard from "@/components/ProfileVisitsCard.vue";
 import EarningsChart from "@/components/EarningsChart.vue";
 import PastWeekEarningComparison from "@/components/PastWeekEarningComparisonCard.vue";
+import ActiveClassCard from "@/components/ActiveClassCard.vue";
 
 export default {
   name: "home",
@@ -44,6 +56,7 @@ export default {
     ProfileVisitsCard,
     EarningsChart,
     PastWeekEarningComparison,
+    ActiveClassCard,
   },
   data: () => ({
     chartdata: {
@@ -62,10 +75,18 @@ export default {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      // Make chart label unclickable
       legend: {
         onClick: (e) => e.stopPropagation(),
       },
     },
+    pointCardLabels: {
+      weekly: "Points Earned This Week",
+      monthly: "Points Earned This Month",
+      total: "Total Points Earned",
+    },
+
+    pointCardPoints: { weekly: "1234", monthly: "12345", total: "1234567" },
   }),
 };
 </script>

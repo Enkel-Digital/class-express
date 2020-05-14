@@ -3,19 +3,17 @@
     <!-- <v-card outlined :to="{name: 'bookings'}"> -->
     <v-card outlined text>
       <v-list-item>
-        <v-avatar color="#F57C00">
-          <v-icon color="white">
-            mdi-cursor-default-click
-          </v-icon>
-        </v-avatar>
+        <v-icon color="#C62828">
+          mdi-heart
+        </v-icon>
 
         <v-list-item-content>
           <v-list-item-title class="headline mb-1">
-            {{ "100" }}
+            {{ "23" }}
           </v-list-item-title>
 
           <v-list-item-subtitle>
-            {{ "Profile Visits (Month)" }}
+            {{ "Current Active Classes" }}
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>

@@ -5,17 +5,17 @@
       <v-list-item>
         <v-avatar color="#0277BD">
           <v-icon color="white">
-            mdi-view-dashboard
+            mdi-currency-usd-circle-outline
           </v-icon>
         </v-avatar>
 
         <v-list-item-content>
           <v-list-item-title class="headline mb-1">
-            {{ "2069" }}
+            {{ points }}
           </v-list-item-title>
 
           <v-list-item-subtitle>
-            {{ "Points Earned This Week" }}
+            {{ label }}
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -26,5 +26,6 @@
 <script>
 export default {
   name: "bookings-card",
+  props: ["label", "points"],
 };
 </script>

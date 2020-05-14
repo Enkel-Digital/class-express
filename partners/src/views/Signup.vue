@@ -12,9 +12,12 @@
         <v-btn :disabled="employee || owner" @click="owner = true"
           >I am an Owner</v-btn
         >
-        <v-btn :disabled="employee || owner" @click="employee = true"
+        <v-btn :disabled="true" @click="employee = true"
           >I am an Employee</v-btn
         >
+        <!-- <v-btn :disabled="employee || owner" @click="employee = true"
+          >I am an Employee</v-btn
+        > -->
       </v-col>
 
       <!-- stepper for owner -->
@@ -158,12 +161,15 @@
                 </v-col>
 
                 <v-col class="d-flex" cols="15" sm="6" md="10">
-                  <v-select
+                  <v-autocomplete
                     :items="businessTypes"
-                    label="Type of Business"
-                    prepend-icon="mdi-format-list-bulleted-type"
+                    :filter="customFilter"
                     :rules="[(v) => !!v || 'Selection is required']"
-                  ></v-select>
+                    color="white"
+                    item-text="name"
+                    prepend-icon="mdi-format-list-bulleted-type"
+                    label="Type of Business"
+                  ></v-autocomplete>
                 </v-col>
               </v-row>
             </v-form>
@@ -317,7 +323,7 @@ export default {
       password: "Password",
       rules: {
         required: (value) => !!value || "Required.",
-        min: (v) => v.length >= 8 || "Min 8 characters",
+        // min: (v) => v.length >= 8 || "Min 8 characters",
       },
       nameRules: [(v) => !!v || "Required"],
       emailRules: [
@@ -329,16 +335,12 @@ export default {
         (v) => (v && v.length <= 8) || "Number is invalid",
       ],
       postalRules: [(v) => (v && v.length <= 6) || "Postal code is invalid"],
-
       businessTypes: [
-        "Sports",
-        "Tuition",
-        "Music",
-        "IT",
-        "Lifestyle",
-        "Fitness",
-        "Dance",
-        "Cooking",
+        { name: "Sports", abbr: "", id: 1 },
+        { name: "Tuition", abbr: "", id: 2 },
+        { name: "IT", abbr: "", id: 3 },
+        { name: "Music", abbr: "", id: 4 },
+        { name: "Lifestyle", abbr: "", id: 5 },
       ],
       hasSaved: false,
       isEditing: null,
