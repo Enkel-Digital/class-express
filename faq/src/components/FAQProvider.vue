@@ -2,9 +2,9 @@
   <v-card>
     <v-tabs>
       <!--FAQ Category: Tabs-->
-      <v-tab v-for="(topic, topicIndex) in faqContent" :key="topicIndex">{{item.topicName}}</v-tab>
+      <v-tab v-for="(topic, topicIndex) in faq" :key="topicIndex">{{topic.topicName}}</v-tab>
       <!--FAQ Category accessed to get nested question answer pairs-->
-      <v-tab-item v-for="(topic, topicIndex) in faqContent" :key="topicIndex">
+      <v-tab-item v-for="(topic, topicIndex) in faq" :key="topicIndex">
         <v-expansion-panels flat>
           <!-- FAQ Question Answer Pair: Expansion Panel -->
           <v-expansion-panel v-for="(pairs, pairIndex) in topic.questionAnswerSet" :key="pairIndex">
@@ -18,14 +18,14 @@
 </template>
 <script>
 // @ is an alias to /src
-import faqData from "@/data/faq.json";
+import faq from "@/data/faq.json";
 
 export default {
   name: "faq-provider",
   data() {
     return {
-      //faqData is removed to a local json file to reduce clutter
-      faqContent: faqData
+      //data is removed to a local json file to reduce clutter
+      faq: faq
     };
   }
 };

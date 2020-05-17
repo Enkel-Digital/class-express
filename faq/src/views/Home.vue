@@ -5,7 +5,7 @@
         <v-card class="mx-auto" max-width="900" style="margin-top: -64px;">
           <v-toolbar flat>
             <v-icon>mdi-magnify</v-icon>
-            <!-- TODO: Non functional autocomplete -->
+            <!-- @todo Non functional autocomplete -->
             <!-- Search bar to look for topic issue -->
             <v-autocomplete
               :loading="loading"
@@ -27,7 +27,7 @@
             />
           </v-toolbar>
           <v-divider></v-divider>
-          <!-- TODO: Integrate FAQ Provider with autocomplete -->
+          <!-- @todo Integrate FAQ Provider with autocomplete -->
           <!-- Displays FAQ using tabs and expansion panels, through a component -->
           <FAQProvider />
         </v-card>
@@ -39,13 +39,11 @@
 <script>
 // @ is an alias to /src
 import FAQProvider from "@/components/FAQProvider.vue";
-import ContactUs from "@/components/ContactUs.vue";
 
 export default {
   name: "Home",
   components: {
-    FAQProvider,
-    ContactUs
+    FAQProvider
   },
   data() {
     return {

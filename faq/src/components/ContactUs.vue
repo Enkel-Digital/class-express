@@ -4,7 +4,7 @@
       <!-- Activators the dialog page -->
       <template v-slot:activator="{ on }">
         <!-- How does this appear on the screen -->
-        <v-btn color="white" text rounded class="my-2" v-on="on">Contact Us</v-btn>
+        <v-btn color="white" text rounded class="my-2" v-on="on" @click="reset">Contact Us</v-btn>
       </template>
       <v-card>
         <v-toolbar dark color="primary">
@@ -37,7 +37,7 @@
                 label="I hereby consent to the Class Express Support Team to contacting me at the above given email address."
               ></v-checkbox>
               <div v-if="validate">
-                <!-- TODO: fix send here to be disabled when first opened -->
+                <!-- @todo fix send here to be disabled when first opened -->
                 <!-- Link to actual function -->
                 <v-btn
                   :disabled="!valid"
@@ -98,6 +98,9 @@ export default {
   methods: {
     validate() {
       this.$refs.form.validate();
+    },
+    reset() {
+      this.$refs.form.reset();
     }
   }
 };

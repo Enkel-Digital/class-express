@@ -9,7 +9,7 @@
               <v-spacer />
             </v-toolbar>
             <v-card-text>
-              <!-- TODO: Make legit the login -->
+              <!-- @todo Make legit the login -->
               <v-form>
                 <v-text-field label="Login" name="login" prepend-icon="mdi-account" type="text" />
                 <v-text-field
