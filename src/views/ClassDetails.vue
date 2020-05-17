@@ -1,5 +1,5 @@
 <template>
-  <v-content id="ClassDetails">
+  <v-content id="ClassDetails" v-touch="{ right: () => $router.back() }">
     <v-app-bar app color="white" flat fixed>
       <BackBtn />
 
@@ -175,12 +175,16 @@
 </template>
 
 <script>
+import { Touch } from "vuetify/lib/directives";
 import { mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 import MapImage from "@/components/MapImage";
 
 export default {
   name: "ClassDetails",
+  directives: {
+    Touch
+  },
   components: {
     BackBtn,
     MapImage
@@ -189,7 +193,11 @@ export default {
     // Call action to fetch review of this class
     this.$store.dispatch("classes/getReview", this.classID);
   },
-  // @todo Run prop validation against data/server to ensure selected time is valid.
+  /*
+    @todo Run prop validation against data/server to ensure selected time is valid.
+    kick off an async check, can run it in created or mounted hook too then if async check failed and the selected time for lesson is wrong
+    throw an error that shows on either error dialog or notification to say that this does not exist and redirect user away from that.
+  */
   props: ["classID", "selectedTime"],
   data() {
     // @todo Generate calendar invite link for add to calendar button

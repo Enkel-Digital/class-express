@@ -25,6 +25,7 @@ Vue.config.errorHandler = async function(err, vueComponent, info) {
   // console.error(err.stack);
 
   // Dispatch without awaitng for store to handle all error logging/reporting logic
+  // @todo Create error of type error.type.UNDEFINED here
   store.dispatch("error/new", {
     error: err.message,
     info,

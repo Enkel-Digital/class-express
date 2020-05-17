@@ -1,5 +1,5 @@
 <template>
-  <v-content id="partner">
+  <v-content id="partner" v-touch="{ right: () => $router.back() }">
     <v-app-bar app color="white" flat fixed>
       <BackBtn />
 
@@ -96,12 +96,16 @@
 </template>
 
 <script>
+import { Touch } from "vuetify/lib/directives";
 import { mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 import MapImage from "@/components/MapImage";
 
 export default {
   name: "partner",
+  directives: {
+    Touch
+  },
   components: {
     BackBtn,
     MapImage

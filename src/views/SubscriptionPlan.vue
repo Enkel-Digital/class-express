@@ -1,7 +1,10 @@
 <template>
-  <v-content id="subscription">
+  <v-content
+    id="subscription"
+    v-touch="{ right: () => $router.push({ name: 'profile' }) }"
+  >
     <v-app-bar app color="orange lighten-1" flat dark fixed>
-      <BackBtn />
+      <BackBtn :to="{ name: 'profile' }" />
       <v-toolbar-title>Subscription</v-toolbar-title>
     </v-app-bar>
 
@@ -196,12 +199,16 @@
 </template>
 
 <script>
+import { Touch } from "vuetify/lib/directives";
 import BackBtn from "@/components/BackBtn";
 import PointsCard from "@/components/PointsCard";
 import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "subscription",
+  directives: {
+    Touch
+  },
   components: {
     BackBtn,
     PointsCard
