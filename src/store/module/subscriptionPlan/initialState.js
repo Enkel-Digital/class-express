@@ -4,8 +4,8 @@
  */
 export default function initialState() {
   return {
-    currentPlanID: undefined,
-    nextPlanID: undefined,
+    currentPlanID: null, // null to match the database type
+    nextPlanID: null, // null to match the database type
     subscriptionPlans: []
   };
 }

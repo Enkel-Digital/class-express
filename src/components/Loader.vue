@@ -39,6 +39,7 @@
  * There are 2 types of loaders,
  * There is the full screen overlay circular loader,
  * And there is the top level linear loader on top of app bars.
+ * At any one point in time, only one loader can be shown and full screen overlay loader has precedence
  *
  * The full screen overlay loader have priority over the top level linear loader
  * But by default show loading requests shows the top level linear loader
