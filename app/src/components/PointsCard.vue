@@ -62,8 +62,8 @@ export default {
   props: ["hideActionButton"],
   computed: {
     ...mapState("points", ["points"]),
-    ...mapState("subscription", ["currentPlanID"])
-  }
+    ...mapState("subscription", ["currentPlanID"]),
+  },
 };
 </script>
 

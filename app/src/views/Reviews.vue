@@ -100,7 +100,7 @@ import { mapState } from "vuex";
 export default {
   name: "reviews",
   components: {
-    BackBtn
+    BackBtn,
   },
   // @todo Support both types of reviews.
   props: ["classID", "partnerID"],
@@ -117,8 +117,8 @@ export default {
     return { className };
   },
   computed: {
-    ...mapState("classes", ["review"])
-  }
+    ...mapState("classes", ["review"]),
+  },
 };
 </script>
 

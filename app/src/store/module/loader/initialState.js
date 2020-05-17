@@ -4,7 +4,7 @@
  */
 export default function initialState() {
   return {
-    loaderRequests: {}
+    loaderRequests: {},
   };
 }
 
@@ -12,5 +12,5 @@ export default function initialState() {
  * Example/Reference on how loaderRequest object would look like
  */
 const loaderRequestReference = {
-  fullScreen: true // Bool value to determine what type of loader to show
+  fullScreen: true, // Bool value to determine what type of loader to show
 };

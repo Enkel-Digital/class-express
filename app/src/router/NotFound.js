@@ -7,8 +7,8 @@ const routes = [
     // Make this a wild card so any invalid name comes here
     name: "*",
     component: () => import("../views/NotFound.vue"),
-    meta: { Auth_requirements: AuthType.public }
-  }
+    meta: { Auth_requirements: AuthType.public },
+  },
 ];
 
 export default routes;

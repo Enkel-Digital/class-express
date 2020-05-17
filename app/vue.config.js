@@ -6,9 +6,9 @@ module.exports = {
       rules: [
         {
           test: /\.md$/,
-          loader: "ignore-loader"
-        }
-      ]
-    }
-  }
+          loader: "ignore-loader",
+        },
+      ],
+    },
+  },
 };

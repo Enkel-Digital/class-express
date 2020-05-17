@@ -19,111 +19,111 @@ const routes = [
     path: "/home",
     name: "home",
     component: Home,
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/explore",
     name: "explore",
     component: Explore,
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/favourites",
     name: "favourites",
     component: Favourites,
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/upcoming",
     name: "upcoming",
     component: Upcoming,
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/partner/:partnerID",
     name: "partner",
     component: () => import("@/views/Partner.vue"),
     meta: { Auth_requirements: AuthType.private },
-    props: true
+    props: true,
   },
   {
     path: "/classdetails/:classID/:selectedTime?",
     name: "ClassDetails",
     component: () => import("@/views/ClassDetails.vue"),
     meta: { Auth_requirements: AuthType.private },
-    props: true
+    props: true,
   },
   {
     path: "/reviews/class/:classID",
     name: "reviews-class",
     component: () => import("@/views/Reviews.vue"),
     meta: { Auth_requirements: AuthType.private },
-    props: true
+    props: true,
   },
   {
     path: "/reviews/partner/:partnerID",
     name: "reviews-partner",
     component: () => import("@/views/Reviews.vue"),
     meta: { Auth_requirements: AuthType.private },
-    props: true
+    props: true,
   },
   {
     path: "/new-review/:classID",
     name: "new-review",
     component: () => import("@/views/NewReview.vue"),
     meta: { Auth_requirements: AuthType.private },
-    props: true
+    props: true,
   },
   {
     path: "/schedule/class/:classID",
     name: "schedule-class",
     component: () => import("@/views/Schedule.vue"),
     meta: { Auth_requirements: AuthType.private },
-    props: true
+    props: true,
   },
   {
     path: "/schedule/partner/:partnerID",
     name: "schedule-partner",
     component: () => import("@/views/Schedule.vue"),
     meta: { Auth_requirements: AuthType.private },
-    props: true
+    props: true,
   },
   {
     path: "/profile",
     name: "profile",
     component: () => import("@/views/Profile.vue"),
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/topup",
     name: "topup",
     component: () => import("@/views/Topup.vue"),
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/subscription",
     name: "subscription",
     component: () => import("@/views/SubscriptionPlan.vue"),
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/subscription/cancel",
     name: "cancel-subscription",
     component: () => import("@/views/CancelSubscription.vue"),
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/settings",
     name: "settings",
     component: () => import("@/views/Settings.vue"),
-    meta: { Auth_requirements: AuthType.private }
+    meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/past/classes",
     name: "PastClasses",
     component: () => import("@/views/PastClasses.vue"),
-    meta: { Auth_requirements: AuthType.private }
-  }
+    meta: { Auth_requirements: AuthType.private },
+  },
 ];
 
 export default routes;

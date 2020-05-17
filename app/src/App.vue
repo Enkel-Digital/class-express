@@ -28,15 +28,15 @@ export default {
     BottomNavBar,
     ErrorDialog,
     Loader,
-    InternalNotificationDialog
+    InternalNotificationDialog,
   },
   computed: {
     // @todo Remove this and rely on router to pass in prop to decide if nav bar should be shown
     // Else specifying showNavBar in route.meta.showNavBar is also a viable option.
     showNavBar() {
       return this.$route.meta.Auth_requirements !== AuthType.public_only;
-    }
-  }
+    },
+  },
 };
 </script>
 

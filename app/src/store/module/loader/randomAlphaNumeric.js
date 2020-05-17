@@ -9,7 +9,4 @@
  *
  * This is NOT cryptographically secure
  */
-export default () =>
-  Math.random()
-    .toString(36)
-    .substring(2);
+export default () => Math.random().toString(36).substring(2);

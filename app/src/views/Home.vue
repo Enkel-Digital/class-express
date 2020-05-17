@@ -91,7 +91,7 @@ export default {
     this.$store.dispatch("news/init");
   },
   computed: {
-    ...mapState("news", ["newsBanners"])
+    ...mapState("news", ["newsBanners"]),
   },
   methods: {
     viewBanner(link) {
@@ -104,7 +104,7 @@ export default {
       // this.lastViewdBanner_tmp = link;
 
       if (confirm("Checkout link?")) window.open(link);
-    }
-  }
+    },
+  },
 };
 </script>

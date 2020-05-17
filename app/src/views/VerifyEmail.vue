@@ -38,10 +38,10 @@ export default {
     return {
       // Timeout data object that can be referenced to clear if user navigates away before timeout
       timeout: setTimeout(
-        router => router.push({ name: "login" }), // Redirect user to login view
+        (router) => router.push({ name: "login" }), // Redirect user to login view
         10000,
         this.$router
-      )
+      ),
     };
   },
   methods: {
@@ -51,11 +51,11 @@ export default {
 
       if (confirm("Resend verification email?"))
         auth().currentUser.sendEmailVerification();
-    }
+    },
   },
   beforeDestroy() {
     // Prevent the timeout from routing to login if user already navigated away themselves
     clearTimeout(this.timeout);
-  }
+  },
 };
 </script>

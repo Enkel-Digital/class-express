@@ -80,10 +80,10 @@ export default {
     this.$store.dispatch("classes/getPastClassesID");
   },
   computed: {
-    ...mapGetters("classes", ["pastClasses"])
+    ...mapGetters("classes", ["pastClasses"]),
   },
   methods: {
-    ...mapActions("classes", ["toggleFavouriteClass"])
-  }
+    ...mapActions("classes", ["toggleFavouriteClass"]),
+  },
 };
 </script>

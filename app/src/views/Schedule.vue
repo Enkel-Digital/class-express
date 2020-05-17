@@ -37,8 +37,8 @@
             <br />
             {{
               daysFromToday(i).format("ddd") +
-                " " +
-                daysFromToday(i).format("D")
+              " " +
+              daysFromToday(i).format("D")
             }}
           </v-card-text>
         </v-card>
@@ -65,7 +65,7 @@ import BackBtn from "@/components/BackBtn";
 export default {
   name: "schedule",
   components: {
-    BackBtn
+    BackBtn,
   },
   created() {
     if (this.classID === undefined && this.partnerID === undefined)
@@ -76,7 +76,7 @@ export default {
       this.$store.dispatch("classes/getSchedule", { classID: this.classID });
     else if (this.partnerID)
       this.$store.dispatch("classes/getSchedule", {
-        partnerID: this.partnerID
+        partnerID: this.partnerID,
       });
   },
   props: ["classID", "partnerID"],
@@ -94,7 +94,7 @@ export default {
         ? this.$store.state.classes.classes[this.classID].name
         : this.$store.state.classes.partners[this.partnerID].name,
       tabs,
-      origStartOfDay
+      origStartOfDay,
     };
   },
   computed: {
@@ -104,7 +104,7 @@ export default {
         // @todo Change this to partner schedule
         return this.$store.state.classes.schedule[this.partnerID];
       else return false;
-    }
+    },
   },
   methods: {
     ...mapMutations("classes", ["selectSchedule"]),
@@ -125,7 +125,7 @@ export default {
       }
 
       this.$store.dispatch("classes/getSchedule", { classID: this.classID });
-    }
-  }
+    },
+  },
 };
 </script>

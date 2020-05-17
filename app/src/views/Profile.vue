@@ -100,18 +100,18 @@ import { mapState } from "vuex";
 export default {
   name: "profile",
   components: {
-    PointsCard
+    PointsCard,
   },
   computed: mapState(["user"]),
   data() {
     return {
       // Rules for the avatar image upload
       avatarRules: [
-        value =>
+        (value) =>
           !value ||
           value.size < 2000000 ||
-          "Avatar size should be less than 2 MB!"
-      ]
+          "Avatar size should be less than 2 MB!",
+      ],
     };
   },
   methods: {
@@ -119,8 +119,8 @@ export default {
     refreshData() {
       // Rely on the store to update the data asynchronously in the background
       this.$store.dispatch("init");
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -28,13 +28,13 @@ export default new Vuex.Store({
     news: newsModule,
     subscription: subscriptionPlanModule,
     settings: settingsModule,
-    loader: loaderModule
+    loader: loaderModule,
   },
   mutations: {
     setter,
     setEmailVerificationStatus(state, status) {
       state.user.emailVerified = status;
-    }
+    },
   },
   actions: {
     /**
@@ -61,7 +61,7 @@ export default new Vuex.Store({
       // @todo Handle error cases
       // if (!response.success) {}
       commit("setter", ["user", response.user]);
-    }
+    },
   },
-  plugins: [createPersistedState()]
+  plugins: [createPersistedState()],
 });

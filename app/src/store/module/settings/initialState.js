@@ -8,8 +8,8 @@ export default function initialState() {
       modifiedAt: undefined, // Timestamp of when setting was last modified.
       notifications: {
         mobileNotification: true,
-        emailNotification: true
-      }
-    }
+        emailNotification: true,
+      },
+    },
   };
 }

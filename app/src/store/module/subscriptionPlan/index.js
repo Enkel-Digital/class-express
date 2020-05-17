@@ -13,17 +13,19 @@ export default {
   namespaced: true,
   state: initialState(),
   mutations: {
-    setter
+    setter,
   },
   getters: {
     currentPlan(state) {
       return state.subscriptionPlans.find(
-        plan => plan.id === state.currentPlanID
+        (plan) => plan.id === state.currentPlanID
       );
     },
     nextPlan(state) {
-      return state.subscriptionPlans.find(plan => plan.id === state.nextPlanID);
-    }
+      return state.subscriptionPlans.find(
+        (plan) => plan.id === state.nextPlanID
+      );
+    },
   },
   actions: {
     /**
@@ -72,7 +74,7 @@ export default {
         // Call API to update the plan
         const response = await api.post("/subscription/plans/update", {
           userID: rootState.user.email,
-          subscriptionPlanID: planID
+          subscriptionPlanID: planID,
         });
 
         // Remove loader after API responds
@@ -92,7 +94,7 @@ export default {
     async cancelPlan({ rootState, commit }, cancellationReasons) {
       const response = await api.post("/subscription/cancel", {
         userID: rootState.user.userID,
-        cancellationReasons
+        cancellationReasons,
       });
 
       // @todo
@@ -102,6 +104,6 @@ export default {
       } else {
         // error dialog
       }
-    }
-  }
+    },
+  },
 };

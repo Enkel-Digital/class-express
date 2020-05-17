@@ -15,9 +15,9 @@
       <v-img id="class-image" :src="clas.pictureSources[0]" />
     </v-avatar>
 
-    <hr style="height:15pt; visibility:hidden;" />
-    <h2 style="color:#403D3D;">{{ clas.name }}</h2>
-    <p style="font-size:75%; color:#625B5A;">How do you like the class?</p>
+    <hr style="height: 15pt; visibility: hidden;" />
+    <h2 style="color: #403d3d;">{{ clas.name }}</h2>
+    <p style="font-size: 75%; color: #625b5a;">How do you like the class?</p>
 
     <v-rating
       v-model="ratings"
@@ -41,7 +41,7 @@
         saveNewReview({
           classID,
           ratings,
-          description
+          description,
         })
       "
       outlined
@@ -65,14 +65,14 @@ export default {
     return {
       clas,
       ratings: undefined,
-      description: ""
+      description: "",
     };
   },
   methods: {
     saveNewReview() {
       this.$store.dispatch("classes/saveNewReview", ...arguments);
       this.$router.push({ name: "home" });
-    }
-  }
+    },
+  },
 };
 </script>

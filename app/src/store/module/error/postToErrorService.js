@@ -36,9 +36,9 @@ async function postToErrorService(error = {}) {
         "Content-Type": "application/json",
         // Send auth token if available.
         // Error tracking service should not reject no-auth-token calls
-        Authorization: await getAuthHeader()
+        Authorization: await getAuthHeader(),
       },
-      body: JSON.stringify(error)
+      body: JSON.stringify(error),
     });
 
     // @todo Add a check as not all should be parsed/treated as json

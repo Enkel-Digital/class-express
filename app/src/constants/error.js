@@ -55,7 +55,7 @@ function _extends(errorType, moreInfo) {
   // Use destructuring syntax to create a new object
   return {
     ...errorType,
-    more: moreInfo
+    more: moreInfo,
   };
 }
 
@@ -82,7 +82,7 @@ function custom(name, description, moreInfo) {
   const customError = {
     type: "CUSTOM",
     name: name || "CUSTOM error",
-    description: description || ""
+    description: description || "",
   };
 
   // If more info is specified to extend the error
@@ -124,34 +124,34 @@ const ERROR = Object.freeze({
   level: {
     FATAL: "FATAL",
     WARNING: "WARNING",
-    RETRY: "RETRY"
+    RETRY: "RETRY",
   },
   type: {
     NETWORK: {
       type: "NETWORK",
       name: "Network connection issue",
       description:
-        "There is an issue with the network right now! Try checking connection status or restarting app if needed."
+        "There is an issue with the network right now! Try checking connection status or restarting app if needed.",
     },
     API: {
       type: "API",
       name: "API call failed",
-      description: "API failed with http code >= 400"
+      description: "API failed with http code >= 400",
     },
     INTERNAL: {
       type: "INTERNAL",
       name: "Internal error detected",
-      description: "Internal vue logic failed"
+      description: "Internal vue logic failed",
     },
     // @todo Perhaps allow some stack trace for undefined errors to better debug
     UNDEFINED: {
       type: "UNDEFINED",
       name: "UNKNOWN",
-      description: "Unknown error occurred 😫"
-    }
+      description: "Unknown error occurred 😫",
+    },
   },
   custom,
-  extends: _extends
+  extends: _extends,
 });
 
 // Using module.exports instead of es6 module syntax for easier export syntax + import destructuring.

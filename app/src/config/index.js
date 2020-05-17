@@ -9,7 +9,7 @@ const NODE_ENV = process.env.NODE_ENV.toLowerCase();
 // Get config object for the current mode and merge it into the default config object
 const config = Object.assign(
   {
-    version: "0.0.1"
+    version: "0.0.1",
   },
   // Load config on the fly
   // @todo To optimize this

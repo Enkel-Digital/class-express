@@ -50,7 +50,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "loader",
   computed: {
-    ...mapGetters("loader", ["showFullLoader", "showTopLoader"])
-  }
+    ...mapGetters("loader", ["showFullLoader", "showTopLoader"]),
+  },
 };
 </script>
