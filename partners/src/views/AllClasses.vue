@@ -1,24 +1,35 @@
 <template>
   <v-content id="AllClasses">
-    <v-card
-      v-for="clas in classes"
-      :key="clas.id"
-      class="class-card"
-      @click="
-        $router.push({ name: 'ClassDetails', params: { classID: clas.id } })
-      "
-    >
-      <v-img height="20em" class="class-image" :src="clas.pictureSources[0]" />
+    <v-row>
+      <v-col>
+        <v-card
+          v-for="clas in classes"
+          :key="clas.id"
+          class="class-card"
+          @click="
+            $router.push({
+              name: 'ClassDetails',
+              params: { classID: clas.id },
+            })
+          "
+        >
+          <v-img
+            max-height="120"
+            class="class-image"
+            :src="clas.pictureSources[0]"
+          />
 
-      <v-card-title class="title">
-        {{ clas.name }}
+          <v-card-title class="title">
+            {{ clas.name }}
 
-        <v-spacer />
+            <v-spacer />
 
-        <!-- @todo Put the points number here -->
-        7
-      </v-card-title>
-    </v-card>
+            <!-- @todo Put the points number here -->
+            7
+          </v-card-title>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-content>
 </template>
 
@@ -54,6 +65,20 @@ export default {
             "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg",
           ],
         },
+        {
+          id: 3,
+          name: "Advance guitar",
+          pictureSources: [
+            "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg",
+          ],
+        },
+        {
+          id: 4,
+          name: "Advance guitar",
+          pictureSources: [
+            "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg",
+          ],
+        },
       ];
     },
   },
@@ -62,7 +87,7 @@ export default {
 
 <style scoped>
 #AllClasses {
-  margin: 4em;
+  margin: 2em;
   margin-top: 2em;
 
   text-align: left;
@@ -70,11 +95,11 @@ export default {
 
 .class-card {
   display: inline-block;
-
-  margin-right: 4em;
+  margin-right: 2em;
+  margin-bottom: 2em;
 }
 
 .class-image {
-  max-width: 26em;
+  max-width: 17em;
 }
 </style>
