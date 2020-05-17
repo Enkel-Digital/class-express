@@ -22,10 +22,22 @@
           <p>{{ user.email }}</p>
         </v-list-item-content>
 
-        <v-avatar>
+        <v-avatar v-if="user.imageSrc">
           <!-- Profile pic here. Load image asynchronously from server during login -->
           <!-- @todo Display none if image cant be loaded -->
+          <!-- If there is no image, like if is a new user, show a clickable button to upload a profile picture. -->
           <img alt="Avatar" :src="user.imageSrc" />
+
+          <!-- <v-file-input
+            :rules="avatarRules"
+            accept="image/png, image/jpeg, image/bmp"
+            prepend-icon="mdi-camera"
+            style="opacity: 0;"
+          /> -->
+        </v-avatar>
+
+        <v-avatar v-else color="primary">
+          <v-icon dark>mdi-account-circle</v-icon>
         </v-avatar>
       </v-list-item>
     </v-responsive>
@@ -91,6 +103,17 @@ export default {
     PointsCard
   },
   computed: mapState(["user"]),
+  data() {
+    return {
+      // Rules for the avatar image upload
+      avatarRules: [
+        value =>
+          !value ||
+          value.size < 2000000 ||
+          "Avatar size should be less than 2 MB!"
+      ]
+    };
+  },
   methods: {
     logout,
     refreshData() {

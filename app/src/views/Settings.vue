@@ -1,7 +1,5 @@
 <template>
-  <v-content class="settings">
-    <!-- Add a loader banner showing the update process and notify user if failed. -->
-
+  <v-content class="settings" v-touch="{ right: () => $router.back() }">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Settings</v-toolbar-title>
@@ -34,6 +32,17 @@
         Emergency Contact
         <v-spacer />
         <v-icon>mdi-chevron-right</v-icon>
+      </v-list-item>
+
+      <v-list-item>
+        <!-- Click your Profile picture to change it -->
+        <v-file-input
+          :rules="avatarRules"
+          accept="image/png, image/jpeg, image/bmp"
+          placeholder="Pick an avatar"
+          prepend-icon="mdi-camera"
+          label="Avatar"
+        />
       </v-list-item>
     </v-list>
 
@@ -158,6 +167,7 @@
  *      Or perhaps use a diff view with nested routes.
  */
 
+import { Touch } from "vuetify/lib/directives";
 import logout from "@/controllers/logout";
 import BackBtn from "@/components/BackBtn";
 import { mapState } from "vuex";
@@ -165,6 +175,9 @@ import cloneDeep from "lodash.clonedeep";
 
 export default {
   name: "settings",
+  directives: {
+    Touch
+  },
   components: {
     BackBtn
   },
@@ -173,7 +186,14 @@ export default {
     const settings = cloneDeep(this.$store.state.settings.settings);
 
     return {
-      settings
+      settings,
+      // Rules for the avatar image upload
+      avatarRules: [
+        value =>
+          !value ||
+          value.size < 2000000 ||
+          "Avatar size should be less than 2 MB!"
+      ]
     };
   },
   watch: {
@@ -191,4 +211,3 @@ export default {
   }
 };
 </script>
-
