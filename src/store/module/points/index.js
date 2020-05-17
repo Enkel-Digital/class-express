@@ -32,11 +32,13 @@ export default {
      */
     refundPoints(state, classPoints) {
       state.points.left += classPoints;
-    }
+    },
   },
   getters: {
-    topupOption: state => topupOptionID =>
-      state.topupOptions.find(topupOption => topupOption.id === topupOptionID)
+    topupOption: (state) => (topupOptionID) =>
+      state.topupOptions.find(
+        (topupOption) => topupOption.id === topupOptionID
+      ),
   },
   actions: {
     /**
@@ -90,6 +92,6 @@ export default {
         // Pessimistic UI, show after network update is complete
         commit("topupPoints", points);
       }
-    }
-  }
+    },
+  },
 };

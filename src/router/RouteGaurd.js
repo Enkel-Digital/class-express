@@ -14,7 +14,7 @@ function requiredAuth(route) {
   return {
     public: Auth_requirements === AuthType.public,
     public_only: Auth_requirements === AuthType.public_only,
-    private: Auth_requirements === AuthType.private
+    private: Auth_requirements === AuthType.private,
   };
 }
 

@@ -29,14 +29,14 @@ export default {
       dialog: {
         name: "Location Policy",
         description:
-          "Class Express will use your location to determine the closes class to you."
-      }
+          "Class Express will use your location to determine the closes class to you.",
+      },
     };
   },
   computed: {
     showDialog() {
       return false;
-    }
-  }
+    },
+  },
 };
 </script>

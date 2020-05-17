@@ -26,7 +26,7 @@ export default {
       // Reset state by clearing it directly
       Vue.delete(state, "loaderRequests");
       Vue.set(state, "loaderRequests", {});
-    }
+    },
   },
   getters: {
     /**
@@ -44,7 +44,7 @@ export default {
         if (!loaderRequest.fullScreen) return true;
 
       return false;
-    }
+    },
   },
   actions: {
     /**
@@ -63,7 +63,7 @@ export default {
      */
     async new({ commit, state }, loaderRequest = {}) {
       // IIFE to ensure loaderRequestID can be a const in this current context
-      const loaderRequestID = (function() {
+      const loaderRequestID = (function () {
         // Keep generating rand ID till no more collisions
         let _loaderRequestID;
         do {
@@ -93,6 +93,6 @@ export default {
      */
     clearAll({ commit }) {
       commit("clearAll");
-    }
-  }
+    },
+  },
 };

@@ -10,8 +10,8 @@ const subscriptionPlans = [
     totalPoints: 50,
     price: {
       value: 59,
-      currency: "SGD"
-    }
+      currency: "SGD",
+    },
   },
   {
     id: 1,
@@ -20,8 +20,8 @@ const subscriptionPlans = [
     totalPoints: 100,
     price: {
       value: 89,
-      currency: "SGD"
-    }
+      currency: "SGD",
+    },
   },
   {
     id: 2,
@@ -31,9 +31,9 @@ const subscriptionPlans = [
     totalPoints: 120,
     price: {
       value: 100,
-      currency: "SGD"
-    }
-  }
+      currency: "SGD",
+    },
+  },
 ];
 
 module.exports = { subscriptionPlans };

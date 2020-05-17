@@ -62,7 +62,7 @@ import { mapState } from "vuex";
 export default {
   name: "explore",
   components: {
-    SearchBar
+    SearchBar,
   },
   beforeMount() {
     // Either mounted or before mount or created or smth
@@ -75,7 +75,7 @@ export default {
     searchByCategory(category) {
       console.log("category:", category);
       // Call vuex method to fill the state with search result. Then the computed here will re-load
-    }
-  }
+    },
+  },
 };
 </script>

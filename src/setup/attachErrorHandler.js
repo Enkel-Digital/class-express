@@ -17,7 +17,7 @@ import store from "@/store";
  * @param {object} vm Component in which the error is thrown from
  * @param {String} info Vue-specific error info, e.g. which lifecycle hook the error was found in.
  */
-Vue.config.errorHandler = async function(err, vueComponent, info) {
+Vue.config.errorHandler = async function (err, vueComponent, info) {
   // @todo Remove for production
   console.error("vue.config.errorHandler: ", arguments);
 
@@ -29,7 +29,7 @@ Vue.config.errorHandler = async function(err, vueComponent, info) {
   store.dispatch("error/new", {
     error: err.message,
     info,
-    via: "Vue.config.errorHandler"
+    via: "Vue.config.errorHandler",
   });
 };
 
@@ -37,18 +37,18 @@ Vue.config.errorHandler = async function(err, vueComponent, info) {
  * event.promise contains the promise object
  * event.reason contains the reason for the rejection
  */
-window.addEventListener("unhandledrejection", function(event) {
+window.addEventListener("unhandledrejection", function (event) {
   // @todo Remove for production
   console.error("unhandledrejection error event: ", arguments);
 
   // Dispatch without awaitng for store to handle all error logging/reporting logic
   store.dispatch("error/new", {
     event,
-    via: "window.addEventListener.unhandledrejection"
+    via: "window.addEventListener.unhandledrejection",
   });
 });
 
-window.onerror = function(message, source, lineno, colno, error) {
+window.onerror = function (message, source, lineno, colno, error) {
   // @todo Remove for production
   console.error("window.onerror: ", arguments);
 

@@ -89,7 +89,7 @@ export default {
     return {
       email: "",
       password: "",
-      error_msg: ""
+      error_msg: "",
     };
   },
   methods: {
@@ -140,7 +140,7 @@ export default {
         if (error.code === "email/no-verify")
           return this.$router.replace({
             name: "verify-email",
-            params: { emailAddress: this.email }
+            params: { emailAddress: this.email },
           });
 
         // Set the message into the error box to show user the error
@@ -148,8 +148,8 @@ export default {
 
         this.$store.dispatch("error/new", error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

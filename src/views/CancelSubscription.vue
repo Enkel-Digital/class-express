@@ -61,7 +61,7 @@
       <v-checkbox
         v-model="noContact"
         label="If you do not want us to contact you"
-        style="margin: 0; padding: 0; "
+        style="margin: 0; padding: 0;"
       />
     </v-container>
 
@@ -86,7 +86,7 @@ export default {
   name: "cancel-subscription",
   components: {
     BackBtn,
-    PointsCard
+    PointsCard,
   },
   data() {
     return {
@@ -95,26 +95,26 @@ export default {
       reasons: [
         {
           id: "0",
-          reason: "Too expensive"
+          reason: "Too expensive",
         },
         {
           id: "1",
-          reason: "Not enought class choices"
+          reason: "Not enought class choices",
         },
         {
           id: "2",
-          reason: "App is hard to use"
-        }
+          reason: "App is hard to use",
+        },
       ],
       otherReasons: "",
-      noContact: false
+      noContact: false,
     };
   },
   computed: {
     periodEndDate() {
       return this.$store.state.points.points.period.end;
     },
-    ...mapGetters("subscription", ["currentPlan"])
+    ...mapGetters("subscription", ["currentPlan"]),
   },
   methods: {
     async cancelPlan() {
@@ -125,23 +125,23 @@ export default {
         // Parse out data values from component object to submit
         const { otherReasons, noContact } = this;
         const reasonsID = this.reasons
-          .filter(reason => reason.selected)
-          .map(reason => reason.id);
+          .filter((reason) => reason.selected)
+          .map((reason) => reason.id);
 
         // Pessimistic UI thus awaiting
         // Cancel plan and Submit cancellation reasons
         await this.$store.dispatch("subscription/cancelPlan", {
           reasonsID,
           otherReasons,
-          noContact
+          noContact,
         });
 
         // @todo Stop "loading" UI
 
         // Redirect back to somewhere, either profile or subscription plan?
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

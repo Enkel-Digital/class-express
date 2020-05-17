@@ -9,13 +9,13 @@ export default function initialState() {
       name: undefined,
       fname: undefined,
       lname: undefined,
-      imageSrc: undefined
+      imageSrc: undefined,
     },
     settings: {
       notifications: {
         mobileNotification: true,
-        emailNotification: true
-      }
-    }
+        emailNotification: true,
+      },
+    },
   };
 }

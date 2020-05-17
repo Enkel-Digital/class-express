@@ -51,7 +51,7 @@ export default {
   name: "ErrorDialog",
   data() {
     return {
-      alwaysShow: true
+      alwaysShow: true,
     };
   },
   computed: {
@@ -69,7 +69,7 @@ export default {
       if (!error.dismissable) error.dismissable = true; // Dismissable by default
 
       return error;
-    }
+    },
   },
   methods: {
     dismiss() {
@@ -81,7 +81,7 @@ export default {
        * Perhaps we should have another computed property or smth to decide which error to show from the array
        */
       this.$store.dispatch("error/clear");
-    }
-  }
+    },
+  },
 };
 </script>

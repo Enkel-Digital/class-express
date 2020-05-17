@@ -4,7 +4,7 @@
  */
 export default function initialState() {
   return {
-    errors: []
+    errors: [],
   };
 }
 
@@ -12,5 +12,5 @@ export default function initialState() {
  * Example/Reference on how an error object element would be
  */
 const errorElementReference = {
-  type: "enum of error types"
+  type: "enum of error types",
 };

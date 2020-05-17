@@ -183,11 +183,11 @@ import MapImage from "@/components/MapImage";
 export default {
   name: "ClassDetails",
   directives: {
-    Touch
+    Touch,
   },
   components: {
     BackBtn,
-    MapImage
+    MapImage,
   },
   created() {
     // Call action to fetch review of this class
@@ -232,15 +232,15 @@ export default {
     },
     review() {
       return this.$store.state.classes.review;
-    }
+    },
   },
   methods: {
     ...mapActions("classes", [
       "toggleFavouriteClass",
       "reserveClass",
-      "cancelClass"
-    ])
-  }
+      "cancelClass",
+    ]),
+  },
 };
 </script>
 

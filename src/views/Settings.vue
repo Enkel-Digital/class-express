@@ -176,10 +176,10 @@ import cloneDeep from "lodash.clonedeep";
 export default {
   name: "settings",
   directives: {
-    Touch
+    Touch,
   },
   components: {
-    BackBtn
+    BackBtn,
   },
   data() {
     // @notice Can use JSONify too since values in state are all JSONifyable without any complex structures.
@@ -189,11 +189,11 @@ export default {
       settings,
       // Rules for the avatar image upload
       avatarRules: [
-        value =>
+        (value) =>
           !value ||
           value.size < 2000000 ||
-          "Avatar size should be less than 2 MB!"
-      ]
+          "Avatar size should be less than 2 MB!",
+      ],
     };
   },
   watch: {
@@ -203,11 +203,11 @@ export default {
       handler() {
         // Update the settings by passing in the whole settings object
         this.$store.dispatch("settings/updateSettings", this.settings);
-      }
-    }
+      },
+    },
   },
   methods: {
-    logout
-  }
+    logout,
+  },
 };
 </script>

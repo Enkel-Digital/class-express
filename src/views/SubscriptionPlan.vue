@@ -207,11 +207,11 @@ import { mapState, mapGetters, mapActions } from "vuex";
 export default {
   name: "subscription",
   directives: {
-    Touch
+    Touch,
   },
   components: {
     BackBtn,
-    PointsCard
+    PointsCard,
   },
   beforeMount() {
     // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
@@ -226,22 +226,22 @@ export default {
     ...mapState("subscription", [
       "subscriptionPlans",
       "currentPlanID",
-      "nextPlanID"
+      "nextPlanID",
     ]),
     ...mapGetters("subscription", ["currentPlan", "nextPlan"]),
     selectedPlanID() {
       return this.currentPlanID === this.nextPlanID
         ? this.currentPlanID
         : this.nextPlanID;
-    }
+    },
   },
   methods: {
     ...mapActions("subscription", ["updatePlan"]),
     pauseSubscriptionPlan() {
       // @todo Implement this
       alert("This feature is not supported yet!");
-    }
-  }
+    },
+  },
 };
 </script>
 

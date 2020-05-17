@@ -6,7 +6,7 @@ export default function initialState() {
   return {
     currentPlanID: null, // null to match the database type
     nextPlanID: null, // null to match the database type
-    subscriptionPlans: []
+    subscriptionPlans: [],
   };
 }
 
@@ -20,6 +20,6 @@ const subscriptionPlanElementReference = {
   totalPoints: 50,
   price: {
     value: 59,
-    currency: "SGD"
-  }
+    currency: "SGD",
+  },
 };

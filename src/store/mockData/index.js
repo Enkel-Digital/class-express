@@ -7,13 +7,13 @@ const user = {
   email: "JJ@enkeldigital.com",
   imageSrc: "https://avatars2.githubusercontent.com/u/44993072?s=460",
   location: {
-    country: "" // Used for the default search location
-  }
+    country: "", // Used for the default search location
+  },
 };
 
 const paymentDetails = {
   userId: "",
-  paymentProvider: "" // Enum of credit card or SaaS like paypal/stripe
+  paymentProvider: "", // Enum of credit card or SaaS like paypal/stripe
 };
 
 module.exports = {
@@ -23,5 +23,5 @@ module.exports = {
   ...require("./classes"),
   ...require("./exploreView"),
   ...require("./subscriptionPlan"),
-  ...require("./news")
+  ...require("./news"),
 };

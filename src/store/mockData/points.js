@@ -13,8 +13,8 @@ const topupOptions = [
     totalPoints: 5,
     price: {
       value: 10,
-      currency: "SGD"
-    }
+      currency: "SGD",
+    },
   },
   {
     id: 1,
@@ -23,8 +23,8 @@ const topupOptions = [
     totalPoints: 15,
     price: {
       value: 27,
-      currency: "SGD"
-    }
+      currency: "SGD",
+    },
   },
   {
     id: 2,
@@ -34,9 +34,9 @@ const topupOptions = [
     totalPoints: 30,
     price: {
       value: 50,
-      currency: "SGD"
-    }
-  }
+      currency: "SGD",
+    },
+  },
 ];
 
 module.exports = { topupOptions };

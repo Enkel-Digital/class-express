@@ -21,7 +21,7 @@ export default {
     },
     deleteError(state, { errorIndex = 0 } = {}) {
       Vue.delete(state.errors, errorIndex);
-    }
+    },
   },
   actions: {
     /**
@@ -56,7 +56,7 @@ export default {
           fullPath: router.currentRoute.fullPath,
           name: router.currentRoute.name,
           params: router.currentRoute.params,
-          query: router.currentRoute.query
+          query: router.currentRoute.query,
         };
 
         // After error object is created, push it into errors list
@@ -89,6 +89,6 @@ export default {
      */
     async clearAll({ commit }) {
       commit("deleteError");
-    }
-  }
+    },
+  },
 };
