@@ -30,7 +30,8 @@
 </template>
 
 <script>
-import { auth } from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 export default {
   name: "verifyEmail",
@@ -50,7 +51,7 @@ export default {
       clearTimeout(this.timeout);
 
       if (confirm("Resend verification email?"))
-        auth().currentUser.sendEmailVerification();
+        firebase.auth().currentUser.sendEmailVerification();
     },
   },
   beforeDestroy() {

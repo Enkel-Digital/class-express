@@ -65,7 +65,8 @@
  * @Todo - Add in browser's "required" attribute checker for input.
  */
 
-import { auth } from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 // Function to map and return a given err.code to a user friendly message
 function error_msg(err) {
@@ -101,14 +102,13 @@ export default {
         // @todo Show loading screen while authenticating and loading user data
 
         // eslint-disable-next-line no-unused-vars
-        const usr = await auth().signInWithEmailAndPassword(
-          this.email,
-          this.password
-        );
+        const usr = await firebase
+          .auth()
+          .signInWithEmailAndPassword(this.email, this.password);
 
-        if (!auth().currentUser.emailVerified) {
+        if (!firebase.auth().currentUser.emailVerified) {
           // Signout the user and redirect to verifyEmail view
-          await auth().signOut();
+          await firebase.auth().signOut();
 
           // Throw new error with pre-defined code to get the right error_msg
           const error = new Error();
@@ -133,7 +133,7 @@ export default {
          * @notice This is not ideal as if the store dispatch failed, then user can never ever login anymore
          * @todo To optimize this.
          */
-        if (auth().currentUser) await auth().signOut();
+        if (firebase.auth().currentUser) await firebase.auth().signOut();
 
         // @todo Instead of changing route, perhaps, show via ErrorDialog and let user know they need to verify their email
         // @todo Then use internal notification dialog to show email verification after user signup.

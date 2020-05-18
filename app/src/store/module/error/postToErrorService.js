@@ -6,7 +6,8 @@
  * @author JJ
  */
 
-import { auth } from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 import { apiUrl } from "@/config";
 
 // @todo Migrate to a seperate error tracking service to prevent API service failure causing cascading failures
@@ -19,8 +20,8 @@ const errorApiURL = apiUrl + "/error";
  * @returns {String} Authentication header or nothing.
  */
 async function getAuthHeader() {
-  if (auth().currentUser)
-    return `Bearer ${await auth().currentUser.getIdToken()}`;
+  if (firebase.auth().currentUser)
+    return `Bearer ${await firebase.auth().currentUser.getIdToken()}`;
 }
 
 /**
