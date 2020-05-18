@@ -4,7 +4,7 @@
       <!-- Activators the dialog page -->
       <template v-slot:activator="{ on }">
         <!-- How does this appear on the screen -->
-        <v-btn color="white" text rounded class="my-2" v-on="on" @click="reset">Contact Us</v-btn>
+        <v-btn color="white" text rounded class="my-2" v-on="on">Contact Us</v-btn>
       </template>
       <v-card>
         <v-toolbar dark color="primary">
@@ -43,7 +43,7 @@
                   :disabled="!valid"
                   color="success"
                   class="mr-4"
-                  @click="dialog = false, snackbar = true"
+                  @click="dialog = false, snackbar = true, raiseTicket()"
                 >Send</v-btn>
               </div>
             </v-form>
@@ -61,6 +61,7 @@
 </template>
 
 <script>
+
 export default {
   name: "contact-us",
   data() {
@@ -98,6 +99,11 @@ export default {
   methods: {
     validate() {
       this.$refs.form.validate();
+    },
+    raiseTicket() {
+      // @todo To implement form submission
+
+      return this.reset();
     },
     reset() {
       this.$refs.form.reset();

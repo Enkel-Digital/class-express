@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       //data is removed to a local json file to reduce clutter
-      faq: faq
+      faq
     };
   }
 };
