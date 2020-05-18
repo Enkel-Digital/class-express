@@ -5,7 +5,7 @@
         <v-sheet height="64">
           <v-toolbar flat color="white">
             <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday"
-              >Today</v-btn
+              >Focus</v-btn
             >
             <v-btn fab text small color="grey darken-2" @click="prev">
               <v-icon small>mdi-chevron-left</v-icon>
@@ -31,9 +31,6 @@
                 </v-list-item>
                 <v-list-item @click="type = 'month'">
                   <v-list-item-title>Month</v-list-item-title>
-                </v-list-item>
-                <v-list-item @click="type = '4day'">
-                  <v-list-item-title>4 days</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -93,7 +90,7 @@
 export default {
   data: () => ({
     focus: "",
-    type: "month",
+    type: "week",
     typeToLabel: {
       month: "Month",
       week: "Week",
@@ -245,8 +242,8 @@ export default {
 </script>
 
 <style scoped>
-#schedule {
+/* #schedule {
   margin: 4em;
   margin-top: 2em;
-}
+} */
 </style>
