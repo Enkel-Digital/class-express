@@ -79,7 +79,8 @@
  * @Todo - Add in browser's "required" attribute checker for input.
  */
 
-import { auth } from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 import api from "@/store/utils/fetch";
 
 // Function to map and return a given err.code to a user friendly message
@@ -117,8 +118,10 @@ export default {
         this.email = this.email.toLowerCase();
 
         // Create new user and send them a email verification email
-        await auth().createUserWithEmailAndPassword(this.email, this.password);
-        auth().currentUser.sendEmailVerification();
+        await firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password);
+        firebase.auth().currentUser.sendEmailVerification();
 
         const newUser = {
           // @todo Might need to destructure email and password from "this" then use it
@@ -147,7 +150,7 @@ export default {
         // this.$store.commit("setter", ["user", storeUser]);
 
         // Sign user out and redirect to verifyEmail view
-        await auth().signOut();
+        await firebase.auth().signOut();
 
         this.$router.replace({ name: "verify-email" });
       } catch (error) {
@@ -156,7 +159,7 @@ export default {
          * @notice This is not ideal as if the store dispatch / API failed then user needs to login directly instead of retry.
          * @todo To optimize this.
          */
-        if (auth().currentUser) await auth().signOut();
+        if (firebase.auth().currentUser) await firebase.auth().signOut();
 
         // @todo Remove before production
         console.error(error);

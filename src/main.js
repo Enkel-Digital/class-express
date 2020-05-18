@@ -7,7 +7,8 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 import vuetify from "./plugins/vuetify";
-import { initializeApp, auth } from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 import moment from "moment";
 Vue.prototype.moment = moment;
@@ -18,7 +19,7 @@ import autofocus from "./directives/autofocus";
 Vue.directive("autofocus", autofocus);
 
 // firebaseConfig auto generated in project settings
-initializeApp({
+firebase.initializeApp({
   apiKey: "AIzaSyAXQkdXjxHpZbEYNTXoyfyBXfWVEbm-tCA",
   authDomain: "classes-ekd.firebaseapp.com",
   databaseURL: "https://classes-ekd.firebaseio.com",
@@ -36,7 +37,7 @@ let app;
  * Wait for firebase to finish initialization before creating the app.
  * So that the router navigation wont break due to invalid auth
  */
-const unsubscribe = auth().onAuthStateChanged(() => {
+const unsubscribe = firebase.auth().onAuthStateChanged(() => {
   // Prevent app initialization from running more than once
   if (!app)
     // Create new vue app

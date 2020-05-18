@@ -1,4 +1,5 @@
-import { auth } from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 import store from "../store/index";
 // import initialState from "../store/initialState";
 
@@ -10,7 +11,7 @@ export default async function logout() {
   if (!confirm("Logout?")) return;
 
   // Signout current user
-  await auth().signOut();
+  await firebase.auth().signOut();
 
   console.log("logout is called");
   console.log("state before replace: ", store.state);
