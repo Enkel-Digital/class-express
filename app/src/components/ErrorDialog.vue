@@ -4,8 +4,8 @@
 
   <!--
       @notice Add conditional rendering plus alwaysShow = true to ensure that,
-      the component is only rendered/created when there is an error and not always created but hidden.
-      This presumably reduces memory usage as the component is not create yet.
+      the component is only rendered/created when there is an error and not always created + hidden.
+      Which will presumably reduces memory usage as the component is not create yet.
     -->
   <v-dialog v-if="error" v-model="alwaysShow" persistent>
     <v-card>
@@ -72,18 +72,21 @@ export default {
     };
   },
   computed: {
-    // @todo If we use array of errors, what if there is one that is non dismissable?
-    // @todo In that case, should we allow users to page through all the errors to see them all?
     error() {
-      // Clone earliest error from the errors array
+      // If no error, return undefined to prevent component from rendering
+      if (!this.$store.getters["error/displayableErrors"].length) return;
+
+      // Clone earliest error from the displayable errors array
       // Cloning error to display to prevent modifying state
-      const error = cloneDeep(this.$store.state.error.errors[0]);
-      if (!error) return false; // If no error return false to prevent component from rendering
+      const error = cloneDeep(
+        this.$store.getters["error/displayableErrors"][0]
+      );
 
       // Add defaults UI flags if not available
+      // @todo This should be the unknown error type and should be set in the error mod
+      // @todo In fact this whole thing should just be returning the first value of the error getter
       if (!error.name) error.name = "UNKNOWN";
       if (!error.description) error.description = "Unknown error occurred 😫";
-      if (!error.dismissable) error.dismissable = true; // Dismissable by default
 
       return error;
     },
@@ -99,15 +102,8 @@ export default {
      * @function dismiss
      * @params actions
      */
-    async dismiss(action) {
-      /**
-       * @todo Clear an error by passing in an ID
-       * So I can keep showing all the error in the errors array till it is no more.
-       * But by default clear with ID === 0 since we are reading errors[0] makes sense to delete errors[0]
-       * Error shown and error deleted needs to be the same....
-       * Perhaps we should have another computed property or smth to decide which error to show from the array
-       */
-      await this.$store.dispatch("error/clear");
+    dismiss(action) {
+      this.$store.dispatch("error/clear", this.error.ID);
       if (action) return action(this);
     },
   },
