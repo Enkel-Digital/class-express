@@ -90,6 +90,9 @@
                     <!-- <p><ais-highlight :hit="item" attribute="description" /></p> -->
                   </template>
                 </app-infinite-hits>
+                <div v-if="hits.length > 0">
+                  <CustomeExplore />
+                </div>
                 <div v-else>
                   No results have been found
                   <CustomeExplore />
