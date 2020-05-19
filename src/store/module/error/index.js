@@ -4,23 +4,43 @@
 
 import Vue from "vue";
 import initialState from "./initialState";
-import api from "@/store/utils/fetch";
+import { ERROR, createError } from "@/constants/error";
 import postToErrorService from "./postToErrorService";
-
-// Router used to get current route info when error is recieved
-import router from "@/router";
+import formatErrorForPost from "./formatErrorForPost";
 
 export default {
   namespaced: true,
   state: initialState(),
   mutations: {
-    newError(state, error) {
-      // https://vuejs.org/v2/guide/reactivity.html#For-Arrays
-      // Append new error to the end of errors array
+    new(state, error) {
       Vue.set(state.errors, state.errors.length, error);
     },
-    deleteError(state, { errorIndex = 0 } = {}) {
-      Vue.delete(state.errors, errorIndex);
+    /**
+     * Clear error with errorID, if not available, fallback to errorIndex, if not available, fallback to error array element 0
+     * @param {Number} [errorID] ID of the error, found by looping through the array to find the error
+     * @param {Number} [errorIndex] Index of the error in the error array
+     */
+    clear(state, { errorID, errorIndex = 0 } = {}) {
+      if (errorID) {
+        for (let i = 0; i < state.errors.length; i++)
+          if (errorID === state.errors[i].ID) {
+            Vue.delete(state.errors, i);
+          }
+      } else Vue.delete(state.errors, errorIndex);
+    },
+    clearAll(state) {
+      // Reset state by clearing it directly
+      Vue.delete(state, "errors");
+      Vue.set(state, "errors", []);
+    },
+  },
+  getters: {
+    /**
+     * Getter to filter for errors to be showed to user
+     * Does not order the errors depending on dismissability
+     */
+    displayableErrors(state) {
+      return state.errors.filter((error) => error.display);
     },
   },
   actions: {
@@ -33,45 +53,46 @@ export default {
       dispatch("clearAll");
     },
     /**
-     * @example this.$store.dispatch("error/new", error); // Where error is either an instance of Error or custom error object
-     * by default push all errors to server? Other than a few errors like network errors and stuff.
-     * If there is a network error, how can I even push the error to the server?
-     * Have a internal error tracker then?
+     * @example
+     * // Where error is either an instance of Error or custom error object
+     * this.$store.dispatch("error/new", error);
      */
     async new({ commit }, error) {
       try {
-        // @todo Remove for production
+        // @todo Remove
         console.error("error mod:", error instanceof Error, error);
 
         // If error class instance, use the message alone
-        if (error instanceof Error) error = { error: error.message };
+        if (error instanceof Error) {
+          // @todo make a func to get default variables and variables from the error object out?
+          // @todo Use createError here
+          error = { error: error.message };
+        }
 
-        // Push this into a global error queue like the original snack bar idea that I had
+        /* Populate error object with default values and other custom properties */
+        // Display the error if not specified
+        if (error.display === undefined) error.display = true;
+        // If error is to be displayed and dismissable is not set, make it display by default
+        if (error.display && error.dismissable === undefined)
+          error.dismissable = true;
 
         // Add timestamp to error object
         error.time = Date.now();
 
-        // Store route info about current route to help with replicating issue
-        error.routeInfo = {
-          fullPath: router.currentRoute.fullPath,
-          name: router.currentRoute.name,
-          params: router.currentRoute.params,
-          query: router.currentRoute.query,
-        };
-
         // After error object is created, push it into errors list
-        commit("newError", error);
+        commit("new", error);
 
         // Try reporting error to API if possible using the custom API caller instead. Refer to function's for doc on why.
-        const response = await postToErrorService(error);
+        const response = await postToErrorService(formatErrorForPost(error));
 
-        // @todo Remove for production?
-        if (response.success) console.log(response);
-        else throw new Error("ERROR Reporting failed");
+        if (response.success) {
+          if (process.env.NODE_ENV !== "production") console.log(response);
+        } else throw new Error("ERROR Reporting failed");
       } catch (error) {
         console.error("errored out in vuex action error/new", error);
 
         // @todo Then show the error dialog with a non dismissable error
+        // Show "Attempt to report Previous error to developers failed. Try contacting us directly instead? Screenshot this screen and email us instead"
       }
     },
     /**
@@ -79,8 +100,8 @@ export default {
      * // Clear the current latest error
      * this.$store.dispatch("error/clear");
      */
-    async clear({ commit }) {
-      commit("deleteError");
+    async clear({ commit }, errorID) {
+      commit("clear", errorID);
     },
     /**
      * @example
@@ -88,7 +109,7 @@ export default {
      * this.$store.dispatch("error/clearAll");
      */
     async clearAll({ commit }) {
-      commit("deleteError");
+      commit("clearAll");
     },
   },
 };
