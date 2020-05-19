@@ -1,6 +1,7 @@
 // Import AuthType Enum
 import AuthType from "./AuthType";
-import { auth } from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 /**
  * @function requiredAuth
@@ -25,7 +26,7 @@ function requiredAuth(route) {
  */
 function AuthChecker(to, from, next) {
   // Get current user from firebase
-  const currentUser = auth().currentUser;
+  const currentUser = firebase.auth().currentUser;
 
   // Get AuthStatus required for accessing the route.
   const AuthType_required_is = requiredAuth(to);
