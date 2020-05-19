@@ -33,10 +33,27 @@
         </v-btn>
       </v-card-actions>
 
+      <div v-if="actions">
+        <v-card-actions
+          v-for="(action, actionName) of actions"
+          :key="actionName"
+        >
+          <v-spacer />
+          <!-- @notice Action is passed to dimiss, to dismiss the error and execute the action with "this" binding -->
+          <v-btn color="primary" text @click="dismiss(action)">
+            {{ actionName }}
+          </v-btn>
+        </v-card-actions>
+      </div>
+
       <!-- Update their on clicks -->
       <v-card-actions v-if="error.dismissable">
         <v-spacer />
-        <v-btn color="red darken-1" text @click="dismiss">
+        <!--
+          @notice Calling dismiss directly instead of passing function to be executed, to ensure click event object is not
+          passed in as the first function arguement to match the usage of dismiss(action) when an action function is available
+        -->
+        <v-btn color="red darken-1" text @click="dismiss()">
           dismiss
         </v-btn>
       </v-card-actions>
@@ -70,9 +87,19 @@ export default {
 
       return error;
     },
+    actions() {
+      if (this.error.more && this.error.more.actions)
+        return this.error.more.actions;
+      else return null;
+    },
   },
   methods: {
-    dismiss() {
+    /**
+     * Dismiss error and execute action if available with VueComponent object passed in.
+     * @function dismiss
+     * @params actions
+     */
+    async dismiss(action) {
       /**
        * @todo Clear an error by passing in an ID
        * So I can keep showing all the error in the errors array till it is no more.
@@ -80,7 +107,8 @@ export default {
        * Error shown and error deleted needs to be the same....
        * Perhaps we should have another computed property or smth to decide which error to show from the array
        */
-      this.$store.dispatch("error/clear");
+      await this.$store.dispatch("error/clear");
+      if (action) return action(this);
     },
   },
 };
