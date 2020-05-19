@@ -18,7 +18,6 @@
     "moment": "^2.25.3",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
-
     "vue-instantsearch": "^2.7.0",
     "vue-observe-visibility": "^0.4.6",
     "vue-router": "^3.1.6",

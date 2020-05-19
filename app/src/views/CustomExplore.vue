@@ -1,6 +1,6 @@
 <template>
   <v-content class="explore">
-    <SearchBar />
+    <!-- <SearchBar /> -->
 
     <!-- Add smth to v-if
           get text inside the search bar. If search is not empty then show the classes. 
@@ -48,21 +48,20 @@
         v-for="(category, i) in categories"
         :key="i"
         @click="searchByCategory(category)"
+        >{{ category }}</v-btn
       >
-        {{ category }}
-      </v-btn>
     </v-responsive>
   </v-content>
 </template>
 
 <script>
-import SearchBar from "@/components/SearchBar.vue";
+// import SearchBar from "@/components/SearchBar.vue";
 import { mapState } from "vuex";
 
 export default {
   name: "explore",
   components: {
-    SearchBar
+    // SearchBar
   },
   beforeMount() {
     // Either mounted or before mount or created or smth
