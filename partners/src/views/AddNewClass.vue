@@ -15,7 +15,7 @@
             />
           </v-col>
 
-          <v-col cols="15" sm="6" md="3">
+          <v-col v-if="addLocationCheckbox" cols="15" sm="6" md="3">
             <v-text-field
               v-if="changeLocation"
               :rules="addressRules"
@@ -24,7 +24,7 @@
               required
             />
           </v-col>
-          <v-col cols="15" sm="6" md="3">
+          <v-col v-if="addLocationCheckbox" cols="15" sm="6" md="3">
             <v-text-field
               v-if="changeLocation"
               label="Address Line 2"
@@ -48,7 +48,7 @@
             ></v-file-input>
           </v-col>
 
-          <v-col cols="15" sm="6" md="2">
+          <v-col v-if="addLocationCheckbox" cols="15" sm="6" md="2">
             <v-text-field
               v-if="changeLocation"
               :rules="addressRules"
@@ -57,7 +57,7 @@
               required
             ></v-text-field>
           </v-col>
-          <v-col cols="15" sm="6" md="2">
+          <v-col v-if="addLocationCheckbox" cols="15" sm="6" md="2">
             <v-text-field
               v-if="changeLocation"
               :rules="addressRules"
@@ -66,7 +66,7 @@
               required
             ></v-text-field>
           </v-col>
-          <v-col cols="15" sm="6" md="2">
+          <v-col v-if="addLocationCheckbox" cols="15" sm="6" md="2">
             <v-text-field
               v-if="changeLocation"
               :rules="addressRules"
@@ -80,6 +80,10 @@
         <!-- @todo Sanitize HTML input to prevent script injection attacks -->
         <v-row>
           <v-col cols="15" sm="6" md="5">
+            <p>
+              You are allowed to use most valid HTML to format your description.
+              Script tags and others are not allowed.
+            </p>
             <v-textarea
               v-autofocus
               type="text"
@@ -94,9 +98,8 @@
           <v-col cols="10" sm="6" md="3">
             <v-checkbox
               v-model="addLocationCheckbox"
-              label="Add Location"
+              label="Choose external location"
             ></v-checkbox>
-            <!-- <v-checkbox v-model="checkbox" :label="`Recurring (${checkbox.toString()})`"></v-checkbox> -->
           </v-col>
 
           <v-col cols="10" sm="6" md="3">
@@ -104,7 +107,6 @@
               v-model="allowWalkinCheckbox"
               label="Allow walk in registrations"
             ></v-checkbox>
-            <!-- <v-checkbox v-model="checkbox" :label="`Recurring (${checkbox.toString()})`"></v-checkbox> -->
           </v-col>
         </v-row>
 
@@ -139,6 +141,7 @@
           <!-- Can leave dateEnd as null to indicate no fixed end date yet. -->
           <v-col style="width: 450px;  auto;">
             <h3 style="color: #455a64;">Class End Date</h3>
+            <p>Leave empty to specify no fixed end date for this class</p>
             <v-date-picker
               v-model="clas.dateEnd"
               class="mt-4"
@@ -189,6 +192,14 @@
 </template>
 
 <script>
+/**
+ * @todo Update the layout to use cards to group items together rather than fixed rows and columns
+ * @todo Remove all "v-if="addLocationCheckbox" checks and group them into a single card
+ * @todo Add rule checking to sanitize the HTML input for description
+ */
+
+import moment from "moment";
+
 export default {
   data() {
     // @todo Nest the class details properties to allow for easier submitting in addClass method
@@ -198,10 +209,10 @@ export default {
         pictures: null,
         description: null,
         length: null,
-        dateStart: null,
+        dateStart: moment().format("YYYY-MM-DD"), // Create date in local timezone for today in the format of e.g. "2020-05-21"
         dateEnd: null,
       },
-      changeLocation: false,
+      changeLocation: true,
       addLocationCheckbox: false,
       allowWalkinCheckbox: false,
       valid: null,
@@ -221,6 +232,35 @@ export default {
   methods: {
     addClass() {
       if (!this.validate()) return;
+
+      // Convert start date to start of day in UTC timestamp
+
+      /**
+       * @note Food for thought
+       *
+       * When I store it, I convert it to the SGT start of day before converting to UTC
+       * 30/5/2020 SGT 12AM ---> 29/5/2020 UTC 4PM
+       *
+       * When reading in SGT
+       * 29/5/2020 UTC 4PM --> 30/5/2020 SGT 12AM
+       *
+       * However if I read in GMT + 7
+       * 29/5/2020 UTC 4PM --> 29/5/2020 SGT 11pm
+       *
+       * Will this be an issue that needs to be taken care of?
+       * Will this affect rrule generation and testing.
+       */
+      this.clas.dateStart = moment(this.clas.dateStart)
+        .startOf("day")
+        .utc()
+        .unix();
+
+      // Only if dateEnd is given, then do we convert it to timestamp
+      if (this.clas.dateEnd)
+        this.clas.dateEnd = moment(this.clas.dateEnd)
+          .startOf("day")
+          .utc()
+          .unix();
 
       this.$store.dispatch("classes/newClass", this.clas);
     },
