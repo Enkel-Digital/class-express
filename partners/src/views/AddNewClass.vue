@@ -7,7 +7,7 @@
         <v-row>
           <v-col cols="15" sm="6" md="5">
             <v-text-field
-              v-model="name"
+              v-model="clas.name"
               :rules="nameRules"
               label="Class Name"
               required
@@ -36,12 +36,12 @@
         <v-row>
           <v-col cols="15" sm="6" md="5">
             <v-file-input
-              v-model="files"
+              v-model="pictures"
               color="deep-blue accent-4"
               counter
               multiple
               label="Class Images"
-              placeholder="Click here to select your files"
+              placeholder="Click here to select your pictures"
               prepend-icon="mdi-camera"
               outlined
               :show-size="1000"
@@ -83,7 +83,7 @@
             <v-textarea
               v-autofocus
               type="text"
-              v-model="description"
+              v-model="clas.description"
               rows="4"
               placeholder="Enter class description"
               no-resize
@@ -113,7 +113,7 @@
         <!-- Length of the class -->
         <v-text-field
           :rules="classLengthRules"
-          v-model="classLength"
+          v-model="clas.length"
           type="number"
           label="Class length in minutes"
           outlined
@@ -121,21 +121,29 @@
         />
 
         <span>
-          classLength: {{ Math.trunc(classLength / 60) }} hr
-          {{ classLength % 60 }} mins
+          length: {{ Math.trunc(clas.length / 60) }} hr
+          {{ clas.length % 60 }} mins
         </span>
 
         <!-- Date start and End date -->
         <v-row>
           <v-col style="width: 450px;  auto;">
-            <h3 style="color: #455a64;">Start of Class</h3>
-            <v-date-picker v-model="dateStart" class="mt-4" color="#455A64" />
+            <h3 style="color: #455a64;">Class Start Date</h3>
+            <v-date-picker
+              v-model="clas.dateStart"
+              class="mt-4"
+              color="#455A64"
+            />
           </v-col>
 
           <!-- Can leave dateEnd as null to indicate no fixed end date yet. -->
           <v-col style="width: 450px;  auto;">
-            <h3 style="color: #455a64;">End of Class</h3>
-            <v-date-picker v-model="dateEnd" class="mt-4" color="#455A64" />
+            <h3 style="color: #455a64;">Class End Date</h3>
+            <v-date-picker
+              v-model="clas.dateEnd"
+              class="mt-4"
+              color="#455A64"
+            />
           </v-col>
         </v-row>
 
@@ -185,14 +193,15 @@ export default {
   data() {
     // @todo Nest the class details properties to allow for easier submitting in addClass method
     return {
+      clas: {
+        name: null,
+        pictures: null,
+        description: null,
+        length: null,
+        dateStart: null,
+        dateEnd: null,
+      },
       changeLocation: false,
-      name: null,
-      files: null,
-      start: null,
-      end: null,
-      date: null,
-      description: null,
-      classLength: null,
       addLocationCheckbox: false,
       allowWalkinCheckbox: false,
       valid: null,
