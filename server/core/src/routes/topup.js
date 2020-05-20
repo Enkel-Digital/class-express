@@ -37,4 +37,33 @@ router.get("/options", async (req, res) => {
   }
 });
 
+/**
+ * @todo Implement this scaffolded route
+ *
+ * Purchase a topup. Uses Stripe API
+ * @name POST /topup/new/:topupOptionID
+ * @function
+ * @returns {object} Success indicator
+ */
+router.post("/new/:topupOptionID", async (req, res) => {
+  try {
+    const { topupOptionID } = req.params;
+
+    // Sort them by id asc
+    const topupOptionsSnapshot = await db
+      .collection("topupOptions")
+      // .where("available", "==", true) // Allow us to run campaigns for topupOptions
+      .orderBy("id", "desc")
+      .get();
+    const topupOptions = topupOptionsSnapshot.docs.map(doc => doc.data());
+
+    // Maybe have a webhook for stripe
+
+    res.json({ success: true, topupOptions });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 module.exports = router;

@@ -34,7 +34,7 @@ router.get("/:userID", async (req, res) => {
     // If no points doc, means first time using app
     if (!points) {
       // Get timezone of the user from userDB, else defaults to "SGT" for now
-      const { timezone = SGT } = (
+      const { timezone = "SGT" } = (
         await db
           .collection("users")
           .doc(userID)

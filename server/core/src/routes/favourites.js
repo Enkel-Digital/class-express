@@ -52,4 +52,35 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
   }
 });
 
+/**
+ * @todo Implement this scaffolded code.
+ *
+ * Update favourited classes
+ * @name POST /favourites/classes/update
+ * @function
+ * @param {String} userID
+ * @param {number} classID
+ * @returns {object} success indicator
+ */
+router.post("/classes/update", express.json(), async (req, res) => {
+  try {
+    // Ensure that the email used as userID is lowercase.
+    // Refer to notes for why we are enforcing this lowercase usage.
+    const userID = req.body.userID.toLowerCase();
+    req.body.user.email = req.body.user.email.toLowerCase();
+    const user = req.body.user;
+
+    // Create document in user with user's email as userID
+    await db
+      .collection("users")
+      .doc(userID)
+      .set(user);
+
+    res.status(201).json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 module.exports = router;

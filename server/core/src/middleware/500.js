@@ -14,11 +14,12 @@ const logger = createLogger("middleware:500");
  *
  * ----------------------------------------------------------------------------------------------
  *
- * @dev To send the error message back to the client, and not just the status code with an empty body.
- * @dev Use the "send_msg_back" property. Set it to true to send mesage back to client.
- * @dev err.send_msg_back = true; // Set true to return the error message back to the client
- *
- * @note Should the error message be sent back to the user?
+ * @notice
+ * MOST HANDLERS / ROUTES should do their own error handling and response.
+ * Because they may have specific needs and want to respond differently.
+ * The 500 error catch, should ONLY be used for unexpected errore or as a default generic error handler.
+ * Error will be logged here too since if it reached this middleware, it means the error was not previously handled
+ * By not relying on this, we also reduce the need for next function to be passed in to route handlers
  */
 module.exports = function(err, req, res, next) {
   // Log error either to error logs or to a logging service
@@ -28,5 +29,5 @@ module.exports = function(err, req, res, next) {
   if (res.statusCode < 400) res.status(err.code || 500);
 
   // End the request after making sure status code is set
-  res.end(err.send_msg_back ? err.message : undefined);
+  res.status(err.code ? err.code : 500).json({ success: false, error: err.message });
 };

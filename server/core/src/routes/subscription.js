@@ -120,4 +120,157 @@ router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
   }
 });
 
+/**
+ * @todo Implement all the scaffolded routes below
+ */
+
+/**
+ * Update or purchase plans
+ * @name POST /subscription/plans/update
+ * @function
+ * @param {String} userID
+ * @param {String} subscriptionPlanID
+ * @returns {object} success indicator
+ */
+router.post("/plans/update", auth, express.json(), async (req, res) => {
+  try {
+    const { userID, subscriptionPlanID } = req.body;
+
+    // Get subscription plan with its ID and ensure it is valid
+    const subscriptionPlan = (
+      await db
+        .collection("subscriptionPlans")
+        .doc(subscriptionPlanID)
+        .get()
+    ).data();
+
+    /* @todo so if subID doc does not exist, and I do .data() will it still work? */
+
+    // If plan does not exist
+    if (!subscriptionPlan)
+      return res.status(404).json({
+        success: false,
+        error: "Invalid Subscription Plan ID"
+      });
+
+    // Get user's plan IDs
+    const userPlan = (
+      await db
+        .collection("userPlans")
+        .doc(userID)
+        .get()
+    ).data();
+
+    // If user already has a currentPlan
+    if (userPlan.currentPlanID) {
+      // Set user's next month's plan
+      await db
+        .collection("subscriptions")
+        .doc(userID)
+        .update({
+          nextPlanID: subscriptionPlanID
+        });
+
+      // Set next plan. So the nxt time user reads from DB, they must modify it somehow....
+
+      // Then update the Billing service and get back a resp
+
+      return res.json({
+        success: true,
+        plans: {
+          currentPlanID: userPlan.currentPlanID,
+          nextPlanID: subscriptionPlanID
+        }
+      });
+    } else {
+      // If user is new and does not have a plan, Set user's current plan
+      await db
+        .collection("subscriptions")
+        .doc(userID)
+        .update({
+          currentPlanID: subscriptionPlanID
+        });
+
+      return res.json({
+        success: true,
+        plans: {
+          currentPlanID: subscriptionPlanID,
+          nextPlanID: null
+        }
+      });
+    }
+
+    // // Send user a email notification once subscription is updated
+    // await sendMail({
+    //   to: data.email,
+    //   from: "billing@classexpress.com", // @todo Update this value and move it to a config file
+    //   subject: "Successfully updated subscription plan!",
+    //   html:
+    //     `Request for subscription plan received<br />${new Date()}` +
+    //     `<br />Email: ${data.email}<br />Name: ${data.name}<br />` +
+    //     "New subscription plan will start from ... to ..."
+    // });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Request to pause subscription plan
+ * @name POST /subscription/pause
+ * @function
+ * @returns {object} success indicator
+ */
+router.post("/pause", auth, async (req, res) => {
+  try {
+    // Update subscription collection's document to set next month planID to null
+
+    // Create document in user with user's email as userID
+    await db
+      .collection("users")
+      .doc(userID)
+      .update({
+        modifiedAt: FieldValue.serverTimestamp(),
+        nextPlanID: null
+      });
+
+    // Dont await this
+    // Maybe this should be done in cloud functions?
+    // Send email or update metrics dashboard to show analytics
+
+    res.json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Request to cancel subscription plan
+ * @name POST /subscription/cancel
+ * @function
+ * @returns {object} success indicator
+ */
+router.post("/cancel", auth, async (req, res) => {
+  try {
+    // Update subscription collection's document to set next month planID to null
+
+    // Set a end date for the current plan.
+    // If there is a next plan. Delete that document. Or make its start and end null to indicate nvr ran.
+    await db
+      .collection("users")
+      .doc(userID)
+      .update({
+        modifiedAt: FieldValue.serverTimestamp(),
+        nextPlanID: null
+      });
+
+    res.json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 module.exports = router;

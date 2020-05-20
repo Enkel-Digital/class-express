@@ -6,6 +6,7 @@ const auth = require("../middleware/auth");
 
 const defaultRoutes = require("./default");
 const errorRoutes = require("./error");
+const classRoutes = require("./class");
 const userRoutes = require("./users");
 const favouritesRoutes = require("./favourites");
 const subscriptionRoutes = require("./subscription");
@@ -13,9 +14,11 @@ const topupRoutes = require("./topup");
 const pointsRoutes = require("./points");
 const emailActionLinksRoutes = require("./emailActionLinks");
 
+// @todo Might require the routes inside the mounting directly
 // Mount all the routes onto their respective base routes
 router.use("/", defaultRoutes);
 router.use("/error", errorRoutes);
+router.use("/class", classRoutes);
 router.use("/user", auth, userRoutes);
 router.use("/favourites", auth, favouritesRoutes);
 router.use("/subscription", subscriptionRoutes);

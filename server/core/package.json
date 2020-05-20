@@ -36,8 +36,10 @@
     "firebase": "^7.13.2",
     "firebase-admin": "^8.10.0",
     "helmet": "^3.21.2",
+    "moment": "^2.25.3",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.8",
+    "rrule": "^2.6.4",
     "validator": "^12.1.0"
   },
   "devDependencies": {
@@ -72,12 +74,12 @@
     }
   },
   "lint-staged": {
-    "*.{js,css,json}": [
-      "prettier --write",
-      "git add"
-    ],
     "*.js": [
       "eslint --fix",
+      "git add"
+    ],
+    "*.{js,json}": [
+      "prettier --write",
       "git add"
     ]
   }
