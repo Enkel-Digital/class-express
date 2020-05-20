@@ -92,12 +92,18 @@
             />
           </v-col>
           <v-col cols="10" sm="6" md="3">
-            <v-checkbox v-model="checkbox" label="Add Location"></v-checkbox>
+            <v-checkbox
+              v-model="addLocationCheckbox"
+              label="Add Location"
+            ></v-checkbox>
             <!-- <v-checkbox v-model="checkbox" :label="`Recurring (${checkbox.toString()})`"></v-checkbox> -->
           </v-col>
 
           <v-col cols="10" sm="6" md="3">
-            <v-checkbox v-model="checkbox" label="Allow walkin"></v-checkbox>
+            <v-checkbox
+              v-model="allowWalkinCheckbox"
+              label="Allow walk in registrations"
+            ></v-checkbox>
             <!-- <v-checkbox v-model="checkbox" :label="`Recurring (${checkbox.toString()})`"></v-checkbox> -->
           </v-col>
         </v-row>
@@ -187,7 +193,8 @@ export default {
       date: null,
       description: null,
       classLength: null,
-      checkbox: "",
+      addLocationCheckbox: false,
+      allowWalkinCheckbox: false,
       valid: null,
       nameRules: [
         (v) => !!v || "Name is required",
