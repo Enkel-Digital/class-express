@@ -1,19 +1,10 @@
 // Import AuthType Enum
 import AuthType from "./AuthType";
 
-/** @notice Pre-Load all components for frequently used routes */
-import Home from "../views/Home.vue";
-import Profile from "../views/Profile.vue";
-import schedule from "../views/Schedule.vue";
-import AllClasses from "../views/AllClasses.vue";
-import ClassDetails from "../views/ClassDetails.vue";
-import AddNewClass from "../views/AddNewClass.vue";
-import AllReviews from "../views/AllReviews.vue";
-import Reviews from "../views/Reviews.vue";
-import Earnings from "../views/Earnings.vue";
+/** @notice Pre-Load components for frequently used routes */
 
 /**
- * @notice Some of these less frequented routes uses lazily loaded components
+ * @notice Right now all routes are being lazy loaded. Might change in the future.
  *
  * route level code-splitting
  * this generates a separate chunk (about.[hash].js) for this route
@@ -23,64 +14,60 @@ const routes = [
   {
     path: "/home",
     name: "home",
-    component: Home,
+    component: () => import("@/views/Home.vue"),
     meta: { Auth_requirements: AuthType.private },
   },
   {
-    path: "/schedule",
+    // Partner's schedule for all classes
+    // @todo Add support for "Partner's schedule for a selected class" prop
+    path: "/schedule/:classID?",
     name: "view-schedule",
-    component: schedule,
-    meta: { Auth_requirements: AuthType.private },
-  },
-  {
-    path: "/schedule/:classID",
-    name: "schedule",
-    component: schedule,
+    component: () => import("@/views/Schedule.vue"),
     meta: { Auth_requirements: AuthType.private },
     props: true,
   },
   {
     path: "/class/all",
     name: "all-classes",
-    component: AllClasses,
+    component: () => import("@/views/AllClasses.vue"),
     meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/class/add",
     name: "new-class",
-    component: AddNewClass,
+    component: () => import("@/views/AddNewClass.vue"),
     meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/classdetails/:classID",
     name: "ClassDetails",
-    component: ClassDetails,
+    component: () => import("@/views/ClassDetails.vue"),
     meta: { Auth_requirements: AuthType.private },
     props: true,
   },
   {
     path: "/reviews/all",
     name: "all-reviews",
-    component: AllReviews,
+    component: () => import("@/views/AllReviews.vue"),
     meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/earnings",
     name: "earnings",
-    component: Earnings,
+    component: () => import("@/views/Earnings.vue"),
     meta: { Auth_requirements: AuthType.private },
   },
   {
     path: "/reviews/:classID",
     name: "reviews",
-    component: Reviews,
+    component: () => import("@/views/Reviews.vue"),
     meta: { Auth_requirements: AuthType.private },
     props: true,
   },
   {
     path: "/profile",
     name: "profile",
-    component: Profile,
+    component: () => import("@/views/Profile.vue"),
     meta: { Auth_requirements: AuthType.private },
   },
   {
