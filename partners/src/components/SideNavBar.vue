@@ -152,7 +152,7 @@ export default {
         //   ],
         // },
         {
-          icon: "mdi-account",
+          icon: "mdi-chat",
           text: "Contact Support",
           link: { name: "contact-support" },
         },

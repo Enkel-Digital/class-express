@@ -17,6 +17,7 @@
 
           <v-col cols="15" sm="6" md="3">
             <v-text-field
+              v-if="changeLocation"
               :rules="addressRules"
               label="Address Line 1"
               outlined
@@ -24,7 +25,11 @@
             />
           </v-col>
           <v-col cols="15" sm="6" md="3">
-            <v-text-field label="Address Line 2" outlined></v-text-field>
+            <v-text-field
+              v-if="changeLocation"
+              label="Address Line 2"
+              outlined
+            ></v-text-field>
           </v-col>
         </v-row>
 
@@ -45,6 +50,7 @@
 
           <v-col cols="15" sm="6" md="2">
             <v-text-field
+              v-if="changeLocation"
               :rules="addressRules"
               label="Unit No. (eg. 01-02)"
               outlined
@@ -53,6 +59,7 @@
           </v-col>
           <v-col cols="15" sm="6" md="2">
             <v-text-field
+              v-if="changeLocation"
               :rules="addressRules"
               label="Postal Code"
               outlined
@@ -61,6 +68,7 @@
           </v-col>
           <v-col cols="15" sm="6" md="2">
             <v-text-field
+              v-if="changeLocation"
               :rules="addressRules"
               label="Country"
               outlined
@@ -69,6 +77,7 @@
           </v-col>
         </v-row>
 
+        <!-- @todo Sanitize HTML input to prevent script injection attacks -->
         <v-row>
           <v-col cols="15" sm="6" md="5">
             <v-textarea
@@ -82,37 +91,56 @@
               required
             />
           </v-col>
+          <v-col cols="10" sm="6" md="3">
+            <v-checkbox v-model="checkbox" label="Add Location"></v-checkbox>
+            <!-- <v-checkbox v-model="checkbox" :label="`Recurring (${checkbox.toString()})`"></v-checkbox> -->
+          </v-col>
 
           <v-col cols="10" sm="6" md="3">
-            <v-checkbox
-              v-model="checkbox"
-              :label="`Allow walk-in (${checkbox.toString()})`"
-            ></v-checkbox>
+            <v-checkbox v-model="checkbox" label="Allow walkin"></v-checkbox>
             <!-- <v-checkbox v-model="checkbox" :label="`Recurring (${checkbox.toString()})`"></v-checkbox> -->
           </v-col>
         </v-row>
 
+        <!-- Time related components -->
+
+        <!-- Length of the class -->
+        <v-text-field
+          :rules="classLengthRules"
+          v-model="classLength"
+          type="number"
+          label="Class length in minutes"
+          outlined
+          required
+        />
+
+        <span>
+          classLength: {{ Math.trunc(classLength / 60) }} hr
+          {{ classLength % 60 }} mins
+        </span>
+
+        <!-- Date start and End date -->
         <v-row>
-          <v-col style="width: 300px; flex: 0 1 auto;">
-            <h3 style="color: #455a64;">Start</h3>
-            <v-time-picker
-              v-model="start"
-              :max="end"
-              full-width
-              color="#455A64"
-            ></v-time-picker>
+          <v-col style="width: 450px;  auto;">
+            <h3 style="color: #455a64;">Start of Class</h3>
+            <v-date-picker v-model="dateStart" class="mt-4" color="#455A64" />
           </v-col>
 
-          <v-col style="width: 300px; flex: 0 1 auto;">
-            <h3 style="color: #455a64;">End</h3>
-            <v-time-picker
-              v-model="end"
-              :min="start"
-              full-width
-              color="#455A64"
-            ></v-time-picker>
+          <!-- Can leave dateEnd as null to indicate no fixed end date yet. -->
+          <v-col style="width: 450px;  auto;">
+            <h3 style="color: #455a64;">End of Class</h3>
+            <v-date-picker v-model="dateEnd" class="mt-4" color="#455A64" />
           </v-col>
+        </v-row>
 
+        <!--
+          @todo Implement start time from the weekly calendar view
+          Show a calendar and allow user to click arbitrary number of times as start of classes
+          Allow partners to create overlapping start times
+        -->
+
+        <!-- @todo Create scheduler component to reuse in edit class -->
+        <!-- <v-row>
           <v-col style="width: 900px; flex: 0 1 auto;">
             <h3 style="color: #455a64;">Date</h3>
             <v-date-picker
@@ -123,16 +151,22 @@
               color="#455A64"
             ></v-date-picker>
           </v-col>
-        </v-row>
+        </v-row> -->
 
         <br />
         <v-row>
           <v-col cols="15" sm="6" md="1">
-            <v-btn depressed large @click="addClass">Add Class</v-btn>
+            <v-btn color="error" depressed large @click="reset">
+              Reset Form
+            </v-btn>
           </v-col>
 
+          <v-spacer />
+
           <v-col cols="15" sm="6" md="1">
-            <v-btn depressed large @click="reset">Reset Form</v-btn>
+            <v-btn color="primary" depressed large @click="addClass">
+              Add Class
+            </v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -143,13 +177,16 @@
 <script>
 export default {
   data() {
+    // @todo Nest the class details properties to allow for easier submitting in addClass method
     return {
+      changeLocation: false,
       name: null,
       files: null,
       start: null,
       end: null,
       date: null,
       description: null,
+      classLength: null,
       checkbox: "",
       valid: null,
       nameRules: [
@@ -169,7 +206,7 @@ export default {
     addClass() {
       if (!this.validate()) return;
 
-      // this.$store.dispatch("classes/newClass")
+      this.$store.dispatch("classes/newClass", this.clas);
     },
     validate() {
       return this.$refs.form.validate();
