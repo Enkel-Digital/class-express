@@ -110,6 +110,13 @@
           </v-col>
         </v-row>
 
+        <v-row>
+          <!--
+            @todo Add input field for entering the category of this new class
+            @todo Add input field for keying meta tags for new class
+          -->
+        </v-row>
+
         <!-- Time related components -->
 
         <!-- Length of the class -->
