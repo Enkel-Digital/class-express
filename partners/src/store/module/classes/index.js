@@ -64,5 +64,8 @@ export default {
 
       commit("setter", ["review", review]);
     },
+    async newClass({ commit }, clas) {
+      // console.log("clas", clas);
+    },
   },
 };

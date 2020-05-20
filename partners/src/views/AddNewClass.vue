@@ -36,12 +36,12 @@
         <v-row>
           <v-col cols="15" sm="6" md="5">
             <v-file-input
-              v-model="pictures"
+              v-model="clas.pictures"
               color="deep-blue accent-4"
               counter
               multiple
               label="Class Images"
-              placeholder="Click here to select your pictures"
+              placeholder="Upload pictures of the class"
               prepend-icon="mdi-camera"
               outlined
               :show-size="1000"
@@ -199,6 +199,7 @@
  */
 
 import moment from "moment";
+import cloneDeep from "lodash.clonedeep";
 
 export default {
   data() {
@@ -220,6 +221,10 @@ export default {
         (v) => !!v || "Name is required",
         (v) => (v && v.length <= 20) || "Please fill is the required space",
       ],
+      classLengthRules: [
+        (length) => !!length || "Length is required",
+        (length) => length > 0 || "Cannot have a class of 0 mins or less",
+      ],
       rules: [
         (value) =>
           !value ||
@@ -232,6 +237,8 @@ export default {
   methods: {
     addClass() {
       if (!this.validate()) return;
+
+      const clas = cloneDeep(this.clas);
 
       // Convert start date to start of day in UTC timestamp
 
@@ -250,19 +257,13 @@ export default {
        * Will this be an issue that needs to be taken care of?
        * Will this affect rrule generation and testing.
        */
-      this.clas.dateStart = moment(this.clas.dateStart)
-        .startOf("day")
-        .utc()
-        .unix();
+      clas.dateStart = moment(clas.dateStart).startOf("day").utc().unix();
 
       // Only if dateEnd is given, then do we convert it to timestamp
-      if (this.clas.dateEnd)
-        this.clas.dateEnd = moment(this.clas.dateEnd)
-          .startOf("day")
-          .utc()
-          .unix();
+      if (clas.dateEnd)
+        clas.dateEnd = moment(clas.dateEnd).startOf("day").utc().unix();
 
-      this.$store.dispatch("classes/newClass", this.clas);
+      this.$store.dispatch("classes/newClass", clas);
     },
     validate() {
       return this.$refs.form.validate();
