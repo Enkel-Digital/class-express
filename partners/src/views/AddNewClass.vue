@@ -235,7 +235,7 @@ export default {
     };
   },
   methods: {
-    addClass() {
+    async addClass() {
       if (!this.validate()) return;
 
       const clas = cloneDeep(this.clas);
@@ -263,7 +263,9 @@ export default {
       if (clas.dateEnd)
         clas.dateEnd = moment(clas.dateEnd).startOf("day").utc().unix();
 
-      this.$store.dispatch("classes/newClass", clas);
+      const classID = await this.$store.dispatch("classes/newClass", clas);
+      if (classID)
+        this.$router.push({ name: "ClassDetails", params: { classID } });
     },
     validate() {
       return this.$refs.form.validate();

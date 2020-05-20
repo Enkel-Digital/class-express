@@ -64,8 +64,15 @@ export default {
 
       commit("setter", ["review", review]);
     },
+    /**
+     * @returns classID of newly created class if class creation succeeded, else returns false and trigger error dialog
+     */
     async newClass({ commit }, clas) {
-      // console.log("clas", clas);
+      // @todo Replace with call to create class API
+      // const classID = /* api call here */
+
+      // @todo Remove this mock classID returned to the component to redirect to ClassDetails view
+      return 2;
     },
   },
 };
