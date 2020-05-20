@@ -29,7 +29,9 @@ router.get("/plans/all", auth, async (req, res) => {
       // .where("available", "==", true) // Allow us to run campaigns for subscription plans
       .orderBy("id", "desc")
       .get();
-    const subscriptionPlans = subscriptionPlansSnapshot.docs.map(doc => doc.data());
+    const subscriptionPlans = subscriptionPlansSnapshot.docs.map((doc) =>
+      doc.data()
+    );
 
     res.json({ success: true, subscriptionPlans });
   } catch (error) {
@@ -48,51 +50,52 @@ router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
   try {
     const { userID } = req.params;
 
-    const plansDoc = await db
-      .collection("userPlans")
-      .doc(userID)
-      .get();
+    const plansDoc = await db.collection("userPlans").doc(userID).get();
 
-    let plans = plansDoc.data();
+    const plans = plansDoc.data();
 
     // If no plans doc, means first time using app
     if (!plans) {
       // Create document with user's email and default plans object
       // Not awaiting for set to complete before replying user.
       // @todo Might cause an issue if this fails
-      db.collection("userPlans")
-        .doc(userID)
-        .set({
-          // Set count (number of plans) to 0 to indicate new user with no plans yet
-          count: 0
-        });
+      db.collection("userPlans").doc(userID).set({
+        // Set count (number of plans) to 0 to indicate new user with no plans yet
+        count: 0,
+      });
 
       res.json({
         success: true,
         // Return the no plan object
         plans: {
           currentPlanID: null,
-          nextPlanID: null
-        }
+          nextPlanID: null,
+        },
       });
     } else {
       // If latest plan has already started
-      if (plans[plans.count].start.seconds <= firebase.firestore.Timestamp.now().seconds)
+      if (
+        plans[plans.count].start.seconds <=
+        firebase.firestore.Timestamp.now().seconds
+      )
         res.json({
           success: true,
           plans: {
             currentPlanID: plans[plans.count].planID,
-            nextPlanID: plans[plans.count].planID // Same plan for next month since there is no other specified plan
-          }
+            nextPlanID: plans[plans.count].planID, // Same plan for next month since there is no other specified plan
+          },
         });
       // Else if still on second last plan for current plan period
-      else if (plans[plans.count - 1].end.seconds > firebase.firestore.Timestamp.now().seconds)
+      else if (
+        plans[plans.count - 1].end.seconds >
+        firebase.firestore.Timestamp.now().seconds
+      )
         res.json({
           success: true,
           plans: {
             currentPlanID: plans[plans.count - 1].planID,
-            nextPlanID: plans[plans.count].planID
-          }
+            nextPlanID: plans[plans.count].planID,
+          },
         });
       // Else no plan right now
       else {
@@ -116,7 +119,9 @@ router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
     }
   } catch (error) {
     logger.error(error);
-    res.status(error.code ? error.code : 500).json({ success: false, error: error.message });
+    res
+      .status(error.code ? error.code : 500)
+      .json({ success: false, error: error.message });
   }
 });
 
@@ -138,10 +143,7 @@ router.post("/plans/update", auth, express.json(), async (req, res) => {
 
     // Get subscription plan with its ID and ensure it is valid
     const subscriptionPlan = (
-      await db
-        .collection("subscriptionPlans")
-        .doc(subscriptionPlanID)
-        .get()
+      await db.collection("subscriptionPlans").doc(subscriptionPlanID).get()
     ).data();
 
     /* @todo so if subID doc does not exist, and I do .data() will it still work? */
@@ -150,26 +152,20 @@ router.post("/plans/update", auth, express.json(), async (req, res) => {
     if (!subscriptionPlan)
       return res.status(404).json({
         success: false,
-        error: "Invalid Subscription Plan ID"
+        error: "Invalid Subscription Plan ID",
       });
 
     // Get user's plan IDs
     const userPlan = (
-      await db
-        .collection("userPlans")
-        .doc(userID)
-        .get()
+      await db.collection("userPlans").doc(userID).get()
     ).data();
 
     // If user already has a currentPlan
     if (userPlan.currentPlanID) {
       // Set user's next month's plan
-      await db
-        .collection("subscriptions")
-        .doc(userID)
-        .update({
-          nextPlanID: subscriptionPlanID
-        });
+      await db.collection("subscriptions").doc(userID).update({
+        nextPlanID: subscriptionPlanID,
+      });
 
       // Set next plan. So the nxt time user reads from DB, they must modify it somehow....
 
@@ -179,24 +175,21 @@ router.post("/plans/update", auth, express.json(), async (req, res) => {
         success: true,
         plans: {
           currentPlanID: userPlan.currentPlanID,
-          nextPlanID: subscriptionPlanID
-        }
+          nextPlanID: subscriptionPlanID,
+        },
       });
     } else {
       // If user is new and does not have a plan, Set user's current plan
-      await db
-        .collection("subscriptions")
-        .doc(userID)
-        .update({
-          currentPlanID: subscriptionPlanID
-        });
+      await db.collection("subscriptions").doc(userID).update({
+        currentPlanID: subscriptionPlanID,
+      });
 
       return res.json({
         success: true,
         plans: {
           currentPlanID: subscriptionPlanID,
-          nextPlanID: null
-        }
+          nextPlanID: null,
+        },
       });
     }
 
@@ -224,16 +217,15 @@ router.post("/plans/update", auth, express.json(), async (req, res) => {
  */
 router.post("/pause", auth, async (req, res) => {
   try {
+    const { userID } = req.body;
+
     // Update subscription collection's document to set next month planID to null
 
     // Create document in user with user's email as userID
-    await db
-      .collection("users")
-      .doc(userID)
-      .update({
-        modifiedAt: FieldValue.serverTimestamp(),
-        nextPlanID: null
-      });
+    await db.collection("users").doc(userID).update({
+      // modifiedAt: FieldValue.serverTimestamp(),
+      nextPlanID: null,
+    });
 
     // Dont await this
     // Maybe this should be done in cloud functions?
@@ -254,17 +246,16 @@ router.post("/pause", auth, async (req, res) => {
  */
 router.post("/cancel", auth, async (req, res) => {
   try {
+    const { userID } = req.body;
+
     // Update subscription collection's document to set next month planID to null
 
     // Set a end date for the current plan.
     // If there is a next plan. Delete that document. Or make its start and end null to indicate nvr ran.
-    await db
-      .collection("users")
-      .doc(userID)
-      .update({
-        modifiedAt: FieldValue.serverTimestamp(),
-        nextPlanID: null
-      });
+    await db.collection("users").doc(userID).update({
+      // modifiedAt: FieldValue.serverTimestamp(),
+      nextPlanID: null,
+    });
 
     res.json({ success: true });
   } catch (error) {

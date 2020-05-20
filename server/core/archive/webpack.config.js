@@ -15,12 +15,12 @@ module.exports = {
   target: "node",
   entry: "./src/index.js",
   module: {
-    rules: [{ test: /\.md$/, loader: "ignore-loader" }]
+    rules: [{ test: /\.md$/, loader: "ignore-loader" }],
   },
   output: {
     path: path.resolve(__dirname, "./build"),
     // This needs to be index.js so that "npm run serve" or "npm run start" in docker behaves the same
-    filename: "index.js"
+    filename: "index.js",
   },
-  externals: [nodeExternals()]
+  externals: [nodeExternals()],
 };

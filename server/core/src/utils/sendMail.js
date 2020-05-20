@@ -17,4 +17,4 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
  * @function
  * @param {Object} emailContent Content object to be sent out
  */
-module.exports = emailContent => sendgrid.send(emailContent);
+module.exports = (emailContent) => sendgrid.send(emailContent);

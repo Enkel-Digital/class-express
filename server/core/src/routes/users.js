@@ -26,10 +26,7 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
   try {
     const { userID } = req.params;
 
-    const userDoc = await db
-      .collection("users")
-      .doc(userID)
-      .get();
+    const userDoc = await db.collection("users").doc(userID).get();
 
     const user = userDoc.data();
     if (!user) throw new Error("User does not exist");
@@ -37,7 +34,9 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
     res.json({ success: true, user });
   } catch (error) {
     logger.error(error);
-    res.status(error.code ? error.code : 500).json({ success: false, error: error.message });
+    res
+      .status(error.code ? error.code : 500)
+      .json({ success: false, error: error.message });
   }
 });
 
@@ -58,10 +57,7 @@ router.post("/new", express.json(), async (req, res) => {
     const user = req.body.user;
 
     // Create document in user with user's email as userID
-    await db
-      .collection("users")
-      .doc(userID)
-      .set(user);
+    await db.collection("users").doc(userID).set(user);
 
     res.status(201).json({ success: true });
   } catch (error) {

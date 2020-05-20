@@ -12,20 +12,27 @@ const admin = require("firebase-admin");
  */
 function getServiceAccountKey() {
   // If inside env var return it after parsing
-  if (process.env.serviceAccountKey) return JSON.parse(process.env.serviceAccountKey);
+  if (process.env.serviceAccountKey)
+    return JSON.parse(process.env.serviceAccountKey);
   else {
     /**
      * Else read the file directly
      * Usually when running service locally
      * Service Key json to be placed in root dir/
      */
-    const serviceAccountFile = require("path").join(__dirname, "../../serviceAccountKey.json");
+    const serviceAccountFile = require("path").join(
+      __dirname,
+      "../../serviceAccountKey.json"
+    );
 
     // Inner import as only used conditionally
     const fs = require("fs");
 
     if (fs.existsSync(serviceAccountFile)) return require(serviceAccountFile);
-    else throw new Error(`Service Account Key file not available locally at: "${serviceAccountFile}"`);
+    else
+      throw new Error(
+        `Service Account Key file not available locally at: "${serviceAccountFile}"`
+      );
   }
 }
 
@@ -40,14 +47,14 @@ try {
   if (process.env.GCP) {
     admin.initializeApp({
       credential: admin.credential.applicationDefault(),
-      databaseURL: "https://classes-ekd.firebaseio.com"
+      databaseURL: "https://classes-ekd.firebaseio.com",
     });
   } else {
     const serviceAccount = getServiceAccountKey();
 
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
-      databaseURL: "https://classes-ekd.firebaseio.com"
+      databaseURL: "https://classes-ekd.firebaseio.com",
     });
   }
 } catch (error) {

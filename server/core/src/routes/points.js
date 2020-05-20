@@ -24,21 +24,13 @@ router.get("/:userID", async (req, res) => {
   try {
     const { userID } = req.params;
 
-    let points = (
-      await db
-        .collection("points")
-        .doc(userID)
-        .get()
-    ).data();
+    let points = (await db.collection("points").doc(userID).get()).data();
 
     // If no points doc, means first time using app
     if (!points) {
       // Get timezone of the user from userDB, else defaults to "SGT" for now
       const { timezone = "SGT" } = (
-        await db
-          .collection("users")
-          .doc(userID)
-          .get()
+        await db.collection("users").doc(userID).get()
       ).data();
 
       // Default points object for new user
@@ -54,16 +46,14 @@ router.get("/:userID", async (req, res) => {
            */
           timezone,
           start: null,
-          end: null
-        }
+          end: null,
+        },
       };
 
       // Create document in points with user's email and default points object
       // Not awaiting for set to complete before replying user.
       // @todo Might cause an issue if this fails
-      db.collection("points")
-        .doc(userID)
-        .set(defaultPointsObject);
+      db.collection("points").doc(userID).set(defaultPointsObject);
 
       // Set user's points to the default points object that was just set to DB
       points = defaultPointsObject;

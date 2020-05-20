@@ -21,7 +21,7 @@ const logger = createLogger("middleware:500");
  * Error will be logged here too since if it reached this middleware, it means the error was not previously handled
  * By not relying on this, we also reduce the need for next function to be passed in to route handlers
  */
-module.exports = function(err, req, res, next) {
+module.exports = function (err, req, res, next) {
   // Log error either to error logs or to a logging service
   logger.error(err);
 
@@ -29,5 +29,7 @@ module.exports = function(err, req, res, next) {
   if (res.statusCode < 400) res.status(err.code || 500);
 
   // End the request after making sure status code is set
-  res.status(err.code ? err.code : 500).json({ success: false, error: err.message });
+  res
+    .status(err.code ? err.code : 500)
+    .json({ success: false, error: err.message });
 };

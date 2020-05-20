@@ -10,7 +10,7 @@ const logger = createLogger("middleware:404");
  *
  * @Todo Log error either to error logs or to a logging service
  */
-module.exports = function(req, res, next) {
+module.exports = function (req, res, next) {
   try {
     // @Todo Log error either to stderr or to a service
     logger.error(req.method, req.originalUrl);

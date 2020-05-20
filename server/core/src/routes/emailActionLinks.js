@@ -29,7 +29,9 @@ router.post("/resendVerificationEmail/:email", async (req, res) => {
     const { email } = req.params;
 
     // Create a email verification link with a continue URL back to the app
-    const link = await admin.auth().generateEmailVerificationLink(email, { url: "https://classes-ekd.firebaseapp.com" });
+    const link = await admin.auth().generateEmailVerificationLink(email, {
+      url: "https://classes-ekd.firebaseapp.com",
+    });
 
     // Send user email verification link
     // await to ensure only respond with success once the mail has been sent
@@ -42,7 +44,7 @@ router.post("/resendVerificationEmail/:email", async (req, res) => {
         `A email verification link was requested for the Class Express account linked to this email address!<br />` +
         "<br />Click the link to verify now, or safely ignore this email if you did not request for this.<br />" +
         "<br />" +
-        link
+        link,
     });
 
     res.json({ success: true });
@@ -51,7 +53,10 @@ router.post("/resendVerificationEmail/:email", async (req, res) => {
 
     // @todo Choose a different status code
     // The firebase auth error code is also included
-    res.status(500).json({ success: false, error: { message: error.message, code: error.code } });
+    res.status(500).json({
+      success: false,
+      error: { message: error.message, code: error.code },
+    });
   }
 });
 

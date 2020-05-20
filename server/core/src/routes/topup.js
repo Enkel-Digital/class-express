@@ -28,7 +28,7 @@ router.get("/options", async (req, res) => {
       // .where("available", "==", true) // Allow us to run campaigns for topupOptions
       .orderBy("id", "desc")
       .get();
-    const topupOptions = topupOptionsSnapshot.docs.map(doc => doc.data());
+    const topupOptions = topupOptionsSnapshot.docs.map((doc) => doc.data());
 
     res.json({ success: true, topupOptions });
   } catch (error) {
@@ -55,7 +55,7 @@ router.post("/new/:topupOptionID", async (req, res) => {
       // .where("available", "==", true) // Allow us to run campaigns for topupOptions
       .orderBy("id", "desc")
       .get();
-    const topupOptions = topupOptionsSnapshot.docs.map(doc => doc.data());
+    const topupOptions = topupOptionsSnapshot.docs.map((doc) => doc.data());
 
     // Maybe have a webhook for stripe
 

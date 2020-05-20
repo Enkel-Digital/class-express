@@ -23,9 +23,15 @@ const validateInput = (data, fieldNames) => {
       errors.email = "Email is invalid";
     } else if (fieldName === "to_email" && !validator.isEmail(data.to_email)) {
       errors.to_email = "Email is invalid";
-    } else if (fieldName === "public_address" && !isAddress(data.public_address)) {
+    } else if (
+      fieldName === "public_address" &&
+      !isAddress(data.public_address)
+    ) {
       errors.public_address = "Not a valid public address";
-    } else if (fieldName === "signed_message" && !isHexStrict(data.signed_message)) {
+    } else if (
+      fieldName === "signed_message" &&
+      !isHexStrict(data.signed_message)
+    ) {
       errors.signed_message = "Not a valid strict hex string";
     } else if (fieldName === "url" && !validator.isURL(data.url)) {
       errors.url = "Not a valid url";
@@ -38,7 +44,7 @@ const validateInput = (data, fieldNames) => {
 
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };
 

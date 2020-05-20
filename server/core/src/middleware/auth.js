@@ -20,7 +20,10 @@ module.exports = async function auth(req, res, next) {
     // @notice Headers are all lowercased by express
     // https://firebase.google.com/docs/auth/admin/verify-id-tokens#verify_id_tokens_using_the_firebase_admin_sdk
     // The verifyIdToken needs a project ID, but should be taken care of if firebase admin has been initialised properly or runs on gcp infra
-    if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.split(" ")[0] === "Bearer"
+    ) {
       const authToken = req.headers.authorization.split(" ")[1];
 
       const userInfo = await admin.auth().verifyIdToken(authToken);
@@ -34,7 +37,7 @@ module.exports = async function auth(req, res, next) {
   } catch (error) {
     return res.status(401).json({
       success: false,
-      error: error.message || "UNAUTHORIZED"
+      error: error.message || "UNAUTHORIZED",
     });
   }
 };

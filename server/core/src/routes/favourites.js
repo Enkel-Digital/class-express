@@ -26,10 +26,7 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
   try {
     const { userID } = req.params;
 
-    const favouritesDoc = await db
-      .collection("favourites")
-      .doc(userID)
-      .get();
+    const favouritesDoc = await db.collection("favourites").doc(userID).get();
 
     const favourites = favouritesDoc.data();
 
@@ -38,9 +35,7 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
       const defaultFavoritesObject = { classes: {}, partners: {} };
 
       // Create new empty document
-      db.collection("favourites")
-        .doc(userID)
-        .set(defaultFavoritesObject);
+      db.collection("favourites").doc(userID).set(defaultFavoritesObject);
 
       return res.json({ success: true, favourites: defaultFavoritesObject });
     }
@@ -48,7 +43,9 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
     return res.json({ success: true, favourites });
   } catch (error) {
     logger.error(error);
-    res.status(error.code ? error.code : 500).json({ success: false, error: error.message });
+    res
+      .status(error.code ? error.code : 500)
+      .json({ success: false, error: error.message });
   }
 });
 
@@ -71,10 +68,7 @@ router.post("/classes/update", express.json(), async (req, res) => {
     const user = req.body.user;
 
     // Create document in user with user's email as userID
-    await db
-      .collection("users")
-      .doc(userID)
-      .set(user);
+    await db.collection("users").doc(userID).set(user);
 
     res.status(201).json({ success: true });
   } catch (error) {
