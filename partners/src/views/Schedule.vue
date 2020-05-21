@@ -36,11 +36,12 @@
             </v-menu>
           </v-toolbar>
         </v-sheet>
-        <v-sheet height="600">
+        <v-sheet height="450">
           <v-calendar
             ref="calendar"
             v-model="focus"
             color="primary"
+            :weekdays="weekdays"
             :events="events"
             :event-color="getEventColor"
             :now="today"
@@ -89,39 +90,19 @@
 <script>
 export default {
   data: () => ({
+    weekdays: [1, 2, 3, 4, 5, 6, 0],
     focus: "",
     type: "week",
     typeToLabel: {
       month: "Month",
       week: "Week",
       day: "Day",
-      "4day": "4 Days",
     },
     start: null,
     end: null,
     selectedEvent: {},
     selectedElement: null,
     selectedOpen: false,
-    events: [],
-    colors: [
-      "blue",
-      "indigo",
-      "deep-purple",
-      "cyan",
-      "green",
-      "orange",
-      "grey darken-1",
-    ],
-    names: [
-      "Meeting",
-      "Holiday",
-      "PTO",
-      "Travel",
-      "Event",
-      "Birthday",
-      "Conference",
-      "Party",
-    ],
   }),
   computed: {
     title() {
@@ -145,7 +126,6 @@ export default {
         case "month":
           return `${startMonth} ${startYear}`;
         case "week":
-        case "4day":
           return `${startMonth} ${startDay} ${startYear} - ${suffixMonth} ${endDay} ${suffixYear}`;
         case "day":
           return `${startMonth} ${startDay} ${startYear}`;
@@ -209,13 +189,6 @@ export default {
         const first = new Date(firstTimestamp - (firstTimestamp % 900000));
         const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
         const second = new Date(first.getTime() + secondTimestamp);
-
-        events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
-          start: this.formatDate(first, !allDay),
-          end: this.formatDate(second, !allDay),
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-        });
       }
 
       this.start = start;
@@ -242,8 +215,8 @@ export default {
 </script>
 
 <style scoped>
-/* #schedule {
-  margin: 4em;
-  margin-top: 2em;
-} */
+#schedule {
+  margin-right: 2em;
+  /* margin-top: 2em; */
+}
 </style>
