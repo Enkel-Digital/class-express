@@ -107,6 +107,14 @@
 </template>
 
 <script>
+import {
+  AisInstantSearch,
+  AisSearchBox,
+  AisHits,
+  AisStateResults,
+  AisHighlight
+} from "vue-instantsearch";
+
 import algoliasearch from "algoliasearch/lite";
 import "instantsearch.css/themes/algolia-min.css";
 import "instantsearch.css/themes/algolia.css";
@@ -114,7 +122,14 @@ import AppInfiniteHits from "../components/InfiniteHits";
 import CustomeExplore from "./CustomExplore";
 export default {
   name: "explore",
-  components: { AppInfiniteHits, CustomeExplore },
+  components: {
+    AppInfiniteHits,
+    CustomeExplore,
+    AisInstantSearch,
+    AisSearchBox,
+    AisStateResults,
+    AisHighlight
+  },
   data() {
     return {
       searchClient: algoliasearch(
