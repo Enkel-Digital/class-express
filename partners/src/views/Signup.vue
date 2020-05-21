@@ -293,7 +293,9 @@
  * @Todo - Add in browser's "required" attribute checker for input.
  */
 
-import { auth } from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
+
 // Function to map and return a given err.code to a user friendly message
 function error_msg(err) {
   switch (err.code) {
@@ -395,10 +397,9 @@ export default {
       try {
         // After signup, user will be automatically signed in, redirect to home
         // eslint-disable-next-line no-unused-vars
-        const usr = await auth().createUserWithEmailAndPassword(
-          this.email,
-          this.password
-        );
+        const usr = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password);
 
         const storeUser = this.$store.state.user;
         storeUser.email = this.email;

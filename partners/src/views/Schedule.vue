@@ -154,7 +154,7 @@ export default {
     },
     monthFormatter() {
       return this.$refs.calendar.getFormatter({
-        timeZone: "GMT",
+        timeZone: "UTC",
         month: "long",
       });
     },

@@ -1,11 +1,16 @@
 <template>
   <v-content class="ClassDetails">
-    <!-- <v-responsive id="class-image-container"> -->
-    <!-- @todo Change to a image carousel -->
     <v-container fluid>
       <v-row no-gutters>
-        <v-col></v-col>
+        <!-- @todo Please label stuff like this. What is this for? -->
+        <v-col />
+
+        <!-- Main mobile view column -->
         <v-col>
+          <v-card max width="450" elevation="0">
+            <h3>*User's mobile app view for Class Details</h3>
+          </v-card>
+
           <v-card max width="450">
             <v-carousel height="400">
               <v-carousel-item
@@ -14,12 +19,9 @@
                 :src="pictureSrc"
                 reverse-transition="fade-transition"
                 transition="fade-transition"
-              ></v-carousel-item>
+              />
             </v-carousel>
           </v-card>
-
-          <!-- <v-img id="class-image" :src="clas.pictureSources[0]" /> -->
-          <!-- </v-responsive> -->
 
           <v-card max width="450" class="my-2">
             <v-responsive style="text-align: left;" class="mx-4 pa-0">
@@ -31,17 +33,10 @@
                 </v-col>
 
                 <v-spacer />
-
-                <v-col>
-                  <!-- @todo Implement sharing dialog popup  -->
-                  <v-btn icon>
-                    <v-icon>mdi-share</v-icon>
-                  </v-btn>
-                </v-col>
               </v-row>
             </v-responsive>
 
-            <v-divider></v-divider>
+            <v-divider />
 
             <v-responsive id="reviews-card" class="mx-auto">
               <v-list-item>
@@ -59,9 +54,9 @@
                       half-increments
                       readonly
                       size="14"
-                    ></v-rating>
-                    <!-- {{ review.ratings }} / 5 based on
-                {{ review.numberOfReviews }} reviews -->
+                    />
+                    {{ review.ratings }} / 5 based on
+                    {{ review.numberOfReviews }} reviews
                   </v-list-item-subtitle>
 
                   <v-list-item-subtitle v-else>Loading...</v-list-item-subtitle>
@@ -72,12 +67,13 @@
                   text
                   small
                   color="primary"
-                  >Read them!</v-btn
                 >
+                  Read them!
+                </v-btn>
               </v-list-item>
             </v-responsive>
 
-            <v-divider></v-divider>
+            <v-divider />
 
             <v-responsive id="reviews-card" class="mx-auto">
               <v-list-item>
@@ -85,7 +81,7 @@
                   <p class="overline">Class Desciption</p>
 
                   <!-- Change to a more readable font -->
-                  <span v-html="clas.description"></span>
+                  <span v-html="clas.description" />
                 </v-list-item-content>
               </v-list-item>
             </v-responsive>
@@ -103,15 +99,27 @@
             <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
           </v-card>
         </v-col>
+
+        <!-- Icon list column -->
         <v-col>
           <div class="text-left ma-2">
-            <v-btn small outlined fab color="success">
+            <!-- Edit class -->
+            <v-btn class="ma-2" small outlined fab color="success">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
+
             <v-spacer />
 
-            <v-btn class="my-1" small outlined fab color="success">
+            <!-- @todo Is this for delete class? -->
+            <v-btn class="ma-2" small outlined fab color="success">
               <v-icon>mdi-close-circle</v-icon>
+            </v-btn>
+
+            <v-spacer />
+
+            <!-- @todo Copy class sharing link into clipboard  -->
+            <v-btn class="ma-2" small outlined fab color="success">
+              <v-icon>mdi-share</v-icon>
             </v-btn>
           </div>
         </v-col>
@@ -121,13 +129,6 @@
 </template>
 
 <script>
-/**
- * This screen can be for both Class Details screen for the class in general, or a particular class date.
- * 1 with and 1 without the date set.
- *
- * view timing bar vs reserve class bar.
- */
-import { mapActions } from "vuex";
 import MapImage from "@/components/MapImage";
 
 export default {
@@ -140,28 +141,9 @@ export default {
     this.$store.dispatch("classes/getReview", this.classID);
   },
   props: ["classID"],
-  data() {
-    // Classes is static via the data function as we do not want its reactivity
-    const clas = this.$store.state.classes.classes[this.classID];
-    return { clas, classTimeSelected: true };
-  },
   computed: {
-    favouritedClass() {
-      if (this.$store.state.classes.favouriteClassesID[this.classID])
-        return true;
-      else return false;
-    },
-    isReserved() {
-      const upcomingClass = this.$store.state.classes.upcomingClassesID[
-        this.classID
-      ];
-
-      // If there is a booking for this class, check if there is a booking for this timeslot
-      if (upcomingClass) {
-        // @todo Check for timeslot. Right now, assumes that there is only 1 session for the class thus return true
-
-        return true;
-      } else return false;
+    clas() {
+      return this.$store.state.classes.classes[this.classID];
     },
     review() {
       return this.$store.state.classes.review;

@@ -13,7 +13,7 @@ import createGMapsImg from "../store/module/classes/gMapsImage";
  */
 
 export default {
-  name: "map",
+  name: "gMap",
   props: ["src", "classID"],
   computed: {
     locationImage() {
