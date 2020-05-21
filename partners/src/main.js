@@ -19,13 +19,11 @@ Vue.directive("autofocus", autofocus);
 
 // firebaseConfig auto generated in project settings
 firebase.initializeApp({
-  apiKey: "AIzaSyAXQkdXjxHpZbEYNTXoyfyBXfWVEbm-tCA",
-  authDomain: "classes-ekd.firebaseapp.com",
-  databaseURL: "https://classes-ekd.firebaseio.com",
-  projectId: "classes-ekd",
-  storageBucket: "classes-ekd.appspot.com",
-  messagingSenderId: "385087995070",
-  appId: "1:385087995070:web:7204f5d15cb9004c3072ef",
+  apiKey: "AIzaSyA6WspXWorAK_1HiwLAVht7-ujoUDdWsAs",
+  authDomain: "class-express-partners.firebaseapp.com",
+  projectId: "class-express-partners",
+  storageBucket: "class-express-partners.appspot.com",
+  appId: "1:671101516105:web:272b2cd00047f3eb36c298",
 });
 
 // Wait for firebase to finish initialization before creating the app.
