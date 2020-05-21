@@ -17,4 +17,4 @@ function errorHandler(error) {
   return { success: false, error: error.message };
 }
 
-export default fetch(firebase.auth, apiUrl, errorHandler);
+export default new fetch(firebase.auth, apiUrl, errorHandler);
