@@ -93,7 +93,7 @@ export default {
     actions() {
       if (this.error.more && this.error.more.actions)
         return this.error.more.actions;
-      else return null;
+      else return false; // Return false to work with v-if
     },
   },
   methods: {
