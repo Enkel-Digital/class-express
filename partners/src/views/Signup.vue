@@ -28,11 +28,10 @@
           </v-stepper-step>
 
           <v-stepper-content step="1">
-            <v-form ref="ownerLoginDetails" v-model="valid">
+            <v-form ref="ownerLoginDetails">
               <v-row>
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
-                    v-model="name"
                     label="Name"
                     :rules="nameRules"
                     prepend-icon="mdi-account"
@@ -41,7 +40,6 @@
 
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
-                    v-model="phone"
                     :rules="phoneRules"
                     label="Mobile Number"
                     hint="For emergency purposes"
@@ -52,22 +50,17 @@
 
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
-                    v-model="email"
                     :rules="emailRules"
                     label="Email"
                     prepend-icon="mdi-email"
-                    :error-messages="emailErrors"
                     required
-                    @input="$v.email.$touch()"
-                    @blur="$v.email.$touch()"
                   ></v-text-field>
                 </v-col>
 
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
-                    v-model="password"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[rules.required, rules.min]"
+                    :rules="[rules.required]"
                     :type="show1 ? 'text' : 'password'"
                     name="input-10-1"
                     label="Password"
@@ -89,11 +82,10 @@
             >Company Information</v-stepper-step
           >
           <v-stepper-content step="2">
-            <v-form ref="ownerCompanyDetails" v-model="valid">
+            <v-form ref="ownerCompanyDetails">
               <v-row>
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
-                    v-model="name"
                     :rules="nameRules"
                     label="Company Name"
                     required
@@ -103,7 +95,6 @@
 
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
-                    v-model="phone"
                     :rules="phoneRules"
                     label="Telephone Number"
                     prepend-icon="mdi-phone"
@@ -113,7 +104,6 @@
 
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
-                    v-model="email"
                     :rules="emailRules"
                     label="Email"
                     prepend-icon="mdi-email"
@@ -123,7 +113,6 @@
 
                 <v-col cols="15" sm="6" md="5">
                   <v-text-field
-                    v-model="Location"
                     label="Address Line 1"
                     :rules="nameRules"
                     prepend-icon="mdi-map-marker"
@@ -133,7 +122,6 @@
 
                 <v-col cols="15" sm="6" md="5">
                   <v-text-field
-                    v-model="Location"
                     label="Address Line 2 (optional)"
                     prepend-icon
                   ></v-text-field>
@@ -141,7 +129,6 @@
 
                 <v-col cols="15" sm="6" md="5">
                   <v-text-field
-                    v-model="Location"
                     :rules="nameRules"
                     label="Blk/Unit No."
                     hint="e.g. 100/01-02"
@@ -152,7 +139,6 @@
 
                 <v-col cols="15" sm="6" md="5">
                   <v-text-field
-                    v-model="Location"
                     label="Postal Code"
                     :rules="postalRules"
                     prepend-icon
@@ -198,11 +184,10 @@
               >Login Details
             </v-stepper-step>
             <v-stepper-content step="1">
-              <v-form ref="employeeLoginDetails" v-model="valid">
+              <v-form ref="employeeLoginDetails">
                 <v-row>
                   <v-col cols="15" sm="6" md="10">
                     <v-text-field
-                      v-model="name"
                       label="Name"
                       :rules="nameRules"
                       prepend-icon="mdi-account"
@@ -211,22 +196,17 @@
 
                   <v-col cols="15" sm="6" md="10">
                     <v-text-field
-                      v-model="email"
                       :rules="emailRules"
                       label="Email"
                       prepend-icon="mdi-email"
-                      :error-messages="emailErrors"
                       required
-                      @input="$v.email.$touch()"
-                      @blur="$v.email.$touch()"
                     ></v-text-field>
                   </v-col>
 
                   <v-col cols="15" sm="6" md="10">
                     <v-text-field
-                      v-model="password"
                       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                      :rules="[rules.required, rules.min]"
+                      :rules="[rules.required]"
                       :type="show1 ? 'text' : 'password'"
                       name="input-10-1"
                       label="Password"
@@ -248,7 +228,7 @@
               >Your Company</v-stepper-step
             >
             <v-stepper-content step="2">
-              <v-form ref="employeeCompanyDetails" v-model="valid">
+              <v-form ref="employeeCompanyDetails">
                 <v-row>
                   <v-col cols="15" sm="6" md="10">
                     <v-autocomplete
