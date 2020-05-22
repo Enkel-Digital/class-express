@@ -175,6 +175,11 @@ import cloneDeep from "lodash.clonedeep";
 
 export default {
   name: "settings",
+  created() {
+    // Using created hook to ensure this is ran everyime this view is loaded/created
+    // Request store to populate settings
+    this.$store.dispatch("settings/init");
+  },
   directives: {
     Touch,
   },

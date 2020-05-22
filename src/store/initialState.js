@@ -11,11 +11,5 @@ export default function initialState() {
       lname: undefined,
       imageSrc: undefined,
     },
-    settings: {
-      notifications: {
-        mobileNotification: true,
-        emailNotification: true,
-      },
-    },
   };
 }

@@ -48,7 +48,6 @@ export default new Vuex.Store({
       dispatch("error/init");
       dispatch("loader/init");
       dispatch("points/init");
-      dispatch("settings/init");
       dispatch("classes/init");
       // await dispatch("points/init");
       // await dispatch("settings/init");
