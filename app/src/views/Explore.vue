@@ -29,11 +29,11 @@
                           "
                         >
                           <!-- @todo Change to a image carousel -->
+
                           <v-img
                             id="class-image"
                             :src="item.pictureSources[0]"
                           />
-
                           <v-list-item>
                             <div style="text-align: left;">
                               <v-card-title class="headline pl-0">
@@ -91,15 +91,15 @@
                   </template>
                 </app-infinite-hits>
                 <div v-if="query.length == 0">
-                  <CustomeExplore />
+                  <Categories />
                 </div>
                 <div v-if="hits.length == 0">
                   No results have been found
-                  <CustomeExplore />
+                  <Categories />
                 </div>
                 <!-- <div v-else>
                   No results have been found
-                  <CustomeExplore />
+                  <Categories />
                 </div>-->
               </template>
             </ais-state-results>
@@ -123,12 +123,12 @@ import algoliasearch from "algoliasearch/lite";
 import "instantsearch.css/themes/algolia-min.css";
 import "instantsearch.css/themes/algolia.css";
 import AppInfiniteHits from "../components/InfiniteHits";
-import CustomeExplore from "./CustomExplore";
+import Categories from "./Categories";
 export default {
   name: "explore",
   components: {
     AppInfiniteHits,
-    CustomeExplore,
+    Categories,
     AisInstantSearch,
     AisSearchBox,
     AisStateResults,
