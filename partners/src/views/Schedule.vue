@@ -141,6 +141,7 @@ export default {
   },
   mounted() {
     this.$refs.calendar.checkChange();
+    this.$refs.calendar.scrollToTime("08:00");
   },
   methods: {
     viewDay({ date }) {
