@@ -211,7 +211,7 @@ export default {
         const second = new Date(first.getTime() + secondTimestamp);
 
         events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
+          // name: this.names[this.rnd(0, this.names.length - 1)],
           start: this.formatDate(first, !allDay),
           end: this.formatDate(second, !allDay),
           color: this.colors[this.rnd(0, this.colors.length - 1)],

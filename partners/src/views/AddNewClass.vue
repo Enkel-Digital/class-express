@@ -114,8 +114,27 @@
           <!--
             @todo Add input field for entering the category of this new class
             @todo Add input field for keying meta tags for new class
+            
           -->
+
+          <v-select
+            v-model="clas.category"
+            :items="classCategory"
+            attach
+            chips
+            label="Select Class Category(s)"
+            multiple
+          ></v-select>
         </v-row>
+
+        <v-text-field
+          :rules="maxParticipantRules"
+          v-model="clas.maxParticipant"
+          type="number"
+          label="Maximum number of participants per class"
+          outlined
+          required
+        />
 
         <!-- Time related components -->
 
@@ -219,6 +238,8 @@ export default {
         length: null,
         dateStart: moment().format("YYYY-MM-DD"), // Create date in local timezone for today in the format of e.g. "2020-05-21"
         dateEnd: null,
+        maxParticipant: null,
+        category: [],
       },
       changeLocation: true,
       addLocationCheckbox: false,
@@ -232,6 +253,10 @@ export default {
         (length) => !!length || "Length is required",
         (length) => length > 0 || "Cannot have a class of 0 mins or less",
       ],
+      maxParticipantRules: [
+        (length) => !!length || "Length is required",
+        (length) => length > 0 || "Cannot have a class of 0 mins or less",
+      ],
       rules: [
         (value) =>
           !value ||
@@ -239,6 +264,7 @@ export default {
           "Avatar size should be less than 2 MB!",
       ],
       addressRules: [(v) => !!v || "Please fill is the required space"],
+      classCategory: ["Music", "Art", "Cooking", "Tech"],
     };
   },
   methods: {

@@ -29,10 +29,8 @@
                 <v-col>
                   <h3 class="headline" v-text="clas.name"></h3>
                   <p>{{ clas.provider.name }}</p>
-                  <p c>{{ clas.location.address }}</p>
+                  <p>{{ clas.location.address }}</p>
                 </v-col>
-
-                <v-spacer />
               </v-row>
             </v-responsive>
 
