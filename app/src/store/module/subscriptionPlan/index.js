@@ -7,6 +7,7 @@
 import initialState from "./initialState";
 import setter from "../../utils/setter";
 import loader from "../../utils/loader";
+import apiError from "@/store/utils/apiError";
 import api from "@/store/utils/fetch";
 
 export default {
@@ -42,9 +43,16 @@ export default {
      * Get list of available subscription plans from api
      * @function getPlans
      */
-    async getPlans({ commit }) {
+    async getPlans({ commit, dispatch }) {
+      const loaderID = await loader.new();
+
       const response = await api.get("/subscription/plans/all");
-      if (!response.success); // @todo Handle error
+
+      // Remove loader after API responds
+      loader.clear(loaderID);
+
+      if (!response.success)
+        return apiError(response, () => dispatch("getPlans"));
 
       commit("setter", ["subscriptionPlans", response.subscriptionPlans]);
     },
@@ -52,9 +60,16 @@ export default {
      * Get ID of current plan
      * @function getPlans
      */
-    async getPlanIDs({ commit, rootState }) {
+    async getPlanIDs({ commit, rootState, dispatch }) {
+      const loaderID = await loader.new();
+
       const response = await api.get(`/subscription/${rootState.user.email}`);
-      if (!response.success); // @todo Handle error
+
+      // Remove loader after API responds
+      loader.clear(loaderID);
+
+      if (!response.success)
+        return apiError(response, () => dispatch("getPlanIDs"));
 
       commit("setter", ["currentPlanID", response.plans.currentPlanID]);
       commit("setter", ["nextPlanID", response.plans.nextPlanID]);

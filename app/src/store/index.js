@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import api from "./utils/fetch";
 import apiError from "@/store/utils/apiError";
+import loader from "@/store/utils/loader";
 
 import initialState from "./initialState";
 import setter from "./utils/setter";
@@ -56,9 +57,15 @@ export default new Vuex.Store({
      * @function getUserDetails
      */
     async getUserDetails({ commit }, email) {
+      const loaderID = await loader.new();
+
       email = email.toLowerCase();
 
       const response = await api.get(`/user/${email}`);
+
+      // Remove loader after API responds
+      loader.clear(loaderID);
+
       if (!response.success)
         return apiError(response, (self) =>
           self.$store.dispatch("getUserDetails", email)

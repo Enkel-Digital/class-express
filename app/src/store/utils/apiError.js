@@ -29,6 +29,7 @@ import error from "@/store/utils/error";
  *
  * @example
  * // Alternatively, you use "context" object's dispatch method, passed in via actions first argument
+ * // This is usually preferred when working in a module, so you can dispatch without needing to add namespace
  * async YOUR_VUEX_ACTION({ commit }, ACTION_ARGUEMENT) {
  *  const response = await api.get("YOUR_API_ENDPOINT");
  *  if (!response.success)
