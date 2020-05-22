@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import api from "./utils/fetch";
+import apiError from "@/store/utils/apiError";
 
 import initialState from "./initialState";
 import setter from "./utils/setter";
@@ -51,15 +52,18 @@ export default new Vuex.Store({
       await dispatch("classes/init");
     },
     /**
-     * Function to get all the user's details
+     * Function to get the user's details
      * @function getUserDetails
      */
     async getUserDetails({ commit }, email) {
       email = email.toLowerCase();
 
       const response = await api.get(`/user/${email}`);
-      // @todo Handle error cases
-      // if (!response.success) {}
+      if (!response.success)
+        return apiError(response, (self) =>
+          self.$store.dispatch("getUserDetails", email)
+        );
+
       commit("setter", ["user", response.user]);
     },
   },
