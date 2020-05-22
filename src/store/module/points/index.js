@@ -4,8 +4,9 @@
 
 import initialState from "./initialState";
 import setter from "../../utils/setter";
+import loader from "@/store/utils/loader";
+import apiError from "@/store/utils/apiError";
 import api from "@/store/utils/fetch";
-import sleep from "../../../utils/sleep";
 
 export default {
   namespaced: true,
@@ -55,7 +56,10 @@ export default {
     async getPoints({ commit, rootState }) {
       // Wait until email is available.
       // @todo Might cause issues if the user API fails this will continue looping forever.
-      while (!rootState.user.email) await sleep.milli(100);
+      while (!rootState.user.email) {
+        const sleep = (await import("@/utils/sleep")).default;
+        await sleep.milli(100);
+      }
 
       const response = await api.get(`/points/${rootState.user.email}`);
       if (!response.success); // @todo Handle error
