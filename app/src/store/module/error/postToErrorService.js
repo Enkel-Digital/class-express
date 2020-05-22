@@ -8,49 +8,21 @@
 
 import firebase from "firebase/app";
 import "firebase/auth";
-import { apiUrl } from "@/config";
+import fetch from "fetch-with-fire";
 
-// @todo Migrate to a seperate error tracking service to prevent API service failure causing cascading failures
-const errorApiURL = apiUrl + "/error";
+import { errorApiEndpoint } from "@/config"; // Put this into config
 
-/**
- * Only returns authentication header if user is authenticated.
- * Split out so if user is unauthenticated, this does not throw if currenUser is null
- * @function getAuthHeader
- * @returns {String} Authentication header or nothing.
- */
-async function getAuthHeader() {
-  if (firebase.auth().currentUser)
-    return `Bearer ${await firebase.auth().currentUser.getIdToken()}`;
+// Return error here to allow the error to be handled by the error/new action.
+// Make the error handler return a reponse object that is similiar to normal failed request objects.
+function errorHandler(error) {
+  // Only log in non production environments
+  if (process.env.NODE_ENV !== "production") console.error(error);
+  return { success: false, error: error.message };
 }
+
+const api = new fetch(firebase.auth, errorApiEndpoint, errorHandler);
 
 /**
  * @function postToErrorService
- * @param {object} error Custom error object that can be stringified
  */
-async function postToErrorService(error = {}) {
-  try {
-    // Call window fetch with error API URL and default request object
-    const response = await window.fetch(errorApiURL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // Send auth token if available.
-        // Error tracking service should not reject no-auth-token calls
-        Authorization: await getAuthHeader(),
-      },
-      body: JSON.stringify(error),
-    });
-
-    // @todo Add a check as not all should be parsed/treated as json
-    const parsedResponse = response.json();
-
-    if (parsedResponse.status === false) throw new Error(parsedResponse.error);
-
-    return parsedResponse;
-  } catch (error) {
-    return error;
-  }
-}
-
-export default postToErrorService;
+export default (error) => api.post("/", error);

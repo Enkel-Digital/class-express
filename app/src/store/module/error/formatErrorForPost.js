@@ -28,7 +28,7 @@ export default function formatErrorForPost(originalError) {
   };
 
   // Delete actions if any before pushing to error tracking service
-  if (error.more.actions) delete error.more.actions;
+  if (error.more) if (error.more.actions) delete error.more.actions;
 
   return error;
 }
