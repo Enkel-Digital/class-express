@@ -9,6 +9,7 @@ import setter from "../../utils/setter";
 import loader from "../../utils/loader";
 import apiError from "@/store/utils/apiError";
 import api from "@/store/utils/fetch";
+import apiWithLoader from "@/store/utils/apiWithLoader";
 
 export default {
   namespaced: true,
@@ -16,27 +17,12 @@ export default {
   mutations: {
     setter,
   },
-  getters: {
-    currentPlan(state) {
-      return state.subscriptionPlans.find(
-        (plan) => plan.id === state.currentPlanID
-      );
-    },
-    nextPlan(state) {
-      return state.subscriptionPlans.find(
-        (plan) => plan.id === state.nextPlanID
-      );
-    },
-  },
   actions: {
     /**
      * Initialization function for this module
      * @function init
      */
     async init({ dispatch }) {
-      // @todo Only call when loading the subscriptionPlans view
-      dispatch("getPlans");
-
       dispatch("getPlanIDs");
     },
     /**
@@ -44,13 +30,7 @@ export default {
      * @function getPlans
      */
     async getPlans({ commit, dispatch }) {
-      const loaderID = await loader.new();
-
-      const response = await api.get("/subscription/plans/all");
-
-      // Remove loader after API responds
-      loader.clear(loaderID);
-
+      const response = await apiWithLoader.get("/subscription/plans/all");
       if (!response.success)
         return apiError(response, () => dispatch("getPlans"));
 
@@ -61,13 +41,9 @@ export default {
      * @function getPlans
      */
     async getPlanIDs({ commit, rootState, dispatch }) {
-      const loaderID = await loader.new();
-
-      const response = await api.get(`/subscription/${rootState.user.email}`);
-
-      // Remove loader after API responds
-      loader.clear(loaderID);
-
+      const response = await apiWithLoader.get(
+        `/subscription/${rootState.user.email}`
+      );
       if (!response.success)
         return apiError(response, () => dispatch("getPlanIDs"));
 

@@ -216,7 +216,7 @@ export default {
   beforeMount() {
     // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
     // Request store to get and populate list of subscription plans
-    this.$store.dispatch("subscription/init");
+    this.$store.dispatch("subscription/getPlans");
   },
   computed: {
     periodEndDate() {
@@ -228,7 +228,6 @@ export default {
       "currentPlanID",
       "nextPlanID",
     ]),
-    ...mapGetters("subscription", ["currentPlan", "nextPlan"]),
     selectedPlanID() {
       return this.currentPlanID === this.nextPlanID
         ? this.currentPlanID

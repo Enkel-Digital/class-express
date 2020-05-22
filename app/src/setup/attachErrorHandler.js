@@ -9,8 +9,11 @@
 
 import Vue from "vue";
 
-// Store is used to dispatch errors to the error handler.
-import store from "@/store";
+import { ERROR, createError } from "@/constants/error";
+import error from "@/store/utils/error";
+
+const newError = (_error) =>
+  error.new(createError(ERROR.level.FATAL, ERROR.type.UNDEFINED, _error));
 
 /**
  * @param {object} err The error thrown
@@ -26,10 +29,10 @@ Vue.config.errorHandler = async function (err, vueComponent, info) {
 
   // Dispatch without awaitng for store to handle all error logging/reporting logic
   // @todo Create error of type error.type.UNDEFINED here
-  store.dispatch("error/new", {
+  newError({
+    via: "Vue.config.errorHandler",
     error: err.message,
     info,
-    via: "Vue.config.errorHandler",
   });
 };
 
@@ -42,9 +45,9 @@ window.addEventListener("unhandledrejection", function (event) {
   console.error("unhandledrejection error event: ", arguments);
 
   // Dispatch without awaitng for store to handle all error logging/reporting logic
-  store.dispatch("error/new", {
-    event,
+  newError({
     via: "window.addEventListener.unhandledrejection",
+    event,
   });
 });
 
@@ -52,5 +55,14 @@ window.onerror = function (message, source, lineno, colno, error) {
   // @todo Remove for production
   console.error("window.onerror: ", arguments);
 
-  store.dispatch("error/new", { error: error.message, via: "window.onerror" });
+  newError({
+    via: "window.onerror",
+    error: {
+      error: error.message,
+      message,
+      source,
+      lineno,
+      colno,
+    },
+  });
 };
