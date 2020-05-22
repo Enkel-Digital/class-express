@@ -7,8 +7,6 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 import vuetify from "./plugins/vuetify";
-import InstantSearch from "vue-instantsearch";
-import VueObserveVisibility from "vue-observe-visibility";
 import { initializeApp, auth } from "firebase";
 
 import moment from "moment";
@@ -18,8 +16,6 @@ Vue.config.productionTip = false;
 // Register global custom directive called `v-autofocus`
 import autofocus from "./directives/autofocus";
 Vue.directive("autofocus", autofocus);
-Vue.use(VueObserveVisibility);
-Vue.use(InstantSearch);
 
 // firebaseConfig auto generated in project settings
 initializeApp({
