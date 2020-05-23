@@ -116,15 +116,28 @@
             @todo Add input field for keying meta tags for new class
             
           -->
-
-          <v-select
-            v-model="clas.category"
-            :items="classCategory"
-            attach
+          <v-combobox
+            v-model="clas.classCategory"
+            :items="classCategoryList"
             chips
-            label="Select Class Category(s)"
+            clearable
+            label="Select your class categories!"
             multiple
-          ></v-select>
+            prepend-icon="mdi-filter-variant"
+            solo
+          >
+            <template v-slot:selection="{ attrs, item, select, selected }">
+              <v-chip
+                v-bind="attrs"
+                :input-value="selected"
+                close
+                @click="select"
+                @click:close="remove(item)"
+              >
+                <strong>{{ item }}</strong>
+              </v-chip>
+            </template>
+          </v-combobox>
         </v-row>
 
         <v-text-field
@@ -231,6 +244,7 @@ export default {
   data() {
     // @todo Nest the class details properties to allow for easier submitting in addClass method
     return {
+      classCategoryList: ["Tech", "Cooking", "Lifestyle", "Music", "Art"],
       clas: {
         name: null,
         pictures: null,
@@ -239,7 +253,7 @@ export default {
         dateStart: moment().format("YYYY-MM-DD"), // Create date in local timezone for today in the format of e.g. "2020-05-21"
         dateEnd: null,
         maxParticipant: null,
-        category: [],
+        classCategory: [],
       },
       changeLocation: true,
       addLocationCheckbox: false,
@@ -305,6 +319,10 @@ export default {
     },
     reset() {
       this.$refs.form.reset();
+    },
+    remove(item) {
+      this.clas.classCategory.splice(this.clas.classCategory.indexOf(item), 1);
+      this.clas.classCategory = [...this.clas.classCategory];
     },
   },
 };
