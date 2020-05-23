@@ -8,6 +8,8 @@
         <div class="search-panel">
           <div class="search-panel__results">
             <ais-search-box placeholder="Search here…" class="searchbox" />
+            <FilterMenu />
+
             <ais-state-results>
               <template slot-scope="{ query, hits }">
                 <app-infinite-hits v-if="query.length > 0 && hits.length > 0">
@@ -124,11 +126,14 @@ import "instantsearch.css/themes/algolia-min.css";
 import "instantsearch.css/themes/algolia.css";
 import AppInfiniteHits from "../components/InfiniteHits";
 import Categories from "./Categories";
+import FilterMenu from "../components/FilterMenu";
+
 export default {
   name: "explore",
   components: {
     AppInfiniteHits,
     Categories,
+    FilterMenu,
     AisInstantSearch,
     AisSearchBox,
     AisStateResults,
@@ -203,10 +208,6 @@ h1 {
 
 .search-panel__results {
   flex: 3;
-}
-
-.searchbox {
-  margin-bottom: 2rem;
 }
 
 .pagination {
