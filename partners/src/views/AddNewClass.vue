@@ -166,6 +166,9 @@
           {{ clas.length % 60 }} mins
         </span>
 
+        <!-- Select start times in the week -->
+        <AddNewStartTime :classLengthInMinutes="clas.length" />
+
         <!-- Date start and End date -->
         <v-row>
           <v-col style="width: 450px;  auto;">
@@ -239,10 +242,13 @@
 
 import moment from "moment";
 import cloneDeep from "lodash.clonedeep";
+import AddNewStartTime from "@/components/AddNewStartTime";
 
 export default {
+  components: {
+    AddNewStartTime,
+  },
   data() {
-    // @todo Nest the class details properties to allow for easier submitting in addClass method
     return {
       classCategoryList: ["Tech", "Cooking", "Lifestyle", "Music", "Art"],
       clas: {
