@@ -7,7 +7,6 @@ import router from "@/router";
 import moment from "moment";
 import initialState from "./initialState";
 import setter from "../../utils/setter";
-import createGMapsImg from "./gMapsImage";
 
 // @todo Remove mock data
 import mock from "../../mockData";
