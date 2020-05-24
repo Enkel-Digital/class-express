@@ -144,8 +144,8 @@ const ERROR = Object.freeze({
       description: "Internal vue logic failed",
     },
     // @todo Perhaps allow some stack trace for undefined errors to better debug
-    UNDEFINED: {
-      type: "UNDEFINED",
+    UNKNOWN: {
+      type: "UNKNOWN",
       name: "UNKNOWN",
       description: "Unknown error occurred 😫",
     },

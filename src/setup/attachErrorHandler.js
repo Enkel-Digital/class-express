@@ -13,7 +13,7 @@ import { ERROR, createError } from "@/constants/error";
 import error from "@/store/utils/error";
 
 const newError = (_error) =>
-  error.new(createError(ERROR.level.FATAL, ERROR.type.UNDEFINED, _error));
+  error.new(createError(ERROR.level.FATAL, ERROR.type.UNKNOWN, _error));
 
 /**
  * @param {object} err The error thrown
@@ -28,7 +28,7 @@ Vue.config.errorHandler = async function (err, vueComponent, info) {
   // console.error(err.stack);
 
   // Dispatch without awaitng for store to handle all error logging/reporting logic
-  // @todo Create error of type error.type.UNDEFINED here
+  // @todo Create error of type error.type.UNKNOWN here
   newError({
     via: "Vue.config.errorHandler",
     error: err.message,
