@@ -4,7 +4,7 @@ import fetch from "fetch-with-fire";
 import { apiUrl } from "@/config";
 
 import store from "@/store";
-import { ERROR, createError } from "@/constants/error";
+import { ERROR, createError } from "@/utils/error";
 
 // Return error here to allow the error to be returned to the api caller
 function errorHandler(error) {

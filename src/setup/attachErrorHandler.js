@@ -9,7 +9,7 @@
 
 import Vue from "vue";
 
-import { ERROR, createError } from "@/constants/error";
+import { ERROR, createError } from "@/utils/error";
 import error from "@/store/utils/error";
 
 const newError = (_error) =>

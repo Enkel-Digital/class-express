@@ -4,7 +4,7 @@
 
 import Vue from "vue";
 import initialState from "./initialState";
-import { ERROR, createError } from "@/constants/error"; // used to create undefined error type if did not get an error with a TYPE attribute
+import { ERROR, createError } from "@/utils/error"; // used to create undefined error type if did not get an error with a TYPE attribute
 import randomAlphaNumeric from "../../utils/randomAlphaNumeric";
 import postToErrorService from "./postToErrorService";
 import formatErrorForPost from "./formatErrorForPost";

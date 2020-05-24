@@ -6,7 +6,7 @@
  * @example
  * // API references
  * // Import from the module and destructure for simpler access. Make sure namespace is free.
- * import { ERROR, createError } from "@/constants/error"
+ * import { ERROR, createError } from "@/utils/error"
  *
  * @example
  * // Create default API error
