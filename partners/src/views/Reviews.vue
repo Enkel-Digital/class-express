@@ -1,18 +1,33 @@
 <template>
   <v-content class="reviews">
     <br />
-    <v-row>
-      <v-col cols="15" sm="6" md="4">
-        <h2>Reviews and Ratings of {{ className }} Class</h2>
-      </v-col>
-    </v-row>
 
-    <v-row>
-      <v-col cols="15" sm="6" md="4">
-        <v-responsive id="reviews-card" class="mx-auto" max-width="400">
+    <h2 class="text-center">Reviews and Ratings of {{ className }} Class</h2>
+    <v-row no-gutters>
+      <v-col :cols="3">
+        <v-responsive id="reviews-card">
           <v-list-item>
             <v-list-item-content>
               <p style="font-size: 20px;">Overall Reviews</p>
+              <v-list-item-content class="pa-0">
+                <v-list-item style="min-height: 0;" class="pa-0">
+                  <v-rating
+                    v-model="review.ratings"
+                    half-increments
+                    readonly
+                    small
+                    dense
+                    color="amber"
+                    style="opacity: 0.7;"
+                  />
+                  <span v-text="`${review.ratings} out of 5`" class="caption" />
+                </v-list-item>
+
+                <v-list-item-subtitle>
+                  across
+                  {{ review.numberOfReviews }} reviews
+                </v-list-item-subtitle>
+              </v-list-item-content>
 
               <v-list-item v-for="i in 5" :key="i" class="pe-4 me-4" dense>
                 <span v-text="10" class="pe-4" />
@@ -24,45 +39,16 @@
                   empty-icon
                   medium
                   dense
-                  color="#455A64"
+                  color="amber"
                   style="opacity: 0.7;"
                   class="ma-0 pa-0"
                 />
               </v-list-item>
             </v-list-item-content>
-
-            <v-col cols="15" sm="6" md="6">
-              <v-list-item-content>
-                <v-list-item style="min-height: 0;" class="pe-0 me-0">
-                  <span
-                    v-text="`${review.ratings} / 5`"
-                    class="caption pe-0 me-0"
-                  />
-                  <v-rating
-                    v-model="review.ratings"
-                    half-increments
-                    readonly
-                    empty-icon
-                    small
-                    dense
-                    color="#455A64"
-                    style="opacity: 0.7;"
-                  />
-                </v-list-item>
-
-                <v-list-item-subtitle>
-                  across
-                  {{ review.numberOfReviews }} reviews
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-col>
           </v-list-item>
         </v-responsive>
       </v-col>
-    </v-row>
-
-    <v-row>
-      <v-col cols="15" sm="6" md="4">
+      <v-col :cols="9">
         <div v-if="!review">
           Loading
           <!-- Show a loading screen while we load reviews from server -->
@@ -84,6 +70,7 @@
 
         <!-- @todo Do not display at once, load only when scrolled to. -->
         <!-- https://css-tricks.com/preventing-content-reflow-from-lazy-loaded-images/ -->
+
         <v-responsive class="mx-auto">
           <v-card
             v-for="(review, i) in review.userReviews"
@@ -97,7 +84,7 @@
               empty-icon
               small
               dense
-              color="#455A64"
+              color="amber"
               style="opacity: 0.7;"
             />
             <v-list-item>{{ review.description }}</v-list-item>
@@ -105,6 +92,7 @@
         </v-responsive>
       </v-col>
     </v-row>
+
     <!-- Change this to use a universal error overlay instead. Moved the logic into script instead of template too. -->
   </v-content>
 </template>
