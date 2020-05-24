@@ -19,7 +19,7 @@
             :src="clas.pictureSources[0]"
           />
 
-          <v-card-title class="title">
+          <v-card-title class="title pa-2">
             {{ clas.name }}
 
             <v-spacer />

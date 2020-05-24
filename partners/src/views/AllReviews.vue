@@ -11,13 +11,12 @@
           "
         >
           <v-img
-            max-height="120"
-            height="20em"
+            max-height="7.5em"
             class="class-image"
             :src="clas.pictureSources[0]"
           />
 
-          <v-card-title class="title">
+          <v-card-title class="title pa-2">
             {{ clas.name }}
             <v-spacer />
 
