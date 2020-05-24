@@ -10,7 +10,7 @@
 
 import Vue from "vue";
 import initialState from "./initialState";
-import randomAlphaNumeric from "./randomAlphaNumeric";
+import randomAlphaNumeric from "../../utils/randomAlphaNumeric";
 
 export default {
   namespaced: true,
