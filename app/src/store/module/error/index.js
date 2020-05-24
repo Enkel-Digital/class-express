@@ -14,48 +14,37 @@ export default {
   state: initialState(),
   mutations: {
     new(state, error) {
-      Vue.set(state.errors, state.errors.length, error);
+      Vue.set(state.errors, error.errorID, error);
     },
-    /**
-     * Clear error with errorID, if not available, fallback to errorIndex, if not available, fallback to error array element 0
-     * @param {Number} [errorID] ID of the error, found by looping through the array to find the error
-     * @param {Number} [errorIndex=0] Index of the error in the error array
-     */
-    clear(state, { errorID, errorIndex = 0 } = {}) {
-      if (errorID) {
-        for (let i = 0; i < state.errors.length; i++)
-          if (errorID === state.errors[i].ID) {
-            Vue.delete(state.errors, i);
-          }
-      } else Vue.delete(state.errors, errorIndex);
+    clear(state, errorID) {
+      Vue.delete(state.errors, errorID);
     },
     clearAll(state) {
       // Reset state by clearing it directly
       Vue.delete(state, "errors");
-      Vue.set(state, "errors", []);
+      Vue.set(state, "errors", {});
     },
   },
   getters: {
     /**
-     * Getter to filter for errors to be showed to user
+     * Getter to get the earliest error to be displayed
      * Does not order the errors depending on dismissability
      */
-    displayableErrors(state) {
-      return state.errors.filter((error) => error.display);
+    displayEarliestError(state) {
+      // Start with any random first element of Object.values array to start off the comparison
+      let earliestError = Object.values(state.errors)[0];
+
+      for (const errorID in state.errors) {
+        const error = state.errors[errorID];
+        if (!error.display) continue;
+        else if (error.time < earliestError.time) earliestError = error;
+      }
+
+      return earliestError;
     },
     /**
-     * Generate an object based on the error array with error.errorID as keys
-     * Used to do errorID assignment in error/new action.
-     * @todo Can be optimized. Using an array and converting back does not seem like the best idea
      * @todo Perhaps we should use a object, then return the earliest triggered array via a getter rather then an array
      */
-    errorsObject(state) {
-      const errorObject = {};
-      for (const error of state.errors) {
-        errorObject[error.errorID] = error;
-      }
-      return errorObject;
-    },
   },
   actions: {
     /**
@@ -71,27 +60,28 @@ export default {
      * // Where error is either an instance of Error or custom error object
      * this.$store.dispatch("error/new", error);
      */
-    async new({ commit, getters }, error) {
+    async new({ commit, state }, error) {
       try {
         // @todo Remove
         console.error("error mod:", error instanceof Error, error);
 
         // If error class instance, use the message alone
         if (error instanceof Error) {
-          // @todo make a func to get default variables and variables from the error object out?
-          // @todo Use createError here
-          error = { error: error.message };
+          error = createError(ERROR.level.FATAL, ERROR.type.UNKNOWN, {
+            instanceofError: true,
+            errorMessage: error.message,
+          });
         }
 
         /* Populate error object with default values and other custom properties */
         // Keep generating rand errorID till no more collisions
         do {
           error.errorID = randomAlphaNumeric();
-        } while (getters.errorsObject[error.errorID]);
+        } while (state.errors[error.errorID]);
         // Display the error if not specified
         if (error.display === undefined) error.display = true;
         // If error is to be displayed and dismissable is not set, make it display by default
-        if (error.display && error.dismissable === undefined)
+        if (error.dismissable === undefined && error.display)
           error.dismissable = true;
 
         // Add timestamp to error object

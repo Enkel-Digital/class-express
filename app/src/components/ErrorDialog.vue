@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import cloneDeep from "lodash.clonedeep";
+import { mapGetters } from "vuex";
 
 export default {
   name: "ErrorDialog",
@@ -72,24 +72,9 @@ export default {
     };
   },
   computed: {
-    error() {
-      // If no error, return undefined to prevent component from rendering
-      if (!this.$store.getters["error/displayableErrors"].length) return;
-
-      // Clone earliest error from the displayable errors array
-      // Cloning error to display to prevent modifying state
-      const error = cloneDeep(
-        this.$store.getters["error/displayableErrors"][0]
-      );
-
-      // Add defaults UI flags if not available
-      // @todo This should be the unknown error type and should be set in the error mod
-      // @todo In fact this whole thing should just be returning the first value of the error getter
-      if (!error.name) error.name = "UNKNOWN";
-      if (!error.description) error.description = "Unknown error occurred 😫";
-
-      return error;
-    },
+    ...mapGetters("error", {
+      error: "displayEarliestError",
+    }),
     actions() {
       if (this.error.more && this.error.more.actions)
         return this.error.more.actions;
@@ -103,7 +88,7 @@ export default {
      * @params actions
      */
     dismiss(action) {
-      this.$store.dispatch("error/clear", this.error.ID);
+      this.$store.dispatch("error/clear", this.error.errorID);
       if (action) return action(this);
     },
   },
