@@ -178,20 +178,23 @@ export default {
       ],
       classTabs: [
         {
-          icon: "mdi-view-week",
+          icon: "mdi-google-classroom",
           text: "All Classes",
           link: { name: "all-classes" },
         },
-
         {
           icon: "mdi-plus",
           text: "Add New Class",
           link: { name: "new-class" },
         },
-
+        {
+          icon: "mdi-calendar-clock",
+          text: "Class Bookings",
+          link: { name: "bookings" },
+        },
         {
           icon: "mdi-account",
-          text: "Classes Reviews",
+          text: "Class Reviews",
           link: { name: "all-reviews" },
         },
       ],
