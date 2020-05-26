@@ -39,6 +39,57 @@
         </v-list-item-content>
       </v-list-item>
 
+      <v-subheader>Finance</v-subheader>
+      <v-list-item
+        exact
+        ripple
+        v-for="item in financeTabs"
+        :key="item.title"
+        :to="item.link"
+      >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>{{ item.text }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-subheader>Classes</v-subheader>
+      <v-list-item
+        exact
+        ripple
+        v-for="item in classTabs"
+        :key="item.title"
+        :to="item.link"
+      >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>{{ item.text }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-subheader>General</v-subheader>
+      <v-list-item
+        exact
+        ripple
+        v-for="item in generalTabs"
+        :key="item.title"
+        :to="item.link"
+      >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>{{ item.text }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
       <!-- @todo Add support for child groups -->
       <!-- <v-list-group
         v-if="item.children"
@@ -57,9 +108,10 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-      </v-list-group>-->
+      </v-list-group> -->
 
       <!-- Logout button at the bottom -->
+
       <v-list-item ripple hover @click="logout">
         <v-list-item-icon>
           <v-icon>mdi-logout</v-icon>
@@ -95,46 +147,17 @@ export default {
           text: "View Schedule",
           link: { name: "view-schedule" },
         },
-        {
-          icon: "mdi-cash-usd",
-          text: "Earnings",
-          link: { name: "earnings" },
-        },
-        {
-          icon: "mdi-account-group-outline",
-          text: "Withdrawal",
-          link: { name: "withdrawal" },
-        },
-        {
-          icon: "mdi-view-week",
-          text: "View all Classes",
-          link: { name: "all-classes" },
-        },
-
-        {
-          icon: "mdi-plus",
-          text: "Add New Class",
-          link: { name: "new-class" },
-        },
-
-        {
-          icon: "mdi-account",
-          text: "View Reviews",
-          link: { name: "all-reviews" },
-        },
-
-        {
-          icon: "mdi-help-circle",
-          text: "FAQs",
-          link: { name: "faq" },
-        },
         // {
         //   icon: "mdi-chevron-up",
         //   "icon-alt": "mdi-chevron-down",
-        //   text: "Labels",
+        //   text: "Classes",
         //   model: true,
         //   children: [
-        //     { icon: "mdi-account-group-outline", text: "View all users" },
+        //     {
+        //       icon: "mdi-account-group-outline",
+        //       text: "View All Classes",
+        //       link: { name: "all-classes" },
+        //     },
         //     { icon: "mdi-account-plus", text: "Add user" },
         //     { icon: "mdi-account-minus", text: "Delete user" },
         //   ],
@@ -152,16 +175,49 @@ export default {
         //     { text: "Other contacts" },
         //   ],
         // },
+      ],
+      classTabs: [
+        {
+          icon: "mdi-view-week",
+          text: "All Classes",
+          link: { name: "all-classes" },
+        },
+
+        {
+          icon: "mdi-plus",
+          text: "Add New Class",
+          link: { name: "new-class" },
+        },
+
+        {
+          icon: "mdi-account",
+          text: "Classes Reviews",
+          link: { name: "all-reviews" },
+        },
+      ],
+      financeTabs: [
+        {
+          icon: "mdi-cash-usd",
+          text: "Earnings",
+          link: { name: "earnings" },
+        },
+        {
+          icon: "mdi-account-group-outline",
+          text: "Withdrawal",
+          link: { name: "withdrawal" },
+        },
+      ],
+      generalTabs: [
+        {
+          icon: "mdi-help-circle",
+          text: "FAQs",
+          link: { name: "faq" },
+        },
         {
           icon: "mdi-chat",
           text: "Contact Support",
           link: { name: "contact-support" },
         },
-        // {
-        //   icon: "mdi-message",
-        //   text: "Send feedback",
-        //   link: { name: "feedback" },
-        // },
         {
           icon: "mdi-cog",
           text: "Settings",
