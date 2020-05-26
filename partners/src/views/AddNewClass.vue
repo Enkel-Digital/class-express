@@ -250,7 +250,7 @@ export default {
   },
   data() {
     return {
-      classCategoryList: ["Tech", "Cooking", "Lifestyle", "Music", "Art"],
+      classCategoryList: ["tech", "cooking", "lifestyle", "music", "art"],
       clas: {
         name: null,
         pictures: null,
@@ -284,7 +284,6 @@ export default {
           "Avatar size should be less than 2 MB!",
       ],
       addressRules: [(v) => !!v || "Please fill is the required space"],
-      classCategory: ["Music", "Art", "Cooking", "Tech"],
     };
   },
   methods: {

@@ -2,17 +2,10 @@
   <v-content id="AllClasses">
     <v-btn class="ma-2" outlined color="#546E7A"> Weekly</v-btn>
 
-    <EarningsChart
-      width="1400"
-      height="300"
-      :chartdata="weeklyChartData"
-      :options="weeklyChartOptions"
-    />
+    <EarningsChart :chartdata="weeklyChartData" :options="weeklyChartOptions" />
 
     <v-btn class="ma-2" outlined color="#546E7A"> Monthly</v-btn>
     <EarningsChart
-      width="1400"
-      height="300"
       :chartdata="monthlyChartData"
       :options="monthlyChartOptions"
     />

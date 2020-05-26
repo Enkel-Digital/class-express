@@ -101,6 +101,11 @@ export default {
           link: { name: "earnings" },
         },
         {
+          icon: "mdi-account-group-outline",
+          text: "Withdrawal",
+          link: { name: "withdrawal" },
+        },
+        {
           icon: "mdi-view-week",
           text: "View all Classes",
           link: { name: "all-classes" },
@@ -117,11 +122,7 @@ export default {
           text: "View Reviews",
           link: { name: "all-reviews" },
         },
-        // {
-        //   icon: "mdi-account-group-outline",
-        //   text: "Withdrawal",
-        //   link: { name: "withdrawal" },
-        // },
+
         {
           icon: "mdi-help-circle",
           text: "FAQs",
