@@ -26,12 +26,7 @@
 
       <br />
 
-      <EarningsChart
-        width="1400"
-        height="300"
-        :chartdata="chartdata"
-        :options="options"
-      />
+      <EarningsChart :chartdata="chartdata" :options="options" />
 
       <br />
 
