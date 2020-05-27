@@ -50,6 +50,7 @@
             </template>
           </v-chip-group>
         </v-card-text>
+        <RangeSlider />
 
         <v-card-text>
           <h2 class="title mb-2">Choose</h2>
@@ -104,8 +105,9 @@
 <script>
 import { AisMenu } from "vue-instantsearch";
 import Slider from "../components/Slider";
+import RangeSlider from "../components/RangeSlider";
 export default {
-  components: { AisMenu, Slider },
+  components: { AisMenu, Slider, RangeSlider },
   data: () => ({
     av: true,
     menu: false,
