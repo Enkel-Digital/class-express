@@ -144,16 +144,16 @@ import MapImage from "@/components/MapImage";
 export default {
   name: "upcoming",
   components: {
-    MapImage
+    MapImage,
   },
   computed: {
-    ...mapGetters("classes", ["upcomingClasses"])
+    ...mapGetters("classes", ["upcomingClasses"]),
   },
   methods: {
     ...mapActions("classes", ["toggleFavouriteClass"]),
     getPartner(partnerID) {
       return this.$store.state.classes.partners[partnerID];
-    }
-  }
+    },
+  },
 };
 </script>

@@ -7,5 +7,5 @@
 module.exports = {
   // URL cannot have ending slash "/"
   // @todo To update URL once domain is fixed
-  apiUrl: "https://api.enkeldigital.com"
+  apiUrl: "https://api.enkeldigital.com",
 };

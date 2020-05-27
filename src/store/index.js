@@ -24,13 +24,13 @@ export default new Vuex.Store({
     points: pointsModule, // User points and not all points related
     news: newsModule,
     subscription: subscriptionPlanModule,
-    settings: settingsModule
+    settings: settingsModule,
   },
   mutations: {
     setter,
     setEmailVerificationStatus(state, status) {
       state.user.emailVerified = status;
-    }
+    },
   },
   actions: {
     /**
@@ -55,7 +55,7 @@ export default new Vuex.Store({
       // @todo Handle error cases
       // if (!response.success) {}
       commit("setter", ["user", response.user]);
-    }
+    },
   },
-  plugins: [createPersistedState()]
+  plugins: [createPersistedState()],
 });

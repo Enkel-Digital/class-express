@@ -39,6 +39,7 @@
             </template>
           </v-chip-group>
         </v-card-text>
+        <Slider />
 
         <v-card-text>
           <h2 class="title mb-2">Choose Points</h2>
@@ -49,6 +50,30 @@
             </template>
           </v-chip-group>
         </v-card-text>
+
+        <v-card-text>
+          <h2 class="title mb-2">Choose</h2>
+          <ais-menu attribute="name">
+            <v-chip-group column multiple slot-scope="{ items, refine }">
+              <template v-for="item in items">
+                <v-chip
+                  filter
+                  outlined
+                  :key="item.value"
+                  @click.prevent="refine(item.value)"
+                >
+                  {{ item.label }}
+                </v-chip>
+              </template>
+              <!-- <li>
+                <button :disabled="!canToggleShowMore" @click="toggleShowMore">
+                  {{ isShowingMore ? "Less" : "More" }}
+                </button>
+              </li> -->
+            </v-chip-group>
+          </ais-menu>
+        </v-card-text>
+
         <v-card-actions>
           <v-spacer></v-spacer>
 
@@ -77,7 +102,10 @@
 </template>
 
 <script>
+import { AisMenu } from "vue-instantsearch";
+import Slider from "../components/Slider";
 export default {
+  components: { AisMenu, Slider },
   data: () => ({
     av: true,
     menu: false,
@@ -86,64 +114,64 @@ export default {
     categories: [
       {
         text: "Business",
-        icon: "mdi-handshake"
+        icon: "mdi-handshake",
       },
       {
         text: "Arts & Media",
-        icon: "mdi-music"
+        icon: "mdi-music",
       },
       {
         text: "Healthcare",
-        icon: "mdi-heart"
+        icon: "mdi-heart",
       },
       {
         text: "IT",
-        icon: "mdi-book"
+        icon: "mdi-book",
       },
       {
         text: "Sports",
-        icon: "mdi-bike"
-      }
+        icon: "mdi-bike",
+      },
     ],
     locations: [
       {
-        text: "Bugis"
+        text: "Bugis",
       },
       {
-        text: "Orchard"
+        text: "Orchard",
       },
       {
-        text: "Tampines"
+        text: "Tampines",
       },
       {
-        text: "Expo"
+        text: "Expo",
       },
       {
-        text: "Bedok"
+        text: "Bedok",
       },
       {
-        text: "Jurong East"
+        text: "Jurong East",
       },
       {
-        text: "Woodlands"
+        text: "Woodlands",
       },
       {
-        text: "City Hall"
-      }
+        text: "City Hall",
+      },
     ],
     points: [
       {
-        text: "1 - 3"
+        text: "1 - 3",
       },
       {
-        text: "3 - 5"
+        text: "3 - 5",
       },
       {
-        text: "6 - 10"
-      }
+        text: "6 - 10",
+      },
     ],
     loading: false,
-    selected: []
+    selected: [],
   }),
   computed: {
     allSelected() {
@@ -156,7 +184,7 @@ export default {
         selections.push(selection);
       }
       return selections;
-    }
-  }
+    },
+  },
 };
 </script>

@@ -38,7 +38,7 @@ export default {
     clearUserReview(state) {
       // Clear reviews to prevent caching in memory
       Vue.delete(state.review, "userReviews");
-    }
+    },
   },
   getters: {
     /**
@@ -75,7 +75,7 @@ export default {
       for (const classID of Object.keys(state.pastClassesID))
         pastClasses[classID] = state.classes[classID];
 
-      return Object.values(pastClasses).map(clas => {
+      return Object.values(pastClasses).map((clas) => {
         /** @notice Explicit data setting needed to prevent data caching */
         if (state.favouriteClassesID[clas.id]) clas.favourite = true;
         else clas.favourite = false;
@@ -93,14 +93,14 @@ export default {
       for (const classID of Object.keys(state.upcomingClassesID))
         upcomingClasses[classID] = state.classes[classID];
 
-      return Object.values(upcomingClasses).map(clas => {
+      return Object.values(upcomingClasses).map((clas) => {
         /** @notice Explicit data setting needed to prevent data caching */
         if (state.favouriteClassesID[clas.id]) clas.favourite = true;
         else clas.favourite = false;
 
         return clas;
       });
-    }
+    },
   },
   actions: {
     /**
@@ -243,6 +243,6 @@ export default {
     ) {
       // @todo Add API call to send review to server
       console.log("hello in save", classID, ratings, description);
-    }
-  }
+    },
+  },
 };

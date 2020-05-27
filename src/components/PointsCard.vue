@@ -76,9 +76,9 @@ import { mapState } from "vuex";
 export default {
   name: "profile",
   computed: {
-    ...mapState("points", ["points"])
+    ...mapState("points", ["points"]),
     // ,...mapState("subscription", ["currentPlanID"])
-  }
+  },
 };
 </script>
 

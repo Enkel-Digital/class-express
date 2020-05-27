@@ -34,7 +34,7 @@ export default {
         if (!this.coordinates) return;
         else return createGMapsImg(this.coordinates);
       } else return this.src;
-    }
+    },
   },
   methods: {
     openMaps() {
@@ -43,7 +43,7 @@ export default {
           `https://www.google.com/maps/search/${this.coordinates}?hl=en`,
           "_blank"
         );
-    }
-  }
+    },
+  },
 };
 </script>

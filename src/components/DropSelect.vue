@@ -18,7 +18,7 @@ export default {
   components: {},
   data: () => ({
     items: ["foo", "bar", "fizz", "buzz", "fizzbuzz", "foobar"],
-    value: ["foo", "bar", "fizz"]
-  })
+    value: ["foo", "bar", "fizz"],
+  }),
 };
 </script>

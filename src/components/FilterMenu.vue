@@ -18,11 +18,11 @@ import DropDown from "./DropDown.vue";
 export default {
   components: {
     PopoverMenu,
-    DropDown
+    DropDown,
   },
   data: () => ({
     items: ["foo", "bar", "fizz", "buzz", "fizzbuzz", "foobar"],
-    value: ["foo", "bar", "fizz"]
-  })
+    value: ["foo", "bar", "fizz"],
+  }),
 };
 </script>

@@ -17,7 +17,7 @@ export default {
     },
     deleteError(state, { errorIndex = 0 } = {}) {
       Vue.delete(state.errors, errorIndex);
-    }
+    },
   },
   actions: {
     /**
@@ -48,7 +48,7 @@ export default {
         // Defaults to true
         dismissable: true,
         // Timestamp when the error was received in the error handling module
-        time: Date.now()
+        time: Date.now(),
       };
 
       try {
@@ -84,6 +84,6 @@ export default {
       // commit("error", false);
       // After error object is created, push it into errors list
       commit("deleteError");
-    }
-  }
+    },
+  },
 };

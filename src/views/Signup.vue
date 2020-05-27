@@ -103,14 +103,14 @@ export default {
       name: "",
       email: "",
       password: "",
-      error_msg: ""
+      error_msg: "",
     };
   },
   methods: {
     back() {
       this.$router.push({ name: "welcome" });
     },
-    signUp: async function() {
+    signUp: async function () {
       try {
         // Make lowercase, refer to notes & faq on why this is lowercase.
         // tl;dr Firebase auth like google ignores the email RFC and forces email case-insensitivity
@@ -129,8 +129,8 @@ export default {
             name: this.name,
             fname: undefined,
             lname: undefined,
-            imageSrc: undefined // For now, user cannot upload image during signup
-          }
+            imageSrc: undefined, // For now, user cannot upload image during signup
+          },
         };
 
         // @todo Replace this with a mutation watcher?
@@ -164,8 +164,8 @@ export default {
         // Set the message into the error box to show user the error
         this.error_msg = error_msg(error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -12,8 +12,8 @@
  * @param {boolean} mins
  * @param {number} timeout
  */
-const sleep = mins => async timeout =>
-  new Promise(resolve =>
+const sleep = (mins) => async (timeout) =>
+  new Promise((resolve) =>
     setTimeout(resolve, mins ? timeout * 60 * 1000 : timeout)
   );
 

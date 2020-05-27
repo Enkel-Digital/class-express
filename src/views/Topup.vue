@@ -139,7 +139,7 @@ import { mapState, mapActions } from "vuex";
 export default {
   name: "topup",
   components: {
-    BackBtn
+    BackBtn,
   },
   beforeCreate() {
     // Request vuex to update/populate list of topup options
@@ -148,8 +148,8 @@ export default {
   computed: mapState("points", ["points", "topupOptions"]),
   methods: {
     logout,
-    ...mapActions("points", ["buyPoints"])
-  }
+    ...mapActions("points", ["buyPoints"]),
+  },
 };
 </script>
 

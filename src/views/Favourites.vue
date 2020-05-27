@@ -48,13 +48,13 @@ export default {
   name: "favourites",
   components: {
     FavouriteClasses,
-    FavouritePartners
+    FavouritePartners,
   },
   data() {
     return {
       // By default show the classes tab on the left
-      tab: 1
+      tab: 1,
     };
-  }
+  },
 };
 </script>

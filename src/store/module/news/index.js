@@ -12,7 +12,7 @@ export default {
   namespaced: true,
   state: initialState(),
   mutations: {
-    setter
+    setter,
   },
   actions: {
     /**
@@ -31,6 +31,6 @@ export default {
       const newsBanners = mock.newsBanners;
 
       commit("setter", ["newsBanners", newsBanners]);
-    }
-  }
+    },
+  },
 };
