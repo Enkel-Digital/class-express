@@ -21,7 +21,7 @@
     "url": "git+https://github.com/Enkel-Digital/class-server.git"
   },
   "author": "JJ",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/Enkel-Digital/class-server/issues"
   },
@@ -33,7 +33,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "firebase": "^7.14.4",
+    "firebase": "^7.14.5",
     "firebase-admin": "^8.12.1",
     "helmet": "^3.22.0",
     "moment": "^2.26.0",
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "docdash": "^1.2.0",
-    "eslint": "^7.0.0",
+    "eslint": "^7.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.20.2",
@@ -58,8 +58,8 @@
     "ignore-loader": "^0.1.2",
     "jsdoc": "^3.6.4",
     "jsdoc-export-default-interop": "^0.3.1",
-    "lint-staged": "^10.2.4",
-    "mocha": "^7.1.2",
+    "lint-staged": "^10.2.7",
+    "mocha": "^7.2.0",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
