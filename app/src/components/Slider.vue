@@ -1,16 +1,14 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col cols="12">
-        <v-subheader class="pl-0">Distance</v-subheader>
-        <v-slider v-model="slider" thumb-label
-          ><template v-slot:thumb-label="{ value }">
-            {{ value + "km" }}
-          </template></v-slider
-        >
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-card flat color="transparent">
+    <v-subheader>Distance</v-subheader>
+    <v-card-text>
+      <v-slider v-model="slider" thumb-label="always"
+        ><template v-slot:thumb-label="{ value }">
+          {{ value + "km" }}
+        </template></v-slider
+      >
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
