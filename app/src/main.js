@@ -25,7 +25,7 @@ initializeApp({
   projectId: "classes-ekd",
   storageBucket: "classes-ekd.appspot.com",
   messagingSenderId: "385087995070",
-  appId: "1:385087995070:web:7204f5d15cb9004c3072ef"
+  appId: "1:385087995070:web:7204f5d15cb9004c3072ef",
 });
 
 // App variable to store reference to the vue App object
@@ -44,7 +44,7 @@ const unsubscribe = auth().onAuthStateChanged(() => {
       router,
       store,
       vuetify,
-      render: h => h(App)
+      render: (h) => h(App),
     }).$mount("#app");
 
   // Use the firebase.Unsubscribe function returned from adding auth state change listner to unsubscribe

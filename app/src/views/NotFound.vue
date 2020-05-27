@@ -26,7 +26,7 @@ export default {
     return {
       // Timeout data object that can be referenced to clear if user navigates away before timeout
       timeout: setTimeout(
-        router => {
+        (router) => {
           // Navigate back to last location if possible. 2 as user's default home page may not be a blank tab
           if (window.history.length > 2) router.back();
           // Else, redirect back home
@@ -34,16 +34,16 @@ export default {
         },
         3000,
         this.$router
-      )
+      ),
     };
   },
   components: {
-    BackBtn
+    BackBtn,
   },
   beforeDestroy() {
     // Prevent the timeout from still routing to home if user already navigated away themselves
     clearTimeout(this.timeout);
-  }
+  },
 };
 </script>
 

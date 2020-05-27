@@ -18,13 +18,13 @@ export default {
   name: "App",
   components: {
     BottomNavBar,
-    ErrorDialog
+    ErrorDialog,
   },
   computed: {
     showNavBar() {
       return this.$route.meta.Auth_requirements !== AuthType.public_only;
-    }
-  }
+    },
+  },
 };
 </script>
 

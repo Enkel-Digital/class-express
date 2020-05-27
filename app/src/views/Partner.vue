@@ -104,7 +104,7 @@ export default {
   name: "partner",
   components: {
     BackBtn,
-    MapImage
+    MapImage,
   },
   created() {
     // Call action to fetch review of this class
@@ -124,15 +124,15 @@ export default {
     },
     review() {
       return this.$store.state.classes.review;
-    }
+    },
   },
   methods: {
     ...mapActions("classes", [
       "toggleFavouritePartner",
       "reserveClass",
-      "cancelClass"
-    ])
-  }
+      "cancelClass",
+    ]),
+  },
 };
 </script>
 

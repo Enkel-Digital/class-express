@@ -13,7 +13,7 @@
           @click="
             $router.push({
               name: 'partner',
-              params: { partnerID: partner.id }
+              params: { partnerID: partner.id },
             })
           "
         >
@@ -65,13 +65,13 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "favourite-partners",
   computed: {
-    ...mapGetters("classes", ["favouritePartners"])
+    ...mapGetters("classes", ["favouritePartners"]),
   },
   methods: {
     ...mapActions("classes", ["toggleFavouritePartner"]),
     getPartner(partnerID) {
       return this.$store.state.classes.partners[partnerID];
-    }
-  }
+    },
+  },
 };
 </script>

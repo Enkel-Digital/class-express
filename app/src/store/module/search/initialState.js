@@ -5,7 +5,7 @@
 export default function initialState() {
   return {
     // Default categories
-    categories: ["tech", "language", "academics", "cooking", "music", "sports"]
+    categories: ["tech", "language", "academics", "cooking", "music", "sports"],
   };
 }
 
@@ -19,9 +19,9 @@ const searchResultObjReference = {
   length: "60", // Store classLength in minutes can show otherwise in hours as needed
   provider: {
     name: "Guitar Studio 2", // Name of the provider
-    id: 123
+    id: 123,
   },
   location: "", // Location Coordinates so we can show on a Map insert
   pictureSrc:
-    "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg"
+    "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg",
 };

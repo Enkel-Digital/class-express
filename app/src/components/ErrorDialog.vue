@@ -53,7 +53,7 @@ export default {
   },
   data() {
     return {
-      alwaysShow: true
+      alwaysShow: true,
     };
   },
   computed: {
@@ -67,12 +67,12 @@ export default {
       if (!error.dismissable) error.dismissable = true;
 
       return error;
-    }
+    },
   },
   methods: {
     dismiss() {
       this.$store.dispatch("error/clear");
-    }
-  }
+    },
+  },
 };
 </script>

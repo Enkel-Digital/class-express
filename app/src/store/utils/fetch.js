@@ -46,15 +46,15 @@ async function getAuthHeader() {
  * GET curried function that takes a init object before an URL
  */
 function _get(init = {}) {
-  return async function(url) {
+  return async function (url) {
     return _fetch(
       url,
       Object.assign(
         {
           method: "GET",
           headers: {
-            Authorization: await getAuthHeader()
-          }
+            Authorization: await getAuthHeader(),
+          },
         },
         init
       )
@@ -66,7 +66,7 @@ function _get(init = {}) {
  * POST curried function that takes a init object before an URL and data
  */
 function _post(init = {}) {
-  return async function(url, data) {
+  return async function (url, data) {
     if (data) init.body = JSON.stringify(data);
 
     return _fetch(
@@ -76,8 +76,8 @@ function _post(init = {}) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: await getAuthHeader()
-          }
+            Authorization: await getAuthHeader(),
+          },
         },
         init
       )
@@ -94,7 +94,7 @@ function modify(init = {}) {
   // Return the http methods to chain it and make a request
   return {
     get: _get(init),
-    post: _post(init)
+    post: _post(init),
   };
 }
 
@@ -112,5 +112,5 @@ function modify(init = {}) {
 export default {
   get: _get(),
   post: _post(),
-  modify
+  modify,
 };

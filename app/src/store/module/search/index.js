@@ -12,7 +12,7 @@ export default {
   namespaced: true,
   state: initialState(),
   mutations: {
-    setter
+    setter,
   },
   actions: {
     /**
@@ -22,6 +22,6 @@ export default {
     async getCategories({ commit }) {
       // @todo Replace with API
       commit("setter", ["categories", mock.categories]);
-    }
-  }
+    },
+  },
 };

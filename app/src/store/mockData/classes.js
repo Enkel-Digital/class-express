@@ -6,39 +6,39 @@ const partners = {
     name: "Guitar Studio 1",
     location: {
       coordinates: "1.300649, 103.855453",
-      address: "249B Victoria St, Bugis Village"
+      address: "249B Victoria St, Bugis Village",
     },
     description: "Get started on your Guitar journey with us!",
     pictureSources: [
-      "https://rezaglobalpro.com/wp-content/uploads/Reza-Global-Productions-Music-Studio-3.2-1.jpg"
-    ]
+      "https://rezaglobalpro.com/wp-content/uploads/Reza-Global-Productions-Music-Studio-3.2-1.jpg",
+    ],
   },
   1: {
     id: 1,
     name: "Tampines CC",
     location: {
       coordinates: "1.348979, 103.935787",
-      address: "5 Tampines Ave 3"
+      address: "5 Tampines Ave 3",
     },
     description:
       "Located in the Heartlands of Tampines, we offer a wide variety of classes for our residents.",
     pictureSources: [
-      "https://www.pa.gov.sg/images/default-source/module/community-clubs/tampines-west-community-club"
-    ]
+      "https://www.pa.gov.sg/images/default-source/module/community-clubs/tampines-west-community-club",
+    ],
   },
   2: {
     id: 2,
     name: "Guitar Studio 2",
     location: {
       coordinates: "1.3006954, 103.84475",
-      address: "Orchard road, Plaza Singapura"
+      address: "Orchard road, Plaza Singapura",
     },
     description:
       "We offer world class guitar lessons for you!<br />Guitar Studio 2 is one of the leading Guitar Studios in Singapore and South East Asia boasting a whole list of celebrity instructors for you to learn more. We believe that the best instructors are what you need to get from amatuer  to pro just like the instructors themselves!",
     pictureSources: [
-      "https://media.timeout.com/images/105537588/630/472/image.jpg"
-    ]
-  }
+      "https://media.timeout.com/images/105537588/630/472/image.jpg",
+    ],
+  },
 };
 
 const classes = {
@@ -55,11 +55,11 @@ const classes = {
     // However, class can have an optional location to override the default one
     location: {
       coordinates: "1.3006954, 103.84475",
-      address: "Orchard road, Plaza Singapura"
+      address: "Orchard road, Plaza Singapura",
     },
     pictureSources: [
-      "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg"
-    ]
+      "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg",
+    ],
   },
   1: {
     id: 1,
@@ -71,8 +71,8 @@ const classes = {
       "Like cooking but always feel like you are missing a magical ingredient? Well join our class to learn more and get ready to be amazed.",
     partnerID: 1,
     pictureSources: [
-      "https://www.fetimes.co.kr/news/photo/201709/60017_41960_2138.jpg"
-    ]
+      "https://www.fetimes.co.kr/news/photo/201709/60017_41960_2138.jpg",
+    ],
   },
   2: {
     id: 2,
@@ -84,8 +84,8 @@ const classes = {
       "Advance guitar lessons taught be the legendary Ichika Mo.<br />Will be going through advanced music scores and includes 1 on 1 trainings for the students, alongside a chance to practice in front of a live audience",
     partnerID: 2,
     pictureSources: [
-      "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg"
-    ]
+      "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg",
+    ],
   },
   3: {
     id: 3,
@@ -97,9 +97,9 @@ const classes = {
       "Want to get started in the magical world of cooking? Well join our class to learn more and get ready to be amazed.",
     partnerID: 1,
     pictureSources: [
-      "https://d2ga8dje9bus38.cloudfront.net/0QTxUDcDSYaU0951YubV_verlocal_cooking_basics_class_workshop_in_oakland_900_600.jpg"
-    ]
-  }
+      "https://d2ga8dje9bus38.cloudfront.net/0QTxUDcDSYaU0951YubV_verlocal_cooking_basics_class_workshop_in_oakland_900_600.jpg",
+    ],
+  },
 };
 
 const reviews = {
@@ -111,14 +111,14 @@ const reviews = {
       {
         points: 4,
         description: "Was really fun!",
-        timestamp: 1584702021
+        timestamp: 1584702021,
       },
       {
         points: 4,
         description: "Love the open classroom environment",
-        timestamp: 1584702019
-      }
-    ]
+        timestamp: 1584702019,
+      },
+    ],
   },
   1: {
     classID: 1,
@@ -128,14 +128,14 @@ const reviews = {
       {
         points: 5,
         description: "Was really fun!",
-        timestamp: 1584702021
+        timestamp: 1584702021,
       },
       {
         points: 4,
         description: "Love the open classroom environment",
-        timestamp: 1584702019
-      }
-    ]
+        timestamp: 1584702019,
+      },
+    ],
   },
   2: {
     classID: 2,
@@ -145,71 +145,71 @@ const reviews = {
       {
         points: 5,
         description: "Was really fun!",
-        timestamp: 1584702021
+        timestamp: 1584702021,
       },
       {
         points: 4,
         description: "Love the open classroom environment",
-        timestamp: 1584702019
+        timestamp: 1584702019,
       },
       {
         points: 5,
         description: "Was really fun!",
-        timestamp: 1584702018
+        timestamp: 1584702018,
       },
       {
         points: 4,
         description: "Love the open classroom environment",
-        timestamp: 1584702016
+        timestamp: 1584702016,
       },
       {
         points: 5,
         description: "Was really fun!",
-        timestamp: 1584702015
+        timestamp: 1584702015,
       },
       {
         points: 5,
         description: "Ichika is a great teacher!",
-        timestamp: 1584702014
+        timestamp: 1584702014,
       },
       {
         points: 4,
         description: "Love the open classroom environment",
-        timestamp: 1584702013
-      }
-    ]
-  }
+        timestamp: 1584702013,
+      },
+    ],
+  },
 };
 
 const schedule = {
   0: {
-    classID: 0
+    classID: 0,
   },
   1: {
-    classID: 1
+    classID: 1,
   },
   2: {
-    classID: 2
-  }
+    classID: 2,
+  },
 };
 
 const upcomingClassesID = {
-  0: true
+  0: true,
 };
 
 const favourites = {
   classes: {
     1: true,
-    2: true
+    2: true,
   },
   partners: {
     0: true,
-    1: true
-  }
+    1: true,
+  },
 };
 
 const pastClassesID = {
-  2: true
+  2: true,
 };
 
 module.exports = {
@@ -219,5 +219,5 @@ module.exports = {
   schedule,
   upcomingClassesID,
   favourites,
-  pastClassesID
+  pastClassesID,
 };

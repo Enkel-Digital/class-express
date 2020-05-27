@@ -15,7 +15,7 @@ import { ObserveVisibility } from "vue-observe-visibility";
 export default {
   mixins: [createWidgetMixin({ connector: connectInfiniteHits })],
   directives: {
-    "observe-visibility": ObserveVisibility
+    "observe-visibility": ObserveVisibility,
   },
 
   methods: {
@@ -23,8 +23,8 @@ export default {
       if (isVisible && !this.state.isLastPage) {
         this.state.showMore();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

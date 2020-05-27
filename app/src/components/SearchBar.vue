@@ -43,8 +43,8 @@ export default {
         "primary 6 science",
         "chinese",
         "english",
-        "art"
-      ]
+        "art",
+      ],
     };
   },
   watch: {
@@ -55,13 +55,13 @@ export default {
       this.loading = true;
       setTimeout(() => {
         this.items = this.classNames.filter(
-          e =>
+          (e) =>
             (e || "").toLowerCase().indexOf((searchText || "").toLowerCase()) >
             -1
         );
         this.loading = false;
       }, 500);
-    }
+    },
   },
   methods: {
     search() {
@@ -72,7 +72,7 @@ export default {
 
       // Call the store to get search results into store for explore page to display
       this.$store.dispatch("search/searchClass");
-    }
+    },
     /**
      * @function getSuggestions
      * To Simulate ajax query
@@ -87,7 +87,7 @@ export default {
     //     this.loading = false;
     //   }, 500);
     // }
-  }
+  },
 };
 </script>
 

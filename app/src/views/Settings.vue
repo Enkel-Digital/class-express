@@ -158,14 +158,14 @@ import cloneDeep from "lodash.clonedeep";
 export default {
   name: "settings",
   components: {
-    BackBtn
+    BackBtn,
   },
   data() {
     // @notice Can use JSONify too since values in state are all JSONifyable without any complex structures.
     const settings = cloneDeep(this.$store.state.settings.settings);
 
     return {
-      settings
+      settings,
     };
   },
   watch: {
@@ -175,11 +175,11 @@ export default {
       handler() {
         // Update the settings by passing in the whole settings object
         this.$store.dispatch("settings/updateSettings", this.settings);
-      }
-    }
+      },
+    },
   },
   methods: {
-    logout
-  }
+    logout,
+  },
 };
 </script>
