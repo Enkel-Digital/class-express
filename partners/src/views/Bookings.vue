@@ -1,8 +1,8 @@
 <template>
   <v-content>
-    <v-card>
+    <v-card outlined>
       <v-card-title>
-        Booking List
+        Active Classes Booking List
         <v-spacer />
 
         <v-text-field
@@ -25,7 +25,7 @@
           <router-link
             :to="{ name: 'ClassDetails', params: { classID: item.classID } }"
           >
-            Click to view
+            Click to View
           </router-link>
         </template></v-data-table
       >
@@ -46,7 +46,10 @@ export default {
       headers: [
         { text: "User ID", value: "id" },
         { text: "Name", value: "name" },
-        { text: "Email", value: "email" },
+
+        // Email column
+        // { text: "Email", value: "email" },
+
         { text: "Class Name", value: "className" },
         { text: "Start Time", value: "startTime" },
         { text: "Class Detail", value: "classID" },

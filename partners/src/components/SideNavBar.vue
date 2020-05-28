@@ -138,13 +138,13 @@ export default {
     return {
       items: [
         {
-          icon: "mdi-view-dashboard",
+          icon: "mdi-monitor-dashboard",
           text: "Dashboard",
           link: { name: "home" },
         },
         {
-          icon: "mdi-calendar",
-          text: "View Schedule",
+          icon: "mdi-calendar-month",
+          text: "Schedule",
           link: { name: "view-schedule" },
         },
         // {
@@ -178,7 +178,7 @@ export default {
       ],
       classTabs: [
         {
-          icon: "mdi-google-classroom",
+          icon: "mdi-view-list",
           text: "All Classes",
           link: { name: "all-classes" },
         },
@@ -189,12 +189,12 @@ export default {
         },
         {
           icon: "mdi-calendar-clock",
-          text: "Class Bookings",
+          text: "Bookings",
           link: { name: "bookings" },
         },
         {
-          icon: "mdi-account",
-          text: "Class Reviews",
+          icon: "mdi-message-draw",
+          text: "Reviews",
           link: { name: "all-reviews" },
         },
       ],
@@ -205,7 +205,7 @@ export default {
           link: { name: "earnings" },
         },
         {
-          icon: "mdi-account-group-outline",
+          icon: "mdi-card-text",
           text: "Withdrawal",
           link: { name: "withdrawal" },
         },
