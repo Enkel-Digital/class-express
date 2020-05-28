@@ -42,6 +42,9 @@ export default {
 
       return earliestError;
     },
+    errorCount(state) {
+      return Object.keys(state.errors).length;
+    },
     /**
      * @todo Perhaps we should use a object, then return the earliest triggered array via a getter rather then an array
      */

@@ -49,12 +49,9 @@ export default new Vuex.Store({
       dispatch("loader/init");
       dispatch("points/init");
       dispatch("classes/init");
-      // await dispatch("points/init");
-      // await dispatch("settings/init");
-      // await dispatch("classes/init");
     },
     /**
-     * Function to get the user's details
+     * Function to get basic user's details
      * @function getUserDetails
      */
     async getUserDetails({ commit }, email) {

@@ -10,7 +10,7 @@
   <v-dialog v-if="error" v-model="alwaysShow" persistent>
     <v-card>
       <p class="overline ma-4 pa-4 mb-0 pb-0" style="color: red;">
-        sadly, there is an error
+        sadly, there is an error ({{ errorCount }})
       </p>
       <v-card-title class="headline mt-0 pt-0" style="word-break: keep-all;">
         "{{ error.name }}"
@@ -74,6 +74,7 @@ export default {
   computed: {
     ...mapGetters("error", {
       error: "displayEarliestError",
+      errorCount: "errorCount",
     }),
     actions() {
       if (this.error.more && this.error.more.actions)

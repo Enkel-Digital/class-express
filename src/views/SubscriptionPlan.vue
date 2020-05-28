@@ -85,12 +85,8 @@
       </v-card>
     </v-radio-group>
 
-    <!-- 
-      Using !== null as planID can be 0 
-      Dont show this when user does not have a plan
-    -->
     <v-card
-      v-if="currentPlanID !== null"
+      v-if="currentPlanID"
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
@@ -113,12 +109,8 @@
       </v-list-item>
     </v-card>
 
-    <!-- 
-      Using !== null as planID can be 0 
-      Delete field in DB once plan is cancelled
-    -->
     <v-card
-      v-if="currentPlanID !== null"
+      v-if="currentPlanID"
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
@@ -136,12 +128,8 @@
       </v-list-item>
     </v-card>
 
-    <!-- 
-      Using !== null as planID can be 0 
-      Delete field in DB once plan is cancelled
-    -->
     <v-card
-      v-if="currentPlanID !== null"
+      v-if="currentPlanID"
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
