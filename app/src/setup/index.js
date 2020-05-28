@@ -23,7 +23,7 @@ function setupExecutor() {
         console.log("Vue JS app is deleted from DOM");
       })();
 
-      // Mount a new page/app to show 400 app died or something instead of leaving it blank
+      // @todo Mount a new page/app to show 400 app died or something instead of leaving it blank
 
       return false; // Indicate failure
     }

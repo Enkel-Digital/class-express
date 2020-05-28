@@ -100,6 +100,7 @@ export default {
     async login() {
       try {
         // @todo Show loading screen while authenticating and loading user data
+        // this.$loader
 
         // eslint-disable-next-line no-unused-vars
         const usr = await firebase
@@ -115,24 +116,15 @@ export default {
           error.code = "email/no-verify";
           throw error;
         } else {
-          /**
-           * Await for async dispatch to ensure app only starts when user info is all available.
-           * @notice This might cause some cascading failures issue if 1st call fails and throws.
-           * @notice Current fix is to sign user out if they are signed in, in catch block
-           * @todo To fix this, as this is not an ideal method.
-           */
+          // Await for async dispatch to ensure app only starts after user info is available.
           await this.$store.dispatch("getUserDetails", this.email);
-          await this.$store.dispatch("init");
+          this.$store.dispatch("init");
 
           // Route to the user's home page, after login
           this.$router.replace({ name: "home", params: { user: name } });
         }
       } catch (error) {
-        /**
-         * If there is an error but user is somehow logged in, sign user out to try again
-         * @notice This is not ideal as if the store dispatch failed, then user can never ever login anymore
-         * @todo To optimize this.
-         */
+        // If there is an error but user is somehow logged in, sign user out to try again
         if (firebase.auth().currentUser) await firebase.auth().signOut();
 
         // @todo Instead of changing route, perhaps, show via ErrorDialog and let user know they need to verify their email

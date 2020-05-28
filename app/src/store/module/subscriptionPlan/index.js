@@ -23,7 +23,7 @@ export default {
      * @function init
      */
     async init({ dispatch }) {
-      dispatch("getPlanIDs");
+      dispatch("getUserPlans");
     },
     /**
      * Get list of available subscription plans from api
@@ -40,15 +40,15 @@ export default {
      * Get ID of current plan
      * @function getPlans
      */
-    async getPlanIDs({ commit, rootState, dispatch }) {
+    async getUserPlans({ commit, rootState, dispatch }) {
       const response = await apiWithLoader.get(
         `/subscription/${rootState.user.email}`
       );
       if (!response.success)
-        return apiError(response, () => dispatch("getPlanIDs"));
+        return apiError(response, () => dispatch("getUserPlans"));
 
-      commit("setter", ["currentPlanID", response.plans.currentPlanID]);
-      commit("setter", ["nextPlanID", response.plans.nextPlanID]);
+      commit("setter", ["currentPlan", response.plans.currentPlan]);
+      commit("setter", ["nextPlan", response.plans.nextPlan]);
     },
     /**
      * Update the user's plan

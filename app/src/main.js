@@ -12,6 +12,7 @@ import "firebase/auth";
 
 import moment from "moment";
 Vue.prototype.moment = moment;
+
 Vue.config.productionTip = false;
 
 // Register global custom directive called `v-autofocus`
