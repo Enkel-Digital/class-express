@@ -36,7 +36,7 @@
             </v-menu>
           </v-toolbar>
         </v-sheet>
-        <v-sheet height="400">
+        <v-sheet height="400" id="scroll">
           <!-- @todo fix calendar alignment -->
           <v-calendar
             ref="calendar"
@@ -152,6 +152,9 @@ export default {
 <style scoped>
 #schedule {
   margin: 0em 2em;
-  /* overflow-y: hidden; */
+}
+
+#scroll ::-webkit-scrollbar {
+  width: 0;
 }
 </style>
