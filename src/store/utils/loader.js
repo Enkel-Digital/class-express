@@ -30,6 +30,6 @@ export default {
    * @function clearAll
    */
   async clearAll() {
-    return store.dispatch("loader/clear", { root: true });
+    return store.dispatch("loader/clearAll", { root: true });
   },
 };
