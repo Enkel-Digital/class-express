@@ -12,7 +12,7 @@
       right now top-level loader is masked behind the ErrorDialog
       ErrorDialog have a "202" z-index so we must use "203" for overlay
     -->
-    <v-overlay v-if="showFullLoader" :value="true" z-index="fullLoaderZIndex">
+    <v-overlay v-if="showFullLoader" :value="true" :z-index="fullLoaderZIndex">
       <!-- Size 64 is in px ~ around 4em -->
       <v-progress-circular indeterminate size="64" />
     </v-overlay>
@@ -23,7 +23,7 @@
       Using height attribute of "4" to match the default height of v-progress-linear
       Set height to be the same to prevent showing extra spaces beneath the progress bar.
     -->
-    <v-system-bar app v-else-if="showTopLoader" height="topLoaderHeight">
+    <v-system-bar app v-else-if="showTopLoader" :height="topLoaderHeight">
       <v-progress-linear indeterminate absolute top />
     </v-system-bar>
   </span>
