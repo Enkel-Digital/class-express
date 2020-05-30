@@ -1,5 +1,5 @@
 import api from "./fetch";
-import loader from "./loader";
+import Vue from "vue";
 
 /**
  * Function that sandwiches the api call between the loader set and clear calls.
@@ -11,13 +11,13 @@ import loader from "./loader";
  */
 async function withLoader(fn, ...fnArgs) {
   // Show loader before API call and get loaderID back
-  const loaderID = await loader.new();
+  const loaderID = await Vue.$loader.new();
 
   // Call the api using generic application here
   const response = await fn(...fnArgs);
 
   // Remove loader after API responds
-  loader.clear(loaderID);
+  Vue.$loader.clear(loaderID);
 
   return response;
 }

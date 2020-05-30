@@ -14,7 +14,6 @@ import pointsModule from "./module/points";
 import newsModule from "./module/news";
 import subscriptionPlanModule from "./module/subscriptionPlan";
 import settingsModule from "./module/settings";
-import loaderModule from "./module/loader";
 
 Vue.use(Vuex);
 
@@ -29,7 +28,6 @@ export default new Vuex.Store({
     news: newsModule,
     subscription: subscriptionPlanModule,
     settings: settingsModule,
-    loader: loaderModule,
   },
   mutations: {
     setter,

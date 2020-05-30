@@ -19,7 +19,6 @@
 import AuthType from "@/router/AuthType";
 import BottomNavBar from "@/components/BottomNavBar";
 import ErrorDialog from "@/components/ErrorDialog";
-import Loader from "@/components/Loader";
 import InternalNotificationDialog from "@/components/InternalNotificationDialog";
 
 export default {
@@ -27,7 +26,6 @@ export default {
   components: {
     BottomNavBar,
     ErrorDialog,
-    Loader,
     InternalNotificationDialog,
   },
   computed: {
