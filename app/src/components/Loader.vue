@@ -44,9 +44,6 @@
  * The full screen overlay loader have priority over the top level linear loader
  * But by default show loading requests shows the top level linear loader
  */
-
-import loaderController from "../plugins/loader/loaderController";
-
 export default {
   name: "loader",
   props: {
@@ -60,8 +57,13 @@ export default {
     },
   },
   computed: {
-    showFullLoader: loaderController.showFullLoader,
-    showTopLoader: loaderController.showTopLoader,
+    // wrap it inside functions to access "this" vue instance injected in
+    showFullLoader() {
+      return this.$loader.showFullLoader();
+    },
+    showTopLoader() {
+      return this.$loader.showTopLoader();
+    },
   },
 };
 </script>
