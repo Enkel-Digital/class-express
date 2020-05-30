@@ -6,7 +6,6 @@
 
 import initialState from "./initialState";
 import setter from "../../utils/setter";
-import loader from "../../utils/loader";
 import apiError from "@/store/utils/apiError";
 import api from "@/store/utils/fetch";
 import apiWithLoader from "@/store/utils/apiWithLoader";
@@ -60,7 +59,7 @@ export default {
 
       if (confirm("Confirm change of Subscription Plan!")) {
         // Show loading bar before calling API for pessimistic UI
-        const loaderID = await loader.new();
+        // const loaderID = await loader.new();
 
         // Call API to update the plan
         const response = await api.post("/subscription/plans/update", {
@@ -69,7 +68,7 @@ export default {
         });
 
         // Remove loader after API responds
-        loader.clear(loaderID);
+        // loader.clear(loaderID);
 
         // @todo Handle error
         if (!response.success);

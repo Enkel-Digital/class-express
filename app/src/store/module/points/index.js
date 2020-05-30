@@ -4,7 +4,6 @@
 
 import initialState from "./initialState";
 import setter from "../../utils/setter";
-import loader from "@/store/utils/loader";
 import apiError from "@/store/utils/apiError";
 import api from "@/store/utils/fetch";
 
