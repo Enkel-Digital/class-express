@@ -13,7 +13,7 @@ import "firebase/auth";
 import moment from "moment";
 Vue.prototype.moment = moment;
 
-import loader from "./plugins/loader/plugin";
+import loader from "vue-cli-plugin-loader";
 import customLoader from "./components/Loader.vue";
 Vue.use(loader, { customLoader });
 
