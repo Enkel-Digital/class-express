@@ -1,6 +1,6 @@
 {
   "name": "vue-loader-controller",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Vue plugin for a global loader controller",
   "main": "./src/index.js",
   "files": [
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Enkel-Digital/vue-cli-plugin-loader.git"
+    "url": "git+https://github.com/Enkel-Digital/vue-loader-controller.git"
   },
   "keywords": [
     "vue",
@@ -25,9 +25,9 @@
   "author": "JJ",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Enkel-Digital/vue-cli-plugin-loader/issues"
+    "url": "https://github.com/Enkel-Digital/vue-loader-controller/issues"
   },
-  "homepage": "https://github.com/Enkel-Digital/vue-cli-plugin-loader#readme",
+  "homepage": "https://github.com/Enkel-Digital/vue-loader-controller#readme",
   "devDependencies": {
     "husky": "^4.2.5",
     "lint-staged": "^10.2.4",
