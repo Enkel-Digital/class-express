@@ -1,0 +1,49 @@
+{
+  "name": "vue-loader-controller",
+  "version": "0.1.0",
+  "description": "Vue plugin for a global loader controller",
+  "main": "./src/index.js",
+  "files": [
+    "src/"
+  ],
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "publish": "git stash --include-untracked && npm publish && git stash apply"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Enkel-Digital/vue-cli-plugin-loader.git"
+  },
+  "keywords": [
+    "vue",
+    "plugin",
+    "vue-plugin",
+    "loader"
+  ],
+  "author": "JJ",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Enkel-Digital/vue-cli-plugin-loader/issues"
+  },
+  "homepage": "https://github.com/Enkel-Digital/vue-cli-plugin-loader#readme",
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.4",
+    "prettier": "^2.0.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js}": [
+      "prettier --write '**/*.js'"
+    ],
+    "*.{json}": [
+      "prettier --write '**/*.json'"
+    ]
+  }
+}
