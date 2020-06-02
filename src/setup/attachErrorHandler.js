@@ -9,11 +9,10 @@
 
 import Vue from "vue";
 
-import { ERROR, createError } from "@/utils/error";
-import error from "@/store/utils/error";
+import { ERROR, createError } from "vue-error-controller";
 
 const newError = (_error) =>
-  error.new(createError(ERROR.level.FATAL, ERROR.type.UNKNOWN, _error));
+  Vue.$error.new(createError(ERROR.level.FATAL, ERROR.type.UNKNOWN, _error));
 
 /**
  * @param {object} err The error thrown
@@ -21,9 +20,6 @@ const newError = (_error) =>
  * @param {String} info Vue-specific error info, e.g. which lifecycle hook the error was found in.
  */
 Vue.config.errorHandler = async function (err, vueComponent, info) {
-  // @todo Remove for production
-  console.error("vue.config.errorHandler: ", arguments);
-
   // Discarding stack as not very useful and hard to send over to server
   // console.error(err.stack);
 
@@ -41,9 +37,6 @@ Vue.config.errorHandler = async function (err, vueComponent, info) {
  * event.reason contains the reason for the rejection
  */
 window.addEventListener("unhandledrejection", function (event) {
-  // @todo Remove for production
-  console.error("unhandledrejection error event: ", arguments);
-
   // Dispatch without awaitng for store to handle all error logging/reporting logic
   newError({
     via: "window.addEventListener.unhandledrejection",
@@ -52,9 +45,6 @@ window.addEventListener("unhandledrejection", function (event) {
 });
 
 window.onerror = function (message, source, lineno, colno, error) {
-  // @todo Remove for production
-  console.error("window.onerror: ", arguments);
-
   newError({
     via: "window.onerror",
     error: {

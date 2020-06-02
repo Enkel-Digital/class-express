@@ -1,5 +1,5 @@
-import { ERROR, createError } from "@/utils/error";
-import error from "@/store/utils/error";
+import { ERROR, createError } from "vue-error-controller";
+import Vue from "vue";
 
 /**
  * Simple wrapper error.new and createError to create an API error, which will be used throughout the code base
@@ -45,7 +45,7 @@ import error from "@/store/utils/error";
  */
 export default function apiError(response, retry) {
   // Return to allow the returned errorID from the action to bubble up.
-  return error.new(
+  return Vue.$error.new(
     createError(ERROR.level.RETRY, ERROR.type.API, {
       reponseError: response.error || response,
       actions: { retry },

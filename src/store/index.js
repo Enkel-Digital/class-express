@@ -7,7 +7,6 @@ import apiError from "@/store/utils/apiError";
 import initialState from "./initialState";
 import setter from "./utils/setter";
 
-import errorModule from "./module/error";
 import classesModule from "./module/classes";
 import searchModule from "./module/search";
 import pointsModule from "./module/points";
@@ -21,7 +20,6 @@ export default new Vuex.Store({
   strict: process.env.NODE_ENV.toLowerCase() !== "production",
   state: initialState(),
   modules: {
-    error: errorModule,
     classes: classesModule,
     search: searchModule,
     points: pointsModule, // User points and not all points related
@@ -43,7 +41,6 @@ export default new Vuex.Store({
     async init({ dispatch }) {
       console.log("Initializing vuex store and its modules...");
 
-      dispatch("error/init");
       dispatch("loader/init");
       dispatch("points/init");
       dispatch("classes/init");

@@ -18,14 +18,14 @@
 <script>
 import AuthType from "@/router/AuthType";
 import BottomNavBar from "@/components/BottomNavBar";
-import ErrorDialog from "@/components/ErrorDialog";
+
+// @todo Use a plugin instead of writing this myself
 import InternalNotificationDialog from "@/components/InternalNotificationDialog";
 
 export default {
   name: "App",
   components: {
     BottomNavBar,
-    ErrorDialog,
     InternalNotificationDialog,
   },
   computed: {

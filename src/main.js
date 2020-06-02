@@ -17,6 +17,11 @@ import loader from "vue-loader-controller";
 import customLoader from "./components/Loader.vue";
 Vue.use(loader, { customLoader });
 
+import errorController from "vue-error-controller";
+import errorDialog from "./components/ErrorDialog.vue";
+import postToErrorService from "./utils/postToErrorService";
+Vue.use(errorController, { router, errorDialog, postToErrorService });
+
 Vue.config.productionTip = false;
 
 // Register global custom directive called `v-autofocus`

@@ -12,12 +12,12 @@
       <p class="overline ma-4 pa-4 mb-0 pb-0" style="color: red;">
         sadly, there is an error ({{ errorCount }})
       </p>
-      <v-card-title class="headline mt-0 pt-0" style="word-break: keep-all;">
-        "{{ error.name }}"
-      </v-card-title>
-      <v-card-text style="text-align: left;">
-        {{ error.description }}
-      </v-card-text>
+      <v-card-title
+        v-html="error.name"
+        class="headline mt-0 pt-0"
+        style="word-break: keep-all;"
+      />
+      <v-card-text v-html="error.description" style="text-align: left;" />
 
       <v-card-text style="text-align: left;">
         Issue is reported to the developer 🙏🏻
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+// Error dialog to display errors from the error controller plugin
 
 export default {
   name: "ErrorDialog",
@@ -72,10 +72,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("error", {
-      error: "displayEarliestError",
-      errorCount: "errorCount",
-    }),
+    // wrap it inside functions to access "this" vue instance injected in
+    error() {
+      return this.$error.getters.displayEarliestError();
+    },
+    errorCount() {
+      return this.$error.getters.errorCount();
+    },
     actions() {
       if (this.error.more && this.error.more.actions)
         return this.error.more.actions;
@@ -89,7 +92,7 @@ export default {
      * @params actions
      */
     dismiss(action) {
-      this.$store.dispatch("error/clear", this.error.errorID);
+      this.$error.clear(this.error.errorID);
       if (action) return action(this);
     },
   },
