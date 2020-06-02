@@ -4,7 +4,7 @@ import fetch from "fetch-with-fire";
 import { apiUrl } from "@/config";
 
 import store from "@/store";
-import { ERROR, createError } from "@/utils/error";
+import { ERROR, createError } from "vue-error-controller";
 
 // Return error here to allow the error to be returned to the api caller
 function errorHandler(error) {
