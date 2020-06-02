@@ -1,5 +1,7 @@
 <template>
   <v-app id="app">
+    <Loader />
+
     <SideNavBar v-if="signedInRoute" />
 
     <v-app-bar
@@ -118,7 +120,6 @@ import SideNavBar from "@/components/SideNavBar";
 
 export default {
   name: "App",
-
   components: {
     SideNavBar,
   },
