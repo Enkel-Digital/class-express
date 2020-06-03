@@ -9,12 +9,18 @@ import vuetify from "./plugins/vuetify";
 import firebase from "firebase/app";
 import "firebase/auth";
 
-import moment from "moment";
-Vue.prototype.moment = moment;
+// Setup the error controller plugin
+import errorController from "vue-error-controller";
+import errorDialog from "./components/ErrorDialog.vue";
+import postToErrorService from "./utils/postToErrorService";
+Vue.use(errorController, { router, errorDialog, postToErrorService });
 
 import loader from "vue-loader-controller";
 import customLoader from "./components/Loader.vue";
 Vue.use(loader, { customLoader });
+
+import moment from "moment";
+Vue.prototype.moment = moment;
 
 Vue.config.productionTip = false;
 

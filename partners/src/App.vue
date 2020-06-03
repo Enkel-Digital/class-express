@@ -1,5 +1,6 @@
 <template>
   <v-app id="app">
+    <ErrorDialog />
     <Loader />
 
     <SideNavBar v-if="signedInRoute" />
