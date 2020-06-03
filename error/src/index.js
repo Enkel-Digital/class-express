@@ -1,4 +1,5 @@
 import errorControllerFF from "./errorControllerFF";
+import setupUncaughtErrorHandler from "./setupUncaughtErrorHandler";
 
 // Plugin object with only the required install method.
 const ErrorPlugin = {
@@ -15,6 +16,10 @@ const ErrorPlugin = {
       options.router,
       options.postToErrorService
     );
+
+    // Setup error handlers for uncaught errors with
+    // 1. Vue.config.errorHandler; 2. window event "unhandledrejection"; 3. window.onerror;
+    setupUncaughtErrorHandler(Vue, errorController);
 
     // Attach errorController to Vue class/module for vuex and other "non vue component" modules
     Vue.$error = errorController;

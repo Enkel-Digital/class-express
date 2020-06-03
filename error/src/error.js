@@ -131,15 +131,18 @@ function createError(ERR_level, ERR_type, moreInfo) {
  * Error is hard coded and frozen to prevent modification
  *
  * Error level definitions:
- * - FATAL: Fatal error, stop app process, but allow some background tasks to continue
- * - WARNING: Show user failure warning and indicate some processes may fail but allow user to continue
+ * - FATAL: Fatal error, stop app process, but allow some background tasks to continue.
+ * - WARNING: Show user failure warning and indicate some processes may fail but allow user to continue.
  * - RETRY: Show user failure and retry in background OR ask if user would like to retry.
+ * - INFO: Show user failure and retry in background OR ask if user would like to retry. Difference with RETRY is that, this is fine to ignore without any consequences.
  */
 const ERROR = Object.freeze({
+  // Error level with descending level of importance
   level: {
     FATAL: "FATAL",
     WARNING: "WARNING",
     RETRY: "RETRY",
+    INFO: "INFO",
   },
   type: {
     NETWORK: {
