@@ -7,7 +7,6 @@
 import initialState from "./initialState";
 import setter from "../../utils/setter";
 import apiError from "@/store/utils/apiError";
-import api from "@/store/utils/fetch";
 import apiWithLoader from "@/store/utils/apiWithLoader";
 
 export default {
@@ -58,42 +57,36 @@ export default {
       if (state.nextPlanID === planID) return;
 
       if (confirm("Confirm change of Subscription Plan!")) {
-        // Show loading bar before calling API for pessimistic UI
-        // const loaderID = await loader.new();
-
         // Call API to update the plan
-        const response = await api.post("/subscription/plans/update", {
-          userID: rootState.user.email,
-          subscriptionPlanID: planID,
-        });
+        const response = await apiWithLoader.post(
+          "/subscription/plans/update",
+          {
+            userID: rootState.user.email,
+            subscriptionPlanID: planID,
+          }
+        );
 
-        // Remove loader after API responds
-        // loader.clear(loaderID);
-
-        // @todo Handle error
-        if (!response.success);
-
-        // @todo Remove before beta
-        console.log("Plan is updated");
+        if (!response.success)
+          return apiError(response, () => dispatch("updatePlan", planID));
 
         // Pessimistic UI, show after network update is complete, using the users' plans the API returned
         commit("setter", ["currentPlanID", response.plans.currentPlanID]);
         commit("setter", ["nextPlanID", response.plans.nextPlanID]);
       }
     },
-    async cancelPlan({ rootState, commit }, cancellationReasons) {
-      const response = await api.post("/subscription/cancel", {
+    async cancelPlan({ rootState, dispatch, commit }, cancellationReasons) {
+      const response = await apiWithLoader.post("/subscription/cancel", {
         userID: rootState.user.userID,
         cancellationReasons,
       });
 
-      // @todo
-      if (response.success) {
-        // Indicate that this is the last plan and there will no longer be any next plan
-        commit("setter", ["nextPlanID", null]);
-      } else {
-        // error dialog
-      }
+      if (!response.success)
+        return apiError(response, () =>
+          dispatch("cancelPlan", cancellationReasons)
+        );
+
+      // Indicate that this is the last plan and there will no longer be any next plan
+      commit("setter", ["nextPlanID", null]);
     },
   },
 };

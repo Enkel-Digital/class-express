@@ -10,7 +10,7 @@
   <v-dialog v-if="error" v-model="alwaysShow" persistent>
     <v-card>
       <p class="overline ma-4 pa-4 mb-0 pb-0" style="color: red;">
-        sadly, there is an error ({{ errorCount }})
+        sadly, there is ({{ errorCount }}) error(s)
       </p>
       <v-card-title
         v-html="error.name"

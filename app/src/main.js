@@ -15,12 +15,12 @@ import errorDialog from "./components/ErrorDialog.vue";
 import postToErrorService from "./utils/postToErrorService";
 Vue.use(errorController, { router, errorDialog, postToErrorService });
 
-import moment from "moment";
-Vue.prototype.moment = moment;
-
 import loader from "vue-loader-controller";
 import customLoader from "./components/Loader.vue";
 Vue.use(loader, { customLoader });
+
+import moment from "moment";
+Vue.prototype.moment = moment;
 
 Vue.config.productionTip = false;
 

@@ -81,7 +81,7 @@
 
 import firebase from "firebase/app";
 import "firebase/auth";
-import api from "@/store/utils/fetch";
+import apiWithLoader from "@/store/utils/apiWithLoader";
 
 // Function to map and return a given err.code to a user friendly message
 function error_msg(err) {
@@ -139,7 +139,7 @@ export default {
         // @todo Replace this with a mutation watcher?
         // This needs to be before signout, as we need the token to create a new user.
         // Not awaiting as we do not need its response to continue signup flow, signing user out and redirecting
-        const res = api.post("/user/new", newUser);
+        const res = apiWithLoader.post("/user/new", newUser);
 
         // // @todo Use this if mutation watcher is implemented.
         // // Store user details to use store to sync data with server.
