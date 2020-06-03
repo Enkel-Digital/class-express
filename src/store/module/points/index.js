@@ -4,8 +4,8 @@
 
 import initialState from "./initialState";
 import setter from "../../utils/setter";
+import apiWithLoader from "@/store/utils/apiWithLoader";
 import apiError from "@/store/utils/apiError";
-import api from "@/store/utils/fetch";
 
 export default {
   namespaced: true,
@@ -49,29 +49,36 @@ export default {
       dispatch("getPoints");
     },
     /**
-     * Get list of available topup options from api
+     * Get list of available topup options
      * @function getPlans
      */
-    async getPoints({ commit, rootState }) {
+    async getPoints({ commit, dispatch, rootState }) {
       // Wait until email is available.
       // @todo Might cause issues if the user API fails this will continue looping forever.
+      // @todo Update this to throw error instead if email is not available
       while (!rootState.user.email) {
         const sleep = (await import("@/utils/sleep")).default;
         await sleep.milli(100);
       }
 
-      const response = await api.get(`/points/${rootState.user.email}`);
-      if (!response.success); // @todo Handle error
+      const response = await apiWithLoader.get(
+        `/points/${rootState.user.email}`
+      );
+
+      if (!response.success)
+        return apiError(response, () => dispatch("getPoints"));
 
       commit("setter", ["points", response.points]);
     },
     /**
-     * Get list of available topup options from api
+     * Get list of available topup options
      * @function getPlans
      */
-    async getTopupOptions({ commit }) {
-      const response = await api.get("/topup/options");
-      if (!response.success); // @todo Handle error
+    async getTopupOptions({ commit, dispatch }) {
+      const response = await apiWithLoader.get("/topup/options");
+
+      if (!response.success)
+        return apiError(response, () => dispatch("getTopupOptions"));
 
       commit("setter", ["topupOptions", response.topupOptions]);
     },
@@ -92,7 +99,6 @@ export default {
 
         console.log("Points added!");
 
-        // Pessimistic UI, show after network update is complete
         commit("topupPoints", points);
       }
     },

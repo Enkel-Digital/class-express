@@ -41,7 +41,6 @@ export default new Vuex.Store({
     async init({ dispatch }) {
       console.log("Initializing vuex store and its modules...");
 
-      dispatch("loader/init");
       dispatch("points/init");
       dispatch("classes/init");
     },
