@@ -1,4 +1,3 @@
-import "./setup/attachErrorHandler"; // Import for its side effects
 import setupOutcome from "./setup/index"; // Returns either true or false
 
 import Vue from "vue";
@@ -10,17 +9,18 @@ import vuetify from "./plugins/vuetify";
 import firebase from "firebase/app";
 import "firebase/auth";
 
+// Setup the error controller plugin
+import errorController from "vue-error-controller";
+import errorDialog from "./components/ErrorDialog.vue";
+import postToErrorService from "./utils/postToErrorService";
+Vue.use(errorController, { router, errorDialog, postToErrorService });
+
 import moment from "moment";
 Vue.prototype.moment = moment;
 
 import loader from "vue-loader-controller";
 import customLoader from "./components/Loader.vue";
 Vue.use(loader, { customLoader });
-
-import errorController from "vue-error-controller";
-import errorDialog from "./components/ErrorDialog.vue";
-import postToErrorService from "./utils/postToErrorService";
-Vue.use(errorController, { router, errorDialog, postToErrorService });
 
 Vue.config.productionTip = false;
 
