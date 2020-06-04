@@ -5,8 +5,6 @@
 export default function initialState() {
   return {
     classes: {},
-    upcomingClassesID: {},
-    favouriteClassesID: {},
   };
 }
 

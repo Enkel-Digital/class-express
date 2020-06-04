@@ -20,6 +20,7 @@ module.exports = {
   user,
   paymentDetails,
   ...require("./points"),
+  ...require("./bookings"),
   ...require("./classes"),
   ...require("./subscriptionPlan"),
   ...require("./news"),

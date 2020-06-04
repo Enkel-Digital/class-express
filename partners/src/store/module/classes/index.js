@@ -34,14 +34,9 @@ export default {
     },
   },
   actions: {
-    /**
-     * Initialization function for this module
-     * @function init
-     */
-    async init({ commit, dispatch }) {
-      /**
-       * @todo Replace with API call
-       */
+    async getAllClasses({ commit }) {
+      // @todo Replace with API call
+
       commit("setter", ["classes", mock.classes]);
     },
     async getReview({ commit }, classID) {

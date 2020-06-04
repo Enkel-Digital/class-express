@@ -5,6 +5,7 @@ import createPersistedState from "vuex-persistedstate";
 import initialState from "./initialState";
 import setter from "./utils/setter";
 import classesModule from "./module/classes";
+import bookingsModule from "./module/bookings";
 import searchModule from "./module/search";
 import pointsModule from "./module/points";
 import newsModule from "./module/news";
@@ -19,6 +20,7 @@ export default new Vuex.Store({
   state: initialState(),
   modules: {
     classes: classesModule,
+    bookings: bookingsModule,
     search: searchModule,
     points: pointsModule, // User points and not all points related
     news: newsModule,
@@ -36,7 +38,6 @@ export default new Vuex.Store({
       console.log("Initializing vuex store and its modules...");
 
       await dispatch("points/init");
-      await dispatch("classes/init");
     },
     /**
      * Function to get all the user's details

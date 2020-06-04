@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "AllClasses",
   beforeMount() {
@@ -31,31 +33,7 @@ export default {
     this.$store.dispatch("classes/getAllClasses");
   },
   computed: {
-    classes() {
-      return [
-        {
-          id: 0,
-          name: "Basic guitar",
-          pictureSources: [
-            "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg",
-          ],
-        },
-        {
-          id: 1,
-          name: "Intermediate guitar",
-          pictureSources: [
-            "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg",
-          ],
-        },
-        {
-          id: 2,
-          name: "Advance guitar",
-          pictureSources: [
-            "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg",
-          ],
-        },
-      ];
-    },
+    ...mapState("classes", ["classes"]),
   },
 };
 </script>
