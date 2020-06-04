@@ -15,9 +15,9 @@
         <v-btn :disabled="owner || employee" @click="employee = true"
           >I am an Employee</v-btn
         >
-        <!-- <v-btn :disabled="employee || owner" @click="employee = true"
-          >I am an Employee</v-btn
-        > -->
+        <v-btn @click="$router.push({ name: 'home' })"
+          >Have An Account? Login here!</v-btn
+        >
       </v-col>
 
       <!-- stepper for owner -->
@@ -182,12 +182,11 @@
 
         <!-- stepper for employee -->
         <v-col cols="15" sm="6" md="7">
-          <v-card v-if="employee">
-            <v-card-title class="justify-center"
-              >This feature is coming soon! 😊</v-card-title
-            >
-          </v-card>
-          <!-- <v-stepper v-if="employee" v-model="step" vertical>
+          <v-stepper v-if="employee" v-model="step" vertical>
+            <v-overlay v-if="employee" :opacity="opacity" :absolute="absolute">
+              <p>This feature is coming soon!</p>
+            </v-overlay>
+
             <v-stepper-step :complete="step > 1" step="1"
               >Login Details
             </v-stepper-step>
@@ -268,7 +267,7 @@
                 >Finish</v-btn
               >
             </v-stepper-content>
-          </v-stepper> -->
+          </v-stepper>
           <v-btn v-if="employee" @click="(owner = false), (employee = false)"
             >Back</v-btn
           >
@@ -311,6 +310,8 @@ export default {
       email: "Email",
       error_msg: "",
       step: 1,
+      absolute: true,
+      opacity: 0.8,
 
       show1: false,
       password: "Password",
@@ -429,8 +430,7 @@ input {
 
 button {
   margin: 1em 0 0 0;
-
-  width: 70%;
+  width: 100%;
   height: 3em;
   max-width: 20em;
 
