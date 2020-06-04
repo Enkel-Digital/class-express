@@ -82,6 +82,12 @@ const routes = [
     component: () => import("@/views/Settings.vue"),
     meta: { Auth_requirements: AuthType.private },
   },
+  {
+    path: "/withdrawal",
+    name: "withdrawal",
+    component: () => import("@/views/Withdrawal.vue"),
+    meta: { Auth_requirements: AuthType.private },
+  },
 ];
 
 export default routes;
