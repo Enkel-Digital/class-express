@@ -36,14 +36,13 @@
             </v-menu>
           </v-toolbar>
         </v-sheet>
-        <v-sheet height="400" id="scroll">
+        <v-sheet id="scroll">
           <!-- @todo fix calendar alignment -->
           <v-calendar
             ref="calendar"
             v-model="focus"
             color="primary"
             :weekdays="weekdays"
-            :now="today"
             :type="type"
             @click:more="viewDay"
             @click:date="viewDay"
@@ -129,6 +128,8 @@ export default {
       const min = new Date(`${start.date}T00:00:00`);
       const max = new Date(`${end.date}T23:59:59`);
       const days = (max.getTime() - min.getTime()) / 86400000;
+      this.start = start;
+      this.end = end;
     },
     nth(d) {
       return d > 3 && d < 21
