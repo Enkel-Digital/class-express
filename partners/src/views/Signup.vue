@@ -12,7 +12,7 @@
         <v-btn :disabled="employee || owner" @click="owner = true"
           >I am an Owner</v-btn
         >
-        <v-btn :disabled="true" @click="employee = true"
+        <v-btn :disabled="owner || employee" @click="employee = true"
           >I am an Employee</v-btn
         >
         <!-- <v-btn :disabled="employee || owner" @click="employee = true"
@@ -175,11 +175,19 @@
             >
           </v-stepper-content>
         </v-stepper>
+        <v-btn v-if="owner" @click="(owner = false), (employee = false)"
+          >Back</v-btn
+        >
         <!-- end of stepper for owner -->
 
         <!-- stepper for employee -->
         <v-col cols="15" sm="6" md="7">
-          <v-stepper v-if="employee" v-model="step" vertical>
+          <v-card v-if="employee">
+            <v-card-title class="justify-center"
+              >This feature is coming soon! 😊</v-card-title
+            >
+          </v-card>
+          <!-- <v-stepper v-if="employee" v-model="step" vertical>
             <v-stepper-step :complete="step > 1" step="1"
               >Login Details
             </v-stepper-step>
@@ -260,7 +268,10 @@
                 >Finish</v-btn
               >
             </v-stepper-content>
-          </v-stepper>
+          </v-stepper> -->
+          <v-btn v-if="employee" @click="(owner = false), (employee = false)"
+            >Back</v-btn
+          >
         </v-col>
         <!-- end of stepper fot employee -->
       </v-col>
