@@ -5,6 +5,7 @@
 export default function initialState() {
   return {
     classes: {},
+    partners: {},
     upcomingClassesID: {},
     favouriteClassesID: {},
     favouritePartnersID: {},

@@ -1,8 +1,8 @@
 const moment = require("moment");
 
 const partners = {
-  0: {
-    id: 0,
+  3: {
+    id: 3,
     name: "Guitar Studio 1",
     location: {
       coordinates: "1.300649, 103.855453",
@@ -103,8 +103,8 @@ const classes = {
 };
 
 const reviews = {
-  0: {
-    classID: 0,
+  3: {
+    classID: 3,
     ratings: 4, // Ratings out of 5 stars
     numberOfReviews: 2, // The reason why this is seperate instead of doing a userReviews.length is because userReviews may be too long and we do not want to load the whole thing at once and only the latest until the user scrolls for more.
     userReviews: [
