@@ -1,5 +1,6 @@
 /**
  * Vuex module for all things classes related
+ * Including reviews, points of the classes, and partners
  */
 
 import Vue from "vue";
@@ -64,6 +65,7 @@ export default {
     },
     /**
      * @todo Sort by time class was attended
+     * @todo As time goes on, this will get larger and larger, thus we need a better way to pass this to the view component, instead of everything at once.
      */
     pastClasses(state) {
       // If pastClassesID is not loaded before getter is ran, skip getter.
@@ -84,7 +86,8 @@ export default {
     },
     /**
      * Generate an array of upcoming classes Object(s) from an array of IDs of upcoming classes
-     * @todo Sort the classes by time of class.
+     * @todo Sort the classes by time of class for every day.
+     * @todo Return an Object with timestamp as key and an array of classes as value
      */
     upcomingClasses(state) {
       const upcomingClasses = {};
@@ -114,6 +117,7 @@ export default {
       commit("setter", ["classes", mock.classes]);
       commit("setter", ["partners", mock.partners]);
 
+      // @todo Do I really need these 2 or can just put in created of the views
       await dispatch("getUpcomingClassesID");
       await dispatch("getFavourites");
     },
@@ -121,11 +125,13 @@ export default {
      * Get list of upcomingClassesID from API
      * @function getUpcomingClassesID
      */
-    async getUpcomingClassesID({ commit }) {
+    async getUpcomingClassesID({ dispatch, commit }) {
       // @todo Replace with API call
       const upcomingClassesID = mock.upcomingClassesID;
 
       commit("setter", ["upcomingClassesID", upcomingClassesID]);
+
+      dispatch("getClass", Object.keys(upcomingClassesID));
     },
     /**
      * Get list of pastClassesID from API
@@ -150,6 +156,8 @@ export default {
 
       commit("setter", ["favouriteClassesID", favouriteClassesID]);
       commit("setter", ["favouritePartnersID", favouritePartnersID]);
+
+      dispatch("getClass", Object.keys(favouriteClassesID));
     },
     async toggleFavouriteClass({ commit }, classID) {
       // Optimistic UI, show toggle first
