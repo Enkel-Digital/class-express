@@ -1,46 +1,5 @@
 const moment = require("moment");
 
-const partners = {
-  3: {
-    id: 3,
-    name: "Guitar Studio 1",
-    location: {
-      coordinates: "1.300649, 103.855453",
-      address: "249B Victoria St, Bugis Village",
-    },
-    description: "Get started on your Guitar journey with us!",
-    pictureSources: [
-      "https://rezaglobalpro.com/wp-content/uploads/Reza-Global-Productions-Music-Studio-3.2-1.jpg",
-    ],
-  },
-  1: {
-    id: 1,
-    name: "Tampines CC",
-    location: {
-      coordinates: "1.348979, 103.935787",
-      address: "5 Tampines Ave 3",
-    },
-    description:
-      "Located in the Heartlands of Tampines, we offer a wide variety of classes for our residents.",
-    pictureSources: [
-      "https://www.pa.gov.sg/images/default-source/module/community-clubs/tampines-west-community-club",
-    ],
-  },
-  2: {
-    id: 2,
-    name: "Guitar Studio 2",
-    location: {
-      coordinates: "1.3006954, 103.84475",
-      address: "Orchard road, Plaza Singapura",
-    },
-    description:
-      "We offer world class guitar lessons for you!<br />Guitar Studio 2 is one of the leading Guitar Studios in Singapore and South East Asia boasting a whole list of celebrity instructors for you to learn more. We believe that the best instructors are what you need to get from amatuer  to pro just like the instructors themselves!",
-    pictureSources: [
-      "https://media.timeout.com/images/105537588/630/472/image.jpg",
-    ],
-  },
-};
-
 const reviews = {
   3: {
     classID: 3,
@@ -142,7 +101,7 @@ const favourites = {
     2: true,
   },
   partners: {
-    0: true,
+    2: true,
     1: true,
   },
 };
@@ -152,7 +111,6 @@ const pastClassesID = {
 };
 
 module.exports = {
-  partners,
   reviews,
   schedule,
   upcomingClassesID,
