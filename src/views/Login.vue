@@ -95,7 +95,7 @@ export default {
       this.$router.push({ name: "welcome" });
     },
     async login() {
-      // Show loading screen before loggin logic executes
+      // Show loading screen before login logic executes
       const loaderRequestID = this.$loader.new();
 
       try {

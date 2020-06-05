@@ -39,8 +39,6 @@
       </a>
     </div>
 
-    <p class="error" v-html="error_msg" />
-
     <v-btn @click="signUp" width="calc(100% - 6em)" color="green darken-1" dark>
       Sign Up
     </v-btn>
@@ -111,7 +109,10 @@ export default {
     back() {
       this.$router.push({ name: "welcome" });
     },
-    signUp: async function () {
+    async signUp() {
+      // Show loading screen before signUp logic executes
+      const loaderRequestID = this.$loader.new();
+
       try {
         // Make lowercase, refer to notes & faq on why this is lowercase.
         // tl;dr Firebase auth like google ignores the email RFC and forces email case-insensitivity
@@ -164,8 +165,16 @@ export default {
         // @todo Remove before production
         console.error(error);
 
-        // Set the message into the error box to show user the error
-        this.error_msg = error_msg(error);
+        // Create new user error and show with ErrorDialog
+        const userError = this.$error.createError(
+          this.$error.ERROR.level.RETRY,
+          this.$error.ERROR.custom("Signup Failed", error_msg(error))
+        );
+        this.$error.new(userError);
+      } finally {
+        // Remove loader after login logic completes regardless of whether signup failed or succeeded
+        // Inside finally to ensure execution even if catch block was ran
+        this.$loader.clear(loaderRequestID);
       }
     },
   },
