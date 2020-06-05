@@ -39,7 +39,12 @@ export default {
       // Clear reviews to prevent caching in memory
       Vue.delete(state.review, "userReviews");
     },
-  },
+    addClass(state, classObject) {
+      Vue.set(state.classes, classObject.id, classObject);
+    },
+    addPartner(state, partnerObject) {
+      Vue.set(state.partners, partnerObject.id, partnerObject);
+    },
   getters: {
     /**
      * @todo Sort by time the class was added as a favourite.
@@ -110,13 +115,6 @@ export default {
      * @function init
      */
     async init({ commit, dispatch }) {
-      /**
-       * @todo Remove this once the class addition is built.
-       * @todo Edit "vuex-persistedstate" plugin to ignore class objects as they should be fetched everytime.
-       */
-      commit("setter", ["classes", mock.classes]);
-      commit("setter", ["partners", mock.partners]);
-
       // @todo Do I really need these 2 or can just put in created of the views
       await dispatch("getUpcomingClassesID");
       await dispatch("getFavourites");
