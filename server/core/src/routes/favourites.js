@@ -10,6 +10,7 @@
 
 const express = require("express");
 const router = express.Router();
+const firebase = require("firebase-admin");
 const db = require("../utils/db");
 const onlyOwnResource = require("../middleware/onlyOwnResource");
 
@@ -32,6 +33,7 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
 
     // If user's first time calling favourites route
     if (!favourites) {
+      // default empty favourite values
       const defaultFavoritesObject = { classes: {}, partners: {} };
 
       // Create new empty document
@@ -50,13 +52,12 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
 });
 
 /**
- * @todo Implement this scaffolded code.
- *
- * Update favourited classes
+ * Favourite or un-favourite a class
  * @name POST /favourites/classes/update
  * @function
  * @param {String} userID
- * @param {number} classID
+ * @param {number} classID Class with classID to update favourite status
+ * @param {boolean} favourite True to set as favourite and false to unfavourite
  * @returns {object} success indicator
  */
 router.post("/classes/update", express.json(), async (req, res) => {
@@ -64,13 +65,70 @@ router.post("/classes/update", express.json(), async (req, res) => {
     // Ensure that the email used as userID is lowercase.
     // Refer to notes for why we are enforcing this lowercase usage.
     const userID = req.body.userID.toLowerCase();
-    req.body.user.email = req.body.user.email.toLowerCase();
-    const user = req.body.user;
+    const { classID, favourite } = req.body;
 
-    // Create document in user with user's email as userID
-    await db.collection("users").doc(userID).set(user);
+    if (!classID) throw new Error("Missing classID");
 
-    res.status(201).json({ success: true });
+    if (favourite)
+      await db
+        .collection("favourites")
+        .doc(userID)
+        .update({
+          [`classes.${classID}`]: {
+            favouritedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          },
+        });
+    else
+      await db
+        .collection("favourites")
+        .doc(userID)
+        .update({
+          [`classes.${classID}`]: firebase.firestore.FieldValue.delete(),
+        });
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Favourite or un-favourite a partner
+ * @name POST /favourites/partner/update
+ * @function
+ * @param {String} userID
+ * @param {number} partnerID Partner with partnerID to update favourite status
+ * @param {boolean} favourite True to set as favourite and false to unfavourite
+ * @returns {object} success indicator
+ */
+router.post("/partner/update", express.json(), async (req, res) => {
+  try {
+    // Ensure that the email used as userID is lowercase.
+    // Refer to notes for why we are enforcing this lowercase usage.
+    const userID = req.body.userID.toLowerCase();
+    const { partnerID, favourite } = req.body;
+
+    if (!partnerID) throw new Error("Missing partnerID");
+
+    if (favourite)
+      await db
+        .collection("favourites")
+        .doc(userID)
+        .update({
+          [`partners.${partnerID}`]: {
+            favouritedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          },
+        });
+    else
+      await db
+        .collection("favourites")
+        .doc(userID)
+        .update({
+          [`partners.${partnerID}`]: firebase.firestore.FieldValue.delete(),
+        });
+
+    res.status(200).json({ success: true });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });
