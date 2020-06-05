@@ -24,9 +24,6 @@
       required
     />
 
-    <!-- @todo Replace this with ErrorDialog -->
-    <p class="error" v-html="error_msg" />
-
     <v-btn @click="login" width="calc(100% - 6em)" color="blue darken-1" dark>
       Login
     </v-btn>
@@ -98,10 +95,10 @@ export default {
       this.$router.push({ name: "welcome" });
     },
     async login() {
-      try {
-        // @todo Show loading screen while authenticating and loading user data
-        // this.$loader
+      // Show loading screen before loggin logic executes
+      const loaderRequestID = this.$loader.new();
 
+      try {
         // eslint-disable-next-line no-unused-vars
         const usr = await firebase
           .auth()
@@ -135,10 +132,16 @@ export default {
             params: { emailAddress: this.email },
           });
 
-        // Set the message into the error box to show user the error
-        this.error_msg = error_msg(error);
-
-        this.$store.dispatch("error/new", error);
+        // Create new user error and show with ErrorDialog
+        const userError = this.$error.createError(
+          this.$error.ERROR.level.RETRY,
+          this.$error.ERROR.custom("Authentication Failed", error_msg(error))
+        );
+        this.$error.new(userError);
+      } finally {
+        // Remove loader after login logic completes regardless of whether login failed or succeeded
+        // Inside finally to ensure execution even if catch block was ran
+        this.$loader.clear(loaderRequestID);
       }
     },
   },
