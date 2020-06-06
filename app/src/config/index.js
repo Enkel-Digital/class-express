@@ -11,7 +11,7 @@ const config = Object.assign(
   {
     version: "0.0.1",
   },
-  // Load config on the fly
+  // Decide on config file to load based on build time env var
   // @todo To optimize this
   require(`./${NODE_ENV}`)
 );
