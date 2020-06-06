@@ -13,6 +13,7 @@ const favouritesRoutes = require("./favourites");
 const subscriptionRoutes = require("./subscription");
 const topupRoutes = require("./topup");
 const pointsRoutes = require("./points");
+const reviewsRoutes = require("./reviews");
 const emailActionLinksRoutes = require("./emailActionLinks");
 
 // @todo Might require the routes inside the mounting directly
@@ -26,6 +27,7 @@ router.use("/favourites", auth, favouritesRoutes);
 router.use("/subscription", subscriptionRoutes);
 router.use("/topup", auth, topupRoutes);
 router.use("/points", auth, pointsRoutes);
+router.use("/reviews", reviewsRoutes);
 router.use("/emailActionLinks", emailActionLinksRoutes);
 
 module.exports = router;
