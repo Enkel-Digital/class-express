@@ -146,6 +146,9 @@ export default {
   components: {
     MapImage,
   },
+  created() {
+    this.$store.dispatch("classes/getUpcomingClassesID");
+  },
   computed: {
     ...mapGetters("classes", ["upcomingClasses"]),
   },

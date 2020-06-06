@@ -111,15 +111,6 @@ export default {
   },
   actions: {
     /**
-     * Initialization function for this module
-     * @function init
-     */
-    async init({ commit, dispatch }) {
-      // @todo Do I really need these 2 or can just put in created of the views
-      await dispatch("getUpcomingClassesID");
-      await dispatch("getFavourites");
-    },
-    /**
      * Get list of upcomingClassesID from API
      * @function getUpcomingClassesID
      */
@@ -147,15 +138,21 @@ export default {
      * Get favourite classes and partners
      * @function getFavourites
      */
-    async getFavourites({ dispatch, commit }) {
+    async getFavouriteClasses({ commit }) {
       // @todo Replace with API call
       const favouriteClassesID = mock.favourites.classes;
-      const favouritePartnersID = mock.favourites.partners;
 
       commit("setter", ["favouriteClassesID", favouriteClassesID]);
-      commit("setter", ["favouritePartnersID", favouritePartnersID]);
+    },
+    /**
+     * Get favourite classes and partners
+     * @function getFavourites
+     */
+    async getFavouritePartners({ commit }) {
+      // @todo Replace with API call
+      const favouritePartnersID = mock.favourites.partners;
 
-      dispatch("getClass", Object.keys(favouriteClassesID));
+      commit("setter", ["favouritePartnersID", favouritePartnersID]);
     },
     async toggleFavouriteClass({ commit }, classID) {
       // Optimistic UI, show toggle first
