@@ -75,6 +75,9 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "favourite-classes",
+  created() {
+    this.$store.dispatch("classes/getFavouriteClasses");
+  },
   computed: {
     ...mapGetters("classes", ["favouriteClasses"]),
   },

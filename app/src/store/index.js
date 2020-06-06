@@ -42,7 +42,6 @@ export default new Vuex.Store({
       console.log("Initializing vuex store and its modules...");
 
       dispatch("points/init");
-      dispatch("classes/init");
     },
     /**
      * Function to get basic user's details
