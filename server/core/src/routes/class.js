@@ -8,12 +8,12 @@
 const express = require("express");
 const db = require("../utils/db");
 const router = express.Router();
+const auth = require("../middleware/auth");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:users");
 
 /**
- *
  * Get class details
  * @name GET /class/details/:classID
  * @function
@@ -27,7 +27,7 @@ router.get("/details/:classID", async (req, res) => {
     const classObject = snapshot.data();
 
     if (classObject) res.json({ success: true, class: classObject });
-    else res.status(404).json({ success: false, error: "Invalid classID" });
+    else res.status(404).json({ success: false, error: "No such Class" });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });
@@ -35,33 +35,43 @@ router.get("/details/:classID", async (req, res) => {
 });
 
 /**
- * Get class object
- * @name GET /class/:classID
+ * Get schedule of a class for a particular date
+ * @name GET /class/schedule/:classID/:date
  * @function
- * @returns {object} Class object
+ * @returns {object} Schedule object
  */
-router.get("/:classID", async (req, res) => {
+router.get("/schedule/:classID/:date", async (req, res) => {
   try {
-    const snapshot = await db.collection("class").get();
+    const { classID, date } = req.params;
 
     // snapshot.forEach(doc => {
     //   console.log(doc.id, "=>", doc.data());
     // });
 
-    res.json({ success: true, snapshot });
+    res.json({ success: true, schedule: {} });
   } catch (error) {
-    console.log("Error getting documents", error);
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
 /**
- * Update class object
- * @name PUT /class/:classID
+ * Reserve a class
+ * @name POST /class/reserve
  * @function
+ * @param {String} userID
+ * @param {String} classID
+ * @param {Object} selectedTime
  * @returns {object} success indicator
  */
-router.get("/:classID", (req, res) => {
-  res.json({ success: true });
+router.post("/reserve", auth, express.json(), async (req, res) => {
+  try {
+    const { userID, classID, selectedTime } = req.body;
+    res.status(200).json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 module.exports = router;
