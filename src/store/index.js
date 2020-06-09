@@ -57,5 +57,16 @@ export default new Vuex.Store({
       commit("setter", ["user", response.user]);
     },
   },
-  plugins: [createPersistedState()],
+  plugins: [
+    /* Note that createPersistedState use the same key "vuex" in storage, but they do not clash as they use different storage APIs */
+    // Register modules for persistent state using localStorage
+    createPersistedState({
+      paths: ["user", "points", "settings", "subscription"],
+    }),
+    // Register modules for persistent state using sessionStorage
+    createPersistedState({
+      storage: window.sessionStorage,
+      paths: ["classes"],
+    }),
+  ],
 });
