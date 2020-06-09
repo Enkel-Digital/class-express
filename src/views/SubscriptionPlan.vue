@@ -190,7 +190,7 @@
 import { Touch } from "vuetify/lib/directives";
 import BackBtn from "@/components/BackBtn";
 import PointsCard from "@/components/PointsCard";
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "subscription",

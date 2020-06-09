@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
 import createGMapsImg from "../store/module/classes/gMapsImage";
 
 /**
