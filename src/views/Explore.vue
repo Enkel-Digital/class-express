@@ -11,6 +11,7 @@
             <ais-search-box placeholder="Search here…" class="searchbox" />
             <FilterMenu />
 
+            <!-- TODO: Mix Partner and Class card together -->
             <!-- Partner card -->
 
             <ais-configure
@@ -19,17 +20,19 @@
               :distinct="true"
             >
               <ais-state-results>
-                <template slot-scope="{ query }">
-                  <app-infinite-hits>
-                    <template slot="item" slot-scope="{ item }">
-                      <v-content style="padding: 0;">
-                        <v-responsive v-if="query.length > 0">
+                <template slot-scope="{ query, hits }">
+                  <ais-hits v-if="query.length > 0 && hits.length > 0">
+                    <template slot-scope="{ items }">
+                      <v-row style="padding: 0;">
+                        <v-responsive>
                           <v-card
+                            v-for="item in items"
                             :key="item.objectID"
                             class="mx-auto mb-4"
                             max-width="calc(100% - 1.6em)"
                             outlined
                             :ripple="false"
+                            color="#CEBDCE"
                           >
                             <v-responsive
                               @click="
@@ -40,10 +43,10 @@
                               "
                             >
                               <!-- @todo Change to a image carousel -->
-                              <v-img
+                              <!-- <v-img
                                 id="class-image"
                                 :src="item.pictureSources[0]"
-                              />
+                              /> -->
 
                               <v-list-item>
                                 <div style="text-align: left;">
@@ -61,9 +64,10 @@
                             </v-responsive>
                           </v-card>
                         </v-responsive>
-                      </v-content>
+                      </v-row>
                     </template>
-                  </app-infinite-hits>
+                  </ais-hits>
+                  <div v-else></div>
                 </template>
               </ais-state-results>
             </ais-configure>
@@ -202,14 +206,14 @@ export default {
     AisSearchBox,
     AisStateResults,
     AisHighlight,
-
+    AisHits,
     AisConfigure,
   },
   data() {
     return {
       searchClient: algoliasearch(
-        "MIG150ZYJX",
-        "d18e0d7563d406863fb469d00796266e"
+        process.env.VUE_APP_Algoliasearch_ID,
+        process.env.VUE_APP_Algoliasearch_Key_SearchOnly
       ),
     };
   },
