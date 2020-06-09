@@ -92,6 +92,7 @@
               <br />
 
               <v-list-item-subtitle
+                v-if="partner"
                 :set="(partner = getPartner(clas.partnerID))"
               >
                 <div style="font-weight: bold;">
