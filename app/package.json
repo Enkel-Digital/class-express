@@ -10,9 +10,11 @@
     "deploy": "npm run build && npm run deploy-firebase-hosting"
   },
   "dependencies": {
+    "algoliasearch": "^4.2.0",
     "core-js": "^3.6.5",
     "fetch-with-fire": "^1.1.0",
     "firebase": "^7.14.6",
+    "instantsearch.css": "^7.4.2",
     "lodash.clonedeep": "^4.5.0",
     "moment": "^2.26.0",
     "register-service-worker": "^1.7.1",
@@ -22,6 +24,8 @@
     "vue-router": "^3.3.2",
     "vuetify": "^2.2.32",
     "vuex": "^3.4.0",
+    "vue-instantsearch": "^2.7.0",
+    "vue-observe-visibility": "^0.4.6",
     "vuex-persistedstate": "^3.0.1"
   },
   "devDependencies": {

@@ -45,206 +45,207 @@ export default {
     addPartner(state, partnerObject) {
       Vue.set(state.partners, partnerObject.id, partnerObject);
     },
-  getters: {
-    /**
-     * @todo Sort by time the class was added as a favourite.
-     */
-    favouriteClasses(state) {
-      const favouriteClasses = [];
+    getters: {
+      /**
+       * @todo Sort by time the class was added as a favourite.
+       */
+      favouriteClasses(state) {
+        const favouriteClasses = [];
 
-      for (const classID of Object.keys(state.favouriteClassesID))
-        favouriteClasses.push(state.classes[classID]);
+        for (const classID of Object.keys(state.favouriteClassesID))
+          favouriteClasses.push(state.classes[classID]);
 
-      return favouriteClasses;
+        return favouriteClasses;
+      },
+      /**
+       * @todo Sort by time the class was added as a favourite.
+       */
+      favouritePartners(state) {
+        const favouritePartners = [];
+
+        for (const partnerID of Object.keys(state.favouritePartnersID))
+          favouritePartners.push(state.partners[partnerID]);
+
+        return favouritePartners;
+      },
+      /**
+       * @todo Sort by time class was attended
+       * @todo As time goes on, this will get larger and larger, thus we need a better way to pass this to the view component, instead of everything at once.
+       */
+      pastClasses(state) {
+        // If pastClassesID is not loaded before getter is ran, skip getter.
+        if (!state.pastClassesID) return [];
+
+        const pastClasses = {};
+
+        for (const classID of Object.keys(state.pastClassesID))
+          pastClasses[classID] = state.classes[classID];
+
+        return Object.values(pastClasses).map((clas) => {
+          /** @notice Explicit data setting needed to prevent data caching */
+          if (state.favouriteClassesID[clas.id]) clas.favourite = true;
+          else clas.favourite = false;
+
+          return clas;
+        });
+      },
+      /**
+       * Generate an array of upcoming classes Object(s) from an array of IDs of upcoming classes
+       * @todo Sort the classes by time of class for every day.
+       * @todo Return an Object with timestamp as key and an array of classes as value
+       */
+      upcomingClasses(state) {
+        const upcomingClasses = {};
+
+        for (const classID of Object.keys(state.upcomingClassesID))
+          upcomingClasses[classID] = state.classes[classID];
+
+        return Object.values(upcomingClasses).map((clas) => {
+          /** @notice Explicit data setting needed to prevent data caching */
+          if (state.favouriteClassesID[clas.id]) clas.favourite = true;
+          else clas.favourite = false;
+
+          return clas;
+        });
+      },
     },
-    /**
-     * @todo Sort by time the class was added as a favourite.
-     */
-    favouritePartners(state) {
-      const favouritePartners = [];
+    actions: {
+      /**
+       * Get list of upcomingClassesID from API
+       * @function getUpcomingClassesID
+       */
+      async getUpcomingClassesID({ dispatch, commit }) {
+        // @todo Replace with API call
+        const upcomingClassesID = mock.upcomingClassesID;
 
-      for (const partnerID of Object.keys(state.favouritePartnersID))
-        favouritePartners.push(state.partners[partnerID]);
+        commit("setter", ["upcomingClassesID", upcomingClassesID]);
 
-      return favouritePartners;
-    },
-    /**
-     * @todo Sort by time class was attended
-     * @todo As time goes on, this will get larger and larger, thus we need a better way to pass this to the view component, instead of everything at once.
-     */
-    pastClasses(state) {
-      // If pastClassesID is not loaded before getter is ran, skip getter.
-      if (!state.pastClassesID) return [];
+        dispatch("getClass", Object.keys(upcomingClassesID));
+      },
+      /**
+       * Get list of pastClassesID from API
+       * @function getPastClassesID
+       */
+      async getPastClassesID({ dispatch, commit }) {
+        // @todo Replace with API call
+        const pastClassesID = mock.pastClassesID;
 
-      const pastClasses = {};
+        commit("setter", ["pastClassesID", pastClassesID]);
 
-      for (const classID of Object.keys(state.pastClassesID))
-        pastClasses[classID] = state.classes[classID];
+        dispatch("getClass", Object.keys(pastClassesID));
+      },
+      /**
+       * Get favourite classes and partners
+       * @function getFavourites
+       */
+      async getFavouriteClasses({ commit }) {
+        // @todo Replace with API call
+        const favouriteClassesID = mock.favourites.classes;
 
-      return Object.values(pastClasses).map((clas) => {
-        /** @notice Explicit data setting needed to prevent data caching */
-        if (state.favouriteClassesID[clas.id]) clas.favourite = true;
-        else clas.favourite = false;
+        commit("setter", ["favouriteClassesID", favouriteClassesID]);
+      },
+      /**
+       * Get favourite classes and partners
+       * @function getFavourites
+       */
+      async getFavouritePartners({ commit }) {
+        // @todo Replace with API call
+        const favouritePartnersID = mock.favourites.partners;
 
-        return clas;
-      });
-    },
-    /**
-     * Generate an array of upcoming classes Object(s) from an array of IDs of upcoming classes
-     * @todo Sort the classes by time of class for every day.
-     * @todo Return an Object with timestamp as key and an array of classes as value
-     */
-    upcomingClasses(state) {
-      const upcomingClasses = {};
+        commit("setter", ["favouritePartnersID", favouritePartnersID]);
+      },
+      async toggleFavouriteClass({ commit }, classID) {
+        // Optimistic UI, show toggle first
+        commit("toggleFavouriteClass", classID);
 
-      for (const classID of Object.keys(state.upcomingClassesID))
-        upcomingClasses[classID] = state.classes[classID];
+        // @todo Call backend and handle error if any to change back favourite value
+        // If error from updating server, then call mutation again to toggleBack
+        // commit("toggleFavouriteClass", classID);
+      },
+      async toggleFavouritePartner({ commit }, partnerID) {
+        // Optimistic UI, show toggle first
+        commit("toggleFavouritePartner", partnerID);
 
-      return Object.values(upcomingClasses).map((clas) => {
-        /** @notice Explicit data setting needed to prevent data caching */
-        if (state.favouriteClassesID[clas.id]) clas.favourite = true;
-        else clas.favourite = false;
+        // @todo Call backend and handle error if any to change back favourite value
+        // If error from updating server, then call mutation again to toggleBack
+        // commit("toggleFavouritePartner", partnerID);
+      },
+      async reserveClass({ state, rootState, commit }, classID) {
+        const { points: classPoints } = state.classes[classID];
+        const userPoints = rootState.points.points;
 
-        return clas;
-      });
-    },
-  },
-  actions: {
-    /**
-     * Get list of upcomingClassesID from API
-     * @function getUpcomingClassesID
-     */
-    async getUpcomingClassesID({ dispatch, commit }) {
-      // @todo Replace with API call
-      const upcomingClassesID = mock.upcomingClassesID;
+        // Check if user have enough points for the class
+        if (userPoints.left < classPoints) {
+          // redirect to topup view
+          if (confirm("Not enough points, topup?"))
+            router.push({ name: "topup" });
+        } else if (confirm(`Reserve class for ${classPoints} points?`)) {
+          // @todo Show loading UI while making call to API
 
-      commit("setter", ["upcomingClassesID", upcomingClassesID]);
+          // @todo Add API call to set upcoming class
+          // @notice API logic should deduct points too, but locally update it without checking API
 
-      dispatch("getClass", Object.keys(upcomingClassesID));
-    },
-    /**
-     * Get list of pastClassesID from API
-     * @function getPastClassesID
-     */
-    async getPastClassesID({ dispatch, commit }) {
-      // @todo Replace with API call
-      const pastClassesID = mock.pastClassesID;
+          /** @notice Pessimistic UI, commit changes after API call is successful */
+          commit("setUpcomingClass", { classID, action: true, timestamp: "" });
 
-      commit("setter", ["pastClassesID", pastClassesID]);
+          // Deduct points
+          commit("points/deductPoints", classPoints, { root: true });
 
-      dispatch("getClass", Object.keys(pastClassesID));
-    },
-    /**
-     * Get favourite classes and partners
-     * @function getFavourites
-     */
-    async getFavouriteClasses({ commit }) {
-      // @todo Replace with API call
-      const favouriteClassesID = mock.favourites.classes;
+          // @todo Handle API failures
 
-      commit("setter", ["favouriteClassesID", favouriteClassesID]);
-    },
-    /**
-     * Get favourite classes and partners
-     * @function getFavourites
-     */
-    async getFavouritePartners({ commit }) {
-      // @todo Replace with API call
-      const favouritePartnersID = mock.favourites.partners;
+          // @todo Remove loading UI after API call is done
+        }
+      },
+      async cancelClass({ state, rootState, commit }, classID) {
+        const { points: classPoints } = state.classes[classID];
 
-      commit("setter", ["favouritePartnersID", favouritePartnersID]);
-    },
-    async toggleFavouriteClass({ commit }, classID) {
-      // Optimistic UI, show toggle first
-      commit("toggleFavouriteClass", classID);
+        // @todo User obviously cannot cancel when the class is in progress or after it ended
+        // @todo Add time check to ensure user knows that we will charge him extra if cancelling late
 
-      // @todo Call backend and handle error if any to change back favourite value
-      // If error from updating server, then call mutation again to toggleBack
-      // commit("toggleFavouriteClass", classID);
-    },
-    async toggleFavouritePartner({ commit }, partnerID) {
-      // Optimistic UI, show toggle first
-      commit("toggleFavouritePartner", partnerID);
+        if (confirm("Cancel your reservation?")) {
+          // @todo Show loading UI while making call to API
 
-      // @todo Call backend and handle error if any to change back favourite value
-      // If error from updating server, then call mutation again to toggleBack
-      // commit("toggleFavouritePartner", partnerID);
-    },
-    async reserveClass({ state, rootState, commit }, classID) {
-      const { points: classPoints } = state.classes[classID];
-      const userPoints = rootState.points.points;
+          // @todo Add API call to cancel upcoming class
+          // @notice API logic should add back points too, but locally update it without checking API
 
-      // Check if user have enough points for the class
-      if (userPoints.left < classPoints) {
-        // redirect to topup view
-        if (confirm("Not enough points, topup?"))
-          router.push({ name: "topup" });
-      } else if (confirm(`Reserve class for ${classPoints} points?`)) {
-        // @todo Show loading UI while making call to API
+          /** @notice Pessimistic UI, commit changes after API call is successful */
+          commit("setUpcomingClass", { classID, action: false, timestamp: "" });
 
-        // @todo Add API call to set upcoming class
-        // @notice API logic should deduct points too, but locally update it without checking API
+          // Refund back the points
+          commit("points/refundPoints", classPoints, { root: true });
 
-        /** @notice Pessimistic UI, commit changes after API call is successful */
-        commit("setUpcomingClass", { classID, action: true, timestamp: "" });
+          // @todo Handle API failures
 
-        // Deduct points
-        commit("points/deductPoints", classPoints, { root: true });
+          // @todo Remove loading UI after API call is done
+        }
+      },
+      async getReview({ commit }, classID) {
+        // If the review is already in state, ignore it
 
-        // @todo Handle API failures
+        // @todo Replace with API call
+        // @notice Using shallow copy to prevent deleting value from mock data
+        const review = { ...mock.reviews[classID] };
 
-        // @todo Remove loading UI after API call is done
-      }
-    },
-    async cancelClass({ state, rootState, commit }, classID) {
-      const { points: classPoints } = state.classes[classID];
+        // @todo To remove once API is done, as API will return result without userReview
+        delete review.userReviews;
 
-      // @todo User obviously cannot cancel when the class is in progress or after it ended
-      // @todo Add time check to ensure user knows that we will charge him extra if cancelling late
+        commit("setter", ["review", review]);
+      },
+      async getUserReview({ commit }, classID) {
+        // If the review is already in state, ignore it
 
-      if (confirm("Cancel your reservation?")) {
-        // @todo Show loading UI while making call to API
+        // @todo Replace with API call
+        const review = mock.reviews[classID];
 
-        // @todo Add API call to cancel upcoming class
-        // @notice API logic should add back points too, but locally update it without checking API
-
-        /** @notice Pessimistic UI, commit changes after API call is successful */
-        commit("setUpcomingClass", { classID, action: false, timestamp: "" });
-
-        // Refund back the points
-        commit("points/refundPoints", classPoints, { root: true });
-
-        // @todo Handle API failures
-
-        // @todo Remove loading UI after API call is done
-      }
-    },
-    async getReview({ commit }, classID) {
-      // If the review is already in state, ignore it
-
-      // @todo Replace with API call
-      // @notice Using shallow copy to prevent deleting value from mock data
-      const review = { ...mock.reviews[classID] };
-
-      // @todo To remove once API is done, as API will return result without userReview
-      delete review.userReviews;
-
-      commit("setter", ["review", review]);
-    },
-    async getUserReview({ commit }, classID) {
-      // If the review is already in state, ignore it
-
-      // @todo Replace with API call
-      const review = mock.reviews[classID];
-
-      commit("setter", ["review", review]);
-    },
-    async saveNewReview(
-      { commit },
-      { classID, ratings = 0, description = "" }
-    ) {
-      // @todo Add API call to send review to server
-      console.log("hello in save", classID, ratings, description);
+        commit("setter", ["review", review]);
+      },
+      async saveNewReview(
+        { commit },
+        { classID, ratings = 0, description = "" }
+      ) {
+        // @todo Add API call to send review to server
+        console.log("hello in save", classID, ratings, description);
+      },
     },
   },
 };
