@@ -1,10 +1,11 @@
+/* Imports for side effects */
 import setupOutcome from "./setup/index"; // Returns either true or false
+import "./registerServiceWorker";
 
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import "./registerServiceWorker";
 import vuetify from "./plugins/vuetify";
 import firebase from "firebase/app";
 import "firebase/auth";
