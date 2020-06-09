@@ -1,5 +1,11 @@
 <template>
-  <v-content id="ClassDetails" v-touch="{ right: () => $router.back() }">
+  <!-- @todo Change clas && partner v-if gaurd -->
+  <!-- @todo show loading action either with something on v-else or with loader -->
+  <v-content
+    v-if="clas && partner"
+    id="ClassDetails"
+    v-touch="{ right: () => $router.back() }"
+  >
     <v-app-bar app color="white" flat fixed>
       <BackBtn />
 
@@ -180,6 +186,8 @@ import { mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 import MapImage from "@/components/MapImage";
 
+import getClassMixin from "../utils/getClassMixin";
+
 export default {
   name: "ClassDetails",
   directives: {
@@ -189,6 +197,7 @@ export default {
     BackBtn,
     MapImage,
   },
+  mixins: [getClassMixin],
   created() {
     // Call action to fetch review of this class
     this.$store.dispatch("classes/getReview", this.classID);
@@ -202,17 +211,19 @@ export default {
   data() {
     // @todo Generate calendar invite link for add to calendar button
 
-    // @todo Might move this to computed since we need to load it
-    // Classes is static via the data function as we do not want its reactivity
-    const clas = this.$store.state.classes.classes[this.classID];
-
-    // @todo Might move this to computed since we need to load it
-    // Partners is static via the data function as we do not want its reactivity
-    const partner = this.$store.state.classes.partners[clas.partnerID];
-
-    return { clas, partner, classTimeSelected: true };
+    return {
+      partnerID: undefined,
+      classTimeSelected: true,
+    };
   },
   computed: {
+    clas() {
+      const clas = this.$store.state.classes.classes[this.classID];
+      return clas;
+    },
+    partner() {
+      return this.$store.state.classes.partners[this.clas.partnerID];
+    },
     favouritedClass() {
       if (this.$store.state.classes.favouriteClassesID[this.classID])
         return true;

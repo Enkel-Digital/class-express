@@ -23,8 +23,9 @@ export default async function logout() {
 
   console.log("state after replace: ", store.state);
 
-  // Clear localStorage used by "vuex-persistedstate" package
+  // Clear storage mediums used for data storage by "vuex-persistedstate" plugin
   localStorage.clear();
+  sessionStorage.clear();
 
   // Redirect to welcome view
   this.$router.push({ name: "welcome" });
