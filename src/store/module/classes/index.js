@@ -100,16 +100,18 @@ export default {
     upcomingClasses(state) {
       const upcomingClasses = {};
 
-      for (const classID of Object.keys(state.upcomingClassesID))
+      for (const classID in state.upcomingClassesID)
         upcomingClasses[classID] = state.classes[classID];
 
-      return Object.values(upcomingClasses).map((clas) => {
-        /** @notice Explicit data setting needed to prevent data caching */
-        if (state.favouriteClassesID[clas.id]) clas.favourite = true;
-        else clas.favourite = false;
+      return Object.values(upcomingClasses)
+        .filter((clas) => clas) // Filters out undefined classes that are yet to be fetched from API
+        .map((clas) => {
+          /** @notice Explicit data setting needed to prevent data caching */
+          if (state.favouriteClassesID[clas.id]) clas.favourite = true;
+          else clas.favourite = false;
 
-        return clas;
-      });
+          return clas;
+        });
     },
   },
   actions: {
@@ -138,24 +140,24 @@ export default {
       dispatch("getClass", Object.keys(pastClassesID));
     },
     /**
-     * Get favourite classes and partners
+     * Call API for BOTH favourite classes and partners
+     * Both tied together as thats how the DB data is structured and how the API works
      * @function getFavourites
+     *
+     * @todo Update favouriteClassID and favouritePartnersID to favouriteClasses and favouritePartners
      */
-    async getFavouriteClasses({ commit }) {
-      // @todo Replace with API call
-      const favouriteClassesID = mock.favourites.classes;
+    async getFavourites({ commit, dispatch, state, rootState }) {
+      // @todo Now we always call the API, but to udpate by sending the API the last update time
+      const response = await apiWithLoader.get(
+        `/favourites/${rootState.user.email}`
+      );
 
-      commit("setter", ["favouriteClassesID", favouriteClassesID]);
-    },
-    /**
-     * Get favourite classes and partners
-     * @function getFavourites
-     */
-    async getFavouritePartners({ commit }) {
-      // @todo Replace with API call
-      const favouritePartnersID = mock.favourites.partners;
+      if (!response.success)
+        return apiError(response, () => dispatch("getFavourites"));
 
-      commit("setter", ["favouritePartnersID", favouritePartnersID]);
+      commit("setter", ["favouriteClassesID", response.favourites.classes]);
+
+      commit("setter", ["favouritePartnersID", response.favourites.partners]);
     },
     async toggleFavouriteClass({ commit }, classID) {
       // Optimistic UI, show toggle first
