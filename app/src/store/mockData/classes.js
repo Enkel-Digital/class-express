@@ -92,18 +92,7 @@ const schedule = {
 };
 
 const upcomingClassesID = {
-  0: true,
-};
-
-const favourites = {
-  classes: {
-    1: true,
-    2: true,
-  },
-  partners: {
-    2: true,
-    1: true,
-  },
+  1: true,
 };
 
 const pastClassesID = {
@@ -114,6 +103,5 @@ module.exports = {
   reviews,
   schedule,
   upcomingClassesID,
-  favourites,
   pastClassesID,
 };
