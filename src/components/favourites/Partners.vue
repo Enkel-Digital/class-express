@@ -26,7 +26,10 @@
                 {{ partner.name }}
               </v-card-title>
 
-              <v-list-item-subtitle>
+              <!-- @todo Fix bug and remove this safegaurd -->
+              <v-list-item-subtitle
+                v-if="partner.location && partner.location.address"
+              >
                 {{ partner.location.address }}
               </v-list-item-subtitle>
 

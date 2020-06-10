@@ -28,7 +28,9 @@
               <!-- @todo Add a points box beside the class name -->
               <!-- <p>7 points</p> -->
 
+              <!-- @todo Find a method to make partner lazy load and remove this safegaurd -->
               <v-list-item-subtitle
+                v-if="partner"
                 :set="(partner = getPartner(clas.partnerID))"
               >
                 <div style="font-weight: bold;">
