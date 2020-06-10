@@ -11,6 +11,9 @@ import setter from "../../utils/setter";
 import apiError from "@/store/utils/apiError";
 import apiWithLoader from "@/store/utils/apiWithLoader";
 
+import getClass from "./getClass";
+import getPartner from "./getPartner";
+
 // @todo Remove mock data
 import mock from "../../mockData";
 
@@ -116,6 +119,20 @@ export default {
   },
   actions: {
     /**
+     * Store action used to wrap over getClass to inject in state and commit
+     * @function getClass
+     */
+    async getClass({ state, commit }, classID) {
+      getClass(state.classes, commit, classID);
+    },
+    /**
+     * Store action used to wrap over getPartner to inject in state and commit
+     * @function getPartner
+     */
+    async getPartner({ state, commit }, partnerID) {
+      getPartner(state.partners, commit, partnerID);
+    },
+    /**
      * Get list of upcomingClassesID from API
      * @function getUpcomingClassesID
      */
@@ -131,7 +148,7 @@ export default {
      * Get list of pastClassesID from API
      * @function getPastClassesID
      */
-    async getPastClassesID({ dispatch, commit }) {
+    async getPastClassesID({ state, dispatch, commit }) {
       // @todo Replace with API call
       const pastClassesID = mock.pastClassesID;
 
@@ -146,7 +163,7 @@ export default {
      *
      * @todo Update favouriteClassID and favouritePartnersID to favouriteClasses and favouritePartners
      */
-    async getFavourites({ commit, dispatch, state, rootState }) {
+    async getFavourites({ state, commit, dispatch, rootState }) {
       // @todo Now we always call the API, but to udpate by sending the API the last update time
       const response = await apiWithLoader.get(
         `/favourites/${rootState.user.email}`
@@ -156,8 +173,10 @@ export default {
         return apiError(response, () => dispatch("getFavourites"));
 
       commit("setter", ["favouriteClassesID", response.favourites.classes]);
+      dispatch("getClass", Object.keys(response.favourites.classes));
 
       commit("setter", ["favouritePartnersID", response.favourites.partners]);
+      dispatch("getPartner", Object.keys(response.favourites.partners));
     },
     async toggleFavouriteClass({ commit }, classID) {
       // Optimistic UI, show toggle first
@@ -226,15 +245,12 @@ export default {
     },
     async getReview({ commit }, classID) {
       // If the review is already in state, ignore it
-
       // @todo Replace with API call
       // @notice Using shallow copy to prevent deleting value from mock data
-      const review = { ...mock.reviews[classID] };
-
+      // const review = { ...mock.reviews[classID] };
       // @todo To remove once API is done, as API will return result without userReview
-      delete review.userReviews;
-
-      commit("setter", ["review", review]);
+      // delete review.userReviews;
+      // commit("setter", ["review", review]);
     },
     async getUserReview({ commit }, classID) {
       // If the review is already in state, ignore it

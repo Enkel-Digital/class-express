@@ -4,11 +4,13 @@
  */
 const getClass = {
   created() {
-    if (this.classID) this.$getClass(this.classID);
-    if (this.classIDs) this.$getClass(this.classIDs);
+    if (this.classID) this.$store.dispatch("classes/getClass", this.classID);
+    if (this.classIDs) this.$store.dispatch("classes/getClass", this.classIDs);
 
-    if (this.partnerID) this.$getPartner(this.partnerID);
-    if (this.partnerIDs) this.$getPartner(this.partnerIDs);
+    if (this.partnerID)
+      this.$store.dispatch("classes/getPartner", this.partnerID);
+    if (this.partnerIDs)
+      this.$store.dispatch("classes/getPartner", this.partnerIDs);
   },
 };
 

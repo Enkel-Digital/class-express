@@ -61,7 +61,7 @@
 
       <v-card :to="{ name: 'favourites' }" ripple tile>
         <v-list-item>
-          Favourite classes
+          Favourites
         </v-list-item>
       </v-card>
 

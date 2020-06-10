@@ -91,6 +91,7 @@
 
               <br />
 
+              <!-- @todo Find a method to make partner lazy load and remove this safegaurd -->
               <v-list-item-subtitle
                 v-if="partner"
                 :set="(partner = getPartner(clas.partnerID))"
