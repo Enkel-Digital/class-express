@@ -23,6 +23,7 @@ const partnersToFetch = {};
 async function _getPartner(partners, commit, partnerID) {
   // Skip if partner details is already downloaded and cached locally
   // Skip if partnerID is already requested for but not fulfilled yet
+  // @todo Return partner if in state and the promise if it is still pending, save the promise to partnersToFetch queue?
   if (partners[partnerID] || partnersToFetch[partnerID]) return;
 
   // Set partnerID into "Queue" to prevent getPartner from being called again with same ID before this partner is fetched
