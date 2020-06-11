@@ -65,7 +65,9 @@
         </v-list-item>
       </v-card>
 
-      <v-card :to="{ name: 'PastClasses' }" ripple tile>
+      <!-- @todo Complete pastClasses view -->
+      <!-- <v-card :to="{ name: 'PastClasses' }" ripple tile> -->
+      <v-card @click="pastClasses" ripple tile>
         <v-list-item>
           Past classes
         </v-list-item>
@@ -80,6 +82,14 @@
               Checkout our F.A.Q page for more details!
             </v-list-item-subtitle>
           </v-list-item-content>
+        </v-list-item>
+      </v-card>
+
+      <v-card :to="{ name: 'about' }" style="text-align: left;" ripple tile>
+        <v-list-item>
+          <v-list-item-subtitle>
+            About us
+          </v-list-item-subtitle>
         </v-list-item>
       </v-card>
 
@@ -119,6 +129,9 @@ export default {
     refreshData() {
       // Rely on the store to update the data asynchronously in the background
       this.$store.dispatch("init");
+    },
+    pastClasses() {
+      alert("Feature in progress! Check back in beta maybe?");
     },
   },
 };

@@ -37,9 +37,9 @@ const routes = [
   },
   {
     path: "/about",
-    name: "About",
+    name: "about",
     component: () => import("../views/About.vue"),
-    meta: { Auth_requirements: AuthType.public_only },
+    meta: { Auth_requirements: AuthType.public },
   },
 ];
 
