@@ -2,7 +2,7 @@
   <v-content class="reviews">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
-      <v-toolbar-title>{{ className }}</v-toolbar-title>
+      <v-toolbar-title>{{ name }}</v-toolbar-title>
     </v-app-bar>
 
     <!-- Change this to use a universal error overlay instead. Moved the logic into script instead of template too. -->
@@ -102,19 +102,27 @@ export default {
   components: {
     BackBtn,
   },
-  // @todo Support both types of reviews.
+  // Supports both types of reviews.
   props: ["classID", "partnerID"],
   created() {
+    // @todo Update this to support getting reviews of partner
     this.$store.dispatch("classes/getUserReview", this.classID);
   },
   destroyed() {
     // Although this would be unnecessary if we do not store reviews into persistence state
     // This can still help free up memory by removing userReviews.
+    // @todo Update this to support partner reviews
     this.$store.commit("classes/clearUserReview", this.classID);
   },
   data() {
-    const className = this.$store.state.classes.classes[this.classID].name;
-    return { className };
+    return {
+      // Name is either className or partnerName depending on which ID is available
+      name: this.classID
+        ? this.$store.state.classes.classes[this.classID].name
+        : this.partnerID
+        ? this.$store.state.classes.partners[this.partnerID].name
+        : undefined,
+    };
   },
   computed: {
     ...mapState("classes", ["review"]),
