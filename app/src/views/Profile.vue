@@ -1,7 +1,9 @@
 <template>
-  <v-content class="profile">
-    <v-app-bar app color="orange lighten-1" flat dark>
-      <v-toolbar-title>Profile</v-toolbar-title>
+  <v-content>
+    <v-app-bar app flat color="white">
+      <v-toolbar-title style="font-weight: bold; color: orange;">
+        Profile
+      </v-toolbar-title>
 
       <v-spacer />
 
@@ -141,6 +143,6 @@ export default {
 #user-details-card {
   text-align: left;
   margin: 1em;
-  margin-top: 2em;
+  margin-top: 0em;
 }
 </style>
