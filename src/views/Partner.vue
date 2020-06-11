@@ -29,7 +29,7 @@
 
     <v-divider />
 
-    <v-responsive id="reviews-card" class="mx-auto">
+    <v-responsive class="mx-auto">
       <v-list-item>
         <v-list-item-content>
           <p class="overline">Reviews</p>
@@ -45,8 +45,10 @@
           </v-list-item-subtitle>
         </v-list-item-content>
 
+        <!-- @todo Temporarily hidden till implemented -->
         <v-btn
-          :to="{ name: 'reviews-partner', params: { classID: partner.id } }"
+          v-if="false"
+          :to="{ name: 'reviews-partner', params: { partnerID: partner.id } }"
           text
           small
           color="primary"
@@ -60,7 +62,7 @@
 
     <!-- @todo Show a list of categories that this class operates in -->
 
-    <v-responsive id="reviews-card" class="mx-auto">
+    <v-responsive class="mx-auto">
       <v-list-item>
         <v-list-item-content>
           <p class="overline">About Us</p>
@@ -111,8 +113,9 @@ export default {
     MapImage,
   },
   created() {
-    // Call action to fetch review of this class
-    this.$store.dispatch("classes/getReview", this.classID);
+    // @todo Implement this to stop using getReview as that is for the classes' reviews
+    // Call action to fetch review for this partner
+    // this.$store.dispatch("classes/getReview", this.classID);
   },
   props: ["partnerID"],
   data() {
@@ -127,7 +130,10 @@ export default {
       else return false;
     },
     review() {
-      return this.$store.state.classes.review;
+      return false;
+
+      // @todo Change this to be partner reviews.
+      // return this.$store.state.classes.review;
     },
   },
   methods: {

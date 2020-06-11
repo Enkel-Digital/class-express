@@ -83,7 +83,7 @@
 
     <v-divider />
 
-    <v-responsive id="reviews-card" class="mx-auto">
+    <v-responsive class="mx-auto">
       <v-list-item>
         <v-list-item-content>
           <p class="overline">Reviews</p>
@@ -112,7 +112,7 @@
 
     <v-divider />
 
-    <v-responsive id="reviews-card" class="mx-auto">
+    <v-responsive class="mx-auto">
       <v-list-item>
         <v-list-item-content class="mb-0 pb-0">
           <p class="overline">about this class</p>
