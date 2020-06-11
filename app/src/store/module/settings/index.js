@@ -4,9 +4,8 @@
 
 import initialState from "./initialState";
 import setter from "../../utils/setter";
-
-// @todo Remove mock data
-import mock from "../../mockData";
+import apiError from "@/store/utils/apiError";
+import apiWithLoader from "@/store/utils/apiWithLoader";
 
 export default {
   namespaced: true,
@@ -14,7 +13,8 @@ export default {
   mutations: {
     setter,
     updateSettings(state, newSettings) {
-      newSettings.modifiedAt = Date.now();
+      // Only add modifiedAt if it is on the object already
+      state.modifiedAt = Date.now();
       state.settings = newSettings;
     },
   },
@@ -23,34 +23,54 @@ export default {
      * Initialization function for this module
      * @function init
      */
-    async init({ state, dispatch }) {
+    async init({ dispatch }) {
       dispatch("syncSettings");
     },
     /**
-     * Update settings both locally and remotely
+     * Sync settings from API to local and local to API
      * @function syncSettings
+     *
+     * @todo Get settings from server and update local state only if remote modifiedAt is later than local modifiedAt, else update remote state
      */
-    async updateSettings({ commit, dispatch }, settings) {
-      // @todo Show loading bar before calling API
+    async syncSettings({ state, rootState, commit, dispatch }, settings) {
+      // If settings passed in, means to update remote with new user settings if local settings is later then remote settings
+      if (settings) {
+        const originalSettings = state.settings;
 
-      console.log("testing");
+        // Update state first for optimistic UI and also to inject in modifiedAt value
+        commit("updateSettings", settings);
 
-      // Update state for optimistic UI
-      commit("updateSettings", settings);
-      // commit("update", { path: [settings], value: settings });
+        // Call API after modifiedAt is injected in the "updateSettings" mutation
+        const response = await apiWithLoader.post("/settings/update", {
+          userID: rootState.user.email,
+          settings,
+          modifiedAt: state.modifiedAt,
+        });
 
-      // Call logic to sync changes with server
-      await dispatch("syncSettings");
+        // Only handle failure cases, as UI has already been updated optimistically
+        if (!response.success) {
+          // If the server has a later version of settings and returned it, set that as the settings instead.
+          if (response.latest) commit("updateSettings", response.settings);
+          // Else if API just fails
+          else {
+            // Revert settings back to original settings
+            commit("updateSettings", originalSettings);
+            return apiError(response, () => dispatch("syncSettings"));
+          }
+        }
+      } else {
+        // If not settings passed in, means to get latest settings from server
+        const response = await apiWithLoader.get(
+          `/settings/user/${rootState.user.email}`
+        );
 
-      // @todo Remove loading bar
-    },
-    /**
-     * save current settings to server
-     * @function syncSettings
-     */
-    async syncSettings({ state }) {
-      // Get settings from server and update local state if remote modifiedAt is later than local modifiedAt, else update remote state
-      // const remote_modifiedAt = api.settings.getModifiedAt(/* user id here */);
+        // Set the modified at from the server
+        commit("setter", ["modifiedAt", response.settings.modifiedAt]);
+
+        // Detach modifiedAt from settings before saving settings into state
+        delete response.settings.modifiedAt;
+        commit("updateSettings", response.settings);
+      }
     },
   },
 };
