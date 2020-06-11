@@ -1,5 +1,6 @@
 /**
  * Auth middleware to check if the email in JWT matches the userID in URL params
+ * Only allow user to READ data if userID in their token matches the userID in the url params
  */
 
 /**
