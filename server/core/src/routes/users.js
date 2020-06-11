@@ -47,6 +47,10 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
  * @param {String} userID
  * @param {Object} user
  * @returns {object} success indicator
+ *
+ * @todo Should support like a hook system.
+ * All the things that should be ran when a new user is created should be posted here as a hook
+ * then on user creation, either call all the hooks, or publish a event for all the listeners to use.
  */
 router.post("/new", express.json(), async (req, res) => {
   try {

@@ -11,7 +11,7 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 
 const createLogger = require("@lionellbriones/logging").default;
-const logger = createLogger("routes:users");
+const logger = createLogger("routes:class");
 
 /**
  * Get class details

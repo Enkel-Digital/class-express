@@ -15,7 +15,7 @@ const db = require("../utils/db");
 const onlyOwnResource = require("../middleware/onlyOwnResource");
 
 const createLogger = require("@lionellbriones/logging").default;
-const logger = createLogger("routes:users");
+const logger = createLogger("routes:favourites");
 
 /**
  * Get users' favourites, including BOTH favourite classes and favourite partners

@@ -6,11 +6,12 @@
  */
 
 const express = require("express");
-const db = require("../utils/db");
 const router = express.Router();
+const firebase = require("firebase-admin");
+const db = require("../utils/db");
 
 const createLogger = require("@lionellbriones/logging").default;
-const logger = createLogger("routes:users");
+const logger = createLogger("routes:reviews");
 
 /**
  * Get reviews for a class

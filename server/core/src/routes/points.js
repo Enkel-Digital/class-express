@@ -12,7 +12,7 @@ const router = express.Router();
 const db = require("../utils/db");
 
 const createLogger = require("@lionellbriones/logging").default;
-const logger = createLogger("routes:subscription");
+const logger = createLogger("routes:points");
 
 /**
  * Get a user's points, if new user, create default points object and save it

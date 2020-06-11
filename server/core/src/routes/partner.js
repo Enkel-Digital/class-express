@@ -10,7 +10,7 @@ const db = require("../utils/db");
 const router = express.Router();
 
 const createLogger = require("@lionellbriones/logging").default;
-const logger = createLogger("routes:users");
+const logger = createLogger("routes:partner");
 
 /**
  * Get partner details

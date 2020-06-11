@@ -13,7 +13,7 @@ const admin = require("../utils/firebaseAdmin");
 const sendMail = require("../utils/sendMail");
 
 const createLogger = require("@lionellbriones/logging").default;
-const logger = createLogger("routes:users");
+const logger = createLogger("routes:emailActionLinks");
 
 /**
  * Request for a new verification email to verify email address
