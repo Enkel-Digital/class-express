@@ -28,10 +28,13 @@
               <!-- @todo Add a points box beside the class name -->
               <!-- <p>7 points</p> -->
 
-              <!-- @todo Find a method to make partner lazy load and remove this safegaurd -->
+              <!--
+                v-if as render gaurd to ensure partner is loaded
+                v-binded set attribute used to set partner into local template context to use directly
+               -->
               <v-list-item-subtitle
-                v-if="partner"
-                :set="(partner = getPartner(clas.partnerID))"
+                v-if="partners[clas.partnerID]"
+                :set="(partner = partners[clas.partnerID])"
               >
                 <div style="font-weight: bold;">
                   {{ partner.name }}
@@ -73,7 +76,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "favourite-classes",
@@ -82,12 +85,22 @@ export default {
   },
   computed: {
     ...mapGetters("classes", ["favouriteClasses"]),
+    ...mapState("classes", ["partners"]),
+  },
+  watch: {
+    // Watcher to load partner details of favourited classes
+    partners: {
+      immediate: true,
+      handler() {
+        this.$store.dispatch(
+          "classes/getPartner",
+          this.favouriteClasses.map((clas) => clas.partnerID)
+        );
+      },
+    },
   },
   methods: {
     ...mapActions("classes", ["toggleFavouriteClass"]),
-    getPartner(partnerID) {
-      return this.$store.state.classes.partners[partnerID];
-    },
   },
 };
 </script>

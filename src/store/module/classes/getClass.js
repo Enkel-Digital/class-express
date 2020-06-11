@@ -42,6 +42,7 @@ const classesToFetch = {};
 async function _getClass(classes, commit, classID) {
   // Skip if class details is already downloaded and cached locally
   // Skip if classID is already requested for but not fulfilled yet
+  // @todo Return the class if in state and the promise if it is still pending, save the promise to classesToFetch queue?
   if (classes[classID] || classesToFetch[classID]) return;
 
   // Set classID into "Queue" to prevent getClass from being called again with same ID before this class is fetched
