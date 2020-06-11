@@ -178,21 +178,43 @@ export default {
       commit("setter", ["favouritePartnersID", response.favourites.partners]);
       dispatch("getPartner", Object.keys(response.favourites.partners));
     },
-    async toggleFavouriteClass({ commit }, classID) {
+    async toggleFavouriteClass(
+      { state, rootState, commit, dispatch },
+      classID
+    ) {
       // Optimistic UI, show toggle first
       commit("toggleFavouriteClass", classID);
 
-      // @todo Call backend and handle error if any to change back favourite value
-      // If error from updating server, then call mutation again to toggleBack
-      // commit("toggleFavouriteClass", classID);
+      const response = await apiWithLoader.post("/favourites/classes/update", {
+        userID: rootState.user.email,
+        classID,
+        favourite: state.favouriteClassesID[classID], // The value in state after the toggle
+      });
+
+      // On error change back favourite value first using the toggle mutation
+      if (!response.success) {
+        commit("toggleFavouriteClass", classID);
+        return apiError(response, () => dispatch("toggleFavouriteClass"));
+      }
     },
-    async toggleFavouritePartner({ commit }, partnerID) {
+    async toggleFavouritePartner(
+      { state, rootState, commit, dispatch },
+      partnerID
+    ) {
       // Optimistic UI, show toggle first
       commit("toggleFavouritePartner", partnerID);
 
-      // @todo Call backend and handle error if any to change back favourite value
-      // If error from updating server, then call mutation again to toggleBack
-      // commit("toggleFavouritePartner", partnerID);
+      const response = await apiWithLoader.post("/favourites/partner/update", {
+        userID: rootState.user.email,
+        partnerID,
+        favourite: state.favouritePartnersID[partnerID], // The value in state after the toggle
+      });
+
+      // On error change back favourite value first using the toggle mutation
+      if (!response.success) {
+        commit("toggleFavouritePartner", partnerID);
+        return apiError(response, () => dispatch("toggleFavouritePartner"));
+      }
     },
     async reserveClass({ state, rootState, commit }, classID) {
       const { points: classPoints } = state.classes[classID];
