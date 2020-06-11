@@ -243,22 +243,28 @@ export default {
         // @todo Remove loading UI after API call is done
       }
     },
-    async getReview({ commit }, classID) {
-      // If the review is already in state, ignore it
-      // @todo Replace with API call
-      // @notice Using shallow copy to prevent deleting value from mock data
-      // const review = { ...mock.reviews[classID] };
-      // @todo To remove once API is done, as API will return result without userReview
-      // delete review.userReviews;
-      // commit("setter", ["review", review]);
+    // @todo Update to get only the basic review data instead of using the whole reviews object
+    // API should return result without userReview
+    async getReview({ state, commit, dispatch }, classID) {
+      // If review is already in state, ignore request
+      if (state.review && classID === state.review[classID]) return;
+
+      const response = await apiWithLoader.get(`/reviews/class/${classID}`);
+      if (!response.success)
+        return apiError(response, () => dispatch("getReview"));
+
+      commit("setter", ["review", response.reviews]);
     },
-    async getUserReview({ commit }, classID) {
-      // If the review is already in state, ignore it
+    // @todo Update to get userReviews instead of using the current reviews API
+    async getUserReview({ state, commit, dispatch }, classID) {
+      // If review is already in state, ignore request
+      if (state.review && classID === state.review[classID]) return;
 
-      // @todo Replace with API call
-      const review = mock.reviews[classID];
+      const response = await apiWithLoader.get(`/reviews/class/${classID}`);
+      if (!response.success)
+        return apiError(response, () => dispatch("getReview"));
 
-      commit("setter", ["review", review]);
+      commit("setter", ["review", response.reviews]);
     },
     async saveNewReview(
       { commit },
