@@ -56,12 +56,15 @@
       <div
         v-ripple
         @click="
-          settings.notifications.mobileNotification = !settings.notifications
-            .mobileNotification
+          setter(
+            settings,
+            'notifications-mobileNotification',
+            !settings['notifications-mobileNotification']
+          )
         "
       >
         <v-checkbox
-          v-model="settings.notifications.mobileNotification"
+          v-model="settings['notifications-mobileNotification']"
           readonly
           label="Mobile notifications"
           class="ma-1 pa-0"
@@ -71,12 +74,15 @@
       <div
         v-ripple
         @click="
-          settings.notifications.emailNotification = !settings.notifications
-            .emailNotification
+          setter(
+            settings,
+            'notifications-emailNotification',
+            !settings['notifications-emailNotification']
+          )
         "
       >
         <v-checkbox
-          v-model="settings.notifications.emailNotification"
+          v-model="settings['notifications-emailNotification']"
           readonly
           label="Email notifications"
           class="ma-1 pa-0"
@@ -165,6 +171,11 @@
  * @todo https://vuetifyjs.com/en/components/expansion-panels/
  * @todo Use this https://vuetifyjs.com/en/components/lists/#expansion-lists for some of the nested settings
  *      Or perhaps use a diff view with nested routes.
+ *
+ * @notice Settings object must be flat! Meaning all properties are top level and nesting is be done using "property-subproperty" string
+ * @notice cannot use "property.subproperty" because it will mess with firebase update method.
+ * @notice cannot use "property/subproperty" because firestore update() does not like it with the error below
+ * @notice Update() requires either single JavaScript object or alternating list of field/value pairs ... ... Paths can't be empty and must not contain "*~/[]".
  */
 
 import { Touch } from "vuetify/lib/directives";
@@ -187,11 +198,7 @@ export default {
     BackBtn,
   },
   data() {
-    // @notice Can use JSONify too since values in state are all JSONifyable without any complex structures.
-    const settings = cloneDeep(this.$store.state.settings.settings);
-
     return {
-      settings,
       // Rules for the avatar image upload
       avatarRules: [
         (value) =>
@@ -201,18 +208,30 @@ export default {
       ],
     };
   },
-  watch: {
+  computed: {
     settings: {
-      // Deep watch to watch the nested properties too
-      deep: true,
-      handler() {
-        // Update the settings by passing in the whole settings object
-        this.$store.dispatch("settings/updateSettings", this.settings);
+      get() {
+        // Using deepclone/clone to ensure we can modify settings without directly modifying vuex state,
+        // And only using the computed property to modify vuex state via an action.
+        // Essentially the deepclone removes the reactive bindings on the data
+        // Technically can use JSONify too since values in state should all be JSONifyable without any complex structures.
+        return cloneDeep(this.$store.state.settings.settings);
+      },
+      set(newSettings) {
+        // Use a computed setter to modify vuex state through the syncSettings action instead of a direct modification
+        this.$store.dispatch("settings/syncSettings", newSettings);
       },
     },
   },
   methods: {
     logout,
+    // Setter method to allow us to modify the cloned settings object before assigning the settings object,
+    // which will trigger the computed setter to save the new settings using an action
+    setter(settings, key, value) {
+      settings[key] = value;
+      // Reassign needed to trigger computed setter since setter only watches for root level changes and not deep/nested changes
+      this.settings = settings;
+    },
   },
 };
 </script>
