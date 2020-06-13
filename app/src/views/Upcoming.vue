@@ -91,10 +91,9 @@
 
               <br />
 
-              <!-- @todo Find a method to make partner lazy load and remove this safegaurd -->
               <v-list-item-subtitle
-                v-if="partner"
-                :set="(partner = getPartner(clas.partnerID))"
+                v-if="partners[clas.partnerID]"
+                :set="(partner = partners[clas.partnerID])"
               >
                 <div style="font-weight: bold;">
                   {{ partner.name }}
@@ -140,7 +139,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 import MapImage from "@/components/MapImage";
 
 export default {
@@ -153,12 +152,22 @@ export default {
   },
   computed: {
     ...mapGetters("classes", ["upcomingClasses"]),
+    ...mapState("classes", ["partners"]),
+  },
+  watch: {
+    // Watcher to load partner details of upcoming classes whenever upcomingClasses is loaded or updated
+    upcomingClasses: {
+      immediate: true,
+      handler() {
+        this.$store.dispatch(
+          "classes/getPartner",
+          this.upcomingClasses.map((clas) => clas.partnerID)
+        );
+      },
+    },
   },
   methods: {
     ...mapActions("classes", ["toggleFavouriteClass"]),
-    getPartner(partnerID) {
-      return this.$store.state.classes.partners[partnerID];
-    },
   },
 };
 </script>

@@ -115,7 +115,7 @@ export default {
   created() {
     // @todo Implement this to stop using getReview as that is for the classes' reviews
     // Call action to fetch review for this partner
-    // this.$store.dispatch("classes/getReview", this.classID);
+    // this.$store.dispatch("classes/getReview", this.partnerID);
   },
   props: ["partnerID"],
   data() {
@@ -125,7 +125,7 @@ export default {
   },
   computed: {
     favourited() {
-      if (this.$store.state.classes.favouriteClassesID[this.classID])
+      if (this.$store.state.classes.favouritePartnersID[this.partnerID])
         return true;
       else return false;
     },
@@ -137,11 +137,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("classes", [
-      "toggleFavouritePartner",
-      "reserveClass",
-      "cancelClass",
-    ]),
+    ...mapActions("classes", ["toggleFavouritePartner"]),
   },
 };
 </script>
