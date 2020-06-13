@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import createGMapsImg from "../store/module/classes/gMapsImage";
+import createGMapsImg from "../utils/gMapsImage";
 
 /**
  * @todo Optimize usage of props. Perhaps can do away with src and use classID to get src if not provided.
@@ -12,19 +12,26 @@ import createGMapsImg from "../store/module/classes/gMapsImage";
 
 export default {
   name: "gMap",
-  props: ["src", "classID"],
+  props: ["src", "classID", "partnerID"],
   computed: {
+    clas() {
+      return this.$store.state.classes.classes[this.classID];
+    },
+    partner() {
+      return this.$store.state.classes.partners[this.partnerID];
+    },
     coordinates() {
       // If image src is specified, ignore coordinates calculation
       if (this.src) return;
 
-      const clas = this.$store.state.classes.classes[this.classID];
-
-      // Use the partner's location if there is no custom class location set
-      return clas.location
-        ? clas.location.coordinates
-        : this.$store.state.classes.partners[clas.partnerID].location
-            .coordinates;
+      // If the map image for a class is requested, check if there is a custom class location else use partner's location
+      if (this.clas)
+        return this.clas.location
+          ? this.clas.location.coordinates
+          : this.$store.state.classes.partners[this.clas.partnerID].location
+              .coordinates;
+      else if (this.partner) return this.partner.location.coordinates;
+      else return undefined; // If neither clas nor partner is loaded yet, return nothing first
     },
     locationImage() {
       // Only if src is not specified, create the image source link
