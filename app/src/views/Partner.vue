@@ -1,5 +1,9 @@
 <template>
-  <v-content id="partner" v-touch="{ right: () => $router.back() }">
+  <v-content
+    id="partner"
+    v-if="partner"
+    v-touch="{ right: () => $router.back() }"
+  >
     <v-app-bar app color="white" flat fixed>
       <BackBtn />
 
@@ -76,7 +80,7 @@
     <h2 style="color: rgba(0, 0, 0, 0.65);" class="ma-2 mb-0">
       Getting here
     </h2>
-    <MapImage :classID="partner.id" />
+    <MapImage :partnerID="partner.id" />
     <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
 
     <v-divider />
@@ -103,6 +107,8 @@ import { mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 import MapImage from "@/components/MapImage";
 
+import getClassAndPartnerMixin from "../utils/getClassAndPartnerMixin";
+
 export default {
   name: "partner",
   directives: {
@@ -112,18 +118,17 @@ export default {
     BackBtn,
     MapImage,
   },
+  mixins: [getClassAndPartnerMixin],
   created() {
     // @todo Implement this to stop using getReview as that is for the classes' reviews
     // Call action to fetch review for this partner
     // this.$store.dispatch("classes/getReview", this.partnerID);
   },
   props: ["partnerID"],
-  data() {
-    // Partners is static via the data function as we do not want its reactivity
-    const partner = this.$store.state.classes.partners[this.partnerID];
-    return { partner };
-  },
   computed: {
+    partner() {
+      return this.$store.state.classes.partners[this.partnerID];
+    },
     favourited() {
       if (this.$store.state.classes.favouritePartnersID[this.partnerID])
         return true;
