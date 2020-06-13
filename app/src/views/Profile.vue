@@ -1,7 +1,8 @@
 <template>
-  <v-content>
+  <v-content id="profile">
     <v-app-bar app flat color="white">
       <v-toolbar-title style="font-weight: bold; color: orange;">
+        <!-- <v-toolbar-title style="font-weight: bold; color: grey;"> -->
         Profile
       </v-toolbar-title>
 
@@ -69,13 +70,15 @@
 
       <!-- @todo Complete pastClasses view -->
       <!-- <v-card :to="{ name: 'PastClasses' }" ripple tile> -->
-      <v-card @click="pastClasses" ripple tile>
+      <v-card @click="workInProgressAlert" ripple tile>
         <v-list-item>
           Past classes
         </v-list-item>
       </v-card>
 
-      <v-card :to="{ name: 'faq' }" style="text-align: left;" ripple tile>
+      <!-- @todo Add link once faq is completed -->
+      <!-- <v-card :to="{ name: 'faq' }" ripple tile> -->
+      <v-card @click="workInProgressAlert" ripple tile>
         <v-list-item>
           <v-list-item-content>
             <p class="overline">Want to learn more?</p>
@@ -87,7 +90,7 @@
         </v-list-item>
       </v-card>
 
-      <v-card :to="{ name: 'about' }" style="text-align: left;" ripple tile>
+      <v-card :to="{ name: 'about' }" ripple tile>
         <v-list-item>
           <v-list-item-subtitle>
             About us
@@ -132,7 +135,7 @@ export default {
       // Rely on the store to update the data asynchronously in the background
       this.$store.dispatch("init");
     },
-    pastClasses() {
+    workInProgressAlert() {
       alert("Feature in progress! Check back in beta maybe?");
     },
   },
@@ -140,8 +143,11 @@ export default {
 </script>
 
 <style scoped>
-#user-details-card {
+#profile {
   text-align: left;
+}
+
+#user-details-card {
   margin: 1em;
   margin-top: 0em;
 }
