@@ -186,7 +186,7 @@ import { mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 import MapImage from "@/components/MapImage";
 
-import getClassMixin from "../utils/getClassMixin";
+import getClassAndPartnerMixin from "../utils/getClassAndPartnerMixin";
 
 export default {
   name: "ClassDetails",
@@ -197,7 +197,7 @@ export default {
     BackBtn,
     MapImage,
   },
-  mixins: [getClassMixin],
+  mixins: [getClassAndPartnerMixin],
   created() {
     // Call action to fetch review of this class
     this.$store.dispatch("classes/getReview", this.classID);
@@ -208,21 +208,16 @@ export default {
     throw an error that shows on either error dialog or notification to say that this does not exist and redirect user away from that.
   */
   props: ["classID", "selectedTime"],
-  data() {
-    // @todo Generate calendar invite link for add to calendar button
-
-    return {
-      partnerID: undefined,
-      classTimeSelected: true,
-    };
-  },
+  // @todo Generate calendar invite link for add to calendar button
   computed: {
     clas() {
-      const clas = this.$store.state.classes.classes[this.classID];
-      return clas;
+      return this.$store.state.classes.classes[this.classID];
+    },
+    partnerID() {
+      return this.clas.partnerID;
     },
     partner() {
-      return this.$store.state.classes.partners[this.clas.partnerID];
+      return this.$store.state.classes.partners[this.partnerID];
     },
     favouritedClass() {
       if (this.$store.state.classes.favouriteClassesID[this.classID])
