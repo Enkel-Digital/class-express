@@ -88,8 +88,8 @@ export default {
     ...mapState("classes", ["partners"]),
   },
   watch: {
-    // Watcher to load partner details of favourited classes
-    partners: {
+    // Watcher to load partner details of favourited classes whenever favouriteClasses is loaded or updated
+    favouriteClasses: {
       immediate: true,
       handler() {
         this.$store.dispatch(

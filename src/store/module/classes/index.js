@@ -123,14 +123,14 @@ export default {
      * @function getClass
      */
     async getClass({ state, commit }, classID) {
-      getClass(state.classes, commit, classID);
+      return getClass(state.classes, commit, classID);
     },
     /**
      * Store action used to wrap over getPartner to inject in state and commit
      * @function getPartner
      */
     async getPartner({ state, commit }, partnerID) {
-      getPartner(state.partners, commit, partnerID);
+      return getPartner(state.partners, commit, partnerID);
     },
     /**
      * Get list of upcomingClassesID from API
