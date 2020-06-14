@@ -18,7 +18,6 @@ const partnersToFetch = {};
  * Inner function to request for a partner with "partnerID" to fetch from server if not available locally.
  * Will populate the partner into state once server responds.
  * Alternatively caller can also await this to get back the partner object
- * @function _getPartner
  */
 async function _getPartner(partners, commit, partnerID) {
   if (!partnerID) return;
@@ -49,20 +48,20 @@ async function _getPartner(partners, commit, partnerID) {
 }
 
 /**
+ * Store action used to wrap over getPartner to inject in state and commit method
  * Function to request for partner(es) with "partnerID(s)" to fetch from server if not available locally.
  * Will populate the partner into state once server responds.
  * Returns the requested partnerObject if value does not exist in state and not previously requested for.
  * However do not rely on the return value as if it is already in state or previously requested for it will return undefined
- * @function getPartner
  * @param partners Partners object in classes vuex module's state
  * @param commit Commit method from vuex action of classes vuex module
- * @param {(Number|Number[])} partnerID A partnerID or a list of partnerID that will be requested from server if needed
+ * @param {(Number|Number[])} partnerID A partnerID or a list of partnerID that will be requested from server if not available locally
  * @returns {(undefined | Promise<partnerObject> | Promise<partnerObject>[])} A promise or an array of promise that resolves to partner object(s)
  */
-async function getPartner(partners, commit, partnerID) {
+async function getPartner({ state, commit }, partnerID) {
   if (Array.isArray(partnerID))
-    return partnerID.map((id) => _getPartner(partners, commit, id));
-  else return _getPartner(partners, commit, partnerID);
+    return partnerID.map((id) => _getPartner(state.partners, commit, id));
+  else return _getPartner(state.partners, commit, partnerID);
 }
 
 export default getPartner;

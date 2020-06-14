@@ -5,7 +5,6 @@
 
 import Vue from "vue";
 import router from "@/router";
-import moment from "moment";
 import initialState from "./initialState";
 import setter from "../../utils/setter";
 import apiError from "@/store/utils/apiError";
@@ -118,20 +117,8 @@ export default {
     },
   },
   actions: {
-    /**
-     * Store action used to wrap over getClass to inject in state and commit
-     * @function getClass
-     */
-    async getClass({ state, commit }, classID) {
-      return getClass(state.classes, commit, classID);
-    },
-    /**
-     * Store action used to wrap over getPartner to inject in state and commit
-     * @function getPartner
-     */
-    async getPartner({ state, commit }, partnerID) {
-      return getPartner(state.partners, commit, partnerID);
-    },
+    getClass,
+    getPartner,
     /**
      * Get list of upcomingClassesID from API
      * @function getUpcomingClassesID
