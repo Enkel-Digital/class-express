@@ -77,7 +77,7 @@ export default {
   name: "past-classes",
   beforeCreate() {
     // Only get pastClasses ID from API when user navigates to this view.
-    this.$store.dispatch("classes/getPastClassesID");
+    this.$store.dispatch("classes/getPastClasses");
   },
   computed: {
     ...mapGetters("classes", ["pastClasses"]),
