@@ -148,7 +148,7 @@ export default {
     MapImage,
   },
   created() {
-    this.$store.dispatch("classes/getUpcomingClassesID");
+    this.$store.dispatch("classes/getUpcomingClasses");
   },
   computed: {
     ...mapGetters("classes", ["upcomingClasses"]),

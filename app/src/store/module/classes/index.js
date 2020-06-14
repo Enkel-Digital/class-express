@@ -13,8 +13,8 @@ import apiWithLoader from "@/store/utils/apiWithLoader";
 import getClass from "./getClass";
 import getPartner from "./getPartner";
 
-// @todo Remove mock data
-import mock from "../../mockData";
+// import getClassSchedule from "./getClassSchedule";
+// import getPartnerSchedule from "./getPartnerSchedule";
 
 export default {
   namespaced: true,
@@ -48,6 +48,12 @@ export default {
     },
     addPartner(state, partnerObject) {
       Vue.set(state.partners, partnerObject.id, partnerObject);
+    },
+    addClassSchedule(state, schedule) {
+      Vue.set(state.schedule.class, schedule.classID, schedule);
+    },
+    addPartnerSchedule(state, schedule) {
+      Vue.set(state.schedule.partner, schedule.partnerID, schedule);
     },
   },
   getters: {
@@ -120,28 +126,37 @@ export default {
     getClass,
     getPartner,
     /**
-     * Get list of upcomingClassesID from API
-     * @function getUpcomingClassesID
+     * Get list of upcomingClasses from API
+     * @function getUpcomingClasses
      */
-    async getUpcomingClassesID({ dispatch, commit }) {
-      // @todo Replace with API call
-      const upcomingClassesID = mock.upcomingClassesID;
+    async getUpcomingClasses({ rootState, dispatch, commit }) {
+      const response = await apiWithLoader.get(
+        `/class/user/upcoming/${rootState.user.email}`
+      );
 
-      commit("setter", ["upcomingClassesID", upcomingClassesID]);
+      if (!response.success)
+        return apiError(response, () => dispatch("getUpcomingClasses"));
 
-      dispatch("getClass", Object.keys(upcomingClassesID));
+      const upcomingClasses = response.upcomingClasses;
+
+      // @todo Instead of storing in upcoming classes, store it in userClasses
+      // when I call api for upcoming, give upcoming at READ TIME
+      // However store it in userClasses, then differentiate them to be either upcoming or past classes depending on the current time of display
+      // If I call past classes, API gets past classes filtering by READ TIME, then store in past classes
+      // past classes might not be accurate too, as a upcomingClass can become a past class while using the app,
+      commit("setter", ["upcomingClasses", upcomingClasses]);
+
+      // @todo Does this still work?
+      dispatch("getClass", Object.keys(upcomingClasses));
     },
     /**
-     * Get list of pastClassesID from API
-     * @function getPastClassesID
+     * Get list of pastClasses from API
+     * @function getPastClasses
      */
-    async getPastClassesID({ state, dispatch, commit }) {
+    async getPastClasses({ state, dispatch, commit }) {
       // @todo Replace with API call
-      const pastClassesID = mock.pastClassesID;
-
-      commit("setter", ["pastClassesID", pastClassesID]);
-
-      dispatch("getClass", Object.keys(pastClassesID));
+      // commit("setter", ["pastClasses", pastClasses]);
+      // dispatch("getClass", Object.keys(pastClassesID));
     },
     /**
      * Call API for BOTH favourite classes and partners
