@@ -37,7 +37,6 @@ const classesToFetch = {};
  * Inner function to request for a class with "classID" to fetch from server if not available locally.
  * Will populate the class into state once server responds.
  * Alternatively caller can also await this to get back the class object
- * @function _getClass
  */
 async function _getClass(classes, commit, classID) {
   if (!classID) return;
@@ -69,20 +68,20 @@ async function _getClass(classes, commit, classID) {
 }
 
 /**
+ * Store action used to wrap over _getClass to inject in state and commit method
  * Function to request for class(es) with "classID(s)" to fetch from server if not available locally.
  * Will populate the class into state once server responds.
  * Returns the requested classObject if value does not exist in state and not previously requested for.
  * However do not rely on the return value as if it is already in state or previously requested for it will return undefined
- * @function getClass
  * @param classes Classes object in classes vuex module's state
  * @param commit Commit method from vuex action of classes vuex module
- * @param {(Number|Number[])} classID A classID or a list of classID that will be requested from server if needed
+ * @param {(Number|Number[])} classID A classID or a list of classID that will be requested from server if not available locally
  * @returns {(undefined | Promise<ClassObject> | Promise<ClassObject>[])} A promise or an array of promise that resolves to class object(s)
  */
-async function getClass(classes, commit, classID) {
+async function getClass({ state, commit }, classID) {
   if (Array.isArray(classID))
-    return classID.map((id) => _getClass(classes, commit, id));
-  else return _getClass(classes, commit, classID);
+    return classID.map((id) => _getClass(state.classes, commit, id));
+  else return _getClass(state.classes, commit, classID);
 }
 
 export default getClass;
