@@ -9,7 +9,7 @@
 
       <v-spacer />
 
-      <!-- @todo Change this to show how many points you are left. Use a points icon component -->
+      <!-- @todo Change this to show how many points you have left. Use a points icon component like MapImage -->
       <v-btn icon>
         <v-icon>mdi-share</v-icon>
       </v-btn>
@@ -59,7 +59,6 @@
  *   Use the global loading component via the store.
  */
 
-import { mapMutations, mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 
 export default {
@@ -71,7 +70,8 @@ export default {
     if (this.classID === undefined && this.partnerID === undefined)
       throw new Error("Missing Schedule view props");
 
-    // Call action to fetch schedule of this class
+    // Call action to fetch schedules and load them into vuex before they are read/passed in to this component as computed properties
+    // @todo Change naming to getClassSchedule and getPartnerSchedule instead of combining them
     if (this.classID)
       this.$store.dispatch("classes/getSchedule", { classID: this.classID });
     else if (this.partnerID)
@@ -89,8 +89,8 @@ export default {
     const origStartOfDay = this.moment().startOf("day");
 
     return {
-      // Classes is static via the data function as we do not want its reactivity
-      name: this.classID // @todo dont use ternary, since classID can be 0
+      // Name is static via data function as we do not need it to be reactive as a computed property
+      name: this.classID
         ? this.$store.state.classes.classes[this.classID].name
         : this.$store.state.classes.partners[this.partnerID].name,
       tabs,
@@ -99,15 +99,14 @@ export default {
   },
   computed: {
     schedule() {
-      if (this.classID) return this.$store.state.classes.schedule[this.classID];
+      if (this.classID)
+        return this.$store.state.classes.schedule.class[this.classID];
       else if (this.partnerID)
-        // @todo Change this to partner schedule
-        return this.$store.state.classes.schedule[this.partnerID];
-      else return false;
+        return this.$store.state.classes.schedule.partner[this.partnerID];
+      else return undefined; // Return undefined if neither values are present
     },
   },
   methods: {
-    ...mapMutations("classes", ["selectSchedule"]),
     daysFromToday(days) {
       return this.origStartOfDay.clone().add(days, "days");
     },
