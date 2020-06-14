@@ -3,8 +3,7 @@
     Temporarily hiding all the words for the icons to make it more usable on smaller devices
   -->
 
-  <!-- Bottom navigation bar stays the same across the screens -->
-  <v-bottom-navigation app height grow hide-on-scroll color="orange darken-3">
+  <v-bottom-navigation app height grow color="orange darken-3">
     <v-btn :to="{ name: 'home' }">
       <!-- <span>Home</span> -->
       <v-icon>mdi-home</v-icon>

@@ -9,6 +9,10 @@ export default function initialState() {
     upcomingClassesID: {},
     favouriteClassesID: {},
     favouritePartnersID: {},
+    schedule: {
+      class: {},
+      partner: {},
+    },
   };
 }
 
