@@ -20,6 +20,7 @@
  * If we use firestore directly, will it handle caching for us?
  */
 
+import Vue from "vue";
 import api from "@/store/utils/fetch";
 import apiError from "@/store/utils/apiError";
 // import apiWithLoader from "@/store/utils/apiWithLoader";
@@ -84,4 +85,8 @@ async function getClass({ state, commit }, classID) {
   else return _getClass(state.classes, commit, classID);
 }
 
-export default getClass;
+function addClass(state, classObject) {
+  Vue.set(state.classes, classObject.id, classObject);
+}
+
+export { getClass, addClass };

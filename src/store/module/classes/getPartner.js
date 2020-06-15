@@ -2,6 +2,7 @@
  * getPartner function to get partner details from API
  */
 
+import Vue from "vue";
 import api from "@/store/utils/fetch";
 import apiError from "@/store/utils/apiError";
 
@@ -64,4 +65,8 @@ async function getPartner({ state, commit }, partnerID) {
   else return _getPartner(state.partners, commit, partnerID);
 }
 
-export default getPartner;
+function addPartner(state, partnerObject) {
+  Vue.set(state.partners, partnerObject.id, partnerObject);
+}
+
+export { getPartner, addPartner };
