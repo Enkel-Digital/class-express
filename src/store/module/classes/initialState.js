@@ -8,8 +8,8 @@ export default function initialState() {
     partners: {},
     upcomingClasses: {},
     pastClasses: {},
-    favouriteClassesID: {},
-    favouritePartnersID: {},
+    favouriteClasses: {},
+    favouritePartners: {},
     schedule: {
       class: {},
       partner: {},
