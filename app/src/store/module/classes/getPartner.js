@@ -33,6 +33,9 @@ async function _getPartner(partners, commit, partnerID) {
 
   const response = await api.get(`/partner/details/${partnerID}`);
 
+  // Clear partnerID immediately after API resolves to prevent this from being uncleared if retries if API failed
+  delete partnersToFetch[partnerID];
+
   // @todo See if this.call(this) is actually valid
   if (!response.success) return apiError(response, () => this.call(this));
 
@@ -40,9 +43,6 @@ async function _getPartner(partners, commit, partnerID) {
 
   // Save partner to state
   commit("addPartner", partner);
-
-  // Clear partnerID from the fetch list
-  delete partnersToFetch[partnerID];
 
   // Return partner to allow caller to get partner back if they would like to instead of relying on mapState
   return partner;

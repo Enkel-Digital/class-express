@@ -52,6 +52,9 @@ async function _getClass(classes, commit, classID) {
 
   const response = await api.get(`/class/details/${classID}`);
 
+  // Clear classID immediately after API resolves to prevent this from being uncleared if retries if API failed
+  delete classesToFetch[classID];
+
   // @todo See if this.call(this) is actually valid
   if (!response.success) return apiError(response, () => this.call(this));
 
@@ -60,9 +63,6 @@ async function _getClass(classes, commit, classID) {
 
   // Save classObject to state
   commit("addClass", classObject);
-
-  // Clear classID from the fetch list
-  delete classesToFetch[classID];
 
   // Return class to allow caller to get class back if they would like to instead of relying on mapState
   return classObject;
