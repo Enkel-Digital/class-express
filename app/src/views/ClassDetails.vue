@@ -220,8 +220,7 @@ export default {
       return this.$store.state.classes.partners[this.partnerID];
     },
     favouritedClass() {
-      if (this.$store.state.classes.favouriteClassesID[this.classID])
-        return true;
+      if (this.$store.state.classes.favouriteClasses[this.classID]) return true;
       else return false;
     },
     isReserved() {

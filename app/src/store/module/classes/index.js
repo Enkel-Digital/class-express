@@ -23,15 +23,15 @@ export default {
     setter,
     toggleFavouriteClass(state, classID) {
       /** @notice Toggle state using Vue methods to trigger reactive listeners */
-      if (state.favouriteClassesID[classID])
-        Vue.delete(state.favouriteClassesID, classID);
-      else Vue.set(state.favouriteClassesID, classID, true);
+      if (state.favouriteClasses[classID])
+        Vue.delete(state.favouriteClasses, classID);
+      else Vue.set(state.favouriteClasses, classID, true);
     },
     toggleFavouritePartner(state, partnerID) {
       /** @notice Toggle state using Vue methods to trigger reactive listeners */
-      if (state.favouritePartnersID[partnerID])
-        Vue.delete(state.favouritePartnersID, partnerID);
-      else Vue.set(state.favouritePartnersID, partnerID, true);
+      if (state.favouritePartners[partnerID])
+        Vue.delete(state.favouritePartners, partnerID);
+      else Vue.set(state.favouritePartners, partnerID, true);
     },
     setUpcomingClass(state, { classID, action, timestamp }) {
       /** @notice Change state using Vue methods to trigger reactive listeners */
@@ -59,7 +59,7 @@ export default {
     favouriteClasses(state) {
       const favouriteClasses = [];
 
-      for (const classID of Object.keys(state.favouriteClassesID))
+      for (const classID of Object.keys(state.favouriteClasses))
         favouriteClasses.push(state.classes[classID]);
 
       return favouriteClasses;
@@ -70,7 +70,7 @@ export default {
     favouritePartners(state) {
       const favouritePartners = [];
 
-      for (const partnerID of Object.keys(state.favouritePartnersID))
+      for (const partnerID of Object.keys(state.favouritePartners))
         favouritePartners.push(state.partners[partnerID]);
 
       return favouritePartners;
@@ -90,7 +90,7 @@ export default {
 
       return Object.values(pastClasses).map((clas) => {
         /** @notice Explicit data setting needed to prevent data caching */
-        if (state.favouriteClassesID[clas.id]) clas.favourite = true;
+        if (state.favouriteClasses[clas.id]) clas.favourite = true;
         else clas.favourite = false;
 
         return clas;
@@ -111,7 +111,7 @@ export default {
         .filter((clas) => clas) // Filters out undefined classes that are yet to be fetched from API
         .map((clas) => {
           /** @notice Explicit data setting needed to prevent data caching */
-          if (state.favouriteClassesID[clas.id]) clas.favourite = true;
+          if (state.favouriteClasses[clas.id]) clas.favourite = true;
           else clas.favourite = false;
 
           return clas;
@@ -158,8 +158,6 @@ export default {
      * Call API for BOTH favourite classes and partners
      * Both tied together as thats how the DB data is structured and how the API works
      * @function getFavourites
-     *
-     * @todo Update favouriteClassID and favouritePartnersID to favouriteClasses and favouritePartners
      */
     async getFavourites({ state, commit, dispatch, rootState }) {
       // @todo Now we always call the API, but to udpate by sending the API the last update time
@@ -170,10 +168,10 @@ export default {
       if (!response.success)
         return apiError(response, () => dispatch("getFavourites"));
 
-      commit("setter", ["favouriteClassesID", response.favourites.classes]);
+      commit("setter", ["favouriteClasses", response.favourites.classes]);
       dispatch("getClass", Object.keys(response.favourites.classes));
 
-      commit("setter", ["favouritePartnersID", response.favourites.partners]);
+      commit("setter", ["favouritePartners", response.favourites.partners]);
       dispatch("getPartner", Object.keys(response.favourites.partners));
     },
     async toggleFavouriteClass(
@@ -186,7 +184,7 @@ export default {
       const response = await apiWithLoader.post("/favourites/classes/update", {
         userID: rootState.user.email,
         classID,
-        favourite: state.favouriteClassesID[classID], // The value in state after the toggle
+        favourite: state.favouriteClasses[classID], // The value in state after the toggle
       });
 
       // On error change back favourite value first using the toggle mutation
@@ -205,7 +203,7 @@ export default {
       const response = await apiWithLoader.post("/favourites/partner/update", {
         userID: rootState.user.email,
         partnerID,
-        favourite: state.favouritePartnersID[partnerID], // The value in state after the toggle
+        favourite: state.favouritePartners[partnerID], // The value in state after the toggle
       });
 
       // On error change back favourite value first using the toggle mutation

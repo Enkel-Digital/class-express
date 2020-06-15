@@ -130,7 +130,7 @@ export default {
       return this.$store.state.classes.partners[this.partnerID];
     },
     favourited() {
-      if (this.$store.state.classes.favouritePartnersID[this.partnerID])
+      if (this.$store.state.classes.favouritePartners[this.partnerID])
         return true;
       else return false;
     },
