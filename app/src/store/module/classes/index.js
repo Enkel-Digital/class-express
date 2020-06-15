@@ -10,8 +10,8 @@ import setter from "../../utils/setter";
 import apiError from "@/store/utils/apiError";
 import apiWithLoader from "@/store/utils/apiWithLoader";
 
-import getClass from "./getClass";
-import getPartner from "./getPartner";
+import { getClass, addClass } from "./getClass";
+import { getPartner, addPartner } from "./getPartner";
 
 // import getClassSchedule from "./getClassSchedule";
 // import getPartnerSchedule from "./getPartnerSchedule";
@@ -43,12 +43,8 @@ export default {
       // Clear reviews to prevent caching in memory
       Vue.delete(state.review, "userReviews");
     },
-    addClass(state, classObject) {
-      Vue.set(state.classes, classObject.id, classObject);
-    },
-    addPartner(state, partnerObject) {
-      Vue.set(state.partners, partnerObject.id, partnerObject);
-    },
+    addClass,
+    addPartner,
     addClassSchedule(state, schedule) {
       Vue.set(state.schedule.class, schedule.classID, schedule);
     },
