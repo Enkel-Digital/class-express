@@ -74,9 +74,7 @@ router.post("/classes/update", express.json(), async (req, res) => {
         .collection("favourites")
         .doc(userID)
         .update({
-          [`classes.${classID}`]: {
-            favouritedAt: firebase.firestore.FieldValue.serverTimestamp(),
-          },
+          [`classes.${classID}`]: favourite,
         });
     else
       await db
@@ -116,9 +114,7 @@ router.post("/partner/update", express.json(), async (req, res) => {
         .collection("favourites")
         .doc(userID)
         .update({
-          [`partners.${partnerID}`]: {
-            favouritedAt: firebase.firestore.FieldValue.serverTimestamp(),
-          },
+          [`partners.${partnerID}`]: favourite,
         });
     else
       await db
