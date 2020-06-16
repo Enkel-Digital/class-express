@@ -42,8 +42,8 @@ export default {
     setUpcomingClass(state, { classID, action, timestamp }) {
       /** @notice Change state using Vue methods to trigger reactive listeners */
       // @todo Change set and delete to use the specific timestamp of that class
-      if (action) Vue.set(state.upcomingClassesID, classID, true);
-      else Vue.delete(state.upcomingClassesID, classID);
+      if (action) Vue.set(state.upcomingClasses, classID, true);
+      else Vue.delete(state.upcomingClasses, classID);
     },
     clearUserReview(state) {
       // Clear reviews to prevent caching in memory
@@ -84,12 +84,12 @@ export default {
      * @todo As time goes on, this will get larger and larger, thus we need a better way to pass this to the view component, instead of everything at once.
      */
     pastClasses(state) {
-      // If pastClassesID is not loaded before getter is ran, skip getter.
-      if (!state.pastClassesID) return [];
+      // If pastClasses is not loaded before getter is ran, skip getter.
+      if (!state.pastClasses) return [];
 
       const pastClasses = {};
 
-      for (const classID of Object.keys(state.pastClassesID))
+      for (const classID of Object.keys(state.pastClasses))
         pastClasses[classID] = state.classes[classID];
 
       return Object.values(pastClasses).map((clas) => {
@@ -108,7 +108,7 @@ export default {
     upcomingClasses(state) {
       const upcomingClasses = {};
 
-      for (const classID in state.upcomingClassesID)
+      for (const classID in state.upcomingClasses)
         upcomingClasses[classID] = state.classes[classID];
 
       return Object.values(upcomingClasses)
@@ -156,7 +156,7 @@ export default {
     async getPastClasses({ state, dispatch, commit }) {
       // @todo Replace with API call
       // commit("setter", ["pastClasses", pastClasses]);
-      // dispatch("getClass", Object.keys(pastClassesID));
+      // dispatch("getClass", Object.keys(pastClasses));
     },
     /**
      * Call API for BOTH favourite classes and partners

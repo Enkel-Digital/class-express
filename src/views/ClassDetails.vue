@@ -224,7 +224,7 @@ export default {
       else return false;
     },
     isReserved() {
-      const upcomingClass = this.$store.state.classes.upcomingClassesID[
+      const upcomingClass = this.$store.state.classes.upcomingClasses[
         this.classID
       ];
 
