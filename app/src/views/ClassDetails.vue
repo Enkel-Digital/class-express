@@ -35,18 +35,20 @@
           <!-- date of class -->
           <v-list-item-subtitle>
             <!-- Show year only if class is next year. -->
-            <span v-if="moment().year() === moment(clas.time).year()">
-              {{ moment(clas.time).format("dddd, MMM D") }}
+            <span v-if="moment().year() === dateObject.year()">
+              {{ dateObject.format("dddd, MMM D") }}
             </span>
             <span v-else>
-              {{ moment(clas.time).format("dddd, MMM D YYYY") }}
+              {{ dateObject.format("dddd, MMM D YYYY") }}
             </span>
           </v-list-item-subtitle>
 
           <!-- time of class -->
           <v-list-item-subtitle>
-            {{ moment(clas.time).format("h:mm a") }} -
-            {{ moment(clas.time + Date.parse(clas.length)).format("h:mm a") }}
+            {{ dateObject.format("h:mm a") }} -
+            {{
+              dateObject.clone().add(clas.length, "minutes").format("h:mm a")
+            }}
           </v-list-item-subtitle>
 
           <!-- Instructor name if any -->
@@ -210,6 +212,11 @@ export default {
   props: ["classID", "selectedTime"],
   // @todo Generate calendar invite link for add to calendar button
   computed: {
+    dateObject() {
+      return this.selectedTime
+        ? this.moment(parseInt(this.selectedTime))
+        : undefined;
+    },
     clas() {
       return this.$store.state.classes.classes[this.classID];
     },
