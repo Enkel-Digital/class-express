@@ -25,13 +25,19 @@ export default {
       /** @notice Toggle state using Vue methods to trigger reactive listeners */
       if (state.favouriteClasses[classID])
         Vue.delete(state.favouriteClasses, classID);
-      else Vue.set(state.favouriteClasses, classID, true);
+      else
+        Vue.set(state.favouriteClasses, classID, {
+          favouritedAt: Math.trunc(Date.now() / 1000),
+        });
     },
     toggleFavouritePartner(state, partnerID) {
       /** @notice Toggle state using Vue methods to trigger reactive listeners */
       if (state.favouritePartners[partnerID])
         Vue.delete(state.favouritePartners, partnerID);
-      else Vue.set(state.favouritePartners, partnerID, true);
+      else
+        Vue.set(state.favouritePartners, partnerID, {
+          favouritedAt: Math.trunc(Date.now() / 1000),
+        });
     },
     setUpcomingClass(state, { classID, action, timestamp }) {
       /** @notice Change state using Vue methods to trigger reactive listeners */
@@ -53,27 +59,25 @@ export default {
     },
   },
   getters: {
-    /**
-     * @todo Sort by time the class was added as a favourite.
-     */
     favouriteClasses(state) {
-      const favouriteClasses = [];
-
-      for (const classID of Object.keys(state.favouriteClasses))
-        favouriteClasses.push(state.classes[classID]);
-
-      return favouriteClasses;
+      return Object.keys(state.favouriteClasses)
+        .sort(
+          (a, b) =>
+            state.favouriteClasses[b].favouritedAt -
+            state.favouriteClasses[a].favouritedAt
+        ) // Sort by decsending order
+        .map((classID) => state.classes[classID]) // Convert from classID to class object
+        .filter((clas) => clas); // Filter to remove undefined if any class is not loaded into state yet
     },
-    /**
-     * @todo Sort by time the class was added as a favourite.
-     */
     favouritePartners(state) {
-      const favouritePartners = [];
-
-      for (const partnerID of Object.keys(state.favouritePartners))
-        favouritePartners.push(state.partners[partnerID]);
-
-      return favouritePartners;
+      return Object.keys(state.favouritePartners)
+        .sort(
+          (a, b) =>
+            state.favouritePartners[b].favouritedAt -
+            state.favouritePartners[a].favouritedAt
+        ) // Sort by decsending order
+        .map((partnerID) => state.partners[partnerID]) // Convert from partnerID to partner object
+        .filter((partner) => partner); // Filter to remove undefined if any partner is not loaded into state yet
     },
     /**
      * @todo Sort by time class was attended
