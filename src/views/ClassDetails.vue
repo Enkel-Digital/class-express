@@ -214,14 +214,15 @@ export default {
   computed: {
     dateObject() {
       return this.selectedTime
-        ? this.moment(parseInt(this.selectedTime))
+        ? this.moment.unix(parseInt(this.selectedTime))
         : undefined;
     },
     clas() {
       return this.$store.state.classes.classes[this.classID];
     },
     partnerID() {
-      return this.clas.partnerID;
+      // Null coalescing to prevent failure when clas is still being loaded and is undefined
+      return this.clas?.partnerID;
     },
     partner() {
       return this.$store.state.classes.partners[this.partnerID];
