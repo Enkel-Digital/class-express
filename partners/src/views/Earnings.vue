@@ -12,8 +12,8 @@
 
     <br />
 
-    <v-row justify="center">
-      <v-col cols="15" sm="6" md="3" :align="center">
+    <v-row>
+      <v-col cols="15" sm="6" md="3">
         <v-card outlined text>
           <v-list-item>
             <v-icon color="#FFD600" large
@@ -33,7 +33,7 @@
         </v-card>
       </v-col>
 
-      <v-col cols="15" sm="6" md="3" :align="center">
+      <v-col cols="15" sm="6" md="3">
         <v-card outlined text>
           <v-list-item>
             <v-icon color="gray" large>mdi-teach</v-icon>
@@ -82,96 +82,52 @@ import EarningsChart from "@/components/EarningsChart.vue";
 
 export default {
   name: "AllClasses",
-  data: () => ({
-    weeklyChartData: {
-      labels: ["May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7"],
-      datasets: [
-        {
-          label: "Points Earned",
-          backgroundColor: "#78909C",
-          borderColor: "#455A64",
-          borderWidth: "2",
-          fill: false,
-          data: [60, 50, 60, 90, 50, 43, 54, 70],
-        },
-      ],
-    },
-    weeklyChartOptions: {
-      responsive: true,
-      maintainAspectRatio: false,
-      legend: {
-        onClick: (e) => e.stopPropagation(),
+  data() {
+    return {
+      weeklyChartData: {
+        labels: [],
+        datasets: [
+          {
+            label: "Points Earned",
+            backgroundColor: "#78909C",
+            borderColor: "#455A64",
+            borderWidth: "2",
+            fill: false,
+            data: [60, 50, 60, 90, 50, 43, 54, 70],
+          },
+        ],
       },
-    },
+      weeklyChartOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          onClick: (e) => e.stopPropagation(),
+        },
+      },
 
-    monthlyChartData: {
-      labels: [
-        "May 1",
-        "May 2",
-        "May 3",
-        "May 4",
-        "May 5",
-        "May 6",
-        "May 7",
-        "May 8",
-        "May 9",
-        "May 10",
-        "May 11",
-        "May 12",
-        "May 13",
-        "May 14",
-        "May 15",
-        "May 16",
-        "May 17",
-        "May 18",
-        "May 19",
-        "May 20",
-        "May 21",
-        "May 22",
-      ],
-      datasets: [
-        {
-          label: "Points Earned",
-          backgroundColor: "#78909C",
-          borderColor: "#455A64",
-          borderWidth: "2",
-          fill: false,
-          data: [
-            60,
-            50,
-            60,
-            90,
-            50,
-            43,
-            54,
-            70,
-            60,
-            50,
-            60,
-            90,
-            50,
-            43,
-            54,
-            70,
-            60,
-            50,
-            60,
-            90,
-            70,
-            50,
-          ],
-        },
-      ],
-    },
-    monthlyChartOptions: {
-      responsive: true,
-      maintainAspectRatio: false,
-      // Make chart label unclickable
-      legend: {
-        onClick: (e) => e.stopPropagation(),
+      monthlyChartData: {
+        labels: [],
+        datasets: [
+          {
+            label: "Points Earned",
+            backgroundColor: "#78909C",
+            borderColor: "#455A64",
+            borderWidth: "2",
+            fill: false,
+            data: [60, 50, 60, 90, 50, 43, 54, 70, 60, 50, 60, 90],
+          },
+        ],
       },
-    },
-  }),
+      monthlyChartOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+        // Make chart label unclickable
+        legend: {
+          onClick: (e) => e.stopPropagation(),
+        },
+      },
+    };
+  },
   components: {
     EarningsChart,
   },
@@ -179,6 +135,59 @@ export default {
     // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
     // Request store to get and populate all classes of partner
     this.$store.dispatch("classes/getAllClasses");
+    this.fetchMonthlyDate();
+  },
+  mounted() {},
+  methods: {
+    fetchMonthlyDate() {
+      var months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      var now = new Date();
+      var date = now.getDate();
+      var lastDay = new Date(
+        now.getFullYear(),
+        now.getMonth() + 1,
+        0
+      ).getDate();
+      var thisMonth = months[now.getMonth()]; // getMonth method
+      var monthlyChartData = [];
+      var weeklyChartData = [];
+      var monday = this.getMonday(now).getDate();
+      var a = 0;
+
+      console.log("" + (monday + 6));
+      for (var i = 0; i < lastDay; i++) {
+        monthlyChartData[i] = i + 1 + " " + thisMonth;
+        date++;
+      }
+      this.monthlyChartData.labels = monthlyChartData;
+      for (var j = monday; j < monday + 7; j++) {
+        weeklyChartData[a] = j;
+        a++;
+      }
+      this.weeklyChartData.labels = weeklyChartData;
+    },
+    getRandomInt() {
+      return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
+    },
+    getMonday(d) {
+      d = new Date(d);
+      var day = d.getDay(),
+        diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+      return new Date(d.setDate(diff));
+    },
   },
   computed: {
     classes() {
