@@ -1,0 +1,167 @@
+// Legend:
+// PG (Attribute) -> PostgreSQL (preferred DB choice)
+// FS (Attribute) -> Firestore (preferred DB choice)
+// Trimmable (Attribute) -> Data that can be warehoused by deleting older data from production after backing up everything into data warehouse
+
+// Notes:
+// Is it fine to have foreign keys as primary keys --> https://stackoverflow.com/a/10983099/13137262
+
+// FS
+Table userAccounts {
+  id int [pk, increment, not null]
+  email varchar [not null]
+  firstName varchar [not null]
+  lastName varchar [null]
+  countryCode varchar [not null]
+  cityCode varchar [not null]
+  timezone varchar [not null]
+  profilePictureURL varchar [null]
+  currency varchar [not null]
+}
+
+// FS
+Table userSettings {
+  id int [pk, not null, ref: - userAccounts.id]
+  notification_email boolean [null]
+  notification_mobile boolean [null]
+}
+
+// FS
+// Also known as partner organisation
+// When we say partner of a class, we mean this.
+Table businessOrganisation {
+  id int [pk, increment, not null]
+  name varchar [not null]
+  description varchar [not null]
+  email varchar [not null]
+  phoneNumber varchar [not null] // Includes area code
+  location_address varchar [not null]
+  location_coordinates varchar [not null]
+  website varchar [null]
+  pictureSources varchar // Perhaps use an array?
+  // billingAccount int [not null] // Foreign key to billing accounts?
+  deleted boolean [null] // Set this to true if deleted and leave as null if not
+}
+
+// FS
+Table partnerAccounts {
+  id int [pk, increment, not null]
+  admin boolean [null] // Only true if user is admin else can be false or null
+  permissions varchar // Perhaps use an array?
+  email varchar [not null]
+  phoneNumber varchar [null] // Includes area code
+  name varchar [not null]
+  businessOrganisation int [ref: > businessOrganisation.id, not null]
+}
+
+// FS
+Table partnerSettings {
+  id int [pk, ref: - partnerAccounts.id, not null]
+  notification_email boolean [null]
+  notification_mobile boolean [null]
+}
+
+// Trimmable + PG
+Table userPlans {
+  id int [pk, increment, not null]
+  userID int [ref: > userAccounts.id, not null] // Many rows with each row being 1 plan in users history
+  planID int [ref: > subscriptionPlans.id, not null]
+  start timestamp [not null]
+  end timestamp [null]
+}
+
+// Trimmable + PG
+// Instead of relying on a Points table that needs to be updated every month, perhaps use a transactions table and the userPlans table to compute the points on demand
+// Bascially records of user bookings and cancellation events and more
+Table userBookingTransactions {
+  id int [pk, increment, not null]
+  userID int [ref: > userAccounts.id, not null]
+  classID int [ref: > classes.id, not null]
+  actionTime timestamp [not null] // When this event happened, TS provided by frontend
+  points int [not null] // A copy of the points of the class at the moment of action
+  booked boolean [null]
+  cancelled boolean [null]
+}
+
+// @todo
+Table billingAccounts {
+  id int [pk, increment, not null]
+}
+
+// FS or PG
+Table classes {
+  id int [pk, increment, not null]
+  partnerID int [ref: > businessOrganisation.id, not null]
+  name varchar [not null]
+  description varchar [not null] // HTML allowed
+  length int [not null]
+  points int [not null]
+  pictureSources varchar [null] // Perhaps use an array?
+  location_address varchar [null]
+  location_coordinates varchar [null]
+  deleted boolean [null] // Set this to true if deleted and leave as null if not
+}
+
+// FS or PG
+// Each row will be a individual RRULE?
+Table classSchedule {
+  id int [pk, increment, not null]
+  classID int [ref: > classes.id, not null]
+}
+
+// PG or FS
+Table userFavourites {
+  id int [pk, increment, not null]
+  userID int [ref: > userAccounts.id, not null]
+  class boolean [null] // nullable
+  partner boolean [null] // nullable
+  favouritedAt timestamp [not null]
+}
+
+// PG or FS + Trimmable (keep like the latest 20 user past classes, allow user to request for more)
+// Classes that the user have booked/attended/booked+cancelled(by user or partner)
+Table userClasses {
+  id int [pk, increment, not null]
+  userID int [ref: > userAccounts.id, not null]
+  classID int [ref: > classes.id, not null]
+  startTime timestamp [not null] // Only store start time as end time should be computed using length of class
+}
+
+// All subscription plans across time
+Table subscriptionPlans {
+  id int [pk, increment, not null] // This is also the planID
+  available boolean [null] // True to indicate available // Can change to be a procedure to be executed to see if this is avail?
+  name varchar [not null]
+  copywriting varchar [not null] // HTML allowed
+  currency varchar [not null]
+  price int [not null] // Price in the specified currency
+  totalPoints int [not null]
+  // Country that this plan is available in = All countries if none specified
+  // Usually need to specify and usually the same as the currency of the plan.
+  // @todo Should this default to SG?
+  countryCode varchar [null]
+}
+
+// FS
+// All topupOptions allowed other then the custom points topup
+Table topupOptions {
+  id int [pk, increment, not null]
+  available boolean [null] // True to indicate available // Can change to be a procedure to be executed to see if this is avail?
+  name varchar [not null]
+  copywriting varchar [not null] // HTML allowed
+  currency varchar [not null]
+  price int [not null]
+  totalPoints int [not null]
+}
+
+// PG + Trimmable (If trimmed, we need to make this into a seperate service that will hold a materialized view with cached result)
+// PG needed for advance processing, to add a caching layer in front of queries for this with a 1 ~ 2 days expiry?
+Table reviews {
+  id int [pk, increment, not null]
+  classID int [ref: > classes.id, not null]
+  points int [not null]
+  reviewedOn timestamp [not null]
+  description varchar [null]
+  // Potentially add what time was the lesson so partner can take action
+}
+
