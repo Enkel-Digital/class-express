@@ -18,6 +18,7 @@
       <v-card
         v-for="clas in upcomingClasses"
         :key="clas.id"
+        :set="(dateObject = moment.unix(clas.startTime))"
         class="mx-auto mb-4"
         max-width="calc(100% - 1.6em)"
         outlined
@@ -52,7 +53,7 @@
                 -->
 
                 <!-- If the class is today -->
-                <span v-if="moment().isSame(moment(clas.time), 'day')">
+                <span v-if="moment().isSame(dateObject, 'day')">
                   Today,
                 </span>
                 <!-- Else, if the class is tomorrow -->
@@ -60,30 +61,27 @@
                   v-else-if="
                     moment()
                       .add(moment.duration(1, 'd'))
-                      .isSame(
-                        moment(clas.time).add(moment.duration(1, 'd')),
-                        'day'
-                      )
+                      .isSame(dateObject.add(moment.duration(1, 'd')), 'day')
                   "
                 >
                   Tomorrow,
                 </span>
                 <!-- Else just show day of the week -->
                 <span v-else>
-                  {{ moment(clas.time).format("dddd, ") }}
+                  {{ dateObject.format("dddd, ") }}
                 </span>
 
                 <!-- Date -->
-                {{ moment(clas.time).format("D MMM") }}
+                {{ dateObject.format("D MMM") }}
 
                 <!-- Show year only if class is next year -->
-                <span v-if="moment().year() !== moment(clas.time).year()">
-                  {{ moment(clas.time).format("YYYY") }}
+                <span v-if="moment().year() !== dateObject.year()">
+                  {{ dateObject.format("YYYY") }}
                 </span>
 
                 <br />
                 <!-- Time -->
-                {{ moment(clas.time).format("h:mm a") }} -
+                {{ dateObject.format("h:mm a") }} -
                 {{
                   moment(clas.time + Date.parse(clas.length)).format("h:mm a")
                 }}
