@@ -135,11 +135,11 @@ export default {
     // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
     // Request store to get and populate all classes of partner
     this.$store.dispatch("classes/getAllClasses");
-    this.fetchMonthlyDate();
+    this.fetchDate();
   },
-  mounted() {},
+
   methods: {
-    fetchMonthlyDate() {
+    fetchDate() {
       var months = [
         "Jan",
         "Feb",
@@ -167,9 +167,8 @@ export default {
       var monday = this.getMonday(now).getDate();
       var a = 0;
 
-      console.log("" + (monday + 6));
       for (var i = 0; i < lastDay; i++) {
-        monthlyChartData[i] = i + 1 + " " + thisMonth;
+        monthlyChartData[i] = thisMonth + " " + i + 1;
         date++;
       }
       this.monthlyChartData.labels = monthlyChartData;

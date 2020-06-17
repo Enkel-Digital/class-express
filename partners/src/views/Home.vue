@@ -53,35 +53,64 @@ export default {
     PastWeekEarningComparison,
     ActiveClassCard,
   },
-  data: () => ({
-    chartdata: {
-      labels: ["May 1", "May 2", "May 3", "May 4", "May 5", "May 6", "May 7"],
-      datasets: [
-        {
-          label: "Points Earned",
-          backgroundColor: "#78909C",
-          borderColor: "#455A64",
-          borderWidth: "2",
-          fill: false,
-          data: [60, 50, 60, 90, 50, 43, 54, 70],
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      // Make chart label unclickable
-      legend: {
-        onClick: (e) => e.stopPropagation(),
+  data() {
+    return {
+      chartdata: {
+        labels: [],
+        datasets: [
+          {
+            label: "Points Earned",
+            backgroundColor: "#78909C",
+            borderColor: "#455A64",
+            borderWidth: "2",
+            fill: false,
+            data: [60, 50, 60, 90, 50, 43, 54, 70],
+          },
+        ],
       },
-    },
-    pointCardLabels: {
-      weekly: "Points Earned This Week",
-      monthly: "Points Earned This Month",
-      total: "Total Points Earned",
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        // Make chart label unclickable
+        legend: {
+          onClick: (e) => e.stopPropagation(),
+        },
+      },
+      pointCardLabels: {
+        weekly: "Points Earned This Week",
+        monthly: "Points Earned This Month",
+        total: "Total Points Earned",
+      },
+
+      pointCardPoints: { weekly: "1234", monthly: "12345", total: "1234567" },
+    };
+  },
+  beforeMount() {
+    // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
+    // Request store to get and populate all classes of partner
+    this.fetchDate();
+  },
+  methods: {
+    fetchDate() {
+      var now = new Date();
+      var date = now.getDate();
+      var weeklyChartData = [];
+      var monday = this.getMonday(now).getDate();
+      var a = 0;
+
+      for (var j = monday; j < monday + 7; j++) {
+        weeklyChartData[a] = j;
+        a++;
+      }
+      this.chartdata.labels = weeklyChartData;
     },
 
-    pointCardPoints: { weekly: "1234", monthly: "12345", total: "1234567" },
-  }),
+    getMonday(d) {
+      d = new Date(d);
+      var day = d.getDay(),
+        diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+      return new Date(d.setDate(diff));
+    },
+  },
 };
 </script>
