@@ -33,6 +33,22 @@
 
       <v-list-item-group v-model="item" color="primary">
         <v-list-item v-for="clas in classes" :key="clas.id" class="class-card">
+          <v-list-item-content>
+            <v-list-item-title class="title" align="left">
+              {{ clas.date }}
+            </v-list-item-title>
+            <br />
+            <v-list-item-text align="left">
+              <v-row>
+                <v-col>
+                  {{ clas.amount }}<v-icon>mdi-arm-flex </v-icon
+                  ><v-icon large>mdi-arrow-left-right-bold</v-icon>
+                  {{ selectedCurrency.symbol }}{{ convertedAmount }}
+                </v-col>
+                <v-col align="end"> Paid out via {{ clas.payment }} </v-col>
+              </v-row>
+            </v-list-item-text>
+          </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
     </v-card>
@@ -66,35 +82,34 @@ export default {
     convertedCurrency() {
       return (this.points * this.selectedCurrency.rate).toFixed(2);
     },
+    convertedAmount() {
+      return (this.amount * this.selectedCurrency.rate).toFixed(2);
+    },
     classes() {
       return [
         {
           id: 0,
-          name: "Basic guitar",
-          pictureSources: [
-            "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg",
-          ],
+          date: "17 January 2020",
+          amount: 20,
+          payment: "paypal",
         },
         {
           id: 1,
-          name: "Intermediate guitar",
-          pictureSources: [
-            "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg",
-          ],
+          date: "18 January 2020",
+          amount: 100,
+          payment: "mastercard ending with 8542",
         },
         {
           id: 2,
-          name: "Advance guitar",
-          pictureSources: [
-            "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg",
-          ],
+          date: "19 January 2020",
+          amount: 60,
+          payment: "visa ending with 6184",
         },
         {
           id: 2,
-          name: "Advance guitar",
-          pictureSources: [
-            "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg",
-          ],
+          date: "20 January 2020",
+          amount: 50,
+          payment: "mastercard ending with 3258",
         },
       ];
     },
