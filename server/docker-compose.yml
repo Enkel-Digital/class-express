@@ -1,6 +1,18 @@
+# Compose file for running whole system locally for development and testing only.
+
 version: "3"
 
 services:
+  # @todo Run migration everytime it starts up?
+  postgresql:
+    restart: always
+    hostname: sql
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "password"
+
   core:
     restart: always
     hostname: core
