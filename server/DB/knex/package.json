@@ -1,0 +1,14 @@
+{
+  "name": "sql_migrations",
+  "version": "0.1.0",
+  "description": "SQL",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "knex": "^0.21.1",
+    "pg": "^8.2.1"
+  }
+}
