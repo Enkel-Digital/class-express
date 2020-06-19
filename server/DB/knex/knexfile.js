@@ -5,13 +5,13 @@ module.exports = {
     client: "postgresql",
     connection: {
       host: "localhost",
-      database: "postgres",
+      database: "CE",
       port: 5432,
       user: "postgres",
       password: "password",
     },
     pool: {
-      min: 2,
+      min: 0,
       max: 10,
       createTimeoutMillis: 3000,
       acquireTimeoutMillis: 30000,
@@ -22,6 +22,7 @@ module.exports = {
     },
     migrations: {
       tableName: "knex_migrations",
+      directory: "./migrations",
     },
   },
 
@@ -35,7 +36,7 @@ module.exports = {
       password: encodeURIComponent(process.env.SQL_PASSWORD),
     },
     pool: {
-      min: 2,
+      min: 0,
       max: 10,
       createTimeoutMillis: 3000,
       acquireTimeoutMillis: 30000,
@@ -46,6 +47,7 @@ module.exports = {
     },
     migrations: {
       tableName: "knex_migrations",
+      directory: "./migrations",
     },
   },
 
@@ -59,7 +61,7 @@ module.exports = {
       password: encodeURIComponent(process.env.SQL_PASSWORD),
     },
     pool: {
-      min: 2,
+      min: 0,
       max: 100,
       createTimeoutMillis: 3000,
       acquireTimeoutMillis: 30000,
@@ -70,6 +72,7 @@ module.exports = {
     },
     migrations: {
       tableName: "knex_migrations",
+      directory: "./migrations",
     },
   },
 };

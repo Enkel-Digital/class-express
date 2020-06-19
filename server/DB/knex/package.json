@@ -4,6 +4,8 @@
   "description": "SQL",
   "main": "./src/index.js",
   "scripts": {
+    "setup": "node setup.js",
+    "teardown": "node teardown.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

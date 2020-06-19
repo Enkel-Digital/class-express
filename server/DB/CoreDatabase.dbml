@@ -1,3 +1,5 @@
+// https://www.dbml.org/docs/
+
 // Legend:
 // PG (Attribute) -> PostgreSQL (preferred DB choice)
 // FS (Attribute) -> Firestore (preferred DB choice)
@@ -5,6 +7,11 @@
 
 // Notes:
 // Is it fine to have foreign keys as primary keys --> https://stackoverflow.com/a/10983099/13137262
+
+Project ClassExpress {
+  database_type: 'PostgreSQL'
+  Note: 'SQL DB for Class Express'
+}
 
 // FS
 Table userAccounts {
@@ -17,6 +24,7 @@ Table userAccounts {
   timezone varchar [not null]
   profilePictureURL varchar [null]
   currency varchar [not null]
+  deleted boolean [null] // Set this to true if deleted and leave as null if not
 }
 
 // FS
@@ -52,6 +60,7 @@ Table partnerAccounts {
   phoneNumber varchar [null] // Includes area code
   name varchar [not null]
   businessOrganisation int [ref: > businessOrganisation.id, not null]
+  deleted boolean [null] // Set this to true if deleted and leave as null if not
 }
 
 // FS
@@ -61,6 +70,9 @@ Table partnerSettings {
   notification_mobile boolean [null]
 }
 
+// @todo Create 1 more table for records of points purchase for calculating user points
+// @todo Might wanna put these records in userPlans instead so that they are all in 1 table and can be merged easily
+
 // Trimmable + PG
 Table userPlans {
   id int [pk, increment, not null]
@@ -68,11 +80,13 @@ Table userPlans {
   planID int [ref: > subscriptionPlans.id, not null]
   start timestamp [not null]
   end timestamp [null]
+  // @todo Should we also include the price they paid for this? Or should we just put that value in another table like the transactions table?
 }
 
 // Trimmable + PG
 // Instead of relying on a Points table that needs to be updated every month, perhaps use a transactions table and the userPlans table to compute the points on demand
 // Bascially records of user bookings and cancellation events and more
+// Closely tied to userClasses
 Table userBookingTransactions {
   id int [pk, increment, not null]
   userID int [ref: > userAccounts.id, not null]
@@ -83,9 +97,13 @@ Table userBookingTransactions {
   cancelled boolean [null]
 }
 
+// @todo Create 1 more table for userBillingTransactions
+// @todo Create the other tables for billing transactions too.
+
 // @todo
 Table billingAccounts {
   id int [pk, increment, not null]
+  // @todo ?? deleted boolean [null] // Set this to true if deleted and leave as null if not
 }
 
 // FS or PG
@@ -96,6 +114,7 @@ Table classes {
   description varchar [not null] // HTML allowed
   length int [not null]
   points int [not null]
+  maxParticipants int [not null]
   pictureSources varchar [null] // Perhaps use an array?
   location_address varchar [null]
   location_coordinates varchar [null]
@@ -138,7 +157,7 @@ Table subscriptionPlans {
   totalPoints int [not null]
   // Country that this plan is available in = All countries if none specified
   // Usually need to specify and usually the same as the currency of the plan.
-  // @todo Should this default to SG?
+  // @todo Defaults to SG?
   countryCode varchar [null]
 }
 
@@ -164,4 +183,3 @@ Table reviews {
   description varchar [null]
   // Potentially add what time was the lesson so partner can take action
 }
-
