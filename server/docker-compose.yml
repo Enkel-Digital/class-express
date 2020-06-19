@@ -3,7 +3,7 @@
 version: "3"
 
 services:
-  # @todo Run migration everytime it starts up?
+  # @todo Run migration and maybe seeding everytime this starts up by using another docker image from DB/knex
   postgresql:
     restart: always
     hostname: sql
@@ -25,3 +25,5 @@ services:
       - ./core/.env
     ports:
       - "3000:3000"
+    depends_on:
+      - postgresql
