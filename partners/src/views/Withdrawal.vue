@@ -12,6 +12,7 @@
             item-text="text"
             return-object="true"
             v-model="selectedCurrency"
+            @change="onChange()"
           ></v-select>
         </v-col>
       </v-row>
@@ -43,7 +44,7 @@
                 <v-col>
                   {{ clas.amount }}<v-icon>mdi-arm-flex </v-icon
                   ><v-icon large>mdi-arrow-left-right-bold</v-icon>
-                  {{ selectedCurrency.symbol }}{{ convertedAmount }}
+                  {{ selectedCurrency.symbol }}{{ convertedAmount[clas.id] }}
                 </v-col>
                 <v-col align="end"> Paid out via {{ clas.payment }} </v-col>
               </v-row>
@@ -83,7 +84,13 @@ export default {
       return (this.points * this.selectedCurrency.rate).toFixed(2);
     },
     convertedAmount() {
-      return (this.amount * this.selectedCurrency.rate).toFixed(2);
+      var amount = [];
+      for (var i = 0; i < this.classes.length; i++) {
+        amount.push(
+          (this.classes[i].amount * this.selectedCurrency.rate).toFixed(2)
+        );
+      }
+      return amount;
     },
     classes() {
       return [
@@ -106,7 +113,7 @@ export default {
           payment: "visa ending with 6184",
         },
         {
-          id: 2,
+          id: 3,
           date: "20 January 2020",
           amount: 50,
           payment: "mastercard ending with 3258",
