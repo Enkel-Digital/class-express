@@ -20,7 +20,7 @@
     <br />
 
     <v-row justify="center">
-      <v-col cols="15" sm="6" md="3" :align="center">
+      <v-col cols="15" sm="6" md="3">
         <v-card outlined text>
           <v-list-item>
             <v-icon color="#FFD600" large
@@ -40,7 +40,7 @@
         </v-card>
       </v-col>
 
-      <v-col cols="15" sm="6" md="3" :align="center">
+      <v-col cols="15" sm="6" md="3">
         <v-card outlined text>
           <v-list-item>
             <v-icon color="gray" large>mdi-teach</v-icon>
@@ -61,6 +61,7 @@
 
     <br />
     <h3 class="text-center">
+      <!-- @todo create a view all history page -->
       <a href="http://localhost:8080/#/class/all"
         >Click to view class history</a
       >
