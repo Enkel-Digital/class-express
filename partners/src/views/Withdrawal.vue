@@ -12,7 +12,6 @@
             item-text="text"
             return-object="true"
             v-model="selectedCurrency"
-            @change="onChange()"
           ></v-select>
         </v-col>
       </v-row>
@@ -32,14 +31,18 @@
         </v-col>
       </v-row>
 
-      <v-list-item-group v-model="item" color="primary">
-        <v-list-item v-for="clas in classes" :key="clas.id" class="class-card">
+      <v-list-item-group color="primary">
+        <v-list-item
+          v-for="clas in classes.slice().reverse()"
+          :key="clas.id"
+          class="class-card"
+        >
           <v-list-item-content>
             <v-list-item-title class="title" align="left">
               {{ clas.date }}
             </v-list-item-title>
             <br />
-            <v-list-item-text align="left">
+            <v-list-item-subtitle align="left">
               <v-row>
                 <v-col>
                   {{ clas.amount }}<v-icon>mdi-arm-flex </v-icon
@@ -48,7 +51,7 @@
                 </v-col>
                 <v-col align="end"> Paid out via {{ clas.payment }} </v-col>
               </v-row>
-            </v-list-item-text>
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -116,6 +119,12 @@ export default {
           id: 3,
           date: "20 January 2020",
           amount: 50,
+          payment: "mastercard ending with 3258",
+        },
+        {
+          id: 4,
+          date: "21 January 2020",
+          amount: 2000,
           payment: "mastercard ending with 3258",
         },
       ];
