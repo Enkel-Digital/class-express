@@ -88,6 +88,12 @@ const routes = [
     component: () => import("@/views/Withdrawal.vue"),
     meta: { Auth_requirements: AuthType.private },
   },
+  {
+    path: "/employee/manage",
+    name: "manage-employee",
+    component: () => import("@/views/ManageEmployee.vue"),
+    meta: { Auth_requirements: AuthType.private },
+  },
 ];
 
 export default routes;

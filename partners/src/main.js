@@ -6,6 +6,8 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 import vuetify from "./plugins/vuetify";
+import vuemasonry from "./plugins/vue-masonry";
+
 import firebase from "firebase/app";
 import "firebase/auth";
 
@@ -44,6 +46,7 @@ firebase.auth().onAuthStateChanged(() => {
     router,
     store,
     vuetify,
+    vuemasonry,
     render: (h) => h(App),
   }).$mount("#app");
 });

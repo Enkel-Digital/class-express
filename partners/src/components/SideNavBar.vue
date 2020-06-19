@@ -212,6 +212,11 @@ export default {
       ],
       generalTabs: [
         {
+          icon: "mdi-account-group",
+          text: "Manage Employee",
+          link: { name: "manage-employee" },
+        },
+        {
           icon: "mdi-help-circle",
           text: "FAQs",
           link: { name: "faq" },
