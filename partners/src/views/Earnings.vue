@@ -53,9 +53,22 @@
     </v-row>
 
     <br />
+    <h3 class="text-center">
+      <!-- @todo create a view all history page -->
+      <a href="http://localhost:8080/#/class/all"
+        >Click to view class history</a
+      >
+    </h3>
 
-    <v-container grid-list-md>
-      <v-card v-for="clas in classes" :key="clas.id" outlined text>
+    <!-- <v-container grid-list-md>
+      <v-card
+        v-for="clas in classes"
+        :key="clas.id"
+        outlined
+        text
+        class="ma-2"
+        dense
+      >
         <v-list-item>
           <v-list-item-avatar size="50">
             <img alt="Avatar" :src="clas.pictureSources[0]" />
@@ -73,7 +86,7 @@
         </v-list-item>
         <v-spacer></v-spacer>
       </v-card>
-    </v-container>
+    </v-container> -->
   </v-content>
 </template>
 
