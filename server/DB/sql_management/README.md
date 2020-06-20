@@ -1,5 +1,5 @@
-# Knex
-Repo for using knex for SQL Database management / setup / teardown / migrations
+# sql_management
+Repo using knex for SQL Database management / setup / teardown / migrations
 
 ## Setup
 ```sh

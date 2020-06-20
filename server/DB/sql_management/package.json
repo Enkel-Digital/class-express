@@ -1,5 +1,5 @@
 {
-  "name": "sql_migrations",
+  "name": "sql_management",
   "version": "0.1.0",
   "description": "SQL",
   "main": "./src/index.js",
