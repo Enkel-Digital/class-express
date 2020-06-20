@@ -1,0 +1,15 @@
+{
+  "name": "ce-sql",
+  "version": "0.1.0",
+  "description": "",
+  "main": "./src/index.js",
+  "dependencies": {
+    "knex": "^0.21.1",
+    "pg": "^8.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Enkel-Digital/class-server/tree/master/DB/ce-sql"
+  },
+  "author": "JJ"
+}
