@@ -1,55 +1,50 @@
 <template>
-  <v-content id="AllClasses">
+  <v-content id="ManageEmployee">
     <masonry
       :cols="{ default: 5, 1000: 3, 700: 2, 400: 1 }"
       :gutter="{ default: '30px', 700: '20px' }"
     >
-      <div v-for="employee in employees" :key="employee.id">
-        <v-card class="mx-auto" max-width="344" outlined>
-          <v-list-item two-line>
-            <v-list-item-content>
-              <div v-resize-text>{{ employee.name }}</div>
-              <v-list-item-subtitle>{{ employee.email }}</v-list-item-subtitle>
+      <v-card
+        v-for="employee in employees"
+        :key="employee.id"
+        class="mx-auto"
+        max-width="344"
+        outlined
+      >
+        <v-list-item two-line>
+          <v-list-item-content>
+            <div v-resize-text>{{ employee.name }}</div>
+            <v-list-item-subtitle>{{ employee.email }}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{ employee.position }}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
 
-              <v-list-item-subtitle>{{
-                employee.position
-              }}</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item-avatar size="80">
-            <v-img :src="employee.picture" alt="Logo"
-          /></v-list-item-avatar>
-          <v-card-actions class="justify-center">
-            <v-btn text>Delete</v-btn>
-            <v-btn text>more info</v-btn>
-          </v-card-actions>
-        </v-card>
-      </div>
+        <v-list-item-avatar size="80">
+          <v-img :src="employee.picture" alt="Logo" />
+        </v-list-item-avatar>
+
+        <v-card-actions class="justify-center pa-0">
+          <v-btn text>Delete</v-btn>
+        </v-card-actions>
+
+        <v-card-actions class="justify-center pa-0">
+          <v-btn text>more info</v-btn>
+        </v-card-actions>
+      </v-card>
     </masonry>
   </v-content>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import ResizeText from "vue-resize-text";
+// import ResizeText from "vue-resize-text";
 
 export default {
   directives: {
-    ResizeText,
+    ResizeText: () => import("vue-resize-text"),
   },
   computed: {
     employees() {
       return [
-        {
-          id: 0,
-          name: "Kwon Jiyong",
-          email: "gd@gmail.com",
-          position: "COO",
-          mobile: "12345678",
-          birthdate: "18/08/1988",
-          picture:
-            "https://i1.sndcdn.com/artworks-000227430562-am04j1-t500x500.jpg",
-        },
         {
           id: 1,
           name: "Kim Taehyung",
@@ -109,6 +104,16 @@ export default {
           picture:
             "https://i.pinimg.com/originals/31/3c/68/313c68f4d29d19b051a1519fca368f65.jpg",
         },
+        {
+          id: 7,
+          name: "Kwon Jiyong",
+          email: "gd@gmail.com",
+          position: "COO",
+          mobile: "12345678",
+          birthdate: "18/08/1988",
+          picture:
+            "https://i1.sndcdn.com/artworks-000227430562-am04j1-t500x500.jpg",
+        },
       ];
     },
   },
@@ -116,18 +121,8 @@ export default {
 </script>
 
 <style scoped>
-#AllClasses {
+#ManageEmployee {
   margin: 2em;
   margin-top: 2em;
-}
-
-.class-card {
-  display: inline-block;
-  margin-right: 2em;
-  margin-bottom: 2em;
-}
-
-.class-image {
-  max-width: 17em;
 }
 </style>
