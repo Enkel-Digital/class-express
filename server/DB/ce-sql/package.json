@@ -1,5 +1,5 @@
 {
-  "name": "ce-sql",
+  "name": "@enkel-digital/ce-sql",
   "version": "0.1.0",
   "description": "",
   "main": "./src/index.js",
@@ -11,6 +11,9 @@
     "type": "git",
     "url": "https://github.com/Enkel-Digital/class-server.git",
     "directory": "DB/ce-sql"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "author": "JJ"
 }
