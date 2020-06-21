@@ -6,6 +6,7 @@ import initialState from "./initialState";
 import setter from "./utils/setter";
 import classesModule from "./module/classes";
 import bookingsModule from "./module/bookings";
+import employeesModule from "./module/employees";
 import searchModule from "./module/search";
 import pointsModule from "./module/points";
 import newsModule from "./module/news";
@@ -21,6 +22,7 @@ export default new Vuex.Store({
   modules: {
     classes: classesModule,
     bookings: bookingsModule,
+    employees: employeesModule,
     search: searchModule,
     points: pointsModule, // User points and not all points related
     news: newsModule,
