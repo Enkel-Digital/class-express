@@ -2,13 +2,12 @@
   <v-content id="ManageEmployee">
     <masonry
       :cols="{ default: 5, 1000: 3, 700: 2, 400: 1 }"
-      :gutter="{ default: '30px', 700: '20px' }"
+      :gutter="{ default: '0.5em', 700: '0.25em' }"
     >
       <v-card
         v-for="employee in employees"
+        class="class-card"
         :key="employee.id"
-        class="mx-auto"
-        max-width="344"
         outlined
       >
         <v-list-item two-line>
@@ -24,12 +23,13 @@
         </v-list-item-avatar>
 
         <v-card-actions class="justify-center pa-0">
-          <v-btn text>Delete</v-btn>
+          <v-btn small text>Delete</v-btn>
+          <v-btn small text>more info</v-btn>
         </v-card-actions>
 
-        <v-card-actions class="justify-center pa-0">
+        <!-- <v-card-actions class="justify-center pa-0">
           <v-btn text>more info</v-btn>
-        </v-card-actions>
+        </v-card-actions> -->
       </v-card>
     </masonry>
   </v-content>
@@ -60,5 +60,9 @@ export default {
 #ManageEmployee {
   margin: 2em;
   margin-top: 2em;
+}
+.class-card {
+  display: inline-block;
+  margin-bottom: 0.5em;
 }
 </style>
