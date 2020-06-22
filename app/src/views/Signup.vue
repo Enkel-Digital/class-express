@@ -10,8 +10,16 @@
     <input
       v-autofocus
       type="text"
-      v-model="name"
-      placeholder="Name"
+      v-model="firstName"
+      placeholder="First Name"
+      @keypress.enter="signUp"
+      required
+    />
+    <br />
+    <input
+      type="text"
+      v-model="lastName"
+      placeholder="Last Name"
       @keypress.enter="signUp"
       required
     />
@@ -79,7 +87,7 @@
 
 import firebase from "firebase/app";
 import "firebase/auth";
-import apiWithLoader from "@/store/utils/apiWithLoader";
+import api from "../store/utils/fetch";
 
 // Function to map and return a given err.code to a user friendly message
 function error_msg(err) {
@@ -99,8 +107,9 @@ export default {
   name: "signUp",
   data() {
     return {
-      name: "",
       email: "",
+      firstName: "",
+      lastName: "",
       password: "",
       error_msg: "",
     };
@@ -125,30 +134,22 @@ export default {
         firebase.auth().currentUser.sendEmailVerification();
 
         const newUser = {
-          // @todo Might need to destructure email and password from "this" then use it
-          userID: this.email,
           user: {
-            userID: this.email,
             email: this.email,
-            name: this.name,
-            fname: undefined,
-            lname: undefined,
-            imageSrc: undefined, // For now, user cannot upload image during signup
+            firstName: this.firstName,
+            lastName: this.lastName,
+
+            // @todo Hardcoded values, to be removed
+            countryCode: "SG",
+            cityCode: "SG",
+            timezone: "SGT",
+            currency: "SGD",
           },
         };
 
-        // @todo Replace this with a mutation watcher?
         // This needs to be before signout, as we need the token to create a new user.
-        // Not awaiting as we do not need its response to continue signup flow, signing user out and redirecting
-        const res = apiWithLoader.post("/user/new", newUser);
-
-        // // @todo Use this if mutation watcher is implemented.
-        // // Store user details to use store to sync data with server.
-        // // @notice This must be completed before signing out since server needs auth verification.
-        // const storeUser = this.$store.state.user;
-        // storeUser.email = this.email;
-        // storeUser.name = this.name;
-        // this.$store.commit("setter", ["user", storeUser]);
+        // await to prevent signout from executing before post which will delete the JWT and make this call rejected with a 401
+        const res = await api.post("/user/new", newUser);
 
         // Sign user out and redirect to verifyEmail view
         await firebase.auth().signOut();
