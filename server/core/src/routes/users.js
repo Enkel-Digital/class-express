@@ -10,7 +10,7 @@
 
 const express = require("express");
 const router = express.Router();
-const db = require("../utils/db");
+const SQLdb = require("@enkel-digital/ce-sql");
 const onlyOwnResource = require("../middleware/onlyOwnResource");
 
 const createLogger = require("@lionellbriones/logging").default;
@@ -18,18 +18,17 @@ const logger = createLogger("routes:users");
 
 /**
  * Get user details object
- * @name GET /user/:userID
+ * @name GET /user/:userEmail
  * @function
  * @returns {object} User object
  */
-router.get("/:userID", onlyOwnResource, async (req, res) => {
+router.get("/:userEmail", onlyOwnResource, async (req, res) => {
   try {
-    const { userID } = req.params;
+    const { userEmail } = req.params;
 
-    const userDoc = await db.collection("users").doc(userID).get();
-
-    const user = userDoc.data();
-    if (!user) throw new Error("User does not exist");
+    const user = await SQLdb("userAccounts")
+      .where({ email: userEmail })
+      .first();
 
     res.json({ success: true, user });
   } catch (error) {
@@ -54,14 +53,11 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
  */
 router.post("/new", express.json(), async (req, res) => {
   try {
-    // Ensure that the email used as userID is lowercase.
     // Refer to notes for why we are enforcing this lowercase usage.
-    const userID = req.body.userID.toLowerCase();
     req.body.user.email = req.body.user.email.toLowerCase();
     const user = req.body.user;
 
-    // Create document in user with user's email as userID
-    await db.collection("users").doc(userID).set(user);
+    await SQLdb("userAccounts").insert(user);
 
     res.status(201).json({ success: true });
   } catch (error) {
@@ -76,8 +72,8 @@ router.post("/new", express.json(), async (req, res) => {
  * @function
  * @returns {object} success indicator
  */
-router.get("/", (req, res) => {
-  res.json({ success: true });
+router.put("/", (req, res) => {
+  res.json({ success: false, error: "not implemented yet" });
 });
 
 module.exports = router;
