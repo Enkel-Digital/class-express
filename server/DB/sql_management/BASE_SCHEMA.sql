@@ -20,7 +20,7 @@ CREATE TABLE "userSettings" (
   "notification_mobile" boolean
 );
 
-CREATE TABLE "businessOrganisation" (
+CREATE TABLE "partners" (
   "id" SERIAL PRIMARY KEY NOT NULL,
   "name" varchar NOT NULL,
   "description" varchar NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE "businessOrganisation" (
 
 CREATE TABLE "partnerAccounts" (
   "id" SERIAL PRIMARY KEY NOT NULL,
-  "businessOrganisation" int NOT NULL,
+  "partners" int NOT NULL,
   "name" varchar NOT NULL,
   "admin" boolean,
   "permissions" varchar,
@@ -142,7 +142,7 @@ CREATE TABLE "reviews" (
 
 ALTER TABLE "userSettings" ADD FOREIGN KEY ("id") REFERENCES "userAccounts" ("id");
 
-ALTER TABLE "partnerAccounts" ADD FOREIGN KEY ("businessOrganisation") REFERENCES "businessOrganisation" ("id");
+ALTER TABLE "partnerAccounts" ADD FOREIGN KEY ("partners") REFERENCES "partners" ("id");
 
 ALTER TABLE "partnerSettings" ADD FOREIGN KEY ("id") REFERENCES "partnerAccounts" ("id");
 
@@ -154,7 +154,7 @@ ALTER TABLE "userBookingTransactions" ADD FOREIGN KEY ("userID") REFERENCES "use
 
 ALTER TABLE "userBookingTransactions" ADD FOREIGN KEY ("classID") REFERENCES "classes" ("id");
 
-ALTER TABLE "classes" ADD FOREIGN KEY ("partnerID") REFERENCES "businessOrganisation" ("id");
+ALTER TABLE "classes" ADD FOREIGN KEY ("partnerID") REFERENCES "partners" ("id");
 
 ALTER TABLE "classSchedule" ADD FOREIGN KEY ("classID") REFERENCES "classes" ("id");
 

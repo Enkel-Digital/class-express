@@ -38,9 +38,8 @@ Table userSettings {
 }
 
 // FS
-// Also known as partner organisation
-// When we say partner of a class, we mean this.
-Table businessOrganisation {
+// Partners / Business organisations.
+Table partners {
   id int [pk, increment, not null]
   name varchar [not null]
   description varchar [not null]
@@ -58,9 +57,10 @@ Table businessOrganisation {
 }
 
 // FS
+// Individual users (employees) of a Partner / Business organisation
 Table partnerAccounts {
   id int [pk, increment, not null]
-  businessOrganisation int [ref: > businessOrganisation.id, not null]
+  partners int [ref: > partners.id, not null]
   name varchar [not null]
   admin boolean [null] // Only true if user is admin else can be false or null
   permissions varchar // Perhaps use an array?
@@ -118,7 +118,7 @@ Table billingAccounts {
 // FS or PG
 Table classes {
   id int [pk, increment, not null]
-  partnerID int [ref: > businessOrganisation.id, not null]
+  partnerID int [ref: > partners.id, not null]
   name varchar [not null]
   description varchar [not null] // HTML allowed
   length int [not null]
@@ -167,6 +167,7 @@ Table subscriptionPlans {
   // Country that this plan is available in = All countries if none specified
   // Usually need to specify and usually the same as the currency of the plan.
   // @todo Defaults to SG?
+  // Multiple rows, 1 row for each unique countryCode
   countryCode varchar [null]
 }
 
