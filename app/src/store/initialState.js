@@ -7,8 +7,8 @@ export default function initialState() {
     user: {
       email: undefined,
       name: undefined,
-      fname: undefined,
-      lname: undefined,
+      firstName: undefined,
+      lastName: undefined,
       imageSrc: undefined,
     },
   };
