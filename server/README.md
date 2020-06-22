@@ -11,6 +11,9 @@ Monorepo for all the backend services used to power the [Class App](https://gith
 - The commands in the services for docker are for pushing to gcr and running on gcp/cloud-run
 
 ## Services
+- DB
+    - sql_management
+    - ce-sql
 - core
     - API service for the App
 - partners
@@ -22,9 +25,11 @@ Monorepo for all the backend services used to power the [Class App](https://gith
     - There are also serverless functions for Firebase Cloud Functions.
 - billing
 - search
+- others
+    - Other resources used throughout the monorepo
 
 ## License, Author and Contributing
-This project is made available under the "AGPL License"  
+This project is made available under the ["AGPL License"](./LICENSE)  
 If you have any questions, contact us via [email](mailto:tech@enkeldigital.com)  
 
 Authors:

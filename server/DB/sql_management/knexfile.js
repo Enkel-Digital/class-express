@@ -1,3 +1,7 @@
+// Need to run this first to ensure env vars are injected from .env file
+// This is needed especially when using knex CLI, as you will not have a chance to inject in your app as it will be too late
+require("dotenv").config();
+
 // Configurations for the different Databases
 // All env variables are pre-fixed with "SQL_"
 module.exports = {
@@ -24,7 +28,12 @@ module.exports = {
       tableName: "knex_migrations",
       directory: "./migrations",
     },
+    seeds: {
+      directory: "./seeds",
+    },
   },
+
+  // @todo Combine staging and production
 
   staging: {
     client: "postgresql",
@@ -48,6 +57,9 @@ module.exports = {
     migrations: {
       tableName: "knex_migrations",
       directory: "./migrations",
+    },
+    seeds: {
+      directory: "./seeds",
     },
   },
 
@@ -73,6 +85,9 @@ module.exports = {
     migrations: {
       tableName: "knex_migrations",
       directory: "./migrations",
+    },
+    seeds: {
+      directory: "./seeds",
     },
   },
 };
