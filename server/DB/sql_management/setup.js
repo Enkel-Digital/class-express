@@ -40,6 +40,7 @@ async function createTables() {
   try {
     // Create BASE SCHEMA using the generated SQL file from DBML in the CE database
     await knex.raw(
+      // @todo Generate this instead of manually generating this.
       fs.readFileSync(path.join(__dirname, "./BASE_SCHEMA.sql"), "utf8")
     );
   } catch (error) {

@@ -16,14 +16,17 @@ Project ClassExpress {
 // FS
 Table userAccounts {
   id int [pk, increment, not null]
-  email varchar [not null]
+  email varchar [not null, unique]
+  phoneNumber varchar [null] // Includes area code
   firstName varchar [not null]
   lastName varchar [null]
   countryCode varchar [not null]
-  cityCode varchar [not null]
+  cityCode varchar [not null] // @todo Should this allow null? If null, then use country
   timezone varchar [not null]
   profilePictureURL varchar [null]
   currency varchar [not null]
+  verified_email boolean [null]
+  verified_phone boolean [null]
   deleted boolean [null] // Set this to true if deleted and leave as null if not
 }
 
@@ -47,6 +50,9 @@ Table businessOrganisation {
   location_coordinates varchar [not null]
   website varchar [null]
   pictureSources varchar // Perhaps use an array?
+  verified_email boolean [null]
+  verified_phone boolean [null]
+  verified boolean [null] // Is the business verified by us (Class Express)?
   // billingAccount int [not null] // Foreign key to billing accounts?
   deleted boolean [null] // Set this to true if deleted and leave as null if not
 }
@@ -54,12 +60,14 @@ Table businessOrganisation {
 // FS
 Table partnerAccounts {
   id int [pk, increment, not null]
+  businessOrganisation int [ref: > businessOrganisation.id, not null]
+  name varchar [not null]
   admin boolean [null] // Only true if user is admin else can be false or null
   permissions varchar // Perhaps use an array?
   email varchar [not null]
   phoneNumber varchar [null] // Includes area code
-  name varchar [not null]
-  businessOrganisation int [ref: > businessOrganisation.id, not null]
+  verified_email boolean [null]
+  verified_phone boolean [null]
   deleted boolean [null] // Set this to true if deleted and leave as null if not
 }
 
@@ -103,6 +111,7 @@ Table userBookingTransactions {
 // @todo
 Table billingAccounts {
   id int [pk, increment, not null]
+  // @todo Verified? Verification probably by stripe or something?
   // @todo ?? deleted boolean [null] // Set this to true if deleted and leave as null if not
 }
 

@@ -1,6 +1,7 @@
 CREATE TABLE "userAccounts" (
   "id" SERIAL PRIMARY KEY NOT NULL,
-  "email" varchar NOT NULL,
+  "email" varchar UNIQUE NOT NULL,
+  "phoneNumber" varchar,
   "firstName" varchar NOT NULL,
   "lastName" varchar,
   "countryCode" varchar NOT NULL,
@@ -8,6 +9,8 @@ CREATE TABLE "userAccounts" (
   "timezone" varchar NOT NULL,
   "profilePictureURL" varchar,
   "currency" varchar NOT NULL,
+  "verified_email" boolean,
+  "verified_phone" boolean,
   "deleted" boolean
 );
 
@@ -27,17 +30,22 @@ CREATE TABLE "businessOrganisation" (
   "location_coordinates" varchar NOT NULL,
   "website" varchar,
   "pictureSources" varchar,
+  "verified_email" boolean,
+  "verified_phone" boolean,
+  "verified" boolean,
   "deleted" boolean
 );
 
 CREATE TABLE "partnerAccounts" (
   "id" SERIAL PRIMARY KEY NOT NULL,
+  "businessOrganisation" int NOT NULL,
+  "name" varchar NOT NULL,
   "admin" boolean,
   "permissions" varchar,
   "email" varchar NOT NULL,
   "phoneNumber" varchar,
-  "name" varchar NOT NULL,
-  "businessOrganisation" int NOT NULL,
+  "verified_email" boolean,
+  "verified_phone" boolean,
   "deleted" boolean
 );
 
