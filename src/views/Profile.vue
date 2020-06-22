@@ -21,7 +21,7 @@
     <v-responsive>
       <v-list-item id="user-details-card">
         <v-list-item-content>
-          <h3>{{ user.name }}</h3>
+          <h3>{{ user.firstName }}</h3>
           <p>{{ user.email }}</p>
         </v-list-item-content>
 
@@ -131,7 +131,13 @@ export default {
   },
   methods: {
     logout,
+    // @todo Remove before beta
     refreshData() {
+      // Clear storage mediums used for data storage by "vuex-persistedstate" plugin
+      // for debugging only
+      localStorage.clear();
+      sessionStorage.clear();
+
       // Rely on the store to update the data asynchronously in the background
       this.$store.dispatch("init");
     },
