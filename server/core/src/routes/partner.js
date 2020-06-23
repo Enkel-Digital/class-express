@@ -6,8 +6,8 @@
  */
 
 const express = require("express");
-const db = require("../utils/db");
 const router = express.Router();
+const SQLdb = require("@enkel-digital/ce-sql");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:partner");
@@ -22,8 +22,12 @@ router.get("/details/:partnerID", async (req, res) => {
   try {
     const { partnerID } = req.params;
 
-    const snapshot = await db.collection("partners").doc(partnerID).get();
-    const partner = snapshot.data();
+    const partner = await SQLdb("classes")
+      .where({ id: partnerID })
+      .where(function () {
+        this.whereNull("deleted").orWhereNot({ deleted: true });
+      })
+      .first();
 
     if (partner) res.json({ success: true, partner });
     else res.status(404).json({ success: false, error: "No such Partner" });

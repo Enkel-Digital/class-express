@@ -6,10 +6,10 @@
  */
 
 const express = require("express");
-const db = require("../../utils/db");
 const router = express.Router();
 const { RRule, RRuleSet, rrulestr } = require("rrule");
 const auth = require("../../middleware/auth");
+const SQLdb = require("@enkel-digital/ce-sql");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:class");
@@ -24,8 +24,12 @@ router.get("/details/:classID", async (req, res) => {
   try {
     const { classID } = req.params;
 
-    const snapshot = await db.collection("classes").doc(classID).get();
-    const classObject = snapshot.data();
+    const classObject = await SQLdb("classes")
+      .where({ id: classID })
+      .where(function () {
+        this.whereNull("deleted").orWhereNot({ deleted: true });
+      })
+      .first();
 
     if (classObject) res.json({ success: true, class: classObject });
     else res.status(404).json({ success: false, error: "No such Class" });
