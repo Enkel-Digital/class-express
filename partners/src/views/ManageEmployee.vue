@@ -24,7 +24,7 @@
 
         <v-card-actions class="justify-center pa-0">
           <v-btn small text>Delete</v-btn>
-          <v-btn small text>more info</v-btn>
+          <v-btn small text @click="moreInfo(employee.id)">more info</v-btn>
         </v-card-actions>
 
         <!-- <v-card-actions class="justify-center pa-0">
@@ -32,6 +32,38 @@
         </v-card-actions> -->
       </v-card>
     </masonry>
+
+    <v-dialog v-model="dialog" width="20em">
+      <v-card>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="rgb(65.9%, 65.9%, 65.9%)" icon @click="dialog = false"
+            ><v-icon>mdi-window-close</v-icon></v-btn
+          >
+        </v-card-actions>
+
+        <v-list-item class="text-left">
+          <v-list-item-content>
+            <v-list-item-subtitle
+              >Name: {{ this.employeeInfo.name }}</v-list-item-subtitle
+            >
+            <v-list-item-subtitle
+              >Email: {{ this.employeeInfo.email }}</v-list-item-subtitle
+            >
+            <v-list-item-subtitle
+              >Mobile No: {{ this.employeeInfo.mobile }}</v-list-item-subtitle
+            >
+            <v-list-item-subtitle
+              >Position:{{ this.employeeInfo.position }}</v-list-item-subtitle
+            >
+            <v-list-item-subtitle
+              >Birthdate:
+              {{ this.employeeInfo.birthdate }}</v-list-item-subtitle
+            >
+          </v-list-item-content>
+        </v-list-item>
+      </v-card>
+    </v-dialog>
   </v-content>
 </template>
 
@@ -40,6 +72,22 @@
 import { mapState } from "vuex";
 
 export default {
+  data() {
+    return {
+      dialog: false,
+      employeeInfo: [
+        {
+          id: "",
+          name: "",
+          email: "",
+          mobile: "",
+          position: "",
+          birthdate: "",
+          picture: "",
+        },
+      ],
+    };
+  },
   name: "ManageEmployees",
   directives: {
     ResizeText: () => import("vue-resize-text"),
@@ -52,6 +100,20 @@ export default {
   },
   computed: {
     ...mapState("employees", ["employees"]),
+  },
+  methods: {
+    moreInfo(id) {
+      this.dialog = true;
+      this.employeeInfo.id = id;
+      this.employeeInfo.name = this.employees[id].name;
+      this.employeeInfo.email = this.employees[id].email;
+      this.employeeInfo.mobile = this.employees[id].mobile;
+      this.employeeInfo.position = this.employees[id].position;
+      this.employeeInfo.birthdate = this.employees[id].birthdate;
+      this.employeeInfo.picture = this.employees[id].picture;
+
+      console.log("" + this.employees[id].name);
+    },
   },
 };
 </script>
