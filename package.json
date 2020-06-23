@@ -18,14 +18,15 @@
     "lodash.clonedeep": "^4.5.0",
     "moment": "^2.26.0",
     "register-service-worker": "^1.7.1",
+    "unixseconds": "^0.1.0",
     "vue": "^2.6.11",
     "vue-error-controller": "^0.2.0",
+    "vue-instantsearch": "^2.7.0",
     "vue-loader-controller": "^0.1.0",
+    "vue-observe-visibility": "^0.4.6",
     "vue-router": "^3.3.2",
     "vuetify": "^2.2.32",
     "vuex": "^3.4.0",
-    "vue-instantsearch": "^2.7.0",
-    "vue-observe-visibility": "^0.4.6",
     "vuex-persistedstate": "^3.0.1"
   },
   "devDependencies": {

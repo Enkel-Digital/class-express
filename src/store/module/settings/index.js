@@ -4,6 +4,7 @@
 
 import initialState from "./initialState";
 import setter from "../../utils/setter";
+import unixseconds from "unixseconds";
 import apiError from "@/store/utils/apiError";
 import apiWithLoader from "@/store/utils/apiWithLoader";
 
@@ -14,7 +15,7 @@ export default {
     setter,
     updateSettings(state, newSettings) {
       // Only add modifiedAt if it is on the object already
-      state.modifiedAt = Date.now();
+      state.modifiedAt = unixseconds();
       state.settings = newSettings;
     },
   },
