@@ -1,9 +1,16 @@
 <template>
-  <v-navigation-drawer id="side-nav-bar" :clipped="true" app>
+  <v-navigation-drawer
+    id="side-nav-bar"
+    v-model="drawer"
+    :mini-variant.sync="mini"
+    permanent
+    :clipped="true"
+    app
+  >
     <!-- @todo Make this section clickable and link to account page of settings -->
-    <v-list-item two-line>
+    <v-list-item class="px-2" two-line>
       <!-- @todo Add a toggle, this might not be available -->
-      <v-list-item-avatar size="60">
+      <v-list-item-avatar>
         <img
           alt="Avatar"
           :src="'https://avatars2.githubusercontent.com/u/44993072?s=460'"
@@ -18,11 +25,16 @@
 
         <v-list-item-subtitle>{{ "JJ@enkeldigital.com" }}</v-list-item-subtitle>
       </v-list-item-content>
+
+      <v-btn icon @click.stop="mini = !mini">
+        <v-icon>mdi-chevron-left</v-icon>
+      </v-btn>
     </v-list-item>
 
     <v-divider />
 
-    <v-list dense>
+    <!-- SideNavBar for owner -->
+    <v-list v-if="owner" dense>
       <v-list-item
         exact
         ripple
@@ -77,7 +89,109 @@
       <v-list-item
         exact
         ripple
-        v-for="item in generalTabs"
+        v-for="item in ownerGeneralTabs"
+        :key="item.title"
+        :to="item.link"
+      >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>{{ item.text }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <!-- @todo Add support for child groups -->
+      <!-- <v-list-group
+        v-if="item.children"
+        :key="item.text"
+        v-model="item.model"
+        :prepend-icon="item.model ? item.icon : item['icon-alt']"
+        append-icon=""
+      >
+        <v-list-item v-for="(child, i) in item.children" :key="i" link>
+          <v-list-item-action>
+            <v-icon>{{ child.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ child.text }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-group> -->
+
+      <!-- Logout button at the bottom -->
+
+      <v-list-item ripple hover @click="logout">
+        <v-list-item-icon>
+          <v-icon>mdi-logout</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>Logout</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+
+    <!-- SideNavBar for employee -->
+    <v-list v-if="employee" dense>
+      <v-list-item
+        exact
+        ripple
+        v-for="item in items"
+        :key="item.title"
+        :to="item.link"
+      >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>{{ item.text }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-subheader>Finance</v-subheader>
+      <v-list-item
+        exact
+        ripple
+        v-for="item in financeTabs"
+        :key="item.title"
+        :to="item.link"
+      >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>{{ item.text }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-subheader>Classes</v-subheader>
+      <v-list-item
+        exact
+        ripple
+        v-for="item in classTabs"
+        :key="item.title"
+        :to="item.link"
+      >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>{{ item.text }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-subheader>General</v-subheader>
+      <v-list-item
+        exact
+        ripple
+        v-for="item in ownerGeneralTabs"
         :key="item.title"
         :to="item.link"
       >
@@ -136,6 +250,11 @@ export default {
   name: "side-nav-bar",
   data() {
     return {
+      general: "",
+      owner: true,
+      employee: false,
+      drawer: true,
+      mini: true,
       items: [
         {
           icon: "mdi-monitor-dashboard",
@@ -210,12 +329,29 @@ export default {
           link: { name: "withdrawal" },
         },
       ],
-      generalTabs: [
+      ownerGeneralTabs: [
         {
           icon: "mdi-account-group",
           text: "Manage Employee",
           link: { name: "manage-employee" },
         },
+        {
+          icon: "mdi-help-circle",
+          text: "FAQs",
+          link: { name: "faq" },
+        },
+        {
+          icon: "mdi-chat",
+          text: "Contact Support",
+          link: { name: "contact-support" },
+        },
+        {
+          icon: "mdi-cog",
+          text: "Settings",
+          link: { name: "settings" },
+        },
+      ],
+      employeeGeneralTabs: [
         {
           icon: "mdi-help-circle",
           text: "FAQs",
