@@ -14,6 +14,7 @@ const SQLdb = require("@enkel-digital/ce-sql");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:subscription");
+const unixseconds = require("unixseconds");
 
 /**
  * Get subscriptionplans
@@ -37,8 +38,6 @@ router.get("/plans/all", async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-
-const getCurrentTS = () => Math.trunc(Date.now() / 1000);
 
 function getCurrentPlan(userID, nowTS) {
   return SQLdb("userPlans")
@@ -65,7 +64,7 @@ router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
     const { userID } = req.params;
 
     // Call once to pass currentPlan and nextPlan the same value for each API call
-    const nowTS = getCurrentTS();
+    const nowTS = unixseconds();
 
     return res.status(200).json({
       success: true,
@@ -113,7 +112,7 @@ router.post(
       // This is handled by SQL insert alr, will throw error if false
 
       // Call once to pass currentPlan and nextPlan the same value for each API call
-      const nowTS = getCurrentTS();
+      const nowTS = unixseconds();
 
       // Get user's plans
       const currentPlan = await getCurrentPlan(userID, nowTS);
