@@ -16,6 +16,8 @@ import { getPartner, addPartner } from "./getPartner";
 // import getClassSchedule from "./getClassSchedule";
 // import getPartnerSchedule from "./getPartnerSchedule";
 
+import unixseconds from "unixseconds";
+
 export default {
   namespaced: true,
   state: initialState(),
@@ -27,7 +29,7 @@ export default {
         Vue.delete(state.favouriteClasses, classID);
       else
         Vue.set(state.favouriteClasses, classID, {
-          favouritedAt: Math.trunc(Date.now() / 1000),
+          favouritedAt: unixseconds(),
         });
     },
     toggleFavouritePartner(state, partnerID) {
@@ -36,7 +38,7 @@ export default {
         Vue.delete(state.favouritePartners, partnerID);
       else
         Vue.set(state.favouritePartners, partnerID, {
-          favouritedAt: Math.trunc(Date.now() / 1000),
+          favouritedAt: unixseconds(),
         });
     },
     setUpcomingClass(state, { classID, action, timestamp }) {
