@@ -37,17 +37,22 @@ async function createTables() {
   const fs = require("fs");
   const path = require("path");
 
+  // get DBML file content
+  const dbml = fs.readFileSync(
+    path.join(__dirname, "../CoreDatabase.dbml"),
+    "utf8"
+  );
+
+  // Generate PostgreSQL from DBML
+  const { exporter } = require("@dbml/core");
+  const generatedSQL = exporter.export(dbml, "postgres");
+
   try {
     // Create BASE SCHEMA using the generated SQL file from DBML in the CE database
-    await knex.raw(
-      // @todo Generate this instead of manually generating this.
-      fs.readFileSync(path.join(__dirname, "./BASE_SCHEMA.sql"), "utf8")
-    );
+    await knex.raw(generatedSQL);
   } catch (error) {
     if (error.message.indexOf("already exists") > -1)
-      console.log(
-        "Tables in CE Database already exists, skipping table creation steps."
-      );
+      console.log("Tables already exists, skipping table creation");
     else console.error(error);
   }
 
