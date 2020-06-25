@@ -5,9 +5,6 @@
 // FS (Attribute) -> Firestore (preferred DB choice)
 // Trimmable (Attribute) -> Data that can be warehoused by deleting older data from production after backing up everything into data warehouse
 
-// Notes:
-// Is it fine to have foreign keys as primary keys --> https://stackoverflow.com/a/10983099/13137262
-
 Project ClassExpress {
   database_type: 'PostgreSQL'
   Note: 'SQL DB for Class Express'
@@ -16,6 +13,7 @@ Project ClassExpress {
 // FS
 Table userAccounts {
   id int [pk, increment, not null]
+  createdAt timestamp [default: `now()`]
   email varchar [not null, unique]
   phoneNumber varchar [null] // Includes area code
   firstName varchar [not null]
@@ -25,9 +23,9 @@ Table userAccounts {
   timezone varchar [not null]
   profilePictureURL varchar [null]
   currency varchar [not null]
-  verified_email boolean [null]
-  verified_phone boolean [null]
-  deleted boolean [null] // Set this to true if deleted and leave as null if not
+  verified_email boolean [default: false]
+  verified_phone boolean [default: false]
+  deleted boolean [default: false]
 }
 
 // FS
@@ -35,12 +33,14 @@ Table userSettings {
   id int [pk, not null, ref: - userAccounts.id]
   notification_email boolean [null]
   notification_mobile boolean [null]
+  // @todo Add a updatedAt timestamp
 }
 
 // FS
 // Partners / Business organisations.
 Table partners {
   id int [pk, increment, not null]
+  createdAt timestamp [default: `now()`]
   name varchar [not null]
   description varchar [not null]
   email varchar [not null]
@@ -49,26 +49,27 @@ Table partners {
   location_coordinates varchar [not null]
   website varchar [null]
   pictureSources varchar // Perhaps use an array?
-  verified_email boolean [null]
-  verified_phone boolean [null]
-  verified boolean [null] // Is the business verified by us (Class Express)?
+  verified_email boolean [default: false]
+  verified_phone boolean [default: false]
+  verified boolean [default: false] // Is the business verified by us (Class Express)?
   // billingAccount int [not null] // Foreign key to billing accounts?
-  deleted boolean [null] // Set this to true if deleted and leave as null if not
+  deleted boolean [default: false]
 }
 
 // FS
 // Individual users (employees) of a Partner / Business organisation
 Table partnerAccounts {
   id int [pk, increment, not null]
+  createdAt timestamp [default: `now()`]
   partners int [ref: > partners.id, not null]
   name varchar [not null]
-  admin boolean [null] // Only true if user is admin else can be false or null
+  admin boolean [not null] // True if user is admin else is employee
   permissions varchar // Perhaps use an array?
   email varchar [not null]
   phoneNumber varchar [null] // Includes area code
-  verified_email boolean [null]
-  verified_phone boolean [null]
-  deleted boolean [null] // Set this to true if deleted and leave as null if not
+  verified_email boolean [default: false]
+  verified_phone boolean [default: false]
+  deleted boolean [default: false]
 }
 
 // FS
@@ -76,33 +77,40 @@ Table partnerSettings {
   id int [pk, ref: - partnerAccounts.id, not null]
   notification_email boolean [null]
   notification_mobile boolean [null]
+  // @todo Add a updatedAt timestamp
 }
 
 // @todo Create 1 more table for records of points purchase for calculating user points
 // @todo Might wanna put these records in userPlans instead so that they are all in 1 table and can be merged easily
 
 // Trimmable + PG
+// Since planID is fixed and does not change overtime, we can use it to get cost of plan and currency used
 Table userPlans {
   id int [pk, increment, not null]
+  // @todo Either createAt or updatedAt to track when this is updated for analytics purposes
+  // createdAt timestamp [default: `now()`]
   userID int [ref: > userAccounts.id, not null] // Many rows with each row being 1 plan in users history
   planID int [ref: > subscriptionPlans.id, not null]
+  // If this is timestamptz, how to do comparision in knex?
+  // It is possible, but is it as easy as doing int comparisions?
   start timestamp [not null]
   end timestamp [null]
-  // @todo Should we also include the price they paid for this? Or should we just put that value in another table like the transactions table?
 }
 
 // Trimmable + PG
 // Instead of relying on a Points table that needs to be updated every month, perhaps use a transactions table and the userPlans table to compute the points on demand
 // Bascially records of user bookings and cancellation events and more
 // Closely tied to userClasses
+// @todo Do we need to add the start time of the class?
 Table userBookingTransactions {
   id int [pk, increment, not null]
+  actionTime timestamp [default: `now()`] // When this event happened, TS provided by frontend, but defaults to server timestamp if none
   userID int [ref: > userAccounts.id, not null]
   classID int [ref: > classes.id, not null]
-  actionTime timestamp [not null] // When this event happened, TS provided by frontend
   points int [not null] // A copy of the points of the class at the moment of action
-  booked boolean [null]
-  cancelled boolean [null]
+  // Both booked and cancelled defaults to false to make it easier as only need to set one to be true on insert
+  booked boolean [default: false]
+  cancelled boolean [default: false]
 }
 
 // @todo Create 1 more table for userBillingTransactions
@@ -111,13 +119,15 @@ Table userBookingTransactions {
 // @todo
 Table billingAccounts {
   id int [pk, increment, not null]
+  createdAt timestamp [default: `now()`]
   // @todo Verified? Verification probably by stripe or something?
-  // @todo ?? deleted boolean [null] // Set this to true if deleted and leave as null if not
+  // @todo ?? deleted boolean [default: false]
 }
 
 // FS or PG
 Table classes {
   id int [pk, increment, not null]
+  createdAt timestamp [default: `now()`]
   partnerID int [ref: > partners.id, not null]
   name varchar [not null]
   description varchar [not null] // HTML allowed
@@ -127,25 +137,33 @@ Table classes {
   pictureSources varchar [null] // Perhaps use an array?
   location_address varchar [null]
   location_coordinates varchar [null]
-  deleted boolean [null] // Set this to true if deleted and leave as null if not
+  deleted boolean [default: false]
 }
 
 // FS or PG
 // Each row will be a individual RRULE?
+// @todo
 Table classSchedule {
   id int [pk, increment, not null]
   classID int [ref: > classes.id, not null]
+  // @todo Either createAt or updatedAt to track when this is updated for analytics purposes
+  // createdAt timestamp [default: `now()`]
 }
 
 // PG or FS
 Table userFavourites {
   id int [pk, increment, not null]
   userID int [ref: > userAccounts.id, not null]
-  class boolean [null] // nullable
-  partner boolean [null] // nullable
   favouritedAt timestamp [not null]
+  // Only one will be nulled, either classID or partnerID
+  // Get classIDs by filtering for NOT NULL classIDs
+  classID int [ref: > classes.id, null] // Defaults to null
+  // Get partnerIDs by filtering for NOT NULL partnerIDs
+  partnerID int [ref: > partners.id, null] // Defaults to null
 }
 
+
+// @todo Do we actually need this? Or can this be generated from userBookingTransactions table?
 // PG or FS + Trimmable (keep like the latest 20 user past classes, allow user to request for more)
 // Classes that the user have booked/attended/booked+cancelled(by user or partner)
 Table userClasses {
@@ -158,7 +176,8 @@ Table userClasses {
 // All subscription plans across time
 Table subscriptionPlans {
   id int [pk, increment, not null] // This is also the planID
-  available boolean [null] // True to indicate available // Can change to be a procedure to be executed to see if this is avail?
+  createdAt timestamp [default: `now()`]
+  available boolean [default: true] // By default all plans are available // @todo Can change to be a procedure to be executed to see if this is avail?
   name varchar [not null]
   copywriting varchar [not null] // HTML allowed
   currency varchar [not null]
@@ -175,7 +194,8 @@ Table subscriptionPlans {
 // All topupOptions allowed other then the custom points topup
 Table topupOptions {
   id int [pk, increment, not null]
-  available boolean [null] // True to indicate available // Can change to be a procedure to be executed to see if this is avail?
+  createdAt timestamp [default: `now()`]
+  available boolean [default: true] // By default all plans are available // @todo Can change to be a procedure to be executed to see if this is avail?
   name varchar [not null]
   copywriting varchar [not null] // HTML allowed
   currency varchar [not null]
@@ -187,9 +207,9 @@ Table topupOptions {
 // PG needed for advance processing, to add a caching layer in front of queries for this with a 1 ~ 2 days expiry?
 Table reviews {
   id int [pk, increment, not null]
+  reviewedOn timestamp [default: `now()`]
   classID int [ref: > classes.id, not null]
+  // @todo Add what time was the lesson so partner can take action
   points int [not null]
-  reviewedOn timestamp [not null]
   description varchar [null]
-  // Potentially add what time was the lesson so partner can take action
 }
