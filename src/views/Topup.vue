@@ -69,7 +69,7 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-subtitle class="pt-1">
-            {{ topupOption.description }}
+            {{ topupOption.name }}
           </v-list-item-subtitle>
 
           <v-list-item-title class="headline mb-1">
