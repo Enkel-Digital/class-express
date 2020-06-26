@@ -69,7 +69,7 @@
                 <span v-if="plan.id === nextPlanID">(Next)</span>
               </span>
 
-              {{ plan.description }}
+              {{ plan.name }}
             </v-list-item-subtitle>
 
             <v-list-item-title class="headline mb-1">
