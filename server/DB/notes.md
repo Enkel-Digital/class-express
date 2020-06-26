@@ -30,12 +30,17 @@ General guidelines on how data should be stored and the way to use them.
 - Specifying default inserts for "unix seconds" if needed
     - In SQL
         ```sql
+        -- Note that the "::bigint" cast is only needed when selecting like this,
+        -- if used as default value for table with type bigint, it will be casted automatically
         SELECT EXTRACT(EPOCH FROM now() at time zone 'utc')::bigint
         ```
     - In dbml
         ```dbml
-        createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')::bigint`]
+        createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+        // Generated --> "createdAt" bigint DEFAULT (EXTRACT(EPOCH FROM now() at time zone 'utc'))
         ```
+        createdAt timestamptz [default: `now() at time zone 'utc'`]
+        
 - References:
     - <https://kb.objectrocket.com/postgresql/postgres-timestamps-1054#postgresql+unix+timestamp>
     - <https://tapoueh.org/blog/2018/04/postgresql-data-types-date-timestamp-and-time-zones/>

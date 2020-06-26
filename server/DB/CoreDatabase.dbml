@@ -13,7 +13,7 @@ Project ClassExpress {
 // FS
 Table userAccounts {
   id int [pk, increment, not null]
-  createdAt timestamp [default: `now()`]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   email varchar [not null, unique]
   phoneNumber varchar [null] // Includes area code
   firstName varchar [not null]
@@ -40,7 +40,7 @@ Table userSettings {
 // Partners / Business organisations.
 Table partners {
   id int [pk, increment, not null]
-  createdAt timestamp [default: `now()`]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   name varchar [not null]
   description varchar [not null]
   email varchar [not null]
@@ -60,7 +60,7 @@ Table partners {
 // Individual users (employees) of a Partner / Business organisation
 Table partnerAccounts {
   id int [pk, increment, not null]
-  createdAt timestamp [default: `now()`]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   partners int [ref: > partners.id, not null]
   name varchar [not null]
   admin boolean [not null] // True if user is admin else is employee
@@ -88,13 +88,12 @@ Table partnerSettings {
 Table userPlans {
   id int [pk, increment, not null]
   // @todo Either createAt or updatedAt to track when this is updated for analytics purposes
-  // createdAt timestamp [default: `now()`]
+  // createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   userID int [ref: > userAccounts.id, not null] // Many rows with each row being 1 plan in users history
   planID int [ref: > subscriptionPlans.id, not null]
-  // If this is timestamptz, how to do comparision in knex?
-  // It is possible, but is it as easy as doing int comparisions?
-  start timestamp [not null]
-  end timestamp [null]
+  // Might look into using ISO 8061 defaults, but using unix seconds for now for consistency
+  start bigint [not null]
+  end bigint [null]
 }
 
 // Trimmable + PG
@@ -104,7 +103,7 @@ Table userPlans {
 // @todo Do we need to add the start time of the class?
 Table userBookingTransactions {
   id int [pk, increment, not null]
-  actionTime timestamp [default: `now()`] // When this event happened, TS provided by frontend, but defaults to server timestamp if none
+  actionTime bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] // TS should be provided by client, but defaults to server timestamp if none
   userID int [ref: > userAccounts.id, not null]
   classID int [ref: > classes.id, not null]
   points int [not null] // A copy of the points of the class at the moment of action
@@ -119,7 +118,7 @@ Table userBookingTransactions {
 // @todo
 Table billingAccounts {
   id int [pk, increment, not null]
-  createdAt timestamp [default: `now()`]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   // @todo Verified? Verification probably by stripe or something?
   // @todo ?? deleted boolean [default: false]
 }
@@ -127,7 +126,7 @@ Table billingAccounts {
 // FS or PG
 Table classes {
   id int [pk, increment, not null]
-  createdAt timestamp [default: `now()`]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   partnerID int [ref: > partners.id, not null]
   name varchar [not null]
   description varchar [not null] // HTML allowed
@@ -147,14 +146,14 @@ Table classSchedule {
   id int [pk, increment, not null]
   classID int [ref: > classes.id, not null]
   // @todo Either createAt or updatedAt to track when this is updated for analytics purposes
-  // createdAt timestamp [default: `now()`]
+  // createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
 }
 
 // PG or FS
 Table userFavourites {
   id int [pk, increment, not null]
   userID int [ref: > userAccounts.id, not null]
-  favouritedAt timestamp [not null]
+  favouritedAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] // TS should be provided by client, but defaults to server timestamp if none
   // Only one will be nulled, either classID or partnerID
   // Get classIDs by filtering for NOT NULL classIDs
   classID int [ref: > classes.id, null] // Defaults to null
@@ -170,13 +169,15 @@ Table userClasses {
   id int [pk, increment, not null]
   userID int [ref: > userAccounts.id, not null]
   classID int [ref: > classes.id, not null]
-  startTime timestamp [not null] // Only store start time as end time should be computed using length of class
+  // Only store start time as end time should be computed using length of class
+  // Might look into using ISO 8061 defaults, but using unix seconds for now for consistency
+  startTime bigint [not null]
 }
 
 // All subscription plans across time
 Table subscriptionPlans {
   id int [pk, increment, not null] // This is also the planID
-  createdAt timestamp [default: `now()`]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   available boolean [default: true] // By default all plans are available // @todo Can change to be a procedure to be executed to see if this is avail?
   name varchar [not null]
   copywriting varchar [not null] // HTML allowed
@@ -194,7 +195,7 @@ Table subscriptionPlans {
 // All topupOptions allowed other then the custom points topup
 Table topupOptions {
   id int [pk, increment, not null]
-  createdAt timestamp [default: `now()`]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   available boolean [default: true] // By default all plans are available // @todo Can change to be a procedure to be executed to see if this is avail?
   name varchar [not null]
   copywriting varchar [not null] // HTML allowed
@@ -207,7 +208,7 @@ Table topupOptions {
 // PG needed for advance processing, to add a caching layer in front of queries for this with a 1 ~ 2 days expiry?
 Table reviews {
   id int [pk, increment, not null]
-  reviewedOn timestamp [default: `now()`]
+  reviewedOn bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   classID int [ref: > classes.id, not null]
   // @todo Add what time was the lesson so partner can take action
   points int [not null]
