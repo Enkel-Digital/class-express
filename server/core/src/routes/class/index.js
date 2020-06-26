@@ -26,9 +26,7 @@ router.get("/details/:classID", async (req, res) => {
 
     const classObject = await SQLdb("classes")
       .where({ id: classID })
-      .where(function () {
-        this.whereNull("deleted").orWhereNot({ deleted: true });
-      })
+      .where("deleted", false)
       .first();
 
     if (classObject) res.json({ success: true, class: classObject });
