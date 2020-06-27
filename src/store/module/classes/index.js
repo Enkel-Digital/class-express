@@ -133,7 +133,7 @@ export default {
      */
     async getUpcomingClasses({ rootState, dispatch, commit }) {
       const response = await apiWithLoader.get(
-        `/class/user/upcoming/${rootState.user.email}`
+        `/class/user/upcoming/${rootState.user.id}`
       );
 
       if (!response.success)
@@ -168,7 +168,7 @@ export default {
     async getFavourites({ state, commit, dispatch, rootState }) {
       // @todo Now we always call the API, but to udpate by sending the API the last update time
       const response = await apiWithLoader.get(
-        `/favourites/${rootState.user.email}`
+        `/favourites/${rootState.user.id}`
       );
 
       if (!response.success)
@@ -188,7 +188,7 @@ export default {
       commit("toggleFavouriteClass", classID);
 
       const response = await apiWithLoader.post("/favourites/classes/update", {
-        userID: rootState.user.email,
+        userID: rootState.user.id,
         classID,
         favourite: state.favouriteClasses[classID], // The value in state after the toggle
       });
@@ -207,7 +207,7 @@ export default {
       commit("toggleFavouritePartner", partnerID);
 
       const response = await apiWithLoader.post("/favourites/partner/update", {
-        userID: rootState.user.email,
+        userID: rootState.user.id,
         partnerID,
         favourite: state.favouritePartners[partnerID], // The value in state after the toggle
       });

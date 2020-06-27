@@ -56,14 +56,12 @@ export default {
       // Wait until email is available.
       // @todo Might cause issues if the user API fails this will continue looping forever.
       // @todo Update this to throw error instead if email is not available
-      while (!rootState.user.email) {
+      while (!rootState.user.id) {
         const sleep = (await import("@/utils/sleep")).default;
         await sleep.milli(100);
       }
 
-      const response = await apiWithLoader.get(
-        `/points/${rootState.user.email}`
-      );
+      const response = await apiWithLoader.get(`/points/${rootState.user.id}`);
 
       if (!response.success)
         return apiError(response, () => dispatch("getPoints"));

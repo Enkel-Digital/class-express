@@ -40,7 +40,7 @@ export default {
      */
     async getUserPlans({ commit, rootState, dispatch }) {
       const response = await apiWithLoader.get(
-        `/subscription/${rootState.user.email}`
+        `/subscription/${rootState.user.id}`
       );
       if (!response.success)
         return apiError(response, () => dispatch("getUserPlans"));
@@ -61,7 +61,7 @@ export default {
         const response = await apiWithLoader.post(
           "/subscription/plans/update",
           {
-            userID: rootState.user.email,
+            userID: rootState.user.id,
             subscriptionPlanID: planID,
           }
         );
@@ -76,7 +76,7 @@ export default {
     },
     async cancelPlan({ rootState, dispatch, commit }, cancellationReasons) {
       const response = await apiWithLoader.post("/subscription/cancel", {
-        userID: rootState.user.userID,
+        userID: rootState.user.id,
         cancellationReasons,
       });
 
