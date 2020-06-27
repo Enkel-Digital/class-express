@@ -10,7 +10,6 @@
 
 const express = require("express");
 const router = express.Router();
-const firebase = require("firebase-admin");
 const SQLdb = require("@enkel-digital/ce-sql");
 const onlyOwnResource = require("../middleware/onlyOwnResource");
 

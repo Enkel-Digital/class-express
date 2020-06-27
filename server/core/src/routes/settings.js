@@ -10,8 +10,7 @@
 
 const express = require("express");
 const router = express.Router();
-const firebase = require("firebase-admin");
-const db = require("../utils/db");
+const SQLdb = require("@enkel-digital/ce-sql");
 const onlyOwnResource = require("../middleware/onlyOwnResource");
 
 const createLogger = require("@lionellbriones/logging").default;
@@ -27,22 +26,10 @@ router.get("/user/:userID", onlyOwnResource, async (req, res) => {
   try {
     const { userID } = req.params;
 
-    const settingsDoc = await db.collection("settings").doc(userID).get();
-
-    const settings = settingsDoc.data();
-
-    // If user's first time calling settings route
-    if (!settings) {
-      // default empty settings values
-      const defaultSettingsObject = {};
-
-      // Create new empty document
-      db.collection("settings").doc(userID).set(defaultSettingsObject);
-
-      return res.json({ success: true, settings: defaultSettingsObject });
-    }
-
-    return res.json({ success: true, settings });
+    return res.json({
+      success: true,
+      settings: await SQLdb("userSettings").where({ userID }),
+    });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });
@@ -60,10 +47,7 @@ router.get("/user/:userID", onlyOwnResource, async (req, res) => {
  */
 router.post("/update", express.json(), async (req, res) => {
   try {
-    // Ensure that the email used as userID is lowercase.
-    // Refer to notes for why we are enforcing this lowercase usage.
-    const userID = req.body.userID.toLowerCase();
-    const { settings } = req.body;
+    const { userID, settings } = req.body;
 
     if (!userID) throw new Error("Missing userID");
 
