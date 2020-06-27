@@ -55,27 +55,24 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
  */
 router.post("/classes/update", express.json(), async (req, res) => {
   try {
-    // Ensure that the email used as userID is lowercase.
-    // Refer to notes for why we are enforcing this lowercase usage.
-    const userID = req.body.userID.toLowerCase();
-    const { classID, favourite } = req.body;
-
+    const { userID, classID, favourite } = req.body;
     if (!classID) throw new Error("Missing classID");
 
-    if (favourite)
-      await db
-        .collection("favourites")
-        .doc(userID)
-        .update({
-          [`classes.${classID}`]: favourite,
+    if (favourite) {
+      // Alternative solution to reading before writing to check for duplicates are
+      // https://github.com/knex/knex/issues/1322
+      // https://stackoverflow.com/questions/33540796/knexjs-if-not-exist-insert-else-update/35620251#35620251
+      if (!(await SQLdb("userFavourites").where({ userID, classID }).first()))
+        await SQLdb("userFavourites").insert({
+          userID,
+          classID,
+          favouritedAt: favourite.favouritedAt
+            ? favourite.favouritedAt
+            : undefined,
         });
-    else
-      await db
-        .collection("favourites")
-        .doc(userID)
-        .update({
-          [`classes.${classID}`]: firebase.firestore.FieldValue.delete(),
-        });
+    } else {
+      await SQLdb("userFavourites").where({ userID, classID }).del();
+    }
 
     res.status(200).json({ success: true });
   } catch (error) {
@@ -95,27 +92,24 @@ router.post("/classes/update", express.json(), async (req, res) => {
  */
 router.post("/partner/update", express.json(), async (req, res) => {
   try {
-    // Ensure that the email used as userID is lowercase.
-    // Refer to notes for why we are enforcing this lowercase usage.
-    const userID = req.body.userID.toLowerCase();
-    const { partnerID, favourite } = req.body;
-
+    const { userID, partnerID, favourite } = req.body;
     if (!partnerID) throw new Error("Missing partnerID");
 
-    if (favourite)
-      await db
-        .collection("favourites")
-        .doc(userID)
-        .update({
-          [`partners.${partnerID}`]: favourite,
+    if (favourite) {
+      // Alternative solution to reading before writing to check for duplicates are
+      // https://github.com/knex/knex/issues/1322
+      // https://stackoverflow.com/questions/33540796/knexjs-if-not-exist-insert-else-update/35620251#35620251
+      if (!(await SQLdb("userFavourites").where({ userID, partnerID }).first()))
+        await SQLdb("userFavourites").insert({
+          userID,
+          partnerID,
+          favouritedAt: favourite.favouritedAt
+            ? favourite.favouritedAt
+            : undefined,
         });
-    else
-      await db
-        .collection("favourites")
-        .doc(userID)
-        .update({
-          [`partners.${partnerID}`]: firebase.firestore.FieldValue.delete(),
-        });
+    } else {
+      await SQLdb("userFavourites").where({ userID, partnerID }).del();
+    }
 
     res.status(200).json({ success: true });
   } catch (error) {
