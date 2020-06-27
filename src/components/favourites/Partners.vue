@@ -26,11 +26,8 @@
                 {{ partner.name }}
               </v-card-title>
 
-              <!-- @todo Fix bug and remove this safegaurd -->
-              <v-list-item-subtitle
-                v-if="partner.location && partner.location.address"
-              >
-                {{ partner.location.address }}
+              <v-list-item-subtitle>
+                {{ partner.location_address }}
               </v-list-item-subtitle>
 
               <!-- @todo Add list of categories of classes the partner offers. -->
