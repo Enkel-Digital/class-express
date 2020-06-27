@@ -33,9 +33,7 @@ router.get("/:userEmail", onlyOwnResource, async (req, res) => {
     res.json({ success: true, user });
   } catch (error) {
     logger.error(error);
-    res
-      .status(error.code ? error.code : 500)
-      .json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 

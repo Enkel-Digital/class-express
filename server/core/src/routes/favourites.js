@@ -40,9 +40,7 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
     return res.json({ success: true, favourites });
   } catch (error) {
     logger.error(error);
-    res
-      .status(error.code ? error.code : 500)
-      .json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 

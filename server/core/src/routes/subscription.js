@@ -85,9 +85,7 @@ router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
     // });
   } catch (error) {
     logger.error(error);
-    res
-      .status(error.code ? error.code : 500)
-      .json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
