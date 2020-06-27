@@ -30,7 +30,7 @@ Table userAccounts {
 
 // FS
 Table userSettings {
-  id int [pk, not null, ref: - userAccounts.id]
+  userID int [pk, not null, ref: - userAccounts.id]
   notification_email boolean [null]
   notification_mobile boolean [null]
   // @todo Add a updatedAt timestamp
@@ -74,7 +74,7 @@ Table partnerAccounts {
 
 // FS
 Table partnerSettings {
-  id int [pk, ref: - partnerAccounts.id, not null]
+  userID int [pk, ref: - partnerAccounts.id, not null]
   notification_email boolean [null]
   notification_mobile boolean [null]
   // @todo Add a updatedAt timestamp
