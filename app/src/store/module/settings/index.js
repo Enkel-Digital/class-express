@@ -43,7 +43,7 @@ export default {
 
         // Call API after modifiedAt is injected in the "updateSettings" mutation
         const response = await apiWithLoader.post("/settings/update", {
-          userID: rootState.user.email,
+          userID: rootState.user.id,
           settings,
           modifiedAt: state.modifiedAt,
         });
@@ -62,7 +62,7 @@ export default {
       } else {
         // If not settings passed in, means to get latest settings from server
         const response = await apiWithLoader.get(
-          `/settings/user/${rootState.user.email}`
+          `/settings/user/${rootState.user.id}`
         );
 
         // Set the modified at from the server
