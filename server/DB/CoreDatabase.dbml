@@ -86,7 +86,7 @@ Table partnerSettings {
 // Trimmable + PG
 // Since planID is fixed and does not change overtime, we can use it to get cost of plan and currency used
 Table userPlans {
-  id int [pk, increment, not null]
+  id bigint [pk, increment, not null]
   // @todo Either createAt or updatedAt to track when this is updated for analytics purposes
   // createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   userID int [ref: > userAccounts.id, not null] // Many rows with each row being 1 plan in users history
@@ -102,7 +102,7 @@ Table userPlans {
 // Closely tied to userClasses
 // @todo Do we need to add the start time of the class?
 Table userBookingTransactions {
-  id int [pk, increment, not null]
+  id bigint [pk, increment, not null]
   actionTime bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] // TS should be provided by client, but defaults to server timestamp if none
   userID int [ref: > userAccounts.id, not null]
   classID int [ref: > classes.id, not null]
@@ -143,7 +143,7 @@ Table classes {
 // Each row will be a individual RRULE?
 // @todo
 Table classSchedule {
-  id int [pk, increment, not null]
+  id bigint [pk, increment, not null]
   classID int [ref: > classes.id, not null]
   // @todo Either createAt or updatedAt to track when this is updated for analytics purposes
   // createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
@@ -151,7 +151,7 @@ Table classSchedule {
 
 // PG or FS
 Table userFavourites {
-  id int [pk, increment, not null]
+  id bigint [pk, increment, not null]
   userID int [ref: > userAccounts.id, not null]
   favouritedAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] // TS should be provided by client, but defaults to server timestamp if none
   // Only one will be nulled, either classID or partnerID
@@ -166,7 +166,7 @@ Table userFavourites {
 // PG or FS + Trimmable (keep like the latest 20 user past classes, allow user to request for more)
 // Classes that the user have booked/attended/booked+cancelled(by user or partner)
 Table userClasses {
-  id int [pk, increment, not null]
+  id bigint [pk, increment, not null]
   userID int [ref: > userAccounts.id, not null]
   classID int [ref: > classes.id, not null]
   // Only store start time as end time should be computed using length of class
@@ -207,7 +207,7 @@ Table topupOptions {
 // PG + Trimmable (If trimmed, we need to make this into a seperate service that will hold a materialized view with cached result)
 // PG needed for advance processing, to add a caching layer in front of queries for this with a 1 ~ 2 days expiry?
 Table reviews {
-  id int [pk, increment, not null]
+  id bigint [pk, increment, not null]
   reviewedOn bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   classID int [ref: > classes.id, not null]
   // @todo Add what time was the lesson so partner can take action
