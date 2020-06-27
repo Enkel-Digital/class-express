@@ -27,13 +27,28 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
     const { userID } = req.params;
 
     // Filter for class and partners here instead of doing it on the frontend for better performance
+    // Then convert returned array into an object for easier access by the client.
     const favourites = {
-      classes: await SQLdb("userFavourites")
-        .where({ userID })
-        .whereNotNull("classID"),
-      partners: await SQLdb("userFavourites")
-        .where({ userID })
-        .whereNotNull("partnerID"),
+      classes: (
+        await SQLdb("userFavourites")
+          .where({ userID })
+          .whereNotNull("classID")
+          .select("classID", "favouritedAt")
+      ).reduce(function (acc, cur) {
+        acc[cur.classID] = cur;
+        delete acc[cur.classID].classID;
+        return acc;
+      }, {}),
+      partners: (
+        await SQLdb("userFavourites")
+          .where({ userID })
+          .whereNotNull("partnerID")
+          .select("partnerID", "favouritedAt")
+      ).reduce(function (acc, cur) {
+        acc[cur.partnerID] = cur;
+        delete acc[cur.partnerID].partnerID;
+        return acc;
+      }, {}),
     };
 
     return res.json({ success: true, favourites });
