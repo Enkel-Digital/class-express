@@ -39,7 +39,7 @@
 
               <v-list-item-subtitle>
                 <div>{{ clas.provider.name }}</div>
-                <div>{{ clas.location.address }}</div>
+                <div>{{ clas.location_address }}</div>
               </v-list-item-subtitle>
             </div>
           </v-list-item>

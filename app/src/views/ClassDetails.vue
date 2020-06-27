@@ -76,7 +76,7 @@
           {{ partner.name }}
         </p>
         <p class="ma-0 pa-0">
-          {{ clas.location ? clas.location.address : partner.location.address }}
+          {{ clas.location_address || partner.location_address }}
         </p>
       </v-list-item-content>
 

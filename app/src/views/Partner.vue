@@ -28,7 +28,7 @@
 
     <v-responsive style="margin: 1em;">
       <h3 class="headline" v-text="partner.name" />
-      <p class="ma-0 pa-0">{{ partner.location.address }}</p>
+      <p class="ma-0 pa-0">{{ partner.location_address }}</p>
     </v-responsive>
 
     <v-divider />
