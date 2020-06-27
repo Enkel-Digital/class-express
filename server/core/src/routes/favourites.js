@@ -11,7 +11,7 @@
 const express = require("express");
 const router = express.Router();
 const firebase = require("firebase-admin");
-const db = require("../utils/db");
+const SQLdb = require("@enkel-digital/ce-sql");
 const onlyOwnResource = require("../middleware/onlyOwnResource");
 
 const createLogger = require("@lionellbriones/logging").default;
@@ -27,20 +27,15 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
   try {
     const { userID } = req.params;
 
-    const favouritesDoc = await db.collection("favourites").doc(userID).get();
-
-    const favourites = favouritesDoc.data();
-
-    // If user's first time calling favourites route
-    if (!favourites) {
-      // default empty favourite values
-      const defaultFavoritesObject = { classes: {}, partners: {} };
-
-      // Create new empty document
-      db.collection("favourites").doc(userID).set(defaultFavoritesObject);
-
-      return res.json({ success: true, favourites: defaultFavoritesObject });
-    }
+    // Filter for class and partners here instead of doing it on the frontend for better performance
+    const favourites = {
+      classes: await SQLdb("userFavourites")
+        .where({ userID })
+        .whereNotNull("classID"),
+      partners: await SQLdb("userFavourites")
+        .where({ userID })
+        .whereNotNull("partnerID"),
+    };
 
     return res.json({ success: true, favourites });
   } catch (error) {
