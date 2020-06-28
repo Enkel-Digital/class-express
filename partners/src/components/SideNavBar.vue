@@ -254,7 +254,7 @@ export default {
       owner: true,
       employee: false,
       drawer: true,
-      mini: true,
+      mini: false,
       items: [
         {
           icon: "mdi-monitor-dashboard",

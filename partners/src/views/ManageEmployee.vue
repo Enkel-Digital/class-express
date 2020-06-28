@@ -1,7 +1,7 @@
 <template>
   <v-content id="ManageEmployee">
     <masonry
-      :cols="{ default: 5, 1000: 3, 700: 2, 400: 1 }"
+      :cols="{ default: 6, 1000: 3, 700: 2, 400: 1 }"
       :gutter="{ default: '0.5em', 700: '0.25em' }"
     >
       <v-card
@@ -9,6 +9,7 @@
         class="class-card"
         :key="employee.id"
         outlined
+        width="15em"
       >
         <v-list-item two-line>
           <v-list-item-content>

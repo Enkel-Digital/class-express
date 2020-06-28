@@ -12,7 +12,7 @@
 
     <br />
 
-    <v-row>
+    <v-row class="justify-center">
       <v-col cols="15" sm="6" md="3">
         <v-card outlined text>
           <v-list-item>

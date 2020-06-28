@@ -1,205 +1,188 @@
 <template>
   <v-content id="AddClasses">
-    <br />
-    <v-form ref="form" v-model="valid" lazy-validation>
-      <h2 style="color: #455a64;">Add New Class</h2>
-      <v-container>
-        <v-row>
-          <v-col cols="15" sm="6" md="5">
+    <v-row justify="left"
+      ><v-col cols="12" sm="4">
+        <v-card outlined ref="form">
+          <v-card-text>
+            <h2 style="color: #455a64;" class="text-left font-weight-light">
+              CLASS DETAILS
+            </h2>
+            <br />
+
             <v-text-field
               v-model="clas.name"
               :rules="nameRules"
               label="Class Name"
-              required
-              outlined
-            />
-          </v-col>
-
-          <v-col v-if="addLocationCheckbox" cols="15" sm="6" md="3">
-            <v-text-field
-              v-if="changeLocation"
-              :rules="addressRules"
-              label="Address Line 1"
-              outlined
+              placeholder="Basic Guitar"
+              color="#60696c"
               required
             />
-          </v-col>
-          <v-col v-if="addLocationCheckbox" cols="15" sm="6" md="3">
-            <v-text-field
-              v-if="changeLocation"
-              label="Address Line 2"
-              outlined
-            ></v-text-field>
-          </v-col>
-        </v-row>
 
-        <v-row>
-          <v-col cols="15" sm="6" md="5">
+            <v-text-field
+              :rules="maxParticipantRules"
+              v-model="clas.maxParticipant"
+              type="number"
+              color="#60696c"
+              label="Maximum Number of Participants"
+              placeholder="30"
+              required
+            />
+
             <v-file-input
               v-model="clas.pictures"
-              color="deep-blue accent-4"
+              color="#60696c"
               counter
               multiple
               label="Class Images"
               placeholder="Upload pictures of the class"
-              prepend-icon="mdi-camera"
-              outlined
               :show-size="1000"
             ></v-file-input>
-          </v-col>
 
-          <v-col v-if="addLocationCheckbox" cols="15" sm="6" md="2">
-            <v-text-field
-              v-if="changeLocation"
-              :rules="addressRules"
-              label="Unit No. (eg. 01-02)"
-              outlined
-              required
-            ></v-text-field>
-          </v-col>
-          <v-col v-if="addLocationCheckbox" cols="15" sm="6" md="2">
-            <v-text-field
-              v-if="changeLocation"
-              :rules="addressRules"
-              label="Postal Code"
-              outlined
-              required
-            ></v-text-field>
-          </v-col>
-          <v-col v-if="addLocationCheckbox" cols="15" sm="6" md="2">
-            <v-text-field
-              v-if="changeLocation"
-              :rules="addressRules"
-              label="Country"
-              outlined
-              required
-            ></v-text-field>
-          </v-col>
-        </v-row>
+            <v-combobox
+              v-model="clas.classCategory"
+              :items="classCategoryList"
+              chips
+              color="#60696c"
+              clearable
+              label="Select your class categories!"
+              multiple
+              single-line
+            >
+              <template v-slot:selection="{ attrs, item, select, selected }">
+                <v-chip
+                  v-bind="attrs"
+                  :input-value="selected"
+                  close
+                  small
+                  @click="select"
+                  @click:close="remove(item)"
+                >
+                  <strong>{{ item }}</strong>
+                </v-chip>
+              </template>
+            </v-combobox>
 
-        <!-- @todo Sanitize HTML input to prevent script injection attacks -->
-        <v-row>
-          <v-col cols="15" sm="6" md="5">
-            <p>
+            <p class="text-left">
               You are allowed to use most valid HTML to format your description.
               Script tags and others are not allowed.
             </p>
+            <!-- @todo Sanitize HTML input to prevent script injection attacks -->
             <v-textarea
               v-autofocus
               type="text"
               v-model="clas.description"
               rows="4"
+              outlined
               placeholder="Enter class description"
               no-resize
-              outlined
+              color="#60696c"
               required
             />
-          </v-col>
-          <v-col cols="10" sm="6" md="3">
-            <v-checkbox
-              v-model="addLocationCheckbox"
-              label="Choose external location"
-            ></v-checkbox>
-          </v-col>
 
-          <v-col cols="10" sm="6" md="3">
-            <v-checkbox
+            <v-switch
               v-model="allowWalkinCheckbox"
-              label="Allow walk in registrations"
-            ></v-checkbox>
-          </v-col>
-        </v-row>
+              label="Allow Walk-in Registrations"
+              color="#60696c"
+              flat
+            ></v-switch>
 
-        <v-row>
-          <!--
-            @todo Add input field for entering the category of this new class
-            @todo Add input field for keying meta tags for new class
-            
-          -->
-          <v-combobox
-            v-model="clas.classCategory"
-            :items="classCategoryList"
-            chips
-            clearable
-            label="Select your class categories!"
-            multiple
-            prepend-icon="mdi-filter-variant"
-            solo
-          >
-            <template v-slot:selection="{ attrs, item, select, selected }">
-              <v-chip
-                v-bind="attrs"
-                :input-value="selected"
-                close
-                @click="select"
-                @click:close="remove(item)"
-              >
-                <strong>{{ item }}</strong>
-              </v-chip>
-            </template>
-          </v-combobox>
-        </v-row>
+            <v-switch
+              v-model="addLocationCheckbox"
+              label="Choose External Location"
+              color="#60696c"
+              flat
+            ></v-switch>
+          </v-card-text>
 
-        <v-text-field
-          :rules="maxParticipantRules"
-          v-model="clas.maxParticipant"
-          type="number"
-          label="Maximum number of participants per class"
-          outlined
-          required
-        />
+          <v-expand-transition>
+            <div v-show="addLocationCheckbox">
+              <v-divider></v-divider>
+              <v-col cols="12" sm="12">
+                <v-text-field
+                  :rules="addressRules"
+                  label="Address Line 1"
+                  placeholder="123 Peach St"
+                  color="#60696c"
+                  required
+                />
 
-        <!-- Time related components -->
+                <v-text-field
+                  label="Address Line 2"
+                  placeholder=""
+                  color="#60696c"
+                ></v-text-field>
 
-        <!-- Length of the class -->
-        <v-text-field
-          :rules="classLengthRules"
-          v-model="clas.length"
-          type="number"
-          label="Class length in minutes"
-          outlined
-          required
-        />
+                <v-text-field
+                  :rules="addressRules"
+                  label="Unit No."
+                  color="#60696c"
+                  placeholder="12-02"
+                  required
+                ></v-text-field>
 
-        <span>
-          length: {{ Math.trunc(clas.length / 60) }} hr
-          {{ clas.length % 60 }} mins
-        </span>
+                <v-text-field
+                  :rules="addressRules"
+                  label="Postal Code"
+                  required
+                  placeholder="111222"
+                  color="#60696c"
+                ></v-text-field>
 
-        <!-- Select start times in the week -->
-        <AddNewStartTime :classLengthInMinutes="clas.length" />
+                <v-text-field
+                  :rules="addressRules"
+                  label="Country"
+                  required
+                  color="#60696c"
+                  placeholder="Singapore"
+                ></v-text-field>
+              </v-col>
+            </div>
+          </v-expand-transition>
+        </v-card> </v-col
+    ></v-row>
 
-        <!-- Date start and End date -->
-        <v-row>
-          <v-col style="width: 450px;  auto;">
-            <h3 style="color: #455a64;">Class Start Date</h3>
-            <v-date-picker
-              v-model="clas.dateStart"
-              class="mt-4"
-              color="#455A64"
-            />
-          </v-col>
+    <!-- Time related components -->
 
-          <!-- Can leave dateEnd as null to indicate no fixed end date yet. -->
-          <v-col style="width: 450px;  auto;">
-            <h3 style="color: #455a64;">Class End Date</h3>
-            <p>Leave empty to specify no fixed end date for this class</p>
-            <v-date-picker
-              v-model="clas.dateEnd"
-              class="mt-4"
-              color="#455A64"
-            />
-          </v-col>
-        </v-row>
+    <!-- Length of the class -->
+    <v-text-field
+      :rules="classLengthRules"
+      v-model="clas.length"
+      type="number"
+      label="Class length in minutes"
+      outlined
+      required
+    />
 
-        <!--
+    <span>
+      length: {{ Math.trunc(clas.length / 60) }} hr {{ clas.length % 60 }} mins
+    </span>
+
+    <!-- Select start times in the week -->
+    <AddNewStartTime :classLengthInMinutes="clas.length" />
+
+    <!-- Date start and End date -->
+    <v-row>
+      <v-col style="width: 450px;  auto;">
+        <h3 style="color: #455a64;">Class Start Date</h3>
+        <v-date-picker v-model="clas.dateStart" class="mt-4" color="#455A64" />
+      </v-col>
+
+      <!-- Can leave dateEnd as null to indicate no fixed end date yet. -->
+      <v-col style="width: 450px;  auto;">
+        <h3 style="color: #455a64;">Class End Date</h3>
+        <p>Leave empty to specify no fixed end date for this class</p>
+        <v-date-picker v-model="clas.dateEnd" class="mt-4" color="#455A64" />
+      </v-col>
+    </v-row>
+
+    <!--
           @todo Implement start time from the weekly calendar view
           Show a calendar and allow user to click arbitrary number of times as start of classes
           Allow partners to create overlapping start times
         -->
 
-        <!-- @todo Create scheduler component to reuse in edit class -->
-        <!-- <v-row>
+    <!-- @todo Create scheduler component to reuse in edit class -->
+    <!-- <v-row>
           <v-col style="width: 900px; flex: 0 1 auto;">
             <h3 style="color: #455a64;">Date</h3>
             <v-date-picker
@@ -212,24 +195,22 @@
           </v-col>
         </v-row> -->
 
-        <br />
-        <v-row>
-          <v-col cols="15" sm="6" md="1">
-            <v-btn color="error" depressed large @click="reset">
-              Reset Form
-            </v-btn>
-          </v-col>
+    <br />
+    <v-row>
+      <v-col cols="15" sm="6" md="1">
+        <v-btn color="error" depressed large @click="reset">
+          Reset Form
+        </v-btn>
+      </v-col>
 
-          <v-spacer />
+      <v-spacer />
 
-          <v-col cols="15" sm="6" md="1">
-            <v-btn color="primary" depressed large @click="addClass">
-              Add Class
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-form>
+      <v-col cols="15" sm="6" md="1">
+        <v-btn color="primary" depressed large @click="addClass">
+          Add Class
+        </v-btn>
+      </v-col>
+    </v-row>
   </v-content>
 </template>
 
@@ -274,7 +255,7 @@ export default {
         (length) => length > 0 || "Cannot have a class of 0 mins or less",
       ],
       maxParticipantRules: [
-        (length) => !!length || "Length is required",
+        (length) => !!length || "Max participant is required",
         (length) => length > 0 || "Cannot have a class of 0 mins or less",
       ],
       rules: [
@@ -334,17 +315,26 @@ export default {
 </script>
 
 <style scoped>
-#AllClasses {
+#AddClasses {
   margin: 4em;
-  margin-top: 2em;
-
+  margin-top: 1em;
+  margin-left: 2em;
   text-align: left;
 }
 .v-text-field input {
-  font-size: 1.2em;
+  font-size: 1.1em;
+}
+.v-label input {
+  font-size: 1.1em;
 }
 
-.v-input {
-  font-size: 1.2em;
+.class-card {
+  display: inline-block;
+  margin-bottom: 0.5em;
+
+  margin-top: 0.5em;
+}
+.text {
+  font-size: 1.1em;
 }
 </style>
