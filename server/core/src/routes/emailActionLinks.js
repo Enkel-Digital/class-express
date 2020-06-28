@@ -7,8 +7,6 @@
 
 const express = require("express");
 const router = express.Router();
-const db = require("../utils/db");
-const auth = require("../middleware/auth");
 const admin = require("../utils/firebaseAdmin");
 const sendMail = require("../utils/sendMail");
 

@@ -9,11 +9,11 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const onlyOwnResource = require("../middleware/onlyOwnResource");
-
 const SQLdb = require("@enkel-digital/ce-sql");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:subscription");
+const moment = require("moment");
 const unixseconds = require("unixseconds");
 
 /**
@@ -28,9 +28,11 @@ router.get("/plans/all", async (req, res) => {
       .where({
         // Allow us to run campaigns for subscription plans
         available: true,
-        countryCode: "SG",
+        // Allow to select only plans valid for user's country.
+        // countryCode: "SG",
       })
-      .orderBy("price", "asc");
+      .orderBy("price", "asc")
+      .select("id", "name", "copywriting", "currency", "price", "totalPoints");
 
     res.json({ success: true, subscriptionPlans });
   } catch (error) {
@@ -39,6 +41,8 @@ router.get("/plans/all", async (req, res) => {
   }
 });
 
+const periodLengthInSeconds = 30 * 24 * 60 * 60; // 30 days, 24 hours, 60 mins, 60 seconds
+
 function getCurrentPlan(userID, nowTS) {
   return SQLdb("userPlans")
     .where({ userID })
@@ -46,11 +50,16 @@ function getCurrentPlan(userID, nowTS) {
     .where(function () {
       // And doesnt have a end date Or if the end date is past the current date
       this.whereNull("end").orWhere("end", ">", nowTS);
-    });
+    })
+    .first(); // Although always be 1, first is still used to get object form instead of a 1 element array
 }
 
 function getNextPlan(userID, nowTS) {
-  return SQLdb("userPlans").where({ userID }).where("start", ">", nowTS); // Where plan has yet to start
+  // Where plan has yet to start
+  return SQLdb("userPlans")
+    .where({ userID })
+    .where("start", ">", nowTS)
+    .first(); // Although always be 1, first is still used to get object form instead of a 1 element array
 }
 
 /**
@@ -69,20 +78,11 @@ router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
     return res.status(200).json({
       success: true,
       plans: {
+        // If none, undefined will be returned and frontend can handle it.
         current: await getCurrentPlan(userID, nowTS),
         next: await getNextPlan(userID, nowTS),
       },
     });
-
-    // // Return the no plan object
-    // // Return with code for created
-    // return res.status(201).json({
-    //   success: true,
-    //   plans: {
-    //     current: null,
-    //     next: null,
-    //   },
-    // });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });
@@ -106,8 +106,15 @@ router.post(
     try {
       const { userID, subscriptionPlanID } = req.body;
 
-      // Get subscription plan with its ID and ensure it is valid
-      // This is handled by SQL insert alr, will throw error if false
+      // Ensure planID is valid, even though a bad insert will also throw, but doing this check for consistency
+      if (
+        !(await SQLdb("subscriptionPlans")
+          .where({ id: subscriptionPlanID })
+          .first())
+      )
+        return res
+          .status(400)
+          .json({ success: false, error: "Invalid subscriptionPlanID" });
 
       // Call once to pass currentPlan and nextPlan the same value for each API call
       const nowTS = unixseconds();

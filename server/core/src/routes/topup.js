@@ -9,7 +9,7 @@
 
 const express = require("express");
 const router = express.Router();
-const db = require("../utils/db");
+const SQLdb = require("@enkel-digital/ce-sql");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:topup");
@@ -22,13 +22,15 @@ const logger = createLogger("routes:topup");
  */
 router.get("/options", async (req, res) => {
   try {
-    // Sort them by id asc
-    const topupOptionsSnapshot = await db
-      .collection("topupOptions")
-      // .where("available", "==", true) // Allow us to run campaigns for topupOptions
-      .orderBy("id", "desc")
-      .get();
-    const topupOptions = topupOptionsSnapshot.docs.map((doc) => doc.data());
+    const topupOptions = await SQLdb("topupOptions")
+      .where({
+        // Allow us to run campaigns for subscription plans
+        available: true,
+        // Allow to select only plans valid for user's country.
+        // countryCode: "SG",
+      })
+      .orderBy("price", "asc")
+      .select("id", "name", "copywriting", "currency", "price", "totalPoints");
 
     res.json({ success: true, topupOptions });
   } catch (error) {
