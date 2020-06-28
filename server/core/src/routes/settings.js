@@ -26,9 +26,9 @@ router.get("/user/:userID", onlyOwnResource, async (req, res) => {
   try {
     const { userID } = req.params;
 
-    return res.json({
+    res.json({
       success: true,
-      settings: await SQLdb("userSettings").where({ userID }),
+      settings: await SQLdb("userSettings").where({ userID }).first(),
     });
   } catch (error) {
     logger.error(error);
@@ -51,21 +51,27 @@ router.post("/update", express.json(), async (req, res) => {
 
     if (!userID) throw new Error("Missing userID");
 
+    // @todo Fix this now that userID is no longer user email
     // @todo Extract this out into a middleware
-    if (req.authenticatedUser.email !== userID)
-      return res
-        .status(403)
-        .json({ success: false, error: "Forbidden, not your account!" });
+    // if (req.authenticatedUser.email !== userID)
+    //   return res
+    //     .status(403)
+    //     .json({ success: false, error: "Forbidden, not your account!" });
 
-    await db
-      .collection("settings")
-      .doc(userID)
-      .update({
+    // If user already has some none default settings, update them
+    if (await SQLdb("userSettings").where({ userID }).first())
+      await SQLdb("userSettings")
+        .where({ userID })
+        .update({
+          // Spread settings out and save it
+          ...settings,
+        });
+    // Else, insert settings record
+    else
+      await SQLdb("userSettings").insert({
+        userID,
         // Spread settings out and save it
-        // Due to the way update merges object data, settings object needs to be flat.
-        // Refer to frontend on data type choosen to flatten the object
         ...settings,
-        modifiedAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
 
     res.status(200).json({ success: true });

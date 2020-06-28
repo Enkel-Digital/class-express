@@ -3,13 +3,14 @@
  * Mounted on /reviews
  * @author JJ
  * @module Reviews routes
+ *
+ * @todo Add caching strategy for this routes as these are heavy SQL computations that can be cached
  */
 
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
-const firebase = require("firebase-admin");
-const db = require("../utils/db");
+const SQLdb = require("@enkel-digital/ce-sql");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:reviews");
@@ -18,17 +19,43 @@ const logger = createLogger("routes:reviews");
  * Get reviews for a class
  * @name GET /reviews/class/:classID
  * @function
- * @returns {object} Class Reviews object
+ * @returns {object} Array of Class review objects
  */
 router.get("/class/:classID", async (req, res) => {
   try {
     const { classID } = req.params;
 
-    const snapshot = await db.collection("reviews").doc(classID).get();
-    const reviews = snapshot.data();
+    const numberOfReviews = (
+      await SQLdb("reviews")
+        .where({ classID })
+        .count("classID") // Need to select a specific column to count and should avoid count(*) as some drivers do not support it.
+        .first()
+    ).count;
 
-    // If no reviews, just reply with "undefined", frontend should handle and show no reviews.
-    res.json({ success: true, reviews });
+    const pointsArray = await SQLdb("reviews")
+      .where({ classID })
+      .select("points");
+
+    const ratings =
+      pointsArray.reduce((a, b) => a + b.points, 0) / pointsArray.length;
+
+    const userReviews = await SQLdb("reviews")
+      .where({ classID })
+      .select("reviewedOn", "points", "description")
+      // Arbitrary limit. @todo Allow scrolling/pagination
+      .limit(12)
+      .orderBy("reviewedOn", "desc");
+
+    res.json({
+      success: true,
+      reviews: {
+        numberOfReviews,
+        // If no reviews, thus no ratings, use undefined to sent back nothing
+        // Else, convert ratings to 1 d.p
+        ratings: ratings ? ratings.toFixed(1) : undefined,
+        userReviews,
+      },
+    });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });
@@ -43,20 +70,53 @@ router.get("/class/:classID", async (req, res) => {
  *
  * @todo To implement
  */
-// router.get("/partner/:partnerID", async (req, res) => {
-//   try {
-//     const { partnerID } = req.params;
+router.get("/partner/:partnerID", async (req, res) => {
+  try {
+    const { partnerID } = req.params;
 
-//     const snapshot = await db.collection("reviews").doc(partnerID).get();
-//     const reviews = snapshot.data();
+    const partnerReviewsJoin = () =>
+      SQLdb("reviews")
+        .join("classes", "reviews.classID", "=", "classes.id")
+        .where({ partnerID });
 
-//     // If no reviews, just reply with "undefined", frontend should handle and show no reviews.
-//     res.json({ success: true, reviews });
-//   } catch (error) {
-//     logger.error(error);
-//     res.status(500).json({ success: false, error: error.message });
-//   }
-// });
+    const numberOfReviews = (
+      await partnerReviewsJoin()
+        .count("partnerID") // Need to select a specific column to count and should avoid count(*) as some drivers do not support it.
+        .first()
+    ).count;
+
+    const pointsArray = await partnerReviewsJoin().select("reviews.points");
+
+    const ratings =
+      pointsArray.reduce((a, b) => a + b.points, 0) / pointsArray.length;
+
+    // Include classID for the partner reviews
+    const userReviews = await partnerReviewsJoin()
+      .select(
+        "reviewedOn",
+        "reviews.classID",
+        "reviews.points",
+        "reviews.description"
+      )
+      // Arbitrary limit. @todo Allow scrolling/pagination
+      .limit(12)
+      .orderBy("reviewedOn", "desc");
+
+    res.json({
+      success: true,
+      reviews: {
+        numberOfReviews,
+        // If no reviews, thus no ratings, use undefined to sent back nothing
+        // Else, convert ratings to 1 d.p
+        ratings: ratings ? ratings.toFixed(1) : undefined,
+        userReviews,
+      },
+    });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 
 /**
  * Leave a new review after user have attended a class
@@ -70,26 +130,16 @@ router.get("/class/:classID", async (req, res) => {
 router.post("/new/:classID", auth, express.json(), async (req, res) => {
   try {
     const { classID } = req.params;
-    const { description, points } = req.body;
-    const userID = req.body.userID.toLowerCase();
+    const { userID, description, points } = req.body;
 
-    // Get the current number of reviews + 1?
-    // @todo Might cause issues when dealing with multiple concurrent writes, might be better to use a random ID for the map key
-    const count = ++(await db.collection("reviews").doc(classID).get()).data()
-      .numberOfReviews;
+    if (!classID) throw new Error("Missing classID");
 
-    await db
-      .collection("reviews")
-      .doc(classID)
-      .update({
-        numberOfReviews: firebase.firestore.FieldValue.increment(1),
-        [`userReviews.${count}`]: {
-          userID, // @todo To change this as userID as email can be updated
-          description,
-          points,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        },
-      });
+    await SQLdb("reviews").insert({
+      classID,
+      userID,
+      description,
+      points,
+    });
 
     res.status(201).json({ success: true });
   } catch (error) {

@@ -22,7 +22,7 @@ router.get("/details/:partnerID", async (req, res) => {
   try {
     const { partnerID } = req.params;
 
-    const partner = await SQLdb("classes")
+    const partner = await SQLdb("partners")
       .where({ id: partnerID })
       .where("deleted", false)
       .first();
