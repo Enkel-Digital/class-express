@@ -207,7 +207,8 @@ export default {
         // And only using the computed property to modify vuex state via an action.
         // Essentially the deepclone removes the reactive bindings on the data
         // Technically can use JSONify too since values in state should all be JSONifyable without any complex structures.
-        return cloneDeep(this.$store.state.settings.settings);
+        // In case settings is null, use empty object to prevent breaking template with accessing properties of undefined errors
+        return cloneDeep(this.$store.state.settings.settings) || {};
       },
       set(newSettings) {
         // Use a computed setter to modify vuex state through the syncSettings action instead of a direct modification

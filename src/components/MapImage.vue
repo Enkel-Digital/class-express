@@ -26,10 +26,11 @@ export default {
 
       // If the map image for a class is requested, check if there is a custom class location else use partner's location
       if (this.clas)
-        return this.clas.location
-          ? this.clas.location_coordinates
-          : this.$store.state.classes.partners[this.clas.partnerID].location
-              .coordinates;
+        return (
+          this.clas.location_coordinates ||
+          this.$store.state.classes.partners[this.clas.partnerID]
+            .location_coordinates
+        );
       else if (this.partner) return this.partner.location_coordinates;
       else return undefined; // If neither clas nor partner is loaded yet, return nothing first
     },
