@@ -87,8 +87,8 @@ Table partnerSettings {
 // Since planID is fixed and does not change overtime, we can use it to get cost of plan and currency used
 Table userPlans {
   id bigint [pk, increment, not null]
-  // @todo Either createAt or updatedAt to track when this is updated for analytics purposes
-  // createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  // @todo Add updatedAt to track when this is updated for analytics purposes?
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   userID int [ref: > userAccounts.id, not null] // Many rows with each row being 1 plan in users history
   planID int [ref: > subscriptionPlans.id, not null]
   // Might look into using ISO 8061 defaults, but using unix seconds for now for consistency
@@ -184,12 +184,13 @@ Table subscriptionPlans {
   currency varchar [not null]
   price int [not null] // Price in the specified currency
   totalPoints int [not null]
+}
+
+// @todo Create seperate table for country codes for subscription plans and other tables
   // Country that this plan is available in = All countries if none specified
   // Usually need to specify and usually the same as the currency of the plan.
-  // @todo Defaults to SG?
   // Multiple rows, 1 row for each unique countryCode
-  countryCode varchar [null]
-}
+  // countryCode varchar [not null]
 
 // FS
 // All topupOptions allowed other then the custom points topup
