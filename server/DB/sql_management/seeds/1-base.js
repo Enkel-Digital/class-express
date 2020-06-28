@@ -13,7 +13,32 @@ exports.seed = async function (knex) {
   )
     return;
 
-  // Inserts seed entries
+  /**
+   * Inserts seed entries
+   * Unlike most tutorials, table contents are not deleted first before seeding.
+   * Because of the Foreign Key constraints if there are any existing data.
+   */
+
+  await knex("userAccounts").insert([
+    {
+      email: "social@enkeldigital.com",
+      firstName: "Tester",
+      countryCode: "SG",
+      cityCode: "SG",
+      timezone: "SGT",
+      currency: "SGD",
+    },
+    {
+      email: "admin@enkeldigital.com",
+      firstName: "Admin",
+      lastName: "Tester",
+      countryCode: "SG",
+      cityCode: "SG",
+      timezone: "SGT",
+      currency: "SGD",
+    },
+  ]);
+
   await knex("subscriptionPlans").insert([
     {
       available: true,
@@ -168,6 +193,45 @@ exports.seed = async function (knex) {
       maxParticipants: "20",
       pictureSources:
         "https://www.fetimes.co.kr/news/photo/201709/60017_41960_2138.jpg",
+    },
+  ]);
+
+  await knex("reviews").insert([
+    {
+      classID: "1",
+      userID: "1",
+      points: "4",
+      description: "Was really fun!",
+    },
+    {
+      classID: "1",
+      userID: "2",
+      points: "5",
+      description: "Love the open classroom environment",
+    },
+    {
+      classID: "2",
+      userID: "1",
+      points: "5",
+      description: "Was really fun!",
+    },
+    {
+      classID: "2",
+      userID: "2",
+      points: "3",
+      description: "Good classroom environment",
+    },
+    {
+      classID: "3",
+      userID: "1",
+      points: "4",
+      description: "Was really fun!",
+    },
+    {
+      classID: "3",
+      userID: "2",
+      points: "4",
+      description: "Love the open classroom environment",
     },
   ]);
 

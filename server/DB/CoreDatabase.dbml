@@ -12,7 +12,7 @@ Project ClassExpress {
 
 // FS
 Table userAccounts {
-  id int [pk, increment, not null]
+  id int [pk, increment, not null, unique]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   email varchar [not null, unique]
   phoneNumber varchar [null] // Includes area code
@@ -39,11 +39,11 @@ Table userSettings {
 // FS
 // Partners / Business organisations.
 Table partners {
-  id int [pk, increment, not null]
+  id int [pk, increment, not null, unique]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   name varchar [not null]
   description varchar [not null]
-  email varchar [not null]
+  email varchar [not null, unique]
   phoneNumber varchar [not null] // Includes area code
   location_address varchar [not null]
   location_coordinates varchar [not null]
@@ -59,13 +59,13 @@ Table partners {
 // FS
 // Individual users (employees) of a Partner / Business organisation
 Table partnerAccounts {
-  id int [pk, increment, not null]
+  id int [pk, increment, not null, unique]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   partners int [ref: > partners.id, not null]
   name varchar [not null]
   admin boolean [not null] // True if user is admin else is employee
   permissions varchar // Perhaps use an array?
-  email varchar [not null]
+  email varchar [not null, unique]
   phoneNumber varchar [null] // Includes area code
   verified_email boolean [default: false]
   verified_phone boolean [default: false]
@@ -117,7 +117,7 @@ Table userBookingTransactions {
 
 // @todo
 Table billingAccounts {
-  id int [pk, increment, not null]
+  id int [pk, increment, not null, unique]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   // @todo Verified? Verification probably by stripe or something?
   // @todo ?? deleted boolean [default: false]
@@ -125,7 +125,7 @@ Table billingAccounts {
 
 // FS or PG
 Table classes {
-  id int [pk, increment, not null]
+  id int [pk, increment, not null, unique]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   partnerID int [ref: > partners.id, not null]
   name varchar [not null]
@@ -176,7 +176,7 @@ Table userClasses {
 
 // All subscription plans across time
 Table subscriptionPlans {
-  id int [pk, increment, not null] // This is also the planID
+  id int [pk, increment, not null, unique] // This is also the "planID"
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   available boolean [default: true] // By default all plans are available // @todo Can change to be a procedure to be executed to see if this is avail?
   name varchar [not null]
@@ -194,7 +194,7 @@ Table subscriptionPlans {
 // FS
 // All topupOptions allowed other then the custom points topup
 Table topupOptions {
-  id int [pk, increment, not null]
+  id int [pk, increment, not null, unique]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   available boolean [default: true] // By default all plans are available // @todo Can change to be a procedure to be executed to see if this is avail?
   name varchar [not null]
@@ -209,6 +209,7 @@ Table topupOptions {
 Table reviews {
   id bigint [pk, increment, not null]
   reviewedOn bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  userID int [ref: > userAccounts.id, not null]
   classID int [ref: > classes.id, not null]
   // @todo Add what time was the lesson so partner can take action
   points int [not null]
