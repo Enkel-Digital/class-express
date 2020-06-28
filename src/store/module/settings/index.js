@@ -65,11 +65,14 @@ export default {
           `/settings/user/${rootState.user.id}`
         );
 
+        if (!response.success)
+          return apiError(response, () => dispatch("syncSettings"));
+
         // Set the modified at from the server
-        commit("setter", ["modifiedAt", response.settings.modifiedAt]);
+        commit("setter", ["modifiedAt", response.settings?.modifiedAt]);
 
         // Detach modifiedAt from settings before saving settings into state
-        delete response.settings.modifiedAt;
+        delete response.settings?.modifiedAt;
         commit("updateSettings", response.settings);
       }
     },

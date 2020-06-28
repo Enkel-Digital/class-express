@@ -56,17 +56,13 @@
       <div
         v-ripple
         @click="
-          setter(
-            settings,
-            'notifications-mobileNotification',
-            !settings['notifications-mobileNotification']
-          )
+          setter(settings, 'notification_mobile', !settings.notification_mobile)
         "
       >
         <v-checkbox
-          v-model="settings['notifications-mobileNotification']"
+          v-model="settings.notification_mobile"
           readonly
-          label="Mobile notifications"
+          label="Mobile notification"
           class="ma-1 pa-0"
         />
       </div>
@@ -74,17 +70,13 @@
       <div
         v-ripple
         @click="
-          setter(
-            settings,
-            'notifications-emailNotification',
-            !settings['notifications-emailNotification']
-          )
+          setter(settings, 'notification_email', !settings.notification_email)
         "
       >
         <v-checkbox
-          v-model="settings['notifications-emailNotification']"
+          v-model="settings.notification_email"
           readonly
-          label="Email notifications"
+          label="Email notification"
           class="ma-1 pa-0"
         />
       </div>
