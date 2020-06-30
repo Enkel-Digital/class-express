@@ -17,7 +17,14 @@
         class="headline mt-0 pt-0"
         style="word-break: keep-all;"
       />
+
       <v-card-text v-html="error.description" style="text-align: left;" />
+
+      <v-card-text
+        v-if="error.more && error.more.description"
+        v-html="error.more.description"
+        style="text-align: left;"
+      />
 
       <v-card-text style="text-align: left;">
         Issue is reported to the developer 🙏🏻

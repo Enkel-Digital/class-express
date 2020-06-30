@@ -5,8 +5,8 @@
 export default function initialState() {
   return {
     status: undefined,
-    currentPlan: undefined,
-    nextPlan: undefined,
+    current: undefined,
+    next: undefined,
     subscriptionPlans: [],
   };
 }
