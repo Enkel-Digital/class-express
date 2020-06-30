@@ -43,10 +43,11 @@ router.get("/plans/all", async (req, res) => {
 
 const periodLengthInSeconds = 30 * 24 * 60 * 60; // 30 days, 24 hours, 60 mins, 60 seconds
 
+// @todo Refactor out so that points API can use this
 function getCurrentPlan(userID, nowTS) {
   return SQLdb("userPlans")
     .where({ userID })
-    .where("start", "<", nowTS) // If already started
+    .where("start", "<=", nowTS) // If already started. // Using <= instead of < as update can be done in the same second
     .where(function () {
       // And doesnt have a end date Or if the end date is past the current date
       this.whereNull("end").orWhere("end", ">", nowTS);
@@ -55,11 +56,21 @@ function getCurrentPlan(userID, nowTS) {
 }
 
 function getNextPlan(userID, nowTS) {
-  // Where plan has yet to start
   return SQLdb("userPlans")
     .where({ userID })
-    .where("start", ">", nowTS)
+    .where("start", ">", nowTS) // Where plan has yet to start
     .first(); // Although always be 1, first is still used to get object form instead of a 1 element array
+}
+
+async function getPlans(userID) {
+  // Call once to pass currentPlan and nextPlan the same timestamp value for consistent filtering.
+  const nowTS = unixseconds();
+
+  return {
+    // If none, undefined will be returned
+    current: await getCurrentPlan(userID, nowTS),
+    next: await getNextPlan(userID, nowTS),
+  };
 }
 
 /**
@@ -72,16 +83,9 @@ router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
   try {
     const { userID } = req.params;
 
-    // Call once to pass currentPlan and nextPlan the same value for each API call
-    const nowTS = unixseconds();
-
     return res.status(200).json({
       success: true,
-      plans: {
-        // If none, undefined will be returned and frontend can handle it.
-        current: await getCurrentPlan(userID, nowTS),
-        next: await getNextPlan(userID, nowTS),
-      },
+      plans: await getPlans(userID),
     });
   } catch (error) {
     logger.error(error);
@@ -126,16 +130,27 @@ router.post(
       // If user already have a currentPlan
       if (currentPlan) {
         // If user already have next plan, replace next plan's planID with new planID
-        if (nextPlan)
-          await getNextPlan(userID, nowTS).update({
-            planID: subscriptionPlanID,
-          });
-        // Else if new plan is the same as current plan, ignore it
+        if (nextPlan) {
+          // If user sets next plan back to the same as the current plan, delete next plan and set end of life of current plan to null again
+          if (subscriptionPlanID === currentPlan.planID) {
+            await getNextPlan(userID, nowTS).del();
+            // Remove end of life of current plan by setting end to null
+            await getCurrentPlan(userID, nowTS).update({ end: null });
+          }
+          // Else, just update planID of next plan
+          else
+            await getNextPlan(userID, nowTS).update({
+              planID: subscriptionPlanID,
+            });
+
+          // @todo Call billing service to update
+        }
+        // Else if no next plan and new plan is the same as current plan, ignore it
         else if (currentPlan.planID === subscriptionPlanID) {
           // If have next plan alr, but new plan is same as old plan. delete next plan and change back to null for end
           // @todo This dont need to call Billing Service
         }
-        // Else if no next plan, set end of life for current plan and insert new plan record.
+        // Else if no next plan, and selected plan is a new plan, set end of life for current plan and insert new plan record.
         else {
           // Calculate total number of periods including current period, to get the timestamp of end of current period
           const endOfCurrentPeriod = moment
@@ -182,7 +197,11 @@ router.post(
         return res.json({ success: false, error: "CASE TOO BE HANDLED" });
       }
 
-      res.json({ success: true });
+      // Respond with the plans too for client to use as point of truth
+      res.json({
+        success: true,
+        plans: await getPlans(userID),
+      });
 
       // // Send user a email notification once subscription is updated
       // await sendMail({
