@@ -5,17 +5,13 @@
   "description": "Partner service / API for ClassExpress partners website",
   "main": "./src/index.js",
   "scripts": {
-    "fix:websocket": "find ./node_modules -name \".git\" -type d -exec rm -rf {} +",
-    "build:server": "npm run delete:build && npx webpack --config webpack.config.js",
-    "build:docker": "docker build -t ce-core -f ./.Dockerfile .",
-    "build:docs": "npm run delete:docs && jsdoc -c ./jsdocConfiguration.json -r -d ../docs",
-    "build:all": "npm run build:server && npm run build:docker",
-    "delete:build": "npx rimraf ./build",
-    "delete:docs": "npx rimraf ../docs",
-    "docker:serve": "npm run build:all && npm run start:docker",
+    "docker:build": "docker build -t gcr.io/classes-ekd/partners -f ./.Dockerfile .",
+    "docker:push": "docker push gcr.io/classes-ekd/partners",
+    "deploy:cloud-run": "gcloud run deploy --platform managed --image gcr.io/classes-ekd/partners",
+    "docs:delete": "npx rimraf ../docs",
+    "docs:build": "npm run delete:docs && jsdoc -c ./jsdocConfiguration.json -r -d ../docs",
+    "docs:serve": "npx nodemon -x npm run build:docs",
     "serve": "npx nodemon ./src/index.js",
-    "serve:docs": "npx nodemon -x npm run build:docs",
-    "start:docker": "docker run -d --rm --name ce-core ce-core",
     "start": "node ./src/index.js",
     "test": "npx mocha --exit",
     "lint:js": "npx eslint --ignore-path .gitignore --fix **/*.js"
@@ -25,47 +21,53 @@
     "url": "git+https://github.com/Enkel-Digital/class-server.git"
   },
   "author": "JJ",
+  "license": "AGPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/Enkel-Digital/class-server/issues"
   },
   "homepage": "https://github.com/Enkel-Digital/class-server#readme",
   "dependencies": {
+    "@enkel-digital/ce-sql": "^0.1.0",
     "@lionellbriones/logging": "^3.2.1",
+    "@sendgrid/mail": "^7.2.1",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "firebase": "^7.13.2",
-    "firebase-admin": "^8.10.0",
-    "helmet": "^3.21.2",
-    "request": "^2.88.0",
+    "firebase": "^7.15.5",
+    "firebase-admin": "^8.12.1",
+    "helmet": "^3.23.3",
+    "moment": "^2.27.0",
+    "request": "^2.88.2",
     "request-promise-native": "^1.0.8",
-    "validator": "^12.1.0"
+    "rrule": "^2.6.4",
+    "unixseconds": "^0.1.0",
+    "validator": "^13.1.1"
   },
   "devDependencies": {
-    "docdash": "^1.1.1",
-    "eslint": "^6.7.2",
-    "eslint-config-prettier": "^6.7.0",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-mocha": "^6.2.2",
-    "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-prettier": "^3.1.1",
+    "docdash": "^1.2.0",
+    "eslint": "^7.3.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-mocha": "^7.0.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-vue": "^6.0.1",
-    "husky": "^3.1.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "husky": "^4.2.5",
     "ignore-loader": "^0.1.2",
-    "jsdoc": "^3.6.3",
+    "jsdoc": "^3.6.4",
     "jsdoc-export-default-interop": "^0.3.1",
-    "lint-staged": "^9.5.0",
-    "mocha": "^6.2.2",
-    "morgan": "^1.9.1",
-    "nodemon": "^2.0.1",
-    "prettier": "^1.19.1",
-    "rimraf": "^3.0.0",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10",
+    "lint-staged": "^10.2.11",
+    "mocha": "^8.0.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
     "webpack-node-externals": "^1.7.2"
   },
   "husky": {
@@ -74,13 +76,11 @@
     }
   },
   "lint-staged": {
-    "*.{js,css,json}": [
-      "prettier --write",
-      "git add"
-    ],
     "*.js": [
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
+    ],
+    "*.{js,json}": [
+      "prettier --write"
     ]
   }
 }

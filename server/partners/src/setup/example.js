@@ -17,6 +17,7 @@ const logger = createLogger("setup:MinBalance");
 async function setup() {
   try {
     return;
+    // eslint-disable-next-line no-unreachable
   } catch (error) {
     logger.error(error);
     process.exit(1);

@@ -1,6 +1,7 @@
 # To build and run the image from this Dockerfile, where x is the name of the worker node's JS file name
-# docker build -t worker:x -f ./.Dockerfile .
-# docker run -it --rm --name worker-smth worker:
+# docker build -t ce-partners -f ./.Dockerfile .
+# docker run -d --rm --name ce-partners ce-partners
+# Alternativly, use docker compose in root to run this service
 # 
 # Why the server needs to be built first before the image is built:
 #   - For performance and image size reasons, the code is built locally first before being sent to the daemon for building the image.
@@ -20,39 +21,15 @@ WORKDIR /app
 # Copy both package.json and package-lock.json in for installing dependencies with "npm ci"
 COPY package*.json ./
 
-# Increase the max memory limit of the node js process to 4GB
-ENV NODE_OPTIONS --max-old-space-size=4096
-
-# Install items and build tools needed to install the npm packages
-RUN apk add --no-cache --virtual .gyp \
-        python \
-        make \
-        g++ \
-        git
-
 # Install all production Node JS dependencies using the lock file for a deterministic dependency list
-# Delete .gyp files after installation
-RUN npm ci --only=production && apk del .gyp
+RUN npm ci --only=production
 
-# Read the expected build-time variable workerName passed in from the build command or via docker-compose.yml
-ARG workerName
+# Copy source files into current WORKDIR's src/
+COPY ./src/ ./src/
 
-# Use given ARG to set ENV value to keep using this value in container run stage and not just build stage
-# If not overwritten, this value will be available to the running containers
-# Reference - https://vsupalov.com/docker-arg-env-variable-guide/#setting-arg-values
-ENV workerNameENV=$workerName
-
-# Only copy the final webpack build output file into WORKDIR for executing
-COPY ./build/${workerNameENV}.js .
+# Define exposed ports, acting only as documentation. You STILL need to map the ports with -p option with docker run
+EXPOSE 2090
 
 # ENTRYPOINT Command ensures this command runs when the container is spun up, and cannot be overwritten with shell arguements like CMD
-# Use shell form to get the shell to process/intepret the commands instead of calling the executable directly to use the ENV value
-# exec form does not have the shell's ability to intepret the workerNameENV, thus can't be used
-ENTRYPOINT npm run start:${workerNameENV}
-
-# Below is an attempt to use exec form with ENTRYPOINT
-# Does not work
-# ENTRYPOINT ["npm", "run"]
-# CMD start:${workerNameENV}
-
-# Rmb to squash the image too
+# Using exec form instead of shell form
+ENTRYPOINT ["npm", "run", "start"]

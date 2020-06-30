@@ -38,13 +38,15 @@ async function setup(resolve) {
 
   // setup cors middleware
   const corsOptions = {
-    //   origin: ["https://localhost:3000", /\.tor\.us$/],
+    // @todo To change the origin policy. Probs move this into a config module to read from env.
+    // origin: ["https://localhost:3000", /\.enkeldigital\.com$/],
     origin: "*",
-    credentials: false
+    credentials: false,
   };
 
   // Only import and attach morgan if development env is used.
-  if (process.env.NODE_ENV === "development") app.use(require("morgan")("tiny")); // HTTP logging
+  if (process.env.NODE_ENV === "development")
+    app.use(require("morgan")("tiny")); // HTTP logging
   app.use(cors(corsOptions)); // middleware to enables cors
   app.use(helmet()); // middleware which adds http headers
   app.use(compression()); // middleware which uses gzip compression on responses
@@ -64,7 +66,9 @@ async function setup(resolve) {
    * @notice Server is exported from app.listen which can be exported from this module for testing.
    */
   const port = process.env.PORT || 3000; // Defaults to PORT 3000
-  const server = app.listen(port, () => logger.info(`Server running on port: ${port}`));
+  const server = app.listen(port, () =>
+    logger.info(`Server running on port: ${port}`)
+  );
 
   // Setup server timeout
   // const timeout = (process.env.TIMEOUT ? process.env.TIMEOUT : 5) * 60 * 1000; // Defaults to 5 minutes
