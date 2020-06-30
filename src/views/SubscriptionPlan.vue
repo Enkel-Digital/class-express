@@ -28,22 +28,23 @@
     </v-responsive>
 
     <!-- Hide action button when user have no plan -->
-    <PointsCard :hideActionButton="currentPlanID === null" />
+    <!-- <PointsCard :hideActionButton="current" /> -->
+    <PointsCard :hideActionButton="!!current" />
 
     <br />
     <h3 class="opacity7 ml-5">
       Subscription Plans
     </h3>
 
-    <p v-if="currentPlanID !== null" class="opacity6 ml-5 mb-0">
-      Your current plan ends on
-      <span style="font-weight: bold;">
-        {{ moment.unix(periodEndDate).format("L") }}
+    <p v-if="current" class="opacity6 ml-5 mb-0">
+      <span v-if="periodEndDate !== null" style="font-weight: bold;">
+        Your current plan ends on {{ moment.unix(periodEndDate).format("L") }}
+        <br />
       </span>
-      <br />Click to change next month's plan
+      Click to change next month's plan
     </p>
     <p v-else class="opacity6 ml-5 mb-0">
-      Click a plan to buy it now!
+      Select a plan to buy it now!
     </p>
 
     <v-radio-group v-model="selectedPlanID">
@@ -61,20 +62,21 @@
 
           <v-list-item-content>
             <v-list-item-subtitle>
+              <!-- Ensure next/current plans are loaded before checking for equality -->
               <span
-                v-if="nextPlanID !== currentPlanID"
+                v-if="next && current && next.planID !== current.planID"
                 style="color: black; font-weight: bold;"
               >
-                <span v-if="plan.id === currentPlanID">(Current)</span>
-                <span v-if="plan.id === nextPlanID">(Next)</span>
+                <span v-if="plan.id === current.planID">(Current)</span>
+                <span v-if="plan.id === next.planID">(Next)</span>
               </span>
 
               {{ plan.name }}
             </v-list-item-subtitle>
 
             <v-list-item-title class="headline mb-1">
-              {{ plan.totalPoints }} points for {{ plan.price.currency }}
-              {{ plan.price.value }}
+              {{ plan.totalPoints }} points for {{ plan.currency }}
+              {{ plan.price }}
             </v-list-item-title>
 
             <p class="opacity7 fontsize8 mb-0">
@@ -86,7 +88,7 @@
     </v-radio-group>
 
     <v-card
-      v-if="currentPlanID"
+      v-if="current"
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
@@ -110,7 +112,7 @@
     </v-card>
 
     <v-card
-      v-if="currentPlanID"
+      v-if="current"
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
@@ -129,7 +131,7 @@
     </v-card>
 
     <v-card
-      v-if="currentPlanID"
+      v-if="current"
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
@@ -203,23 +205,18 @@ export default {
   },
   beforeMount() {
     // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
-    // Request store to get and populate list of subscription plans
+    // Request store to get user's plans and list of subscription plans
+    this.$store.dispatch("subscription/getUserPlans");
     this.$store.dispatch("subscription/getPlans");
   },
   computed: {
-    periodEndDate() {
-      return this.$store.state.points.points.period.end;
-    },
     ...mapState(["user", "points"]),
-    ...mapState("subscription", [
-      "subscriptionPlans",
-      "currentPlanID",
-      "nextPlanID",
-    ]),
+    ...mapState("subscription", ["subscriptionPlans", "current", "next"]),
     selectedPlanID() {
-      return this.currentPlanID === this.nextPlanID
-        ? this.currentPlanID
-        : this.nextPlanID;
+      return this.next?.planID || this.current?.planID;
+    },
+    periodEndDate() {
+      return this.current?.end;
     },
   },
   methods: {

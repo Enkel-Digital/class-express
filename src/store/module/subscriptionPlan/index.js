@@ -45,8 +45,8 @@ export default {
       if (!response.success)
         return apiError(response, () => dispatch("getUserPlans"));
 
-      commit("setter", ["currentPlan", response.plans.currentPlan]);
-      commit("setter", ["nextPlan", response.plans.nextPlan]);
+      commit("setter", ["current", response.plans.current]);
+      commit("setter", ["next", response.plans.next]);
     },
     /**
      * Update the user's plan
@@ -54,7 +54,10 @@ export default {
      */
     async updatePlan({ state, commit, dispatch, rootState }, planID) {
       // If user selects own plan, ignore selection
-      if (state.nextPlanID === planID) return;
+      // If user does not have next plan, and selected plan is same as current plan, ignore it
+      if (!state.next?.planID && state.current?.planID === planID) return;
+      // If user have a next plan, and the selected plan is the same as the next plan, ignore it.
+      if (state.next?.planID && state.next?.planID === planID) return;
 
       if (confirm("Confirm change of Subscription Plan!")) {
         // Call API to update the plan
@@ -70,8 +73,8 @@ export default {
           return apiError(response, () => dispatch("updatePlan", planID));
 
         // Pessimistic UI, show after network update is complete, using the users' plans the API returned
-        commit("setter", ["currentPlanID", response.plans.currentPlanID]);
-        commit("setter", ["nextPlanID", response.plans.nextPlanID]);
+        commit("setter", ["current", response.plans.current]);
+        commit("setter", ["next", response.plans.next]);
       }
     },
     async cancelPlan({ rootState, dispatch, commit }, cancellationReasons) {
@@ -86,7 +89,7 @@ export default {
         );
 
       // Indicate that this is the last plan and there will no longer be any next plan
-      commit("setter", ["nextPlanID", null]);
+      commit("setter", ["nextPlan", undefined]);
     },
   },
 };
