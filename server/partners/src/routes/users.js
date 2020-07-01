@@ -10,7 +10,7 @@
 
 const express = require("express");
 const router = express.Router();
-const SQLdb = require("@enkel-digital/ce-sql");
+const SQLdb = require("@enkeldigital/ce-sql");
 const onlyOwnResource = require("../middleware/onlyOwnResource");
 
 const createLogger = require("@lionellbriones/logging").default;

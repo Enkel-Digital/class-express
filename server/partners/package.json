@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/Enkel-Digital/class-server#readme",
   "dependencies": {
-    "@enkel-digital/ce-sql": "^0.1.0",
+    "@enkeldigital/ce-sql": "^0.1.0",
     "@lionellbriones/logging": "^3.2.1",
     "@sendgrid/mail": "^7.2.1",
     "compression": "^1.7.4",
@@ -35,7 +35,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "firebase": "^7.15.5",
-    "firebase-admin": "^8.12.1",
+    "firebase-admin": "^8.13.0",
     "helmet": "^3.23.3",
     "moment": "^2.27.0",
     "request": "^2.88.2",

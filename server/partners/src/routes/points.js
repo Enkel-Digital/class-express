@@ -9,7 +9,7 @@
 
 const express = require("express");
 const router = express.Router();
-const SQLdb = require("@enkel-digital/ce-sql");
+const SQLdb = require("@enkeldigital/ce-sql");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:points");

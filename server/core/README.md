@@ -1,13 +1,13 @@
 # Core API service
-This service contains ONLY APIs that are accessible from the shent.  
+This service contains ONLY APIs that are accessible from the client.  
 
 ## Used by frontend app for:
 - Data that needs requires authentication
-- Data that require preprocessing that should not be done on the shent
+- Data that require preprocessing that should not be done on the client
 - Other open and public data
 	- Although we are using firestore as our DB where we CAN actually access data directly from the frontend
 	- We are avoiding direct access methods with firestore rules as much as possible.
-	- This is to enforce data contract between the data and shent accessing it by providing fixed endpoints with garunteed structures
+	- This is to enforce data contract between the data and client accessing it by providing fixed endpoints with garunteed structures
 	- This also allows us to migrate to new DB platforms without worrying about changing frontend controllers for data access
 
 ## Installations, Builds and Running
