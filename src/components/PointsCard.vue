@@ -2,7 +2,7 @@
   <v-responsive id="points-card">
     <!-- If user already has a plan -->
     <v-card
-      v-if="currentPlanID"
+      v-if="current"
       class="mx-auto"
       max-width="calc(100% - 3em)"
       outlined
@@ -62,7 +62,7 @@ export default {
   props: ["hideActionButton"],
   computed: {
     ...mapState("points", ["points"]),
-    ...mapState("subscription", ["currentPlanID"]),
+    ...mapState("subscription", ["current"]),
   },
 };
 </script>
