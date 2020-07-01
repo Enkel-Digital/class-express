@@ -17,41 +17,24 @@ const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:favourites");
 
 /**
- * Get users' favourites, including BOTH favourite classes and favourite partners
- * @name GET /favourites/:userID
+ * Get number of favourites for a particular class
+ * @name GET /favourites/class/:classID
  * @function
- * @returns {object} favourites object
+ * @returns {object} favourites count
  */
-router.get("/:userID", onlyOwnResource, async (req, res) => {
+router.get("/class/:classID", onlyOwnResource, async (req, res) => {
   try {
-    const { userID } = req.params;
+    const { classID } = req.params;
 
-    // Filter for class and partners here instead of doing it on the frontend for better performance
-    // Then convert returned array into an object for easier access by the client.
-    const favourites = {
-      classes: (
+    return res.json({
+      success: true,
+      count: (
         await SQLdb("userFavourites")
-          .where({ userID })
-          .whereNotNull("classID")
-          .select("classID", "favouritedAt")
-      ).reduce(function (acc, cur) {
-        acc[cur.classID] = cur;
-        delete acc[cur.classID].classID;
-        return acc;
-      }, {}),
-      partners: (
-        await SQLdb("userFavourites")
-          .where({ userID })
-          .whereNotNull("partnerID")
-          .select("partnerID", "favouritedAt")
-      ).reduce(function (acc, cur) {
-        acc[cur.partnerID] = cur;
-        delete acc[cur.partnerID].partnerID;
-        return acc;
-      }, {}),
-    };
-
-    return res.json({ success: true, favourites });
+          .where({ classID })
+          .count("classID") // Need to select a specific column to count and should avoid count(*) as some drivers do not support it.
+          .first()
+      ).count,
+    });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });
@@ -59,36 +42,24 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
 });
 
 /**
- * Favourite or un-favourite a class
- * @name POST /favourites/classes/update
+ * Get number of favourites for a particular partner
+ * @name GET /favourites/partner/:partnerID
  * @function
- * @param {String} userID
- * @param {number} classID Class with classID to update favourite status
- * @param {boolean} favourite True to set as favourite and false to unfavourite
- * @returns {object} success indicator
+ * @returns {object} favourites count
  */
-router.post("/classes/update", express.json(), async (req, res) => {
+router.get("/partner/:partnerID", onlyOwnResource, async (req, res) => {
   try {
-    const { userID, classID, favourite } = req.body;
-    if (!classID) throw new Error("Missing classID");
+    const { partnerID } = req.params;
 
-    if (favourite) {
-      // Alternative solution to reading before writing to check for duplicates are
-      // https://github.com/knex/knex/issues/1322
-      // https://stackoverflow.com/questions/33540796/knexjs-if-not-exist-insert-else-update/35620251#35620251
-      if (!(await SQLdb("userFavourites").where({ userID, classID }).first()))
-        await SQLdb("userFavourites").insert({
-          userID,
-          classID,
-          favouritedAt: favourite.favouritedAt
-            ? favourite.favouritedAt
-            : undefined,
-        });
-    } else {
-      await SQLdb("userFavourites").where({ userID, classID }).del();
-    }
-
-    res.status(200).json({ success: true });
+    return res.json({
+      success: true,
+      count: (
+        await SQLdb("userFavourites")
+          .where({ partnerID })
+          .count("partnerID") // Need to select a specific column to count and should avoid count(*) as some drivers do not support it.
+          .first()
+      ).count,
+    });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });
@@ -96,36 +67,25 @@ router.post("/classes/update", express.json(), async (req, res) => {
 });
 
 /**
- * Favourite or un-favourite a partner
- * @name POST /favourites/partner/update
+ * Get number of favourites across all classes of a partner
+ * @name GET /favourites/all-classes/of/:partnerID
  * @function
- * @param {String} userID
- * @param {number} partnerID Partner with partnerID to update favourite status
- * @param {boolean} favourite True to set as favourite and false to unfavourite
- * @returns {object} success indicator
+ * @returns {object} favourites count
  */
-router.post("/partner/update", express.json(), async (req, res) => {
+router.get("/all-classes/of/:partnerID", onlyOwnResource, async (req, res) => {
   try {
-    const { userID, partnerID, favourite } = req.body;
-    if (!partnerID) throw new Error("Missing partnerID");
+    const { partnerID } = req.params;
 
-    if (favourite) {
-      // Alternative solution to reading before writing to check for duplicates are
-      // https://github.com/knex/knex/issues/1322
-      // https://stackoverflow.com/questions/33540796/knexjs-if-not-exist-insert-else-update/35620251#35620251
-      if (!(await SQLdb("userFavourites").where({ userID, partnerID }).first()))
-        await SQLdb("userFavourites").insert({
-          userID,
-          partnerID,
-          favouritedAt: favourite.favouritedAt
-            ? favourite.favouritedAt
-            : undefined,
-        });
-    } else {
-      await SQLdb("userFavourites").where({ userID, partnerID }).del();
-    }
-
-    res.status(200).json({ success: true });
+    return res.json({
+      success: true,
+      count: (
+        await SQLdb("userFavourites")
+          .join("classes", "userFavourites.classID", "=", "classes.id")
+          .where({ "classes.partnerID": partnerID })
+          .count("classID") // Need to select a specific column to count and should avoid count(*) as some drivers do not support it.
+          .first()
+      ).count,
+    });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });

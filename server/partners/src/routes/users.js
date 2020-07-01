@@ -26,11 +26,13 @@ router.get("/:userEmail", onlyOwnResource, async (req, res) => {
   try {
     const { userEmail } = req.params;
 
-    const user = await SQLdb("userAccounts")
+    const user = await SQLdb("partnerAccounts")
       .where({ email: userEmail })
       .first();
+    // .select("partnerID", "name", "admin"); // @todo Add filter for properties
 
-    res.json({ success: true, user });
+    if (user) res.json({ success: true, user });
+    else res.status(404).json({ success: false, error: "No such user" });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });
@@ -55,7 +57,7 @@ router.post("/new", express.json(), async (req, res) => {
     req.body.user.email = req.body.user.email.toLowerCase();
     const user = req.body.user;
 
-    await SQLdb("userAccounts").insert(user);
+    await SQLdb("partnerAccounts").insert(user);
 
     res.status(201).json({ success: true });
   } catch (error) {

@@ -29,8 +29,10 @@ router.get("/:userEmail", onlyOwnResource, async (req, res) => {
     const user = await SQLdb("userAccounts")
       .where({ email: userEmail })
       .first();
+    // .select("partnerID", "name", "admin"); // @todo Add filter for properties
 
-    res.json({ success: true, user });
+    if (user) res.json({ success: true, user });
+    else res.status(404).json({ success: false, error: "No such user" });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });

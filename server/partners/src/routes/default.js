@@ -19,7 +19,7 @@ const router = express.Router();
  * @function
  * @returns {String} welcome string
  */
-router.get("/", (req, res) => res.send("CE-Core service"));
+router.get("/", (req, res) => res.send("CE-Partner service"));
 
 /**
  * Server health check

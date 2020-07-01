@@ -38,6 +38,36 @@ router.get("/details/:classID", async (req, res) => {
 });
 
 /**
+ * Get classes of partner
+ * @name GET /class/of/:partnerID
+ * @function
+ * @returns {object} Array of classIDs
+ */
+router.get("/of/:partnerID", async (req, res) => {
+  try {
+    const { partnerID } = req.params;
+
+    // Only return array of IDs for frontend to get class 1 by 1 only when needed
+    const arrayOfClassIDs = (
+      await SQLdb("classes")
+        .where({ partnerID })
+        .where("deleted", false)
+        .select("id")
+    ).map((classObject) => classObject.id);
+
+    if (arrayOfClassIDs.length) res.json({ success: true, arrayOfClassIDs });
+    else
+      res.status(404).json({
+        success: false,
+        error: `Partner ${partnerID} does not have any classes`,
+      });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
  * Compute schedule of a class with given classID on the given date
  * @name GET /class/schedule/:classID/:date
  * @function
