@@ -17,8 +17,6 @@ export default {
     },
     /**
      * Function to deduct points needed to book a class
-     * @function deductPoints
-     * @param {*} state
      * @param {number} classPoints Points needed for the class
      */
     deductPoints(state, classPoints) {
@@ -26,8 +24,6 @@ export default {
     },
     /**
      * Function to refund back points from a class booking
-     * @function refundPoints
-     * @param {*} state
      * @param {number} classPoints Points needed for the class
      */
     refundPoints(state, classPoints) {
