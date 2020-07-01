@@ -251,5 +251,19 @@ exports.seed = async function (knex) {
     },
   ]);
 
-  // @todo Add mock data for reviews
+  await knex("partnerAccounts").insert([
+    {
+      partnerID: 1,
+      name: "Jessica Jacelyn",
+      admin: true,
+      email: "jessicajacelyn@gmail.com",
+      verified_email: true,
+    },
+    {
+      partnerID: 1,
+      name: "JJ Lee",
+      email: "jj@enkeldigital.com",
+      verified_email: true,
+    },
+  ]);
 };

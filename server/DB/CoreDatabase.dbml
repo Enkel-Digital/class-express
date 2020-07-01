@@ -61,9 +61,9 @@ Table partners {
 Table partnerAccounts {
   id int [pk, increment, not null, unique]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
-  partners int [ref: > partners.id, not null]
+  partnerID int [ref: > partners.id, not null]
   name varchar [not null]
-  admin boolean [not null] // True if user is admin else is employee
+  admin boolean [default: false]
   permissions varchar // Perhaps use an array?
   email varchar [not null, unique]
   phoneNumber varchar [null] // Includes area code
