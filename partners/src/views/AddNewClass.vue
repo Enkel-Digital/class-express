@@ -1,7 +1,7 @@
 <template>
   <v-content id="AddClasses">
-    <v-row justify="left"
-      ><v-col cols="12" sm="4">
+    <v-row>
+      <v-col cols="12" sm="4">
         <v-card outlined ref="form">
           <v-card-text>
             <h2 style="color: #455a64;" class="text-left font-weight-light">
@@ -23,7 +23,7 @@
               v-model="clas.maxParticipant"
               type="number"
               color="#60696c"
-              label="Maximum Number of Participants"
+              label="Maximum Number of Participants Per Session"
               placeholder="30"
               required
             />
@@ -33,8 +33,9 @@
               color="#60696c"
               counter
               multiple
+              height="1.1em"
               label="Class Images"
-              placeholder="Upload pictures of the class"
+              placeholder="Select Pictures for Your Class"
               :show-size="1000"
             ></v-file-input>
 
@@ -42,9 +43,10 @@
               v-model="clas.classCategory"
               :items="classCategoryList"
               chips
+              height="1.1em"
               color="#60696c"
               clearable
-              label="Select your class categories!"
+              label="Select Your Class Categories"
               multiple
               single-line
             >
@@ -62,6 +64,20 @@
               </template>
             </v-combobox>
 
+            <v-text-field
+              :rules="classLengthRules"
+              v-model="clas.length"
+              type="number"
+              label="Class Length (minutes)"
+              placeholder="120"
+              color="#60696c"
+              required
+            />
+            <span>
+              length: {{ Math.trunc(clas.length / 60) }} hr
+              {{ clas.length % 60 }} mins
+            </span>
+
             <p class="text-left">
               You are allowed to use most valid HTML to format your description.
               Script tags and others are not allowed.
@@ -73,7 +89,7 @@
               v-model="clas.description"
               rows="4"
               outlined
-              placeholder="Enter class description"
+              placeholder="Enter Your Class Description"
               no-resize
               color="#60696c"
               required
@@ -83,14 +99,12 @@
               v-model="allowWalkinCheckbox"
               label="Allow Walk-in Registrations"
               color="#60696c"
-              flat
             ></v-switch>
 
             <v-switch
               v-model="addLocationCheckbox"
-              label="Choose External Location"
+              label="Use Non-default External Location"
               color="#60696c"
-              flat
             ></v-switch>
           </v-card-text>
 
@@ -138,42 +152,89 @@
               </v-col>
             </div>
           </v-expand-transition>
-        </v-card> </v-col
-    ></v-row>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" sm="8">
+        <AddNewStartTime :classLengthInMinutes="clas.length" />
+      </v-col>
+
+      <v-col cols="12" sm="4">
+        <v-card outlined ref="form">
+          <v-card-text>
+            <!-- <h2 style="color: #455a64;" class="text-left font-weight-light">
+              CLASS START DATE
+            </h2> -->
+            <v-menu
+              v-model="startDateMenu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="clas.dateStart"
+                  label="Select Class Start Date"
+                  prepend-icon="mdi-calendar-month"
+                  color="#60696c"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="clas.dateStart"
+                color="#60696c"
+                header-color="#60696c"
+                event-color="#60696c"
+                @input="startDateMenu = false"
+              ></v-date-picker>
+            </v-menu>
+
+            <!-- <h2 style="color: #455a64;" class="text-left font-weight-light">
+              CLASS END DATE
+            </h2> -->
+            <v-menu
+              v-model="endDateMenu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="clas.dateEnd"
+                  label="Select Class End Date"
+                  prepend-icon="mdi-calendar-month"
+                  color="#60696c"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="clas.dateEnd"
+                header-color="#60696c"
+                color="#60696c"
+                event-color="#60696c"
+                @input="endDateMenu = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
 
     <!-- Time related components -->
 
     <!-- Length of the class -->
-    <v-text-field
-      :rules="classLengthRules"
-      v-model="clas.length"
-      type="number"
-      label="Class length in minutes"
-      outlined
-      required
-    />
-
-    <span>
-      length: {{ Math.trunc(clas.length / 60) }} hr {{ clas.length % 60 }} mins
-    </span>
 
     <!-- Select start times in the week -->
-    <AddNewStartTime :classLengthInMinutes="clas.length" />
 
     <!-- Date start and End date -->
-    <v-row>
-      <v-col style="width: 450px;  auto;">
-        <h3 style="color: #455a64;">Class Start Date</h3>
-        <v-date-picker v-model="clas.dateStart" class="mt-4" color="#455A64" />
-      </v-col>
-
-      <!-- Can leave dateEnd as null to indicate no fixed end date yet. -->
-      <v-col style="width: 450px;  auto;">
-        <h3 style="color: #455a64;">Class End Date</h3>
-        <p>Leave empty to specify no fixed end date for this class</p>
-        <v-date-picker v-model="clas.dateEnd" class="mt-4" color="#455A64" />
-      </v-col>
-    </v-row>
 
     <!--
           @todo Implement start time from the weekly calendar view
@@ -196,17 +257,31 @@
         </v-row> -->
 
     <br />
-    <v-row>
-      <v-col cols="15" sm="6" md="1">
-        <v-btn color="error" depressed large @click="reset">
+    <v-row class="text-center">
+      <v-col cols="12" sm="6">
+        <v-btn
+          color="#60696c"
+          rounded
+          width="15em"
+          outlined
+          depressed
+          large
+          @click="reset"
+        >
           Reset Form
         </v-btn>
       </v-col>
 
-      <v-spacer />
-
-      <v-col cols="15" sm="6" md="1">
-        <v-btn color="primary" depressed large @click="addClass">
+      <v-col cols="12" sm="6">
+        <v-btn
+          color="#60696c"
+          class="white--text text-right"
+          rounded
+          width="15em"
+          depressed
+          large
+          @click="addClass"
+        >
           Add Class
         </v-btn>
       </v-col>
@@ -231,6 +306,8 @@ export default {
   },
   data() {
     return {
+      startDateMenu: false,
+      endDateMenu: false,
       classCategoryList: ["tech", "cooking", "lifestyle", "music", "art"],
       clas: {
         name: null,
@@ -318,7 +395,7 @@ export default {
 #AddClasses {
   margin: 4em;
   margin-top: 1em;
-  margin-left: 2em;
+  /* margin-left: 2em; */
   text-align: left;
 }
 .v-text-field input {
@@ -331,6 +408,7 @@ export default {
 .class-card {
   display: inline-block;
   margin-bottom: 0.5em;
+  font-size: 1.1em;
 
   margin-top: 0.5em;
 }

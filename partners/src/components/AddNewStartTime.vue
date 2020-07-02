@@ -1,66 +1,139 @@
 <template>
-  <v-content id="AddNewStartTime">
-    <!-- Select start times in the week -->
-    <v-row>
-      <v-col style="width: 450px;  auto;">
-        <h3 style="color: #455a64;">Start Date</h3>
-        <v-select
-          :items="[
-            { text: 'mon', value: 1 },
-            { text: 'tues', value: 2 },
-            { text: 'wed', value: 3 },
-            { text: 'thurs', value: 4 },
-            { text: 'fri', value: 5 },
-            { text: 'sat', value: 6 },
-            { text: 'sun', value: 7 },
-          ]"
-          label="Day of the week"
-          v-model="selectedDay"
-          outlined
-        />
-      </v-col>
+  <!-- <v-content id="AddNewStartTime"> -->
+  <!-- Select start times in the week -->
+  <!-- <v-content id="AddNewStartTime"> -->
+  <v-responsive>
+    <v-card outlined ref="form">
+      <v-card-text>
+        <h2 style="color: #455a64;" class="text-left font-weight-light">
+          CLASS TIMINGS
+        </h2>
+        <br />
 
-      <!-- Can leave dateEnd as null to indicate no fixed end date yet. -->
-      <v-col style="width: 450px;  auto;">
-        <h3 style="color: #455a64;">Start time of class</h3>
-        <v-time-picker v-model="selectedTime" scrollable ampm-in-title />
-      </v-col>
+        <!-- <br /> -->
+        <v-row>
+          <v-col cols="12" sm="4">
+            <v-select
+              :items="[
+                { text: 'mon', value: 1 },
+                { text: 'tues', value: 2 },
+                { text: 'wed', value: 3 },
+                { text: 'thurs', value: 4 },
+                { text: 'fri', value: 5 },
+                { text: 'sat', value: 6 },
+                { text: 'sun', value: 7 },
+              ]"
+              label="Day of the week"
+              item-color="#60696c"
+              color="#60696c"
+              height="1.1em"
+              v-model="selectedDay"
+            />
+          </v-col>
 
-      <v-col>
-        <p class="error">{{ errorMessage }}</p>
-        <v-btn @click="addNewStartTime" color="primary">
-          add new start time
-        </v-btn>
+          <!-- <h3 style="color: #455a64;" class="text-left font-weight-light">
+          START TIME
+        </h3> -->
+          <v-col cols="12" sm="8">
+            <v-menu
+              ref="menu"
+              v-model="menu2"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="selectedTime"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="selectedTime"
+                  label="Select Class Start Time"
+                  prepend-icon="mdi-clock-outline"
+                  readonly
+                  color="#60696c"
+                  height="1.1em"
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="menu2"
+                v-model="selectedTime"
+                color="#60696c"
+                full-width
+                @click:minute="$refs.menu.save(selectedTime)"
+              ></v-time-picker>
+            </v-menu>
+          </v-col>
+        </v-row>
 
-        <v-btn @click="reset" color="error">
-          Reset selected DateTimes
-        </v-btn>
-      </v-col>
+        <v-row>
+          <v-col cols="12" sm="6">
+            <h3 style="color: #455a64;" class="text-left font-weight-light">
+              LIST OF CLASS TIMINGS
+            </h3>
+            <p>
+              *note that this is a weekly recurring schedule
+            </p>
+            <span v-for="(dateTime, i) in selectedDateTime" :key="i">
+              <v-card max-width="8em" dense outlined>
+                <v-list-item one-line>
+                  <v-list-item-content>
+                    <v-list-item-subtitle>{{
+                      getDay(dateTime.day)
+                    }}</v-list-item-subtitle>
+                    <v-list-item-subtitle>
+                      {{ getTime(dateTime.time) }}</v-list-item-subtitle
+                    >
+                  </v-list-item-content>
+                </v-list-item>
 
-      <v-col>
-        <!-- <h3 style="color: #455a64;">List of Class Start timings</h3> -->
-        <h3 style="color: #455a64;">List of Class timings</h3>
-        <p style="color: #455a64;">
-          *note that this is a weekly recurring schedule
-        </p>
+                <v-card-actions class="justify-left">
+                  <v-btn
+                    text
+                    class="overline pa-0"
+                    color="black"
+                    @mouseup="removeSelectedDateTime(i)"
+                  >
+                    delete
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </span>
+          </v-col>
 
-        <span v-for="(dateTime, i) in selectedDateTime" :key="i">
-          <v-card>
-            <v-card-title>
-              {{ getDay(dateTime.day) }} - {{ getTime(dateTime.time) }}
-            </v-card-title>
+          <v-col cols="12" sm="6">
+            <p class="error">{{ errorMessage }}</p>
+            <v-btn
+              class="ma-2"
+              @click="addNewStartTime"
+              outlined
+              rounded
+              width="15em"
+              color="#546E7A"
+            >
+              Add new start time</v-btn
+            >
 
-            <v-card-action>
-              <!-- @todo Uses mouseup event as a hack to prevent mutli click event triggered when mouse down is held -->
-              <v-btn icon color="black" @mouseup="removeSelectedDateTime(i)">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </v-card-action>
-          </v-card>
-        </span>
-      </v-col>
-    </v-row>
-  </v-content>
+            <v-btn
+              class="ma-2"
+              @click="reset"
+              width="15em"
+              rounded
+              outlined
+              color="#546E7A"
+            >
+              Reset all timings</v-btn
+            >
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </v-responsive>
+
+  <!-- </v-content> -->
 </template>
 
 <script>
@@ -71,6 +144,7 @@ export default {
   props: ["classLengthInMinutes"],
   data() {
     return {
+      menu2: false,
       selectedDay: 1,
       selectedTime: "09:00",
       // @todo Sort the array to order by day and time in asc order
@@ -131,3 +205,21 @@ export default {
   },
 };
 </script>
+<style scoped>
+.text {
+  font-size: 1.1em;
+}
+.v-text-field input {
+  font-size: 1.1em;
+}
+.v-label input {
+  font-size: 1.1em;
+}
+.class-card {
+  display: inline-block;
+  margin-bottom: 0.5em;
+  font-size: 1.1em;
+
+  margin-top: 0.5em;
+}
+</style>
