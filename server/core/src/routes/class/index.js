@@ -54,4 +54,6 @@ router.get("/schedule/:classID/:date", async (req, res) => {
   }
 });
 
+router.use(require("./reserveAndCancel"));
+
 module.exports = router;
