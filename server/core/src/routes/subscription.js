@@ -13,6 +13,8 @@ const SQLdb = require("@enkeldigital/ce-sql");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:subscription");
+
+const { getPlans, getCurrentPlan, getNextPlan } = require("../db/getPlans");
 const moment = require("moment");
 const unixseconds = require("unixseconds");
 
@@ -40,38 +42,6 @@ router.get("/plans/all", async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-
-const periodLengthInSeconds = 30 * 24 * 60 * 60; // 30 days, 24 hours, 60 mins, 60 seconds
-
-// @todo Refactor out so that points API can use this
-function getCurrentPlan(userID, nowTS) {
-  return SQLdb("userPlans")
-    .where({ userID })
-    .where("start", "<=", nowTS) // If already started. // Using <= instead of < as update can be done in the same second
-    .where(function () {
-      // And doesnt have a end date Or if the end date is past the current date
-      this.whereNull("end").orWhere("end", ">", nowTS);
-    })
-    .first(); // Although always be 1, first is still used to get object form instead of a 1 element array
-}
-
-function getNextPlan(userID, nowTS) {
-  return SQLdb("userPlans")
-    .where({ userID })
-    .where("start", ">", nowTS) // Where plan has yet to start
-    .first(); // Although always be 1, first is still used to get object form instead of a 1 element array
-}
-
-async function getPlans(userID) {
-  // Call once to pass currentPlan and nextPlan the same timestamp value for consistent filtering.
-  const nowTS = unixseconds();
-
-  return {
-    // If none, undefined will be returned
-    current: await getCurrentPlan(userID, nowTS),
-    next: await getNextPlan(userID, nowTS),
-  };
-}
 
 /**
  * Get users' subscription plan
@@ -124,8 +94,10 @@ router.post(
       const nowTS = unixseconds();
 
       // Get user's plans
-      const currentPlan = await getCurrentPlan(userID, nowTS);
-      const nextPlan = await getNextPlan(userID, nowTS);
+      const { current: currentPlan, next: nextPlan } = await getPlans(
+        userID,
+        nowTS
+      );
 
       // If user already have a currentPlan
       if (currentPlan) {
@@ -152,6 +124,9 @@ router.post(
         }
         // Else if no next plan, and selected plan is a new plan, set end of life for current plan and insert new plan record.
         else {
+          // 30 Days in seconds
+          const periodLengthInSeconds = 30 * 24 * 60 * 60; // 30 days, 24 hours, 60 mins, 60 seconds
+
           // Calculate total number of periods including current period, to get the timestamp of end of current period
           const endOfCurrentPeriod = moment
             .unix(currentPlan.start)

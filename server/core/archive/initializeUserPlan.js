@@ -1,10 +1,10 @@
 /**
- * DB abstraction to create initial blank user plan
+ * DB abstraction to create initial blank user plan in firestore
  * @author JJ
  * @module initialUserPlan
  */
 
-const db = require("../utils/db");
+const db = require("../src/utils/db");
 
 const defaultUserPlanDocument = {
   // Set count (number of plans) to 0 to indicate new user with no plans yet
