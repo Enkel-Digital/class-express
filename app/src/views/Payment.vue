@@ -40,9 +40,6 @@
 </template>
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-// import { loadStripe } from "@stripe/stripe-js";
-
-//import CardForm from "../components/CardForm.vue";
 export default {
   components: {},
 
@@ -63,31 +60,8 @@ export default {
       expiryDate: "",
     };
   },
-  created() {
-    //this.stripe = loadStripe(`pk_test_TYooMQauvdEDq54NiTphI7jx`);
-  },
 
   mounted() {
-    // const callstripe = (async () => {
-    //   this.stripe = await loadStripe(
-    //     "pk_test_LIc2NCzFeOD5ng6VrGwNE8Dx00Z67P4mCD"
-    //   );
-    // })();
-
-    // this.stripe = loadStripe("pk_test_LIc2NCzFeOD5ng6VrGwNE8Dx00Z67P4mCD");
-    // this.createAndMountFormElement();
-
-    // this.$loadScript("https://js.stripe.com/v3/")
-    //   .then((Stripe) => {
-    //     // Script is loaded, do something
-    //     this.stripe = Stripe("pk_test_LIc2NCzFeOD5ng6VrGwNE8Dx00Z67P4mCD");
-    //     this.createAndMountFormElement();
-    //   })
-    //   .catch(() => {
-    //     // Failed to fetch script
-    //     console.log("error");
-    //   });
-
     let stripeaScript = document.createElement("script");
     stripeaScript.setAttribute("src", "https://js.stripe.com/v3/");
     stripeaScript.async = true;
