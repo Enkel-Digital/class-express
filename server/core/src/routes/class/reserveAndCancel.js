@@ -42,7 +42,7 @@ router.post("/reserve", auth, express.json(), async (req, res) => {
     // check the rrule in classes Schedule to see if the class is running in that selected time
 
     // Check if user have enough points for the class they are booking
-    const classPoints = await SQLdb("classes")
+    const { points: classPoints } = await SQLdb("classes")
       .where({ id: classID })
       .select("points")
       .first();
@@ -56,21 +56,23 @@ router.post("/reserve", auth, express.json(), async (req, res) => {
 
     // Check if class is fully booked
     // get maximum num of participants
-    const maxParticipants = await SQLdb("classes")
+    const { maxParticipants } = await SQLdb("classes")
       .where({ id: classID })
       .select("maxParticipants")
       .first();
 
     // get num of participants
-    const { count: currentNumOfParticipants } = await SQLdb(
-      "userBookingTransactions"
-    )
-      .where({
-        classID,
-        // selectedTime
-      })
-      .count("classID")
-      .first();
+    const currentNumOfParticipants = parseInt(
+      (
+        await SQLdb("userBookingTransactions")
+          .where({
+            classID,
+            // selectedTime
+          })
+          .count("classID as currentNumOfParticipants")
+          .first()
+      ).currentNumOfParticipants
+    );
 
     // If class is fully booked, end the transaction
     if (currentNumOfParticipants >= maxParticipants)
@@ -80,10 +82,11 @@ router.post("/reserve", auth, express.json(), async (req, res) => {
 
     // If all is ok, insert into DB
     // This also, "Deduct user's points" by inserting a new booking transaction. Since points is calculated using this recrds
-    SQLdb("userBookingTransactions").insert({
+    await SQLdb("userBookingTransactions").insert({
       userID,
       classID,
       points: classPoints,
+      startTime: unixseconds(), // @todo temporary hack to allow insertion into column with NOT NULL constraint and bigint type
     });
 
     res.status(200).json({ success: true });
