@@ -95,27 +95,44 @@ Table userPlans {
 
 // Trimmable + PG
 // Since topupID is fixed overtime, it is used to get cost of plan and currency, instead of storing a copy of it in this table
+// Each topup is only valid in same period it is purchased. Determined by checking if purchaseTime is between start and end of current period
 Table userTopups {
   id bigint [pk, increment, not null]
   // @todo Add updatedAt to track when this is updated for analytics purposes?
-  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  purchaseTime bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   userID int [ref: > userAccounts.id, not null] // Many rows with each row being 1 topup in users history
   topupID int [ref: > topupOptions.id, not null]
-  // Each topup is only valid within the same period the user topped up
-  start bigint [not null]
-  end bigint [not null]
 }
 
+// @todo need to add selected time of class to this too right?
+// @todo Do we need to add the start time of the class?
+// PG + Trimmable (keep like the latest 20 user past classes, allow user to request for more)
 // Instead of relying on a Points table that needs to be updated every month, perhaps use a transactions table and the userPlans table to compute the points on demand
 // Bascially records of user bookings and cancellation events and more
-// Closely tied to userClasses
-// @todo Do we need to add the start time of the class?
+// Classes that the users have booked and did not cancel
 Table userBookingTransactions {
   id bigint [pk, increment, not null]
   actionTime bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] // TS should be provided by client, but defaults to server timestamp if none
   userID int [ref: > userAccounts.id, not null]
   classID int [ref: > classes.id, not null]
-  points int [not null] // A copy of the points of the class at the moment of action
+  points int [not null] // A copy of the points of the class at the moment of action, as points of a class can be changed by partner later on
+  // Only store start time as end time should be computed using length of class
+  // Might look into using ISO 8061 defaults, but using unix seconds for now for consistency
+  startTime bigint [not null]
+}
+
+// @todo need to add selected time of class to this too right?
+// @todo Do we need to add the start time of the class?
+// Trimmable
+// Bascially records of user bookings and cancellation events and more
+// Classes that the user have booked/attended/booked+cancelled(by user or partner)
+// For analytics only
+Table userBookingTransactionsAnalytics {
+  id bigint [pk, increment, not null]
+  actionTime bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] // TS should be provided by client, but defaults to server timestamp if none
+  userID int [ref: > userAccounts.id, not null]
+  classID int [ref: > classes.id, not null]
+  points int [not null] // A copy of the points of the class at the moment of action, as points of a class can be changed by partner later on
   // Both booked and cancelled defaults to false to make it easier as only need to set one to be true on insert
   booked boolean [default: false]
   cancelled boolean [default: false]
@@ -170,6 +187,7 @@ Table userFavourites {
   partnerID int [ref: > partners.id, null] // Defaults to null
 }
 
+// @todo add columns start/end, to allow us to specify when this is avail to user for? Like good for setting promos
 // All subscription plans across time
 Table subscriptionPlans {
   id int [pk, increment, not null, unique] // This is also the "planID"
@@ -189,6 +207,7 @@ Table subscriptionPlans {
   // countryCode varchar [not null]
 
 // FS
+// @todo add columns start/end, to allow us to specify when this is avail to user for? Like good for setting promos
 // All topupOptions allowed other then the custom points topup
 Table topupOptions {
   id int [pk, increment, not null, unique] // This is also the "topupID"
