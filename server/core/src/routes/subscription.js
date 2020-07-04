@@ -65,14 +65,14 @@ router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
 
 /**
  * Update or purchase plans
- * @name POST /subscription/plans/update
+ * @name POST /subscription/update
  * @function
  * @param {String} userID
  * @param {String} subscriptionPlanID
  * @returns {object} success indicator
  */
 router.post(
-  "/plans/update",
+  "/update",
   auth,
   onlyOwnResource,
   express.json(),
@@ -187,23 +187,43 @@ router.post(
 );
 
 /**
+ * @todo Do I need a undo cancel too?
  * Request to cancel subscription plan
  * @name POST /subscription/cancel
  * @function
+ * @param {String} userID
  * @returns {object} success indicator
  */
-router.post("/cancel", auth, async (req, res) => {
+router.post("/cancel", auth, express.json(), async (req, res) => {
   try {
-    // Update subscription collection's document to set next month planID to null
+    const { userID } = req.body;
 
-    // Set a end date for the current plan.
-    // If there is a next plan. Delete that document. Or make its start and end null to indicate nvr ran.
-    // await db.collection("users").doc(userID).update({
-    //   modifiedAt: FieldValue.serverTimestamp(),
-    //   nextPlanID: null,
-    // });
+    // Call once to pass currentPlan and nextPlan the same value for each API call
+    const nowTS = unixseconds();
 
-    // Call Billing Service to cancel
+    // Get user's plans
+    const { current: currentPlan, next: nextPlan } = await getPlans(
+      userID,
+      nowTS
+    );
+
+    if (currentPlan) {
+      // If user have a currentPlan and nextPlan, delete next plan first
+      if (nextPlan) await getNextPlan(userID, nowTS).del();
+
+      // Set end of life of current plan to endOfCurrentPeriod -- Update user's current plan to end after current period
+      await getCurrentPlan(userID, nowTS).update({
+        end: await getEndOfCurrentPeriod({
+          usersCurrentPlan: currentPlan,
+        }),
+      });
+
+      // @todo Call Billing Service to cancel. Perhaps this should run before the DB updates
+    }
+    // If user does not have any plans now
+    else return res.json({ success: false, error: "No plans to cancel" });
+
+    // Send email to notify user about update
 
     res.json({ success: true });
   } catch (error) {
