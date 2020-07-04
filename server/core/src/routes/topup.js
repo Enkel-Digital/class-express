@@ -40,28 +40,25 @@ router.get("/options", async (req, res) => {
 });
 
 /**
- * @todo Implement this scaffolded route
- *
- * Purchase a topup. Uses Stripe API
- * @name POST /topup/new/:topupOptionID
+ * Purchase a topup. Uses Stripe API / Billing service
+ * @name POST /topup/purchase/:topupOptionID
  * @function
+ * @param userID
+ * @param topupID
  * @returns {object} Success indicator
  */
-router.post("/new/:topupOptionID", async (req, res) => {
+router.post("/purchase/:topupOptionID", async (req, res) => {
   try {
-    const { topupOptionID } = req.params;
+    const { userID, topupID } = req.params;
 
-    // Sort them by id asc
-    const topupOptionsSnapshot = await db
-      .collection("topupOptions")
-      // .where("available", "==", true) // Allow us to run campaigns for topupOptions
-      .orderBy("id", "desc")
-      .get();
-    const topupOptions = topupOptionsSnapshot.docs.map((doc) => doc.data());
+    // @todo Make sure topupID and userID is valid
 
     // Maybe have a webhook for stripe
+    // Call billing service to charge user
 
-    res.json({ success: true, topupOptions });
+    await SQLdb("userTopups").insert({ userID, topupID });
+
+    res.json({ success: true });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });
