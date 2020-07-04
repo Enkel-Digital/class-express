@@ -15,7 +15,7 @@ const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:subscription");
 
 const { getPlans, getCurrentPlan, getNextPlan } = require("../db/getPlans");
-const moment = require("moment");
+const { getEndOfCurrentPeriod } = require("../db/currentPeriodTimestamps");
 const unixseconds = require("unixseconds");
 
 /**
@@ -124,18 +124,9 @@ router.post(
         }
         // Else if no next plan, and selected plan is a new plan, set end of life for current plan and insert new plan record.
         else {
-          // 30 Days in seconds
-          const periodLengthInSeconds = 30 * 24 * 60 * 60; // 30 days, 24 hours, 60 mins, 60 seconds
-
-          // Calculate total number of periods including current period, to get the timestamp of end of current period
-          const endOfCurrentPeriod = moment
-            .unix(currentPlan.start)
-            .add(
-              Math.ceil((nowTS - currentPlan.start) / periodLengthInSeconds) *
-                30,
-              "days"
-            )
-            .unix();
+          const endOfCurrentPeriod = await getEndOfCurrentPeriod({
+            usersCurrentPlan: currentPlan,
+          });
 
           // Update user's current plan to end after their current period
           await getCurrentPlan(userID, nowTS).update({
