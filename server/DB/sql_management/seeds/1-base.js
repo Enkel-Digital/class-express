@@ -3,6 +3,11 @@
  * @author JJ
  */
 
+const unixseconds = require("unixseconds");
+const start = unixseconds();
+// 30 Days in seconds
+const periodLengthInSeconds = 30 * 24 * 60 * 60; // 30 days, 24 hours, 60 mins, 60 seconds
+
 exports.seed = async function (knex) {
   const yesno = require("yesno");
   if (
@@ -190,6 +195,31 @@ exports.seed = async function (knex) {
       maxParticipants: 20,
       pictureSources:
         "https://www.fetimes.co.kr/news/photo/201709/60017_41960_2138.jpg",
+    },
+  ]);
+
+  await knex("userPlans").insert([
+    {
+      userID: 1,
+      planID: 1,
+      start,
+      end: start + periodLengthInSeconds,
+    },
+  ]);
+
+  await knex("userTopups").insert([
+    {
+      userID: 1,
+      topupID: 2,
+    },
+  ]);
+
+  await knex("userBookingTransactions").insert([
+    {
+      userID: 1,
+      classID: 1,
+      points: 5,
+      startTime: unixseconds(), // @todo
     },
   ]);
 

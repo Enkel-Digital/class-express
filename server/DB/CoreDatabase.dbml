@@ -89,7 +89,7 @@ Table userPlans {
   userID int [ref: > userAccounts.id, not null] // Many rows with each row being 1 plan in users history
   planID int [ref: > subscriptionPlans.id, not null]
   // Might look into using ISO 8061 defaults, but using unix seconds for now for consistency
-  start bigint [not null]
+  start bigint [not null] // Although can be generated, using not null and no default, forces server to always generate
   end bigint [null]
 }
 

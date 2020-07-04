@@ -7,6 +7,7 @@
     "setup": "node setup.js",
     "teardown": "node teardown.js",
     "seedDB": "knex seed:run",
+    "new": "npm run teardown && npm run setup && npm run seedDB",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -14,6 +15,7 @@
     "dotenv": "^8.2.0",
     "knex": "^0.21.1",
     "pg": "^8.2.1",
+    "unixseconds": "^0.1.0",
     "yesno": "^0.3.1"
   }
 }
