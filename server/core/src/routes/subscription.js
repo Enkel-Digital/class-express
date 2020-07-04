@@ -126,6 +126,7 @@ router.post(
         else {
           const endOfCurrentPeriod = await getEndOfCurrentPeriod({
             usersCurrentPlan: currentPlan,
+            nowTS,
           });
 
           // Update user's current plan to end after their current period
@@ -215,6 +216,7 @@ router.post("/cancel", auth, express.json(), async (req, res) => {
       await getCurrentPlan(userID, nowTS).update({
         end: await getEndOfCurrentPeriod({
           usersCurrentPlan: currentPlan,
+          nowTS,
         }),
       });
 
