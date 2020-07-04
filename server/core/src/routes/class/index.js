@@ -8,7 +8,6 @@
 const express = require("express");
 const router = express.Router();
 const { RRule, RRuleSet, rrulestr } = require("rrule");
-const auth = require("../../middleware/auth");
 const SQLdb = require("@enkeldigital/ce-sql");
 
 const createLogger = require("@lionellbriones/logging").default;
@@ -55,5 +54,6 @@ router.get("/schedule/:classID/:date", async (req, res) => {
 });
 
 router.use(require("./reserveAndCancel"));
+router.use(require("./userClasses"));
 
 module.exports = router;

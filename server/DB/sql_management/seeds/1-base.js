@@ -203,7 +203,7 @@ exports.seed = async function (knex) {
       userID: 1,
       planID: 1,
       start,
-      end: start + periodLengthInSeconds,
+      end: null, // No end date in sight
     },
   ]);
 
