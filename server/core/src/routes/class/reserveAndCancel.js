@@ -86,7 +86,7 @@ router.post("/reserve", auth, express.json(), async (req, res) => {
       userID,
       classID,
       points: classPoints,
-      startTime: unixseconds(), // @todo temporary hack to allow insertion into column with NOT NULL constraint and bigint type
+      startTime: selectedTime || unixseconds(), // @todo temporary hack to allow insertion into column with NOT NULL constraint and bigint type
     });
 
     res.status(200).json({ success: true });
