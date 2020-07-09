@@ -47,11 +47,11 @@ router.get("/pending/:partnerID", async (req, res) => {
 
 /**
  * Get points of partner where class has ended
- * @name GET /points/pending/:partnerID
+ * @name GET /points/valid/:partnerID
  * @function
  * @returns {object} Points
  */
-router.get("/pending/:partnerID", async (req, res) => {
+router.get("/valid/:partnerID", async (req, res) => {
   try {
     const { partnerID } = req.params;
 
