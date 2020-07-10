@@ -63,6 +63,58 @@ router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
   }
 });
 
+async function updateNextPlan(userID, nowTS, subscriptionPlanID, currentPlan) {
+  // @todo Call billing service to update
+
+  // If user sets next plan back to the same as the current plan, delete next plan and set end of life of current plan to null again
+  if (subscriptionPlanID === currentPlan.planID) {
+    await getNextPlan(userID, nowTS).del();
+    // Remove end of life of current plan by setting end to null
+    await getCurrentPlan(userID, nowTS).update({ end: null });
+  }
+  // Else, just update planID of next plan
+  else
+    await getNextPlan(userID, nowTS).update({
+      planID: subscriptionPlanID,
+    });
+}
+
+async function createNextPlan(userID, nowTS, subscriptionPlanID, currentPlan) {
+  // @todo Call billing service to update
+
+  const endOfCurrentPeriod = await getEndOfCurrentPeriod({
+    usersCurrentPlan: currentPlan,
+    nowTS,
+  });
+
+  // Update user's current plan to end after their current period
+  await getCurrentPlan(userID, nowTS).update({
+    end: endOfCurrentPeriod,
+  });
+
+  // Set user's next plan
+  await SQLdb("userPlans").insert({
+    userID,
+    planID: subscriptionPlanID,
+    // Start of next period === end of current period
+    // @todo Should this be +1 second instead?
+    start: endOfCurrentPeriod,
+  });
+}
+
+async function setNewPlan(userID, nowTS, subscriptionPlanID) {
+  // @todo Call billing service to update
+
+  // Set user's current plan
+  await SQLdb("userPlans").insert({
+    userID,
+    planID: subscriptionPlanID,
+    // @todo Should it be now? Or at midnight?
+    start: nowTS,
+    end: null,
+  });
+}
+
 /**
  * Update or purchase plans
  * @name POST /subscription/update
@@ -102,63 +154,22 @@ router.post(
       // If user already have a currentPlan
       if (currentPlan) {
         // If user already have next plan, replace next plan's planID with new planID
-        if (nextPlan) {
-          // If user sets next plan back to the same as the current plan, delete next plan and set end of life of current plan to null again
-          if (subscriptionPlanID === currentPlan.planID) {
-            await getNextPlan(userID, nowTS).del();
-            // Remove end of life of current plan by setting end to null
-            await getCurrentPlan(userID, nowTS).update({ end: null });
-          }
-          // Else, just update planID of next plan
-          else
-            await getNextPlan(userID, nowTS).update({
-              planID: subscriptionPlanID,
-            });
-
-          // @todo Call billing service to update
-        }
-        // Else if no next plan and new plan is the same as current plan, ignore it
+        if (nextPlan)
+          await updateNextPlan(userID, nowTS, subscriptionPlanID, currentPlan);
         else if (currentPlan.planID === subscriptionPlanID) {
-          // If have next plan alr, but new plan is same as old plan. delete next plan and change back to null for end
-          // @todo This dont need to call Billing Service
+          /* 
+            Else if no next plan and new plan is the same as current plan, ignore request
+            If have next plan alr, but new plan is same as old plan. delete next plan and change back to null for end
+            Dont need to call Billing Service as nothing to update
+          */
         }
         // Else if no next plan, and selected plan is a new plan, set end of life for current plan and insert new plan record.
-        else {
-          const endOfCurrentPeriod = await getEndOfCurrentPeriod({
-            usersCurrentPlan: currentPlan,
-            nowTS,
-          });
-
-          // Update user's current plan to end after their current period
-          await getCurrentPlan(userID, nowTS).update({
-            end: endOfCurrentPeriod,
-          });
-
-          // Set user's next plan
-          await SQLdb("userPlans").insert({
-            userID,
-            planID: subscriptionPlanID,
-            // Start of next period === end of current period
-            // @todo Should this be +1 second instead?
-            start: endOfCurrentPeriod,
-          });
-        }
-
-        // @todo Then update the Billing service and get back a resp
-        // I should call billing service first. Only when it confirms, with a webhook, then i update the value in DB
-        // Actually only call billing service first if first plan, where user have to pay first.
-        // if user alr has a plan and wanna change next plan, we just need to update billing service in the background to update stripe
+        else
+          await createNextPlan(userID, nowTS, subscriptionPlanID, currentPlan);
       }
       // If user does not have a plan, as no current plan and no next plan
       else if (!nextPlan) {
-        // Set user's current plan
-        await SQLdb("userPlans").insert({
-          userID,
-          planID: subscriptionPlanID,
-          // @todo Should it be now? Or at midnight?
-          start: nowTS,
-          end: null,
-        });
+        await setNewPlan(userID, nowTS, subscriptionPlanID);
       } else {
         // @todo To handle this case
         return res.json({ success: false, error: "CASE TOO BE HANDLED" });
