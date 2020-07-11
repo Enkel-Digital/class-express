@@ -52,7 +52,6 @@ Table partners {
   verified_email boolean [default: false]
   verified_phone boolean [default: false]
   verified boolean [default: false] // Is the business verified by us (Class Express)?
-  // billingAccount int [not null] // Foreign key to billing accounts?
   deleted boolean [default: false]
 }
 
@@ -136,17 +135,6 @@ Table userBookingTransactionsAnalytics {
   // Both booked and cancelled defaults to false to make it easier as only need to set one to be true on insert
   booked boolean [default: false]
   cancelled boolean [default: false]
-}
-
-// @todo Create 1 more table for userBillingTransactions
-// @todo Create the other tables for billing transactions too.
-
-// @todo
-Table billingAccounts {
-  id int [pk, increment, not null, unique]
-  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
-  // @todo Verified? Verification probably by stripe or something?
-  // @todo ?? deleted boolean [default: false]
 }
 
 // FS or PG
