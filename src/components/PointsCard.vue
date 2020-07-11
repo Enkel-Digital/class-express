@@ -58,7 +58,7 @@ import logout from "@/controllers/logout";
 import { mapState } from "vuex";
 
 export default {
-  name: "profile",
+  name: "PointsCard",
   props: ["hideActionButton"],
   computed: {
     ...mapState("points", ["points"]),
