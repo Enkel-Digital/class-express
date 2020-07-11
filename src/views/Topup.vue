@@ -12,27 +12,9 @@
       Need more points? Topup anytime at flat rates!
     </p>
 
-    <!-- @todo If user does not have a plan, show card to ask user to buy a subscription plan -->
-    <v-card
-      id="points-card"
-      class="mx-auto mb-4"
-      max-width="calc(100% - 3em)"
-      outlined
-    >
-      <v-list-item>
-        <v-list-item-content>
-          <p class="overline">your points</p>
+    <PointsCard :hideActionButton="true" />
 
-          <v-list-item-subtitle>
-            Period ends on: {{ moment.unix(points.period.end).format("L") }}
-          </v-list-item-subtitle>
-
-          <v-list-item-title class="headline mb-1">
-            {{ points.left }} / {{ points.total }} points left
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-card>
+    <br />
 
     <v-card
       class="mx-auto mb-4"
@@ -74,8 +56,8 @@
 
           <v-list-item-title class="headline mb-1">
             {{ topupOption.totalPoints }} points for
-            {{ topupOption.price.currency }}
-            {{ topupOption.price.value }}
+            {{ topupOption.currency }}
+            {{ topupOption.price }}
           </v-list-item-title>
 
           <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;" class="mb-0">
@@ -135,6 +117,7 @@
 import { Touch } from "vuetify/lib/directives";
 import logout from "@/controllers/logout";
 import BackBtn from "@/components/BackBtn";
+import PointsCard from "@/components/PointsCard";
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -144,6 +127,7 @@ export default {
   },
   components: {
     BackBtn,
+    PointsCard,
   },
   beforeCreate() {
     // Request vuex to update/populate list of topup options
@@ -162,9 +146,5 @@ export default {
   text-align: left;
   margin: 1em;
   margin-top: 2em;
-}
-
-#points-card {
-  text-align: left;
 }
 </style>
