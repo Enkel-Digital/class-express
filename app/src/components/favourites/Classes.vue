@@ -17,8 +17,9 @@
             })
           "
         >
-          <!-- @todo Change to a image carousel -->
-          <v-img id="class-image" :src="clas.pictureSources[0]" />
+          <!-- @todo Update API to return an array from DB and Change to a image carousel -->
+          <!-- <v-img id="class-image" :src="clas.pictureSources[0]" /> -->
+          <v-img id="class-image" :src="clas.pictureSources" />
 
           <v-list-item>
             <div style="text-align: left;">
