@@ -11,6 +11,107 @@ const {
   getEndOfCurrentPeriod,
 } = require("../db/currentPeriodTimestamps");
 
+/**
+ * Get user's points from this current period's subscription plan
+ * @param {*} usersCurrentPlan
+ * @returns {Number} totalPointsFromCurrentSubscriptionPlan as a number
+ */
+async function getPointsFromCurrentSubscriptionPlan(usersCurrentPlan) {
+  return parseInt(
+    (
+      await SQLdb("subscriptionPlans")
+        .where({ id: usersCurrentPlan.planID })
+        .select("totalPoints")
+        // Use first as result returned is always an array
+        .first()
+    ).totalPoints || 0
+  );
+}
+
+/**
+ * Get total amount of points user topped up in this period
+ * @param {*} userID
+ * @param {*} startOfCurrentPeriod
+ * @param {*} endOfCurrentPeriod
+ * @returns {Number} pointsToppedUp as a number
+ */
+async function getPointsToppedUp(
+  userID,
+  startOfCurrentPeriod,
+  endOfCurrentPeriod
+) {
+  return parseInt(
+    (
+      await SQLdb("userTopups")
+        .join("topupOptions", "userTopups.topupID", "=", "topupOptions.id")
+        .where({ userID })
+        // If purchaseTime between start and end of current period
+        .whereBetween("purchaseTime", [
+          startOfCurrentPeriod,
+          endOfCurrentPeriod,
+        ])
+        .sum("totalPoints as pointsToppedUp")
+        // Use first as result returned is always an array
+        .first()
+    ).pointsToppedUp || 0
+  );
+}
+
+/**
+ * Get the user's total point for the user's current period.
+ * This includes points from subscription plan and topups.
+ * @param {*} userID
+ * @param {*} usersCurrentPlan
+ * @param {*} startOfCurrentPeriod
+ * @param {*} endOfCurrentPeriod
+ * @returns {Number} totalPointsForCurrentPeriod as a number
+ */
+async function getTotalPointsForCurrentPeriod(
+  userID,
+  usersCurrentPlan,
+  startOfCurrentPeriod,
+  endOfCurrentPeriod
+) {
+  // Get user's points from this current period's subscription plan
+  const pointsFromSubscriptionPlan = await getPointsFromCurrentSubscriptionPlan(
+    usersCurrentPlan
+  );
+
+  const pointsToppedUp = await getPointsToppedUp(
+    userID,
+    startOfCurrentPeriod,
+    endOfCurrentPeriod
+  );
+
+  return pointsFromSubscriptionPlan + pointsToppedUp;
+}
+
+/**
+ * Get total amount of points user topped up in this period
+ * @param {*} userID
+ * @param {*} startOfCurrentPeriod
+ * @param {*} endOfCurrentPeriod
+ * @returns {Number} pointsUsed as a number
+ */
+async function getPointsUsed(userID, startOfCurrentPeriod, endOfCurrentPeriod) {
+  return parseInt(
+    (
+      await SQLdb("userBookingTransactions")
+        .where({ userID })
+        // @todo Might need a end date filter too,
+        // This will be based on whether we allow user to book classes in the next period with their points from this period
+        .andWhere("actionTime", ">=", startOfCurrentPeriod) // Where time of booking is after start of current period.
+        .sum("points as pointsUsed") // Use first as result returned is always an array
+        .first()
+    ).pointsUsed || 0
+  );
+}
+
+/**
+ * Get total points left their current period
+ * @param {*} userID
+ * @returns {Number} user's points for the current period as a number
+ */
 async function getUserPoints(userID) {
   /*
     Find sub plan
@@ -27,19 +128,6 @@ async function getUserPoints(userID) {
   // thus the solution is to use the purchaseTime to see if nowTS is within 30 days of the purchaseTime.
   const usersCurrentPlan = await getCurrentPlan(userID, nowTS);
 
-  // Alternative for getting totalPoints if user does not have a plan
-  // const { totalPoints } = usersCurrentPlan
-  //   ? await SQLdb("subscriptionPlans")
-  //       .where({ id: usersCurrentPlan.planID })
-  //       .select("totalPoints")
-  //       .first()
-  //   : { totalPoints: 0 };
-
-  const { totalPoints } = await SQLdb("subscriptionPlans")
-    .where({ id: usersCurrentPlan.planID })
-    .select("totalPoints")
-    .first();
-
   const startOfCurrentPeriod = await getStartOfCurrentPeriod({
     usersCurrentPlan,
     nowTS,
@@ -49,20 +137,18 @@ async function getUserPoints(userID) {
     nowTS,
   });
 
-  const { pointsToppedUp = 0 } = await SQLdb("userTopups")
-    .join("topupOptions", "userTopups.topupID", "=", "topupOptions.id")
-    .where({ userID })
-    .whereBetween("purchaseTime", [startOfCurrentPeriod, endOfCurrentPeriod]) // If purchaseTime between start and end of current period
-    .sum("totalPoints as pointsToppedUp")
-    .first(); // Use first as result returned is always an array
+  const totalPoints = await getTotalPointsForCurrentPeriod(
+    userID,
+    usersCurrentPlan,
+    startOfCurrentPeriod,
+    endOfCurrentPeriod
+  );
 
-  const { pointsUsed = 0 } = await SQLdb("userBookingTransactions")
-    .where({ userID })
-    // @todo Might need a end date filter too,
-    // This will be based on whether we allow user to book classes in the next period with their points from this period
-    .andWhere("actionTime", ">=", startOfCurrentPeriod) // Where time of booking is after start of current period.
-    .sum("points as pointsUsed")
-    .first(); // Use first as result returned is always an array
+  const pointsUsed = await getPointsUsed(
+    userID,
+    startOfCurrentPeriod,
+    endOfCurrentPeriod
+  );
 
   // pointsRefunded is not used in main "userBookingTransactions" table, and only used for analytics purposes
   //   const pointsRefunded = await SQLdb("userBookingTransactions")
@@ -73,10 +159,13 @@ async function getUserPoints(userID) {
   //     .sum("points");
 
   // Calculate and return user points
-  // All values are wrapped in parseInt as sum aggregate operations may return string as values from the DB
-  return (
-    parseInt(totalPoints) + parseInt(pointsToppedUp) - parseInt(pointsUsed)
-  );
+  return totalPoints - pointsUsed;
 }
 
-module.exports = { getUserPoints };
+module.exports = {
+  getUserPoints,
+  getPointsFromCurrentSubscriptionPlan,
+  getPointsToppedUp,
+  getTotalPointsForCurrentPeriod,
+  getPointsUsed,
+};
