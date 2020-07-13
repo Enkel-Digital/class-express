@@ -14,6 +14,7 @@ export default {
     setter,
     topupPoints(state, pointsBought) {
       state.points.left += pointsBought;
+      state.points.total += pointsBought;
     },
     /**
      * Function to deduct points needed to book a class
@@ -29,12 +30,6 @@ export default {
     refundPoints(state, classPoints) {
       state.points.left += classPoints;
     },
-  },
-  getters: {
-    topupOption: (state) => (topupOptionID) =>
-      state.topupOptions.find(
-        (topupOption) => topupOption.id === topupOptionID
-      ),
   },
   actions: {
     /**
@@ -72,18 +67,23 @@ export default {
      * Buy/Topup points
      * @function buyPoints
      */
-    async buyPoints({ commit, getters }, topupOptionID) {
-      const points = getters.topupOption(topupOptionID).totalPoints;
+    async buyPoints({ state, commit, rootState, dispatch }, topupID) {
+      const points = state.topupOptions.find(
+        (topupOption) => topupOption.id === topupID
+      ).totalPoints;
 
       // Set the selected Plan to show on the radio buttons
-      console.log(`Requested ${points} points topup, option ${topupOptionID}`);
+      console.log(`Requested ${points} points topup, option ${topupID}`);
 
       if (confirm("Confirm topup?")) {
-        // @todo Show loading bar before calling API for pessimistic UI
+        // Call API to topup points
+        const response = await apiWithLoader.post("/topup/purchase", {
+          userID: rootState.user.id,
+          topupID,
+        });
 
-        // Call logic to topup points
-
-        console.log("Points added!");
+        if (!response.success)
+          return apiError(response, () => dispatch("updatePlan", topupID));
 
         commit("topupPoints", points);
       }
