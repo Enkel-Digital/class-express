@@ -219,7 +219,13 @@ exports.seed = async function (knex) {
       userID: 1,
       classID: 1,
       points: 5,
-      startTime: unixseconds(), // @todo
+      startTime: unixseconds() + 60 * 60 * 24, // @todo
+    },
+    {
+      userID: 1,
+      classID: 2,
+      points: 8,
+      startTime: unixseconds() + 60 * 60 * 24 * 7, // @todo
     },
   ]);
 

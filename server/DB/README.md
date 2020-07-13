@@ -21,6 +21,7 @@ This repo contains some schema files created using the [Database Markup Language
         - **setup**
             - Creates a new Database (database name from knex config file) and tables using those specified in the [main.dbml](./main.dbml) file.
             - Note that this cannot run unless the database does not exists. Used for a new database, else teardown the old database first.
+            - This requires a CLI arguement for --schema, e.g. ```npm run setup --schema main``` where the schema file used is "main.dbml"
         - **teardown**
             - Tearsdown any existing connection to the database (database name from knex config file) before DROPping the database.
             - USE WITH CAUTION, will delete the whole database and is irreversible

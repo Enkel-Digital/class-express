@@ -4,7 +4,7 @@
   "description": "SQL",
   "main": "./src/index.js",
   "scripts": {
-    "setup": "node setup.js",
+    "setup": "node setup.js --schema main",
     "teardown": "node teardown.js",
     "seedDB": "knex seed:run",
     "new": "npm run teardown && npm run setup && npm run seedDB",
