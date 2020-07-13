@@ -61,13 +61,10 @@ export default {
 
       if (confirm("Confirm change of Subscription Plan!")) {
         // Call API to update the plan
-        const response = await apiWithLoader.post(
-          "/subscription/plans/update",
-          {
-            userID: rootState.user.id,
-            subscriptionPlanID: planID,
-          }
-        );
+        const response = await apiWithLoader.post("/subscription/update", {
+          userID: rootState.user.id,
+          subscriptionPlanID: planID,
+        });
 
         if (!response.success)
           return apiError(response, () => dispatch("updatePlan", planID));
