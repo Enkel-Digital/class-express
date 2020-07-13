@@ -46,7 +46,10 @@
               v-else-if="
                 moment()
                   .add(moment.duration(1, 'd'))
-                  .isSame(dateObject.add(moment.duration(1, 'd')), 'day')
+                  .isSame(
+                    dateObject.clone().add(moment.duration(1, 'd')),
+                    'day'
+                  )
               "
             >
               Tomorrow,
@@ -149,9 +152,6 @@ export default {
   },
   methods: {
     ...mapActions("classes", ["toggleFavouriteClass"]),
-    test(te) {
-      console.log("test te", te);
-    },
   },
 };
 </script>
