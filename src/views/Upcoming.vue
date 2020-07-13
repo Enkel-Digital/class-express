@@ -15,114 +15,11 @@
     </v-app-bar>
 
     <v-responsive v-if="upcomingClasses.length">
-      <v-card
-        v-for="clas in upcomingClasses"
-        :key="clas.id"
-        :set="(dateObject = moment.unix(clas.startTime))"
-        class="mx-auto mb-4"
-        max-width="calc(100% - 1.6em)"
-        outlined
-        :ripple="false"
-      >
-        <MapImage :classID="clas.id" />
-
-        <v-responsive
-          @click="
-            $router.push({ name: 'ClassDetails', params: { classID: clas.id } })
-          "
-        >
-          <v-list-item>
-            <div style="text-align: left;">
-              <v-card-title class="headline pl-0">
-                {{ clas.name }}
-              </v-card-title>
-              <!-- @todo Add a points box beside the class name -->
-              <!-- <p>7 points</p> -->
-
-              <!-- Only bold the time to make it more readable -->
-              <v-list-item-subtitle style="font-weight: bold;">
-                <!--
-                  A few formats are used for showing the datetime of the class
-                  1) Today/Tomorrow + date + time
-                  1.1) Today/Tomorrow + date + year + time
-                  2) Day of the Week + date + time
-                  2.2) Day of the Week + date + year + time
-
-                  As seen above, since date and time are always shown,
-                  we spilt them out to reduce code duplication
-                -->
-
-                <!-- If the class is today -->
-                <span v-if="moment().isSame(dateObject, 'day')">
-                  Today,
-                </span>
-                <!-- Else, if the class is tomorrow -->
-                <span
-                  v-else-if="
-                    moment()
-                      .add(moment.duration(1, 'd'))
-                      .isSame(dateObject.add(moment.duration(1, 'd')), 'day')
-                  "
-                >
-                  Tomorrow,
-                </span>
-                <!-- Else just show day of the week -->
-                <span v-else>
-                  {{ dateObject.format("dddd, ") }}
-                </span>
-
-                <!-- Date -->
-                {{ dateObject.format("D MMM") }}
-
-                <!-- Show year only if class is next year -->
-                <span v-if="moment().year() !== dateObject.year()">
-                  {{ dateObject.format("YYYY") }}
-                </span>
-
-                <br />
-                <!-- Time -->
-                {{ dateObject.format("h:mm a") }} -
-                {{
-                  moment(clas.time + Date.parse(clas.length)).format("h:mm a")
-                }}
-              </v-list-item-subtitle>
-
-              <br />
-
-              <v-list-item-subtitle
-                v-if="partners[clas.partnerID]"
-                :set="(partner = partners[clas.partnerID])"
-              >
-                <div style="font-weight: bold;">
-                  {{ partner.name }}
-                </div>
-                <div>
-                  {{ clas.location_address || partner.location_address }}
-                </div>
-              </v-list-item-subtitle>
-            </div>
-          </v-list-item>
-        </v-responsive>
-
-        <v-card-actions>
-          <!-- @todo Extract out all share buttons to a common component -->
-          <!-- @todo Implement PWA sharing and web share target code  -->
-          <v-btn icon>
-            <v-icon>mdi-share-variant</v-icon>
-          </v-btn>
-
-          <v-spacer />
-
-          <v-btn icon @click="toggleFavouriteClass(clas.id)">
-            <v-icon v-if="clas.favourite" color="red">mdi-heart</v-icon>
-            <v-icon v-else>mdi-heart-outline</v-icon>
-          </v-btn>
-
-          <v-btn icon>
-            <v-icon>mdi-calendar-today</v-icon>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+      <UpcomingClass
+        v-for="(upcomingClass, i) in upcomingClasses"
+        :key="i"
+        :upcomingClass="upcomingClass"
+      />
     </v-responsive>
 
     <!-- @todo Add copywriting for users to join classes if they have no upcoming classes -->
@@ -133,20 +30,42 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
-import MapImage from "@/components/MapImage";
+import UpcomingClass from "@/components/UpcomingClass";
+import unixseconds from "unixseconds";
 
 export default {
   name: "upcoming",
   components: {
-    MapImage,
+    UpcomingClass,
   },
   created() {
-    this.$store.dispatch("classes/getUpcomingClasses");
+    this.$store.dispatch("classes/getUsersClasses");
   },
   computed: {
-    ...mapGetters("classes", ["upcomingClasses"]),
-    ...mapState("classes", ["partners"]),
+    // Generate array of upcoming class Object(s) from an array of userClasses objects
+    upcomingClasses() {
+      const state = this.$store.state.classes;
+
+      const nowTS = unixseconds();
+      const userClasses = state.userClasses;
+
+      // Alternate method is to do the filtering at an individual component level
+      // return userClasses;
+      // Then use directive below to determine if we should display class or not.
+      // v-if (class.time < nowTS)
+
+      // Make a copy of the array with slice and reverse it as original array is ordered by descending startTime
+      return (
+        userClasses.filter(
+          (userClass) =>
+            // Show upcoming class until the end of the class
+            userClass.startTime + state.classes[userClass.classID].length * 60 >
+            nowTS
+        ) || []
+      )
+        .slice()
+        .reverse();
+    },
   },
   watch: {
     // Watcher to load partner details of upcoming classes whenever upcomingClasses is loaded or updated
@@ -155,13 +74,14 @@ export default {
       handler() {
         this.$store.dispatch(
           "classes/getPartner",
-          this.upcomingClasses.map((clas) => clas.partnerID)
+          this.upcomingClasses.map(
+            (clas) => this.$store.state.classes.classes[clas.classID]?.partnerID
+          )
+          // this.upcomingClasses.map((clas) => clas.partnerID)
+          // need to somehow get partnerID from classID
         );
       },
     },
-  },
-  methods: {
-    ...mapActions("classes", ["toggleFavouriteClass"]),
   },
 };
 </script>
