@@ -1,9 +1,5 @@
 <template>
-  <v-content
-    id="partner"
-    v-if="partner"
-    v-touch="{ right: () => $router.back() }"
-  >
+  <v-content id="partner" v-if="partner">
     <v-app-bar app color="white" flat fixed>
       <BackBtn />
 
@@ -103,7 +99,6 @@
 </template>
 
 <script>
-import { Touch } from "vuetify/lib/directives";
 import { mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 import MapImage from "@/components/MapImage";
@@ -112,9 +107,6 @@ import getClassAndPartnerMixin from "../utils/getClassAndPartnerMixin";
 
 export default {
   name: "partner",
-  directives: {
-    Touch,
-  },
   components: {
     BackBtn,
     MapImage,

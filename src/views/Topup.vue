@@ -1,5 +1,5 @@
 <template>
-  <v-content class="topup" v-touch="{ right: () => $router.back() }">
+  <v-content class="topup">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Topup</v-toolbar-title>
@@ -114,7 +114,6 @@
 </template>
 
 <script>
-import { Touch } from "vuetify/lib/directives";
 import logout from "@/controllers/logout";
 import BackBtn from "@/components/BackBtn";
 import PointsCard from "@/components/PointsCard";
@@ -122,9 +121,6 @@ import { mapState, mapActions } from "vuex";
 
 export default {
   name: "topup",
-  directives: {
-    Touch,
-  },
   components: {
     BackBtn,
     PointsCard,
