@@ -143,11 +143,11 @@ export default {
       return this.$store.state.classes.partners[this.clas?.partnerID];
     },
     isFavourited() {
-      if (
-        this.$store.state.classes.favouriteClasses[this.upcomingClass.classID]
-      )
-        return true;
-      else return false;
+      return this.$store.state.classes.favouriteClasses[
+        this.upcomingClass.classID
+      ]
+        ? true
+        : false;
     },
   },
   methods: {
