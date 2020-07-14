@@ -1,5 +1,5 @@
 <template>
-  <v-content class="settings" v-touch="{ right: () => $router.back() }">
+  <v-content class="settings">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Settings</v-toolbar-title>
@@ -170,7 +170,6 @@
  * @notice Update() requires either single JavaScript object or alternating list of field/value pairs ... ... Paths can't be empty and must not contain "*~/[]".
  */
 
-import { Touch } from "vuetify/lib/directives";
 import logout from "@/controllers/logout";
 import BackBtn from "@/components/BackBtn";
 import { mapState } from "vuex";
@@ -182,9 +181,6 @@ export default {
     // Using created hook to ensure this is ran everyime this view is loaded/created
     // Request store to populate settings
     this.$store.dispatch("settings/init");
-  },
-  directives: {
-    Touch,
   },
   components: {
     BackBtn,
