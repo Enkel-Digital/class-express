@@ -40,6 +40,9 @@ export default {
   },
   created() {
     this.$store.dispatch("classes/getUsersClasses");
+
+    // getFavourites in case favourites.vue is not visited yet, to ensure we can correctly show if a upcoming class is favourited
+    this.$store.dispatch("classes/getFavourites");
   },
   computed: {
     // Generate array of upcoming class Object(s) from an array of userClasses objects
