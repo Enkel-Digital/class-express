@@ -7,7 +7,8 @@
     "build": "npx cross-env NODE_ENV=production vue-cli-service build",
     "lint": "vue-cli-service lint",
     "deploy-firebase-hosting": "firebase deploy --only hosting",
-    "deploy": "npm run build && npm run deploy-firebase-hosting"
+    "deploy": "firebase use default && npm run build && npm run deploy-firebase-hosting",
+    "deploy:staging": "firebase use ce-staging-ae480 && npm run build && npm run deploy-firebase-hosting"
   },
   "dependencies": {
     "algoliasearch": "^4.2.0",
