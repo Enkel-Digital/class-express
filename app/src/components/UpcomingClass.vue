@@ -127,9 +127,6 @@ export default {
   components: {
     MapImage,
   },
-  created() {
-    this.$store.dispatch("classes/getUsersClasses");
-  },
   props: ["upcomingClass"],
   computed: {
     dateObject() {

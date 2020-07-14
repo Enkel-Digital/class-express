@@ -188,6 +188,7 @@ import { Touch } from "vuetify/lib/directives";
 import { mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 import MapImage from "@/components/MapImage";
+import unixseconds from "unixseconds";
 
 import getClassAndPartnerMixin from "../utils/getClassAndPartnerMixin";
 
@@ -232,17 +233,30 @@ export default {
       if (this.$store.state.classes.favouriteClasses[this.classID]) return true;
       else return false;
     },
+    // @todo Possible to make a new API to get what is the reserved class if any of this classID and userID
+    // Add a check to see if selected time is a valid time for the class
     isReserved() {
-      const upcomingClass = this.$store.state.classes.upcomingClasses[
-        this.classID
-      ];
+      // Cannot determine if there is a reserved class if no selectedTime is passed in
+      if (!this.selectedTime) return false;
+      // Cannot determine time if class object is not loaded yet as we need length of class
+      if (!this.clas) return false;
 
-      // If there is a booking for this class, check if there is a booking for this timeslot
-      if (upcomingClass) {
-        // @todo Check for timeslot. Right now, assumes that there is only 1 session for the class thus return true
+      const nowTS = unixseconds();
 
-        return true;
-      } else return false;
+      // Return upcoming class object if there is any
+      return (
+        this.$store.state.classes.userClasses
+          // Filter and keep only upcoming classes
+          .filter(
+            (userClass) => userClass.startTime + this.clas?.length * 60 > nowTS
+          )
+          // Find if there is an upcoming class for this class and selected time
+          .find(
+            (userClass) =>
+              userClass.classID === this.classID &&
+              userClass.startTime === this.selectedTime
+          )
+      );
     },
     review() {
       return this.$store.state.classes.review;
