@@ -55,19 +55,13 @@ export default {
       amount: 1,
       publishableKey: "",
       customer: {},
-      customerId: "",
-      billingName: "",
+      customerId: "cus_HeOaho2iPOkSFW",
+      billingName: "zzk",
+      priceId: "plan_HEDADPvhVD1zls",
     };
   },
 
   mounted() {
-    // let stripeaScript = document.createElement("script");
-    // stripeaScript.setAttribute("src", "https://js.stripe.com/v3/");
-    // stripeaScript.async = true;
-    // document.head.appendChild(stripeaScript);
-
-    //this.getConfig();
-
     (async () => {
       // this.stripe = Stripe("pk_test_LIc2NCzFeOD5ng6VrGwNE8Dx00Z67P4mCD");
       this.stripe = await loadStripe(
@@ -75,9 +69,10 @@ export default {
       );
       this.createAndMountFormElement();
 
-      // this.createCustomer().then(console.log);
+      this.createCustomer().then(console.log);
     })();
   },
+
   methods: {
     createAndMountFormElement() {
       var elements = this.stripe.elements();
@@ -95,6 +90,7 @@ export default {
       this.cardExpiryElement.on("change", this.validateCardOnChange);
       this.cardCvcElement.on("change", this.validateCardOnChange);
     },
+
     validateCardOnChange(event) {
       this.stripeValidationError = event.error ? event.error.message : "";
 
@@ -109,57 +105,24 @@ export default {
     },
 
     placeOrderButtonPressed() {
-      const priceId = "plan_HEDADPvhVD1zls";
-      //customerId from db
+      const priceId = this.priceId;
       const customerId = this.customerID;
 
-      this.createPaymentMethod({ cardElement: "", customerId, priceId });
+      this.createPaymentMethod({
+        cardElement: this.cardNumberElement,
+        customerId,
+        priceId,
+      });
     },
 
-    //get publishableKey from server
-    getConfig() {
-      return fetch("/config", {
-        method: "get",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((response) => {
-          this.publishableKey = response.publishableKey;
-        });
-    },
-
-    //If its new user, create a stripe customer object
-    //If its existing user, get the stripe customer object from db
-    createCustomer() {
-      //create customer object by using user email address
-      let billingEmail = "useremail@mail.com";
-
-      return fetch("subscription/create-customer", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: billingEmail,
-        }),
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((result) => {
-          return result;
-        });
-    },
-
+    // create payment method in frontend
+    // then send the payment method to billing service
+    //
     createPaymentMethod(cardElement, customerId, priceId) {
       return this.stripe
         .createPaymentMethod({
           type: "card",
-          card: cardElement,
+          card: this.cardNumberElement,
           billing_details: {
             name: this.billingName,
           },
@@ -168,11 +131,12 @@ export default {
           if (result.error) {
             this.displayError(result.error);
           } else {
-            this.createSubscription({
-              customerId: customerId,
-              paymentMethodId: result.paymentMethod.id,
-              priceId: priceId,
-            });
+            //   this.createSubscription({
+            //     customerId: customerId,
+            //     paymentMethodId: result.paymentMethod.id,
+            //     priceId: priceId,
+            //   });
+            console.log(result);
           }
         });
     },
