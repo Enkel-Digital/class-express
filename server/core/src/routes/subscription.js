@@ -110,7 +110,8 @@ async function setNewPlan(userID, nowTS, subscriptionPlanID) {
     userID,
     planID: subscriptionPlanID,
     // @todo Should it be now? Or at midnight?
-    start: nowTS,
+    // @todo Fix this hack. This is hack is for when a new plan is created and getPoints is read in the same second, which messes with the timestamps and show end of current period to be today instead of 30 days from now.
+    start: nowTS - 1,
     end: null,
   });
 }
