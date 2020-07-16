@@ -1,6 +1,8 @@
 /**
  * Abstractions over SQL db for getting timestamps for the start and end of user's current period
  * @author JJ
+ *
+ * @todo Combine the 2 methods into 1 that exports an object with start and end with timestamps
  */
 
 const moment = require("moment");
@@ -44,7 +46,15 @@ async function getEndOfCurrentPeriod({
   return moment
     .unix(usersCurrentPlan.start)
     .add(
-      Math.ceil((nowTS - usersCurrentPlan.start) / periodLengthInSeconds) * 30,
+      /*
+        If somehow this executes in the same second as a new plan purchase,
+        then the subtraction will be 0 and ceiling of 0 is still 0, which means,
+        that the start and end timestamp of current period will be the same
+        
+        Thus the OR acts a default value enforcer to make sure value is at least 1 * 30 days
+      */
+      (Math.ceil((nowTS - usersCurrentPlan.start) / periodLengthInSeconds) ||
+        1) * 30,
       "days"
     )
     .unix();
