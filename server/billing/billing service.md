@@ -8,11 +8,13 @@
 If first time user, steps 1 - 4
 If second time user, step 4 only.
 
-1. On new plan selected and user does not have a current plan,
+1. On any payment related action triggered (new/change sub plan or topup points), check if customer object and payment method exists using billing API
     - AS LONG AS user does not have a stripe customer object or no stripe paymentMethod
+    - return false and continue with creation process.
 2. redirect user to payment.vue to create a new paymentMethod
-    - frontend calls stripe to create customer object
+    - frontend calls stripe or billing service to create customer object
     - frontned calls stripe to create paymentMethod with (type / card / billing_details..)
+    - frontend sends payment method to billing service to store.
     - once all is complete, redirect user back to where they came from.
 3. redirect user back to subscription plan vue or whereever they came from after paymentMethod is created
 4. user selects new subscription plan again,
@@ -32,6 +34,9 @@ Legend:
 - GET /user/exists/:userID --> Boolean
     - Checks if customer object exists for this userID
     - Can be called by both frontend and backend.
+- GET /user/paymentMethod/available/:userID --> Boolean
+    - Checks if customer have a payment method object and check if it is valid
+    - Can be called by both frontend and backend.s
 - POST /user/create/customer --> Boolean
     - Create a new stripe customer object for user and save the customer id into database
     - Called by frontend directly
