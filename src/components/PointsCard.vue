@@ -1,8 +1,8 @@
 <template>
   <v-responsive id="points-card">
-    <!-- If user already has a plan -->
+    <!-- If user already has a plan and points object is loaded from API -->
     <v-card
-      v-if="current"
+      v-if="current && points"
       class="mx-auto"
       max-width="calc(100% - 3em)"
       outlined
