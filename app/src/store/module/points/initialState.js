@@ -4,15 +4,8 @@
  */
 export default function initialState() {
   return {
-    points: {
-      left: 0,
-      total: 0,
-      period: {
-        timezone: undefined,
-        start: undefined,
-        end: undefined,
-      },
-    },
+    // Points should be an object, but declared undefined first to ensure it is registered to be reactive
+    points: undefined,
     topupOptions: [],
   };
 }

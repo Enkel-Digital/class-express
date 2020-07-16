@@ -69,6 +69,9 @@ export default {
         if (!response.success)
           return apiError(response, () => dispatch("updatePlan", planID));
 
+        // Call getPoints just in case this plan update caused an update to points value
+        dispatch("points/getPoints", undefined, { root: true });
+
         // Pessimistic UI, show after network update is complete, using the users' plans the API returned
         commit("setter", ["current", response.plans.current]);
         commit("setter", ["next", response.plans.next]);
