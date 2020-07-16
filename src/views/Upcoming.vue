@@ -7,11 +7,7 @@
       </v-toolbar-title>
 
       <v-spacer />
-
-      <!-- @todo Icon to trigger attendance QR code scanner -->
-      <v-btn icon>
-        <v-icon>mdi-camera</v-icon>
-      </v-btn>
+      <CameraBtn />
     </v-app-bar>
 
     <v-responsive v-if="upcomingClasses.length">
@@ -31,12 +27,14 @@
 
 <script>
 import UpcomingClass from "@/components/UpcomingClass";
+import CameraBtn from "@/components/CameraBtn";
 import unixseconds from "unixseconds";
 
 export default {
   name: "upcoming",
   components: {
     UpcomingClass,
+    CameraBtn,
   },
   created() {
     this.$store.dispatch("classes/getUsersClasses");
