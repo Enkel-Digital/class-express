@@ -122,11 +122,17 @@ async function getUserPoints(userID) {
 
   const nowTS = unixseconds();
 
-  // @todo If user does not have a current plan, this function will not work. Thus to handle this
-  // How this is handled depends on whether we allow users to have topup even when they do not have a plan.
-  // If users can topup without a plan, then to we cant figure out current period without a current plan,
-  // thus the solution is to use the purchaseTime to see if nowTS is within 30 days of the purchaseTime.
   const usersCurrentPlan = await getCurrentPlan(userID, nowTS);
+
+  // If user does not have a current plan, return undefined to show nothing
+  /* 
+  How this is handled depends on whether we allow users to have topup even when they do not have a plan.
+  If users can topup without a plan, then to we cant figure out current period without a current plan,
+  thus the solution is to use the purchaseTime to see if nowTS is within 30 days of the purchaseTime.
+  
+    This might cause an issue if user have a cancelled plan.
+  */
+  if (!usersCurrentPlan) return;
 
   const startOfCurrentPeriod = await getStartOfCurrentPeriod({
     usersCurrentPlan,
