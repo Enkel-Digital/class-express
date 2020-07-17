@@ -27,9 +27,7 @@
       </v-list-item>
     </v-responsive>
 
-    <!-- Hide action button when user have no plan -->
-    <!-- <PointsCard :hideActionButton="current" /> -->
-    <PointsCard :hideActionButton="!!current" />
+    <PointsCard />
 
     <br />
     <h3 class="opacity7 ml-5">
@@ -38,7 +36,8 @@
 
     <p v-if="current" class="opacity6 ml-5 mb-0">
       <span v-if="periodEndDate !== null" style="font-weight: bold;">
-        Your current plan ends on {{ moment.unix(periodEndDate).format("L") }}
+        Your current plan ends on
+        {{ moment.unix(periodEndDate).format("DD/MM/YYYY") }}
         <br />
       </span>
       Click to change next month's plan

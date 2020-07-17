@@ -16,7 +16,8 @@
           </v-list-item-title>
 
           <v-list-item-subtitle>
-            Period ends on: {{ moment.unix(points.period.end).format("L") }}
+            Period ends on:
+            {{ moment.unix(points.period.end).format("DD/MM/YYYY") }}
           </v-list-item-subtitle>
         </v-list-item-content>
 
