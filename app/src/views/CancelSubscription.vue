@@ -29,7 +29,7 @@
     <p style="color: rgba(0, 0, 0, 0.6);" class="ml-5 mb-0">
       Your current plan is ... and will end on
       <span style="font-weight: bold;">
-        will end on {{ moment.unix(periodEndDate).format("L") }}
+        will end on {{ moment.unix(periodEndDate).format("DD/MM/YYYY") }}
       </span>
     </p>
 
