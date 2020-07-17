@@ -1,0 +1,85 @@
+{
+  "name": "search",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Search service / API for ClassExpress App",
+  "main": "./src/index.js",
+  "scripts": {
+    "docker:build": "docker build -t gcr.io/classes-ekd/search -f ./.Dockerfile .",
+    "docker:push": "docker push gcr.io/classes-ekd/search",
+    "deploy:cloud-run": "gcloud run deploy --platform managed --image gcr.io/classes-ekd/search",
+    "docs:delete": "npx rimraf ../docs",
+    "docs:build": "npm run delete:docs && jsdoc -c ./jsdocConfiguration.json -r -d ../docs",
+    "docs:serve": "npx nodemon -x npm run build:docs",
+    "serve": "npx nodemon ./src/index.js",
+    "start": "node ./src/index.js",
+    "test": "npx mocha --exit",
+    "lint:js": "npx eslint --ignore-path .gitignore --fix **/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Enkel-Digital/class-server.git"
+  },
+  "author": "JJ",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Enkel-Digital/class-server/issues"
+  },
+  "homepage": "https://github.com/Enkel-Digital/class-server#readme",
+  "dependencies": {
+    "@enkeldigital/ce-sql": "^0.1.0",
+    "@lionellbriones/logging": "^3.2.1",
+    "@sendgrid/mail": "^7.2.1",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "firebase": "^7.15.5",
+    "firebase-admin": "^8.13.0",
+    "helmet": "^3.23.3",
+    "moment": "^2.27.0",
+    "request": "^2.88.2",
+    "request-promise-native": "^1.0.8",
+    "unixseconds": "^0.1.0",
+    "validator": "^13.1.1"
+  },
+  "devDependencies": {
+    "docdash": "^1.2.0",
+    "eslint": "^7.3.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-mocha": "^7.0.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-vue": "^6.2.2",
+    "husky": "^4.2.5",
+    "ignore-loader": "^0.1.2",
+    "jsdoc": "^3.6.4",
+    "jsdoc-export-default-interop": "^0.3.1",
+    "lint-staged": "^10.2.11",
+    "mocha": "^8.0.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix"
+    ],
+    "*.{js,json}": [
+      "prettier --write"
+    ]
+  }
+}
