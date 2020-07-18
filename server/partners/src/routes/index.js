@@ -17,5 +17,6 @@ router.use("/points", auth, require("./points"));
 router.use("/reviews", require("./reviews"));
 router.use("/settings", auth, require("./settings"));
 router.use("/emailActionLinks", require("./emailActionLinks"));
+router.use("/employees", require("./employees"));
 
 module.exports = router;

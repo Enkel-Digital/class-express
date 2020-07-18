@@ -35,4 +35,6 @@ router.get("/details/:partnerID", async (req, res) => {
   }
 });
 
+// @todo Create api for create new partner
+
 module.exports = router;
