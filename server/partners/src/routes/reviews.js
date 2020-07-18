@@ -118,34 +118,4 @@ router.get("/partner/:partnerID", async (req, res) => {
   }
 });
 
-/**
- * Leave a new review after user have attended a class
- * @name POST /reviews/new/:classID
- * @function
- * @param {String} userID
- * @param {String} description
- * @param {Number} points
- * @returns {object} Success indicator
- */
-router.post("/new/:classID", auth, express.json(), async (req, res) => {
-  try {
-    const { classID } = req.params;
-    const { userID, description, points } = req.body;
-
-    if (!classID) throw new Error("Missing classID");
-
-    await SQLdb("reviews").insert({
-      classID,
-      userID,
-      description,
-      points,
-    });
-
-    res.status(201).json({ success: true });
-  } catch (error) {
-    logger.error(error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
 module.exports = router;
