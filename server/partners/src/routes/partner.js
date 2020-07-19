@@ -35,6 +35,26 @@ router.get("/details/:partnerID", async (req, res) => {
   }
 });
 
+/**
+ * Delete partner account
+ * @name DELETE /partner/:partnerID
+ * @function
+ * @param {object} partner
+ * @returns {object} Success indicator
+ */
+router.delete("/:partnerID", express.json(), async (req, res) => {
+  try {
+    const { partnerID } = req.params;
+
+    await SQLdb("partners").where({ id: partnerID }).update({ deleted: true });
+
+    res.json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // @todo Create api for create new partner
 
 module.exports = router;
