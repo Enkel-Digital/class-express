@@ -36,6 +36,27 @@ router.get("/details/:partnerID", async (req, res) => {
 });
 
 /**
+ * Update partner details
+ * @name PATCH /partner/:partnerID
+ * @function
+ * @param {object} partner
+ * @returns {object} Success indicator
+ */
+router.patch("/:partnerID", express.json(), async (req, res) => {
+  try {
+    const { partnerID } = req.params;
+    const { partner } = req.body;
+
+    await SQLdb("partners").where({ id: partnerID }).update(partner);
+
+    res.json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
  * Delete partner account
  * @name DELETE /partner/:partnerID
  * @function
