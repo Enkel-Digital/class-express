@@ -111,4 +111,26 @@ router.patch("/:employeeID", express.json(), async (req, res) => {
   }
 });
 
+/**
+ * Delete employee account
+ * @name DELETE /employees/:employeeID
+ * @function
+ * @param {object} employee
+ * @returns {object} Success indicator
+ */
+router.delete("/:employeeID", express.json(), async (req, res) => {
+  try {
+    const { employeeID } = req.params;
+
+    await SQLdb("partnerAccounts")
+      .where({ id: employeeID })
+      .update({ deleted: true });
+
+    res.json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 module.exports = router;
