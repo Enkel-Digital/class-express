@@ -113,4 +113,24 @@ router.get("/schedule/:classID/:date", async (req, res) => {
   }
 });
 
+/**
+ * Delete class by partner
+ * @name DELETE /classs/:classID
+ * @function
+ * @param {object} class
+ * @returns {object} Success indicator
+ */
+router.delete("/:classID", express.json(), async (req, res) => {
+  try {
+    const { classID } = req.params;
+
+    await SQLdb("classes").where({ id: classID }).update({ deleted: true });
+
+    res.json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 module.exports = router;
