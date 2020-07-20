@@ -57,7 +57,7 @@ Table partners {
 
 // Tags describing the Partners / Business organisations.
 Table partnerTags {
-  id int [pk, increment, not null, unique]
+  id bigint [pk, increment, not null, unique]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   partnerID int [ref: > partners.id, not null]
   tag varchar [not null]
@@ -163,7 +163,7 @@ Table classes {
 
 // Tags describing the classes
 Table classTags {
-  id int [pk, increment, not null, unique]
+  id bigint [pk, increment, not null, unique]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   classID int [ref: > classes.id, not null]
   tag varchar [not null]
