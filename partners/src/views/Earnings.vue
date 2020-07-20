@@ -55,9 +55,9 @@
     <br />
     <h3 class="text-center">
       <!-- @todo create a view all history page -->
-      <a href="http://localhost:8080/#/class/all"
-        >Click to view class history</a
-      >
+      <router-link :to="{ name: 'earningsHistory' }">
+        Click to View Earning History
+      </router-link>
     </h3>
 
     <!-- <v-container grid-list-md>

@@ -43,7 +43,6 @@
               v-model="clas.classCategory"
               :items="classCategoryList"
               chips
-              height="1.1em"
               color="#60696c"
               clearable
               label="Select Your Class Categories"

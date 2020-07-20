@@ -64,6 +64,12 @@ const routes = [
     meta: { Auth_requirements: AuthType.private },
   },
   {
+    path: "/earnings/history",
+    name: "earningsHistory",
+    component: () => import("@/views/EarningsHistory.vue"),
+    meta: { Auth_requirements: AuthType.private },
+  },
+  {
     path: "/reviews/:classID",
     name: "reviews",
     component: () => import("@/views/Reviews.vue"),
