@@ -1,0 +1,81 @@
+### ping
+GET http://localhost:3001/
+
+### Get user
+GET http://localhost:3001/user/jj@enkeldigital.com
+
+### Get class
+GET http://localhost:3001/class/details/1
+
+### Get class of partner
+GET http://localhost:3001/class/of/1
+
+### Favourite count of class
+GET http://localhost:3001/favourites/class/2
+
+### Favourite count of partner
+GET http://localhost:3001/favourites/partner/1
+
+### Favourite count of all classes from a partner
+GET http://localhost:3001/favourites/all-classes/of/1
+
+### Get pending points
+GET http://localhost:3001/points/pending/3
+
+### Get earned points
+# GET /points/valid/:partnerID
+GET http://localhost:3001/points/valid/:partnerID
+
+### Get all points earned from class
+GET http://localhost:3001/points/class/:classID
+
+### Get all tags of a class
+# GET http://localhost:3001/tags/class/:classID
+GET http://localhost:3001/tags/class/1
+
+### Add more tags for a class
+POST http://localhost:3001/tags/class/new
+content-type: application/json
+
+{
+    "classID": 1,
+    "tags": ["test", "test2"]
+}
+
+### Get all employees
+GET http://localhost:3001/employees/all/:partnerID
+
+### Create new employee
+POST http://localhost:3001/employees/new
+content-type: application/json
+
+{
+    "employee": {
+        "partnerID": 1,
+        "name": "Kong Wei",
+        "email": "kongwei@gmail.com",
+        "phoneNumber": "+6512345678"
+    }
+}
+
+### Update employee details
+PATCH http://localhost:3001/employees/:employeeID
+content-type: application/json
+
+{
+    "employee": {
+        "verified_email": true
+    }
+}
+
+### Get individual employee details
+GET http://localhost:3001/employees/:employeeID
+
+### Delete employee account
+DELETE http://localhost:3001/employees/:employeeID
+
+### Delete partner account
+DELETE http://localhost:3001/partner/:partnerID
+
+### Update partner details
+DELETE http://localhost:3001/partner/:partnerID
