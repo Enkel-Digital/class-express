@@ -1,0 +1,23 @@
+// https://www.dbml.org/docs/
+
+// Legend:
+// Trimmable (Attribute) -> Data that can be warehoused by deleting older data from production after backing up everything into data warehouse
+
+Project SearchService {
+  database_type: 'Algolia'
+  Note: 'DB for Class Express Search Service'
+}
+
+//generic table for classes and partners
+Table  searchObject{
+  id int [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] 
+  classID int [ref: > classes.id, null]
+  partnerID int [ref: > parters.id, null]
+  name varchar [not null]
+  description varchar [not null]
+  location_address varchar [not null] // for classes location of parter should be used if no custom class location 
+  pictureSources varchar [null]
+  points int [null] // can be null for partners
+}
+
