@@ -4,13 +4,13 @@
 @host = {{hostname}}:{{port}}
 @firebaseAuthApiKey = AIzaSyAXQkdXjxHpZbEYNTXoyfyBXfWVEbm-tCA
 
-### Create the apiTester account if none
+### Create api_tester account if none
 # @name signUp
 POST https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={{firebaseAuthApiKey}}
 content-type: application/json
 
 {
-    "email": "apiTester@enkeldigital.com",
+    "email": "api_tester@enkeldigital.com",
     "password": "securePassword",
     "returnSecureToken": true,
 }
@@ -22,7 +22,7 @@ POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={
 content-type: application/json
 
 {
-    "email": "apiTester@enkeldigital.com",
+    "email": "api_tester@enkeldigital.com",
     "password": "securePassword",
     "returnSecureToken": true,
 }
@@ -44,16 +44,18 @@ content-type: application/json
 
 ### Get User
 GET {{host}}/user/jj@enkeldigital.com
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Get all subscription plans
 GET {{host}}/subscription/plans/all
 
 ### Get new verification email
+# This does not need any authorization as user needs to access this before they are even logged in.
+# However, this is auto rate limited by firebase Auth
 POST {{host}}/emailActionLinks/resendVerificationEmail/jj@enkeldigital.com
 
 ### Get Topup Options
 GET {{host}}/topup/options
-Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Get user's points
 GET {{host}}/points/1
@@ -65,6 +67,7 @@ Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Update favourite class
 POST {{host}}/favourites/classes/update
+Authorization: Bearer {{getAuth.response.body.idToken}}
 content-type: application/json
 
 {
@@ -75,6 +78,7 @@ content-type: application/json
 
 ### Update favourite partner
 POST {{host}}/favourites/partner/update
+Authorization: Bearer {{getAuth.response.body.idToken}}
 content-type: application/json
 
 {
@@ -85,9 +89,7 @@ content-type: application/json
 
 ### Get user's plan
 GET {{host}}/subscription/1
-
-### Get Class schedule
-GET {{host}}/subscription/jj@enkeldigital.com
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Get class details
 GET {{host}}/class/details/1
@@ -103,9 +105,11 @@ GET {{host}}/reviews/partner/3
 
 ### Get user's classes (upcoming & past)
 GET {{host}}/class/user/1
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Create new review
 POST {{host}}/reviews/new/1
+Authorization: Bearer {{getAuth.response.body.idToken}}
 content-type: application/json
 
 {
@@ -116,6 +120,7 @@ content-type: application/json
 
 ### Update user's plan
 POST {{host}}/subscription/update
+Authorization: Bearer {{getAuth.response.body.idToken}}
 content-type: application/json
 
 {
@@ -125,6 +130,7 @@ content-type: application/json
 
 ### Reserve a class
 POST {{host}}/class/reserve
+Authorization: Bearer {{getAuth.response.body.idToken}}
 content-type: application/json
 
 {
@@ -135,6 +141,7 @@ content-type: application/json
 
 ### Cancel a reservation
 POST {{host}}/class/cancel
+Authorization: Bearer {{getAuth.response.body.idToken}}
 content-type: application/json
 
 {
@@ -145,6 +152,7 @@ content-type: application/json
 
 ### Cancel user's plan
 POST {{host}}/subscription/cancel
+Authorization: Bearer {{getAuth.response.body.idToken}}
 content-type: application/json
 
 {

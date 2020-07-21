@@ -1,40 +1,81 @@
+# Global file variable definitions
+@hostname = http://localhost
+@port = 3001
+@host = {{hostname}}:{{port}}
+@firebaseAuthApiKey = AIzaSyA6WspXWorAK_1HiwLAVht7-ujoUDdWsAs
+
+### Create api_tester account if none
+# @name signUp
+POST https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "api_tester@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
+
+### Get auth credentials
+# @name getAuth
+POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "api_tester@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
 ### ping
-GET http://localhost:3001/
+GET {{host}}/
+
+### Health probe
+GET {{host}}/health
 
 ### Get user
-GET http://localhost:3001/user/jj@enkeldigital.com
+GET {{host}}/user/jj@enkeldigital.com
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Get class
-GET http://localhost:3001/class/details/1
+GET {{host}}/class/details/1
 
 ### Get class of partner
-GET http://localhost:3001/class/of/1
+GET {{host}}/class/of/1
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Favourite count of class
-GET http://localhost:3001/favourites/class/2
+GET {{host}}/favourites/class/2
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Favourite count of partner
-GET http://localhost:3001/favourites/partner/1
+GET {{host}}/favourites/partner/1
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Favourite count of all classes from a partner
-GET http://localhost:3001/favourites/all-classes/of/1
+GET {{host}}/favourites/all-classes/of/1
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Get pending points
-GET http://localhost:3001/points/pending/3
+GET {{host}}/points/pending/3
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Get earned points
 # GET /points/valid/:partnerID
-GET http://localhost:3001/points/valid/:partnerID
+GET {{host}}/points/valid/3
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Get all points earned from class
-GET http://localhost:3001/points/class/:classID
+GET {{host}}/points/class/:classID
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Get all tags of a class
-# GET http://localhost:3001/tags/class/:classID
-GET http://localhost:3001/tags/class/1
+# GET /tags/class/:classID
+GET {{host}}/tags/class/1
 
 ### Add more tags for a class
-POST http://localhost:3001/tags/class/new
+POST {{host}}/tags/class/new
+Authorization: Bearer {{getAuth.response.body.idToken}}
 content-type: application/json
 
 {
@@ -43,10 +84,12 @@ content-type: application/json
 }
 
 ### Get all employees
-GET http://localhost:3001/employees/all/:partnerID
+GET {{host}}/employees/all/:partnerID
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Create new employee
-POST http://localhost:3001/employees/new
+POST {{host}}/employees/new
+Authorization: Bearer {{getAuth.response.body.idToken}}
 content-type: application/json
 
 {
@@ -59,7 +102,8 @@ content-type: application/json
 }
 
 ### Update employee details
-PATCH http://localhost:3001/employees/:employeeID
+PATCH {{host}}/employees/:employeeID
+Authorization: Bearer {{getAuth.response.body.idToken}}
 content-type: application/json
 
 {
@@ -69,13 +113,17 @@ content-type: application/json
 }
 
 ### Get individual employee details
-GET http://localhost:3001/employees/:employeeID
+GET {{host}}/employees/:employeeID
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Delete employee account
-DELETE http://localhost:3001/employees/:employeeID
+DELETE {{host}}/employees/:employeeID
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Delete partner account
-DELETE http://localhost:3001/partner/:partnerID
+DELETE {{host}}/partner/:partnerID
+Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Update partner details
-DELETE http://localhost:3001/partner/:partnerID
+DELETE {{host}}/partner/:partnerID
+Authorization: Bearer {{getAuth.response.body.idToken}}
