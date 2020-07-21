@@ -43,22 +43,22 @@ router.get("/:partnerID", onlyOwnResource, async (req, res) => {
 });
 
 /**
- * Add new tag(s) for a class
- * @name POST /tags/class/new
+ * Add new tag(s) for a partner
+ * @name POST /tags/partner/new
  * @function
- * @param {String} classID
+ * @param {String} partnerID
  * @param {Array} tags
  * @returns {object} success indicator
  */
 router.post("/new", express.json(), async (req, res) => {
   try {
-    const { classID, tags } = req.body;
+    const { partnerID, tags } = req.body;
 
     // @todo (Jess to implement) Prevent duplicate tags insertion
 
     // Insert the tags 1 by 1 and wait for all of them to complete.
     await Promise.all(
-      tags.map((tag) => SQLdb("classTags").insert({ classID, tag }))
+      tags.map((tag) => SQLdb("partnerTags").insert({ partnerID, tag }))
     );
 
     res.status(201).json({ success: true });
