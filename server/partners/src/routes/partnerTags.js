@@ -1,5 +1,5 @@
 /**
- * Express Router for class tags related routes
+ * Express Router for partner tags related routes
  * Mounted on /tags/partner
  * @author Jessica
  * @module partner tag routes
@@ -69,7 +69,7 @@ router.post("/new", express.json(), async (req, res) => {
 });
 
 /**
- * Delete tag of a partner
+ * Delete tag(s) of a partner
  * @name DELETE /tags/partner/:partnerID
  * @function
  * @param {String} partnerID
