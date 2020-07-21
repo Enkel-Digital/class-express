@@ -36,7 +36,7 @@ Legend:
     - Create a new stripe customer object for user and save the customer id into database
     - Called by frontend directly
     - req.body
-        - userID
+        - userAccountID
         - userDetails
             - email
             - name
@@ -47,9 +47,13 @@ Legend:
     - Create a new paymentMethod for a customer
     - Called by frontend directly
     - req.body
-        - userID
+        - userAccountID
         - type
-        - card
+        - card    
+            - number: '4242424242424242',
+            - exp_month: 7,
+            - exp_year: 2021,
+            - cvc: '314',
         - billing_details... can be expanded (meta data)
 - POST /plans/update --> Boolean
     - Called only by CORE API
@@ -58,6 +62,16 @@ Legend:
         - create a new plan at the end of the existing plan
         - *need to handle user changing back to the same plan after changing it once in the same period
             - use List Subscription stripe API to see all of user's current subscription.
+
+
+        - if the user is new registered customer
+            - create new subscription
+        - if user change the subscription plan 
+            - get the current active subscription plan
+                - set cancel_at_period_end: true
+            - create a subscription with schedule
+                - set end_behavior with relase
+                - set start date at the end of the existing plan
     - req.body
         - userID
         - planID --> planID is used to retrieve priceID from database

@@ -1,0 +1,20 @@
+// https://www.dbml.org/docs/
+
+// Legend:
+// Trimmable (Attribute) -> Data that can be warehoused by deleting older data from production after backing up everything into data warehouse
+
+Project BillingService {
+  database_type: 'Firestore'
+  Note: 'DB for Class Express Billing Service'
+}
+
+Table userAccount {
+  id int [pk, not null, ref: - user.id] // user.id is userAccounts.id in main.dbml
+  customerID varchar [not null]
+  paymentMethodID varchar [not null]
+}
+
+Table subscription {
+  id int [pk, not null, ref: - plan.id] //plan.id is userPlans.id in main.dbml
+  priceID varchar [not null]
+}
