@@ -25,4 +25,5 @@ module.exports = {
   ...require("./classes"),
   ...require("./subscriptionPlan"),
   ...require("./news"),
+  ...require("./earningsHistory"),
 };

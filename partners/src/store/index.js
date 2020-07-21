@@ -11,6 +11,7 @@ import searchModule from "./module/search";
 import pointsModule from "./module/points";
 import newsModule from "./module/news";
 import subscriptionPlanModule from "./module/subscriptionPlan";
+import earningsHistoryModule from "./module/earningsHistory";
 
 // @todo Remove these mock data
 import mock from "./mockData";
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     points: pointsModule, // User points and not all points related
     news: newsModule,
     subscription: subscriptionPlanModule,
+    earningsHistory: earningsHistoryModule,
   },
   mutations: {
     setter,
