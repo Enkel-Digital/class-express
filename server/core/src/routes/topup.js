@@ -10,6 +10,7 @@
 const express = require("express");
 const router = express.Router();
 const SQLdb = require("@enkeldigital/ce-sql");
+const auth = require("../middleware/auth");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:topup");
@@ -47,7 +48,7 @@ router.get("/options", async (req, res) => {
  * @param topupID
  * @returns {object} Success indicator
  */
-router.post("/purchase", express.json(), async (req, res) => {
+router.post("/purchase", auth, express.json(), async (req, res) => {
   try {
     const { userID, topupID } = req.body;
 

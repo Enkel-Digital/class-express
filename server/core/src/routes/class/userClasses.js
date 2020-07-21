@@ -9,6 +9,7 @@ const express = require("express");
 const router = express.Router();
 
 const SQLdb = require("@enkeldigital/ce-sql");
+const auth = require("../../middleware/auth");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:class");
@@ -21,7 +22,7 @@ const logger = createLogger("routes:class");
  * @param {String} [date] unix seconds
  * @returns {object} User class objects
  */
-router.get("/user/:userID", express.json(), async (req, res) => {
+router.get("/user/:userID", auth, express.json(), async (req, res) => {
   try {
     const { userID } = req.params;
     const { date } = req.query; // date === usersTodayTsInTheirTimeZone

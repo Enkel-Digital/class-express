@@ -12,7 +12,7 @@ router.use("/partner", require("./partner"));
 router.use("/user", auth, require("./users"));
 router.use("/favourites", auth, require("./favourites"));
 router.use("/subscription", require("./subscription"));
-router.use("/topup", auth, require("./topup"));
+router.use("/topup", require("./topup"));
 router.use("/points", auth, require("./points"));
 router.use("/reviews", require("./reviews"));
 router.use("/settings", auth, require("./settings"));
