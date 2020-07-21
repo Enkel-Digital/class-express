@@ -12,164 +12,100 @@
             <FilterMenu />
 
             <!-- TODO: Mix Partner and Class card together -->
-            <!-- Partner card -->
-
-            <ais-configure
-              :restrictSearchableAttributes="['provider.name']"
-              :hits-per-page.camel="3"
-              :distinct="true"
-            >
-              <ais-state-results>
-                <template slot-scope="{ query, hits }">
-                  <ais-hits v-if="query.length > 0 && hits.length > 0">
-                    <template slot-scope="{ items }">
-                      <v-row style="padding: 0;">
-                        <v-responsive>
-                          <v-card
-                            v-for="item in items"
-                            :key="item.objectID"
-                            class="mx-auto mb-4"
-                            max-width="calc(100% - 1.6em)"
-                            outlined
-                            :ripple="false"
-                            color="#CEBDCE"
-                          >
-                            <v-responsive
-                              @click="
-                                $router.push({
-                                  name: 'partner',
-                                  params: { partnerID: item.provider.id },
-                                })
-                              "
-                            >
-                              <!-- @todo Change to a image carousel -->
-                              <!-- <v-img
-                                id="class-image"
-                                :src="item.pictureSources[0]"
-                              /> -->
-
-                              <v-list-item>
-                                <div style="text-align: left;">
-                                  <v-card-title class="headline pl-0">
-                                    {{ item.provider.name }}
-                                  </v-card-title>
-
-                                  <v-list-item-subtitle>
-                                    {{ item.location.address }}
-                                  </v-list-item-subtitle>
-
-                                  <!-- @todo Add list of categories of classes the partner offers. -->
-                                </div>
-                              </v-list-item>
-                            </v-responsive>
-                          </v-card>
-                        </v-responsive>
-                      </v-row>
-                    </template>
-                  </ais-hits>
-                  <div v-else></div>
-                </template>
-              </ais-state-results>
-            </ais-configure>
 
             <!-- Class -->
-            <ais-configure
-              :restrictSearchableAttributes="
-                (['name'], ['location.address'], ['description'])
-              "
-            >
-              <ais-state-results>
-                <template slot-scope="{ query, hits }">
-                  <app-infinite-hits v-if="query.length > 0 && hits.length > 0">
-                    <template slot="item" slot-scope="{ item }">
-                      <v-responsive>
-                        <v-card
-                          :key="item.objectID"
-                          class="mx-auto mb-4"
-                          max-width="calc(100% - 1.6em)"
-                          outlined
-                          :ripple="false"
-                        >
-                          <v-responsive
-                            @click="
-                              $router.push({
-                                name: 'ClassDetails',
-                                params: { classID: item.objectID },
-                              })
-                            "
-                          >
-                            <!-- @todo Change to a image carousel -->
 
-                            <!-- <v-img
+            <ais-state-results>
+              <template slot-scope="{ query, hits }">
+                <app-infinite-hits v-if="query.length > 0 && hits.length > 0">
+                  <template slot="item" slot-scope="{ item }">
+                    <v-responsive>
+                      <v-card
+                        :key="item.objectID"
+                        class="mx-auto mb-4"
+                        max-width="calc(100% - 1.6em)"
+                        outlined
+                        :ripple="false"
+                      >
+                        <v-responsive
+                          @click="
+                            $router.push({
+                              name: 'ClassDetails',
+                              params: { classID: item.objectID },
+                            })
+                          "
+                        >
+                          <!-- @todo Change to a image carousel -->
+
+                          <v-img
                             id="class-image"
                             :src="item.pictureSources[0]"
-                          /> -->
-                            <v-list-item>
-                              <div style="text-align: left;">
-                                <v-card-title class="headline pl-0">
-                                  <ais-highlight
-                                    :hit="item"
-                                    attribute="name"
-                                    style="font-weight: bold;"
-                                    class="headline pl-0"
-                                  />
-                                </v-card-title>
+                          />
+                          <v-list-item>
+                            <div style="text-align: left;">
+                              <v-card-title class="headline pl-0">
+                                <ais-highlight
+                                  :hit="item"
+                                  attribute="name"
+                                  style="font-weight: bold;"
+                                  class="headline pl-0"
+                                />
+                              </v-card-title>
 
-                                <v-list-item-subtitle :set="item.provider.name">
-                                  <div style="font-weight: bold;">
-                                    {{ item.provider.name }}
-                                  </div>
+                              <v-list-item-subtitle :set="item.provider.name">
+                                <div style="font-weight: bold;">
+                                  {{ item.provider.name }}
+                                </div>
 
-                                  <div>
-                                    <!-- {{
+                                <div>
+                                  <!-- {{
                                   item.location
                                     ? item.location.address
                                     : provider.location.address
                                   }}-->
-                                    <ais-highlight
-                                      :hit="item"
-                                      attribute="location.address"
-                                    />
-                                  </div>
-                                </v-list-item-subtitle>
-                              </div>
-                            </v-list-item>
-                          </v-responsive>
+                                  <ais-highlight
+                                    :hit="item"
+                                    attribute="location.address"
+                                  />
+                                </div>
+                              </v-list-item-subtitle>
+                            </div>
+                          </v-list-item>
+                        </v-responsive>
 
-                          <v-card-actions>
-                            <v-spacer />
+                        <v-card-actions>
+                          <v-spacer />
 
-                            <!-- Change this to a remove icon only. Cos dont need to toggle, here means confirm favourites already -->
-                            <v-btn icon @click="toggleFavourite(item.id)">
-                              <v-icon color="red">mdi-heart</v-icon>
-                            </v-btn>
+                          <!-- Change this to a remove icon only. Cos dont need to toggle, here means confirm favourites already -->
+                          <v-btn icon @click="toggleFavourite(item.id)">
+                            <v-icon color="red">mdi-heart</v-icon>
+                          </v-btn>
 
-                            <!-- @todo Extract out all share buttons to a common component -->
-                            <!-- @todo Implement PWA sharing and web share target code  -->
-                            <v-btn icon>
-                              <v-icon>mdi-share-variant</v-icon>
-                            </v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </v-responsive>
-                      <!-- <h1><ais-highlight :hit="item" attribute="name" /></h1> -->
-                      <!-- <p><ais-highlight :hit="item" attribute="description" /></p> -->
-                    </template>
-                  </app-infinite-hits>
-                  <div v-if="query.length == 0">
-                    <Categories />
-                  </div>
-                  <div v-if="hits.length == 0">
-                    No results have been found
-                    <Categories />
-                  </div>
-                  <!-- <div v-else>
+                          <!-- @todo Extract out all share buttons to a common component -->
+                          <!-- @todo Implement PWA sharing and web share target code  -->
+                          <v-btn icon>
+                            <v-icon>mdi-share-variant</v-icon>
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-responsive>
+                    <!-- <h1><ais-highlight :hit="item" attribute="name" /></h1> -->
+                    <!-- <p><ais-highlight :hit="item" attribute="description" /></p> -->
+                  </template>
+                </app-infinite-hits>
+                <div v-if="query.length == 0">
+                  <Categories />
+                </div>
+                <div v-if="hits.length == 0">
+                  No results have been found
+                  <Categories />
+                </div>
+                <!-- <div v-else>
                   No results have been found
                   <Categories />
                 </div>-->
-                </template>
-              </ais-state-results>
-            </ais-configure>
+              </template>
+            </ais-state-results>
           </div>
         </div>
       </div>
@@ -206,8 +142,8 @@ export default {
     AisSearchBox,
     AisStateResults,
     AisHighlight,
-    AisHits,
-    AisConfigure,
+    //AisHits,
+    //AisConfigure,
   },
   data() {
     return {
