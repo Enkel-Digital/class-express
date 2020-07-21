@@ -20,19 +20,19 @@ const logger = createLogger("routes:users");
 
 /**
  * Get all tags of a partner
- * @name GET /tags/class/:classID
+ * @name GET /tags/partner/:partnerID
  * @function
- * @param {String} classID
- * @returns {Array} An array of class tags
+ * @param {String} partnerID
+ * @returns {Array} An array of partner tags
  */
-router.get("/:classID", onlyOwnResource, async (req, res) => {
+router.get("/:partnerID", onlyOwnResource, async (req, res) => {
   try {
-    const { classID } = req.params;
+    const { partnerID } = req.params;
 
     res.json({
       success: true,
       // Map it out to only contain the tag itself.
-      tags: (await SQLdb("classTags").where({ classID }).select("tag")).map(
+      tags: (await SQLdb("partnerTags").where({ partnerID }).select("tag")).map(
         (tagObject) => tagObject.tag
       ),
     });
