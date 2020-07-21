@@ -16,9 +16,6 @@ const admin = require("firebase-admin");
  */
 module.exports = async function auth(req, res, next) {
   try {
-    return next();
-    /* eslint-disable no-unreachable */
-
     // Get auth token if available and if it follows the "bearer" pattern
     // @notice Headers are all lowercased by express
     // https://firebase.google.com/docs/auth/admin/verify-id-tokens#verify_id_tokens_using_the_firebase_admin_sdk

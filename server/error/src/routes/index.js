@@ -6,5 +6,6 @@ const auth = require("../middleware/auth");
 
 // Mount all the routes onto their respective base routes
 router.use("/", require("./default"));
+router.use("/", require("./newError"));
 
 module.exports = router;
