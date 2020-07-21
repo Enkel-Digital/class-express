@@ -1,0 +1,152 @@
+# Global file variable definitions
+@hostname = http://localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+@firebaseAuthApiKey = AIzaSyAXQkdXjxHpZbEYNTXoyfyBXfWVEbm-tCA
+
+### Create the apiTester account if none
+# @name signUp
+POST https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "apiTester@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
+
+### Get auth credentials
+# @name getAuth
+POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "apiTester@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
+### ping
+GET {{host}}/
+
+### Health probe
+GET {{host}}/health
+
+### new error
+POST {{host}}/error
+content-type: application/json
+
+{
+    "name": "sample",
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+}
+
+### Get User
+GET {{host}}/user/jj@enkeldigital.com
+
+### Get all subscription plans
+GET {{host}}/subscription/plans/all
+
+### Get new verification email
+POST {{host}}/emailActionLinks/resendVerificationEmail/jj@enkeldigital.com
+
+### Get Topup Options
+GET {{host}}/topup/options
+Authorization: Bearer {{getAuth.response.body.idToken}}
+
+### Get user's points
+GET {{host}}/points/1
+Authorization: Bearer {{getAuth.response.body.idToken}}
+
+### Get favourites
+GET {{host}}/favourites/1
+Authorization: Bearer {{getAuth.response.body.idToken}}
+
+### Update favourite class
+POST {{host}}/favourites/classes/update
+content-type: application/json
+
+{
+    "userID": 1,
+    "classID": 1,
+    "favourite": true
+}
+
+### Update favourite partner
+POST {{host}}/favourites/partner/update
+content-type: application/json
+
+{
+    "userID": 1,
+    "partnerID": 2,
+    "favourite": true
+}
+
+### Get user's plan
+GET {{host}}/subscription/1
+
+### Get Class schedule
+GET {{host}}/subscription/jj@enkeldigital.com
+
+### Get class details
+GET {{host}}/class/details/1
+
+### Get Partner
+GET {{host}}/partner/details/1
+
+### Get class reviews
+GET {{host}}/reviews/class/1
+
+### Get partner reviews
+GET {{host}}/reviews/partner/3
+
+### Get user's classes (upcoming & past)
+GET {{host}}/class/user/1
+
+### Create new review
+POST {{host}}/reviews/new/1
+content-type: application/json
+
+{
+    "userID": 1,
+    "points": 5,
+    "description": "Sibei fun!"
+}
+
+### Update user's plan
+POST {{host}}/subscription/update
+content-type: application/json
+
+{
+    "userID": 1,
+    "subscriptionPlanID": 1
+}
+
+### Reserve a class
+POST {{host}}/class/reserve
+content-type: application/json
+
+{
+    "userID": 1,
+    "classID": 1,
+    "selectedTime": ""
+}
+
+### Cancel a reservation
+POST {{host}}/class/cancel
+content-type: application/json
+
+{
+    "userID": 1,
+    "classID": 1,
+    "selectedTime": ""
+}
+
+### Cancel user's plan
+POST {{host}}/subscription/cancel
+content-type: application/json
+
+{
+    "userID": 1
+}

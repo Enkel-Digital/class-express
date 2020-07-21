@@ -108,9 +108,9 @@ async function getPointsUsed(userID, startOfCurrentPeriod, endOfCurrentPeriod) {
 }
 
 /**
- * Get total points left their current period
+ * Get points object for user's current period
  * @param {*} userID
- * @returns {Number} user's points for the current period as a number
+ * @returns {Object} user's point object for the current period
  */
 async function getUserPoints(userID) {
   /*
@@ -122,11 +122,17 @@ async function getUserPoints(userID) {
 
   const nowTS = unixseconds();
 
-  // @todo If user does not have a current plan, this function will not work. Thus to handle this
-  // How this is handled depends on whether we allow users to have topup even when they do not have a plan.
-  // If users can topup without a plan, then to we cant figure out current period without a current plan,
-  // thus the solution is to use the purchaseTime to see if nowTS is within 30 days of the purchaseTime.
   const usersCurrentPlan = await getCurrentPlan(userID, nowTS);
+
+  // If user does not have a current plan, return undefined to show nothing
+  /* 
+  How this is handled depends on whether we allow users to have topup even when they do not have a plan.
+  If users can topup without a plan, then to we cant figure out current period without a current plan,
+  thus the solution is to use the purchaseTime to see if nowTS is within 30 days of the purchaseTime.
+  
+    This might cause an issue if user have a cancelled plan.
+  */
+  if (!usersCurrentPlan) return;
 
   const startOfCurrentPeriod = await getStartOfCurrentPeriod({
     usersCurrentPlan,
@@ -158,8 +164,16 @@ async function getUserPoints(userID) {
   //     .select("points")
   //     .sum("points");
 
-  // Calculate and return user points
-  return totalPoints - pointsUsed;
+  return {
+    left: totalPoints - pointsUsed,
+    total: totalPoints,
+    period: {
+      // @todo Fix this, for now, defaults to SG time
+      timezone: "SGT",
+      start: startOfCurrentPeriod,
+      end: endOfCurrentPeriod,
+    },
+  };
 }
 
 module.exports = {

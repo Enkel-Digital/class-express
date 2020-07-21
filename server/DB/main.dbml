@@ -55,6 +55,14 @@ Table partners {
   deleted boolean [default: false]
 }
 
+// Tags describing the Partners / Business organisations.
+Table partnerTags {
+  id bigint [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  partnerID int [ref: > partners.id, not null]
+  tag varchar [not null]
+}
+
 // FS
 // Individual users (employees) of a Partner / Business organisation
 Table partnerAccounts {
@@ -151,6 +159,14 @@ Table classes {
   location_address varchar [null]
   location_coordinates varchar [null]
   deleted boolean [default: false]
+}
+
+// Tags describing the classes
+Table classTags {
+  id bigint [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  classID int [ref: > classes.id, not null]
+  tag varchar [not null]
 }
 
 // FS or PG

@@ -149,6 +149,49 @@ exports.seed = async function (knex) {
     },
   ]);
 
+  await knex("partnerTags").insert([
+    {
+      partnerID: 1,
+      tag: "government-subsidised",
+    },
+    {
+      partnerID: 1,
+      tag: "subsidised",
+    },
+    {
+      partnerID: 1,
+      tag: "community",
+    },
+    {
+      partnerID: 2,
+      tag: "music",
+    },
+    {
+      partnerID: 2,
+      tag: "guitar",
+    },
+    {
+      partnerID: 2,
+      tag: "advanced",
+    },
+    {
+      partnerID: 3,
+      tag: "private",
+    },
+    {
+      partnerID: 3,
+      tag: "music",
+    },
+    {
+      partnerID: 3,
+      tag: "kids friendly",
+    },
+    {
+      partnerID: 3,
+      tag: "beginners",
+    },
+  ]);
+
   await knex("classes").insert([
     {
       partnerID: 3,
@@ -198,6 +241,77 @@ exports.seed = async function (knex) {
     },
   ]);
 
+  await knex("classTags").insert([
+    {
+      classID: 1,
+      tag: "music",
+    },
+    {
+      classID: 1,
+      tag: "guitar",
+    },
+    {
+      classID: 1,
+      tag: "instrument",
+    },
+    {
+      classID: 1,
+      tag: "beginner",
+    },
+    {
+      classID: 2,
+      tag: "music",
+    },
+    {
+      classID: 2,
+      tag: "guitar",
+    },
+    {
+      classID: 2,
+      tag: "instrument",
+    },
+    {
+      classID: 2,
+      tag: "advanced",
+    },
+    {
+      classID: 2,
+      tag: "professional",
+    },
+    {
+      classID: 3,
+      tag: "cooking",
+    },
+    {
+      classID: 3,
+      tag: "lifestyle",
+    },
+    {
+      classID: 3,
+      tag: "beginner",
+    },
+    {
+      classID: 3,
+      tag: "easy",
+    },
+    {
+      classID: 4,
+      tag: "cooking",
+    },
+    {
+      classID: 4,
+      tag: "lifestyle",
+    },
+    {
+      classID: 4,
+      tag: "advanced",
+    },
+    {
+      classID: 4,
+      tag: "professional",
+    },
+  ]);
+
   await knex("userPlans").insert([
     {
       userID: 1,
@@ -219,7 +333,13 @@ exports.seed = async function (knex) {
       userID: 1,
       classID: 1,
       points: 5,
-      startTime: unixseconds(), // @todo
+      startTime: unixseconds() + 60 * 60 * 24, // @todo
+    },
+    {
+      userID: 1,
+      classID: 2,
+      points: 8,
+      startTime: unixseconds() + 60 * 60 * 24 * 7, // @todo
     },
   ]);
 

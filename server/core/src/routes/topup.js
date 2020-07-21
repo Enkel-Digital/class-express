@@ -41,15 +41,15 @@ router.get("/options", async (req, res) => {
 
 /**
  * Purchase a topup. Uses Stripe API / Billing service
- * @name POST /topup/purchase/:topupOptionID
+ * @name POST /topup/purchase
  * @function
  * @param userID
  * @param topupID
  * @returns {object} Success indicator
  */
-router.post("/purchase/:topupOptionID", async (req, res) => {
+router.post("/purchase", express.json(), async (req, res) => {
   try {
-    const { userID, topupID } = req.params;
+    const { userID, topupID } = req.body;
 
     // @todo Make sure topupID and userID is valid
 

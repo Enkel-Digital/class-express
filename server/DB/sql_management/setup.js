@@ -37,9 +37,15 @@ async function createTables() {
   const fs = require("fs");
   const path = require("path");
 
+  const idx = process.argv.indexOf("--schema");
+  if (idx < 0) return console.error("Please specify a schema file to use!");
+  const schemaName = process.argv[idx + 1];
+
+  console.log(`Using schema "${schemaName}"`);
+
   // get DBML file content
   const dbml = fs.readFileSync(
-    path.join(__dirname, "../CoreDatabase.dbml"),
+    path.join(__dirname, `../${schemaName}.dbml`),
     "utf8"
   );
 
