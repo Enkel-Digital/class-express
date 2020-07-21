@@ -68,6 +68,29 @@ router.post("/new", express.json(), async (req, res) => {
   }
 });
 
-// @todo (Jess) Implement delete tags
+/**
+ * Delete tag of a class
+ * @name DELETE /tags/class/:classID
+ * @function
+ * @param {String} classID
+ * @param {Array} tags
+ * @returns {object} success indicator
+ */
+router.delete("/:classID", express.json(), async (req, res) => {
+  try {
+    const { classID, tags } = req.body;
+
+    await Promise.all(
+      tags.map((tag) =>
+        SQLdb("classTags").where({ classID, tag: tag }).delete()
+      )
+    );
+
+    res.status(201).json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 
 module.exports = router;
