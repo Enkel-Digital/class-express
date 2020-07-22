@@ -3,7 +3,6 @@ const router = express.Router();
 const db = require("./../utils/db.js");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-
 /**
  * Checks if customer object exists for this userID
  * @name GET /user/exists/:userID
@@ -11,25 +10,24 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
  * @returns {object} customer ID and paymethod ID
  */
 router.get("/exists/:userID", async (req, res) => {
-    try {
-      const { userID } = req.params;
-  
-      const userAccountRef = db.collection("userAccount");
-      const snapshot = await userAccountRef.doc(userID).get();
-      if (snapshot.empty) {
-        console.log("No matching documents.");
-        return;
-      }
-      console.log(snapshot.id, "=>", snapshot.data());
-  
-      return res.json({ success: true, data: snapshot.data() });
-    } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
+  try {
+    const { userID } = req.params;
+
+    const userAccountRef = db.collection("userAccount");
+    const snapshot = await userAccountRef.doc(userID).get();
+    if (snapshot.empty) {
+      console.log("No matching documents.");
+      return;
     }
-  });
+    console.log(snapshot.id, "=>", snapshot.data());
 
+    return res.json({ success: true, data: snapshot.data() });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 
-  /**
+/**
  * Create a new customer
  * @name POST /user/create/customer
  * @function
@@ -63,6 +61,5 @@ router.post("/create/customer", express.json(), async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-
 
 module.exports = router;

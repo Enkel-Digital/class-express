@@ -11,29 +11,28 @@ const { getStripeCustomerId } = require("../db/getCustomer");
  * @returns {object} payment method
  */
 router.get("/available/:userID", async (req, res) => {
-    try {
-      const { userID } = req.params;
-  
-      const userAccountRef = db.collection("userAccount");
-      const snapshot = await userAccountRef.doc(userID).get();
-      if (snapshot.empty) {
-        console.log("No matching documents.");
-        return;
-      }
-  
-      const customerID = snapshot.data().customerID;
-  
-      const listpaymentMethod = await stripe.paymentMethods.list({
-        customer: customerID,
-        type: "card",
-      });
-  
-      return res.json({ success: true, data: listpaymentMethod });
-    } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
-    }
-  });
+  try {
+    const { userID } = req.params;
 
+    const userAccountRef = db.collection("userAccount");
+    const snapshot = await userAccountRef.doc(userID).get();
+    if (snapshot.empty) {
+      console.log("No matching documents.");
+      return;
+    }
+
+    const customerID = snapshot.data().customerID;
+
+    const listpaymentMethod = await stripe.paymentMethods.list({
+      customer: customerID,
+      type: "card",
+    });
+
+    return res.json({ success: true, data: listpaymentMethod });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 
 /**
  * Create a new payment method
@@ -88,8 +87,6 @@ router.post("/create", express.json(), async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-
-
 
 /**
  * Save a payment method ID in db
