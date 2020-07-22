@@ -21,3 +21,19 @@ Table  searchObject{
   points int [null] // can be null for partners
 }
 
+// Tags describing the classes
+Table classTags {
+  id bigint [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  classID int [ref: > classes.id, not null]
+  tag varchar [not null]
+}
+
+//  search a type or category
+// "_tags"
+//  https://www.algolia.com/doc/guides/managing-results/refine-results/filtering/how-to/filter-by-tags/
+
+// customizing ranking
+// If you want the most popular class to appear first in results
+// then we may need 'likes' 'sales' ?
+// https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/
