@@ -11,7 +11,7 @@
             <ais-search-box placeholder="Search here…" class="searchbox" />
             <FilterMenu />
 
-            <!-- TODO: Mix Partner and Class card together -->
+            <!-- @todo: Mix Partner and Class card together -->
 
             <!-- Class -->
 
@@ -19,71 +19,90 @@
               <template slot-scope="{ query, hits }">
                 <app-infinite-hits v-if="query.length > 0 && hits.length > 0">
                   <template slot="item" slot-scope="{ item }">
-                    <v-responsive>
+                    <v-responsive
+                      @click="
+                        $router.push({
+                          name: 'ClassDetails',
+                          params: { classID: item.objectID },
+                        })
+                      "
+                    >
                       <v-card
                         :key="item.objectID"
-                        class="mx-auto mb-4"
+                        class="class-card"
                         max-width="calc(100% - 1.6em)"
                         outlined
                         :ripple="false"
                       >
-                        <v-responsive
+                        <!-- <v-responsive
                           @click="
                             $router.push({
                               name: 'ClassDetails',
                               params: { classID: item.objectID },
                             })
                           "
-                        >
-                          <!-- @todo Change to a image carousel -->
+                        > -->
+                        <v-list-item two-line>
+                          <!-- <div style="text-align: left;"> -->
+                          <v-list-item-content>
+                            <v-list-item-title>
+                              <ais-highlight :hit="item" attribute="name" />
+                            </v-list-item-title>
+                            <div
+                              class="overline mb-4"
+                              :set="item.provider.name"
+                            >
+                              {{ item.provider.name }}
+                            </div>
+                            <!-- <v-list-item-subtitle :set="item.provider.name"> -->
+                            <!-- <div style="font-weight: bold;"> -->
+                            <!-- {{ item.provider.name }} -->
+                            <!-- </div> -->
 
-                          <v-img
-                            id="class-image"
-                            :src="item.pictureSources[0]"
-                          />
-                          <v-list-item>
-                            <div style="text-align: left;">
-                              <v-card-title class="headline pl-0">
-                                <ais-highlight
-                                  :hit="item"
-                                  attribute="name"
-                                  style="font-weight: bold;"
-                                  class="headline pl-0"
-                                />
-                              </v-card-title>
-
-                              <v-list-item-subtitle :set="item.provider.name">
-                                <div style="font-weight: bold;">
-                                  {{ item.provider.name }}
-                                </div>
-
-                                <div>
-                                  <!-- {{
+                            <!-- <div> -->
+                            <!-- {{
                                   item.location
                                     ? item.location.address
                                     : provider.location.address
                                   }}-->
-                                  <ais-highlight
-                                    :hit="item"
-                                    attribute="location.address"
-                                  />
-                                </div>
-                              </v-list-item-subtitle>
+                            <!-- </v-list-item-subtitle> -->
+
+                            <div>
+                              <ais-highlight
+                                :hit="item"
+                                class="body-2"
+                                attribute="location.address"
+                              />
+                              <!-- </div> -->
                             </div>
-                          </v-list-item>
-                        </v-responsive>
+                            <!-- </div> -->
+                          </v-list-item-content>
+
+                          <v-responsive id="class-image-container">
+                            <!-- @todo Update API to return an array from DB and Change to a image carousel -->
+                            <!-- <v-img id="class-image" :src="clas.pictureSources[0]" /> -->
+                            <v-img
+                              id="class-image"
+                              :src="item.pictureSources[0]"
+                            />
+                          </v-responsive>
+                          <!-- <v-list-item-avatar tile id="class-image">
+                              <img alt="Avatar" :src="item.pictureSources[0]" />
+                            </v-list-item-avatar> -->
+                        </v-list-item>
+                        <!-- </v-responsive> -->
 
                         <v-card-actions>
                           <v-spacer />
 
                           <!-- Change this to a remove icon only. Cos dont need to toggle, here means confirm favourites already -->
-                          <v-btn icon @click="toggleFavourite(item.id)">
+                          <v-btn icon small @click="toggleFavourite(item.id)">
                             <v-icon color="red">mdi-heart</v-icon>
                           </v-btn>
 
                           <!-- @todo Extract out all share buttons to a common component -->
                           <!-- @todo Implement PWA sharing and web share target code  -->
-                          <v-btn icon>
+                          <v-btn small icon>
                             <v-icon>mdi-share-variant</v-icon>
                           </v-btn>
                         </v-card-actions>
@@ -167,6 +186,11 @@ h1 {
   background: cyan;
   font-style: normal;
 }
+.class-card {
+  /* display: inline-block; */
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+}
 
 .header {
   display: flex;
@@ -219,5 +243,26 @@ h1 {
 .pagination {
   margin: 2rem auto;
   text-align: center;
+}
+#class-image-container {
+  /*
+    General height guidelines for the image loaded
+    Max height is used to prevent the image being used to be too big
+    Min height ensures image will not collapse on itself into the height of the back button
+  */
+  max-height: 15vh;
+  max-width: 15vh;
+  min-height: 10vh;
+}
+
+/* Move image up to upper corners of screen, so back button is overlayed on top */
+#class-image {
+  display: block;
+  position: absolute;
+  top: 0vh;
+  right: 0vw;
+
+  /* Map image to height of entire parent div container */
+  height: 100%;
 }
 </style>
