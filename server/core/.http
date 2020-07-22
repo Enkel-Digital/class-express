@@ -43,6 +43,7 @@ content-type: application/json
 }
 
 ### Get User
+# GET /user/:userEmail
 GET {{host}}/user/jj@enkeldigital.com
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
@@ -52,16 +53,19 @@ GET {{host}}/subscription/plans/all
 ### Get new verification email
 # This does not need any authorization as user needs to access this before they are even logged in.
 # However, this is auto rate limited by firebase Auth
+# POST /emailActionLinks/resendVerificationEmail/:email
 POST {{host}}/emailActionLinks/resendVerificationEmail/jj@enkeldigital.com
 
 ### Get Topup Options
 GET {{host}}/topup/options
 
 ### Get user's points
+# GET /points/:userID
 GET {{host}}/points/1
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Get favourites
+# GET /favourites/:userID
 GET {{host}}/favourites/1
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
@@ -88,26 +92,33 @@ content-type: application/json
 }
 
 ### Get user's plan
+# GET /subscription/:userID
 GET {{host}}/subscription/1
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Get class details
+# GET /class/details/:classID
 GET {{host}}/class/details/1
 
 ### Get Partner
+# GET /partner/details/:classID
 GET {{host}}/partner/details/1
 
 ### Get class reviews
+# GET /reviews/class/:classID
 GET {{host}}/reviews/class/1
 
 ### Get partner reviews
+# GET /reviews/partner/:partnerID
 GET {{host}}/reviews/partner/3
 
 ### Get user's classes (upcoming & past)
+# GET /class/user/:userID
 GET {{host}}/class/user/1
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Create new review
+# POST /reviews/new/:classID
 POST {{host}}/reviews/new/1
 Authorization: Bearer {{getAuth.response.body.idToken}}
 content-type: application/json

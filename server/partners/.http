@@ -34,29 +34,36 @@ GET {{host}}/
 GET {{host}}/health
 
 ### Get user
+# GET /user/:userEmail
 GET {{host}}/user/jj@enkeldigital.com
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Get class
+# GET /class/details/:classID
 GET {{host}}/class/details/1
 
 ### Get class of partner
+# GET /class/of/:partnerID
 GET {{host}}/class/of/1
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Favourite count of class
+# GET /favourites/class/:classID
 GET {{host}}/favourites/class/2
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Favourite count of partner
+# GET /favourites/partner/:partnerID
 GET {{host}}/favourites/partner/1
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Favourite count of all classes from a partner
+# GET /favourites/all-classes/of/:partnerID
 GET {{host}}/favourites/all-classes/of/1
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Get pending points
+# GET /points/pending/:partnerID
 GET {{host}}/points/pending/3
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
@@ -66,6 +73,7 @@ GET {{host}}/points/valid/3
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Get all points earned from class
+# GET /points/class/:classID
 GET {{host}}/points/class/:classID
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
@@ -84,7 +92,8 @@ content-type: application/json
 }
 
 ### Get all employees
-GET {{host}}/employees/all/:partnerID
+# GET /employees/all/:partnerID
+GET {{host}}/employees/all/1
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Create new employee
@@ -102,7 +111,8 @@ content-type: application/json
 }
 
 ### Update employee details
-PATCH {{host}}/employees/:employeeID
+# PATCH /employees/:employeeID
+PATCH {{host}}/employees/3
 Authorization: Bearer {{getAuth.response.body.idToken}}
 content-type: application/json
 
@@ -113,17 +123,21 @@ content-type: application/json
 }
 
 ### Get individual employee details
-GET {{host}}/employees/:employeeID
+# GET /employees/:employeeID
+GET {{host}}/employees/3
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Delete employee account
-DELETE {{host}}/employees/:employeeID
+# DELETE /employees/:employeeID
+DELETE {{host}}/employees/3
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Delete partner account
-DELETE {{host}}/partner/:partnerID
+# DELETE /partner/:partnerID
+DELETE {{host}}/partner/1
 Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Update partner details
-DELETE {{host}}/partner/:partnerID
+# PATCH /partner/:partnerID
+PATCH {{host}}/partner/1
 Authorization: Bearer {{getAuth.response.body.idToken}}
