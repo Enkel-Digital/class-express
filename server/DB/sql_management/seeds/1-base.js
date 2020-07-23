@@ -5,6 +5,8 @@
 
 const unixseconds = require("unixseconds");
 const start = unixseconds();
+const { RRule, RRuleSet } = require("rrule");
+const moment = require("moment");
 // 30 Days in seconds
 const periodLengthInSeconds = 30 * 24 * 60 * 60; // 30 days, 24 hours, 60 mins, 60 seconds
 
@@ -238,6 +240,77 @@ exports.seed = async function (knex) {
       maxParticipants: 20,
       pictureSources:
         "https://www.fetimes.co.kr/news/photo/201709/60017_41960_2138.jpg",
+    },
+  ]);
+
+  await knex("classSchedule").insert([
+    {
+      classID: 1,
+      rruleSet: (function () {
+        const rruleSet = new RRuleSet();
+
+        // Add a rrule to rruleSet
+        rruleSet.rrule(
+          new RRule({
+            freq: RRule.WEEKLY,
+            dtstart: moment().add(1, "days").toDate(),
+            count: 10,
+          })
+        );
+
+        // Add a date to rruleSet that does not lie in the reccurence pattern
+        rruleSet.rdate(moment().add(2, "days").toDate());
+
+        // Add a exclusion rrule to rruleSet
+        // For example, the first day of every month
+        rruleSet.exrule(
+          new RRule({
+            freq: RRule.MONTHLY,
+            count: 10,
+            dtstart: moment().add(1, "days").toDate(),
+            bymonthday: 1,
+          })
+        );
+
+        // Add a date to exclude from the rruleSet
+        rruleSet.exdate(moment().add(8, "days").toDate());
+
+        return rruleSet.toString();
+      })(),
+    },
+    {
+      classID: 2,
+      rruleSet: (function () {
+        const rruleSet = new RRuleSet();
+
+        // Add a rrule to rruleSet
+        rruleSet.rrule(
+          new RRule({
+            freq: RRule.WEEKLY,
+            dtstart: moment().add(2, "days").toDate(),
+            count: 10,
+          })
+        );
+
+        // Add a date to rruleSet that does not lie in the reccurence pattern
+        rruleSet.rdate(moment().add(3, "days").toDate());
+
+        // Add a exclusion rrule to rruleSet
+        // For example, the first day of every month
+        rruleSet.exrule(
+          new RRule({
+            freq: RRule.MONTHLY,
+            count: 10,
+            dtstart: moment().add(2, "days").toDate(),
+            bymonthday: 1,
+          })
+        );
+
+        // Add a date to exclude from the rruleSet
+        rruleSet.exdate(moment().add(9, "days").toDate());
+
+        return rruleSet.toString();
+      })(),
     },
   ]);
 

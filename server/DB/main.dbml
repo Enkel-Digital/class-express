@@ -169,14 +169,14 @@ Table classTags {
   tag varchar [not null]
 }
 
-// FS or PG
-// Each row will be a individual RRULE?
-// @todo
+// PG
+// Every row is a rruleSet string for a single class
 Table classSchedule {
   id bigint [pk, increment, not null]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   classID int [ref: > classes.id, not null]
-  // @todo Either createAt or updatedAt to track when this is updated for analytics purposes
-  // createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  // @todo Add updatedAt to track when this is updated for analytics purposes
+  rruleSet varchar [not null]
 }
 
 // PG or FS
