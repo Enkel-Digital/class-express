@@ -19,6 +19,7 @@ async function addNewObjectMiddleware(req, res) {
       location_address,
       pictureSources,
       points,
+      _tags,
     } = req.body;
 
     const saveRecord = await index.saveObject({
@@ -30,6 +31,7 @@ async function addNewObjectMiddleware(req, res) {
       location_address,
       pictureSources,
       points,
+      _tags,
     });
 
     if (!saveRecord) {

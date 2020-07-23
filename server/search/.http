@@ -22,13 +22,14 @@ POST {{host}}/new/class
 content-type: application/json
 
 {
-      "id":1,
+      "id":3,
       "name":"zzk",
       "description":"qqw",
       // eslint-disable-next-line camelcase
       "location_address":"231",
       "pictureSources":"",
-      "points":1
+      "points":1,
+      "_tags":["1","2","3"]
 }
 
 ### Add new search object (partner)
@@ -42,7 +43,8 @@ content-type: application/json
       // eslint-disable-next-line camelcase
       "location_address":"231",
       "pictureSources":"",
-      "points":1
+      "points":1,
+      "_tags":["1","2","3"]
 }
 
 ### Mass insert new search objects
@@ -56,7 +58,8 @@ content-type: application/json
     "description": "qqw",
     "location_address": "231",
     "pictureSources": "",
-    "points": 1
+    "points": 1,
+    "_tags":["1","2","3"]
   },
   {
     "id": 3,
@@ -64,7 +67,8 @@ content-type: application/json
     "description": "qqw",
     "location_address": "231",
     "pictureSources": "",
-    "points": 1
+    "points": 1,
+    "_tags":["1","2","3"]
   }
 ]
 
@@ -80,7 +84,8 @@ content-type: application/json
     "description": "qqw",
     "location_address": "231",
     "pictureSources": "",
-    "points": 1
+    "points": 1,
+    "_tags":["1","2","3"]
   },
   {
     "id": 3,
@@ -88,7 +93,8 @@ content-type: application/json
     "description": "qqw",
     "location_address": "231",
     "pictureSources": "",
-    "points": 1
+    "points": 1,
+    "_tags":["1","2","3"]
   }
 ]
 
@@ -104,7 +110,8 @@ content-type: application/json
       // eslint-disable-next-line camelcase
       "location_address":"231",
       "pictureSources":"",
-      "points":1
+      "points":1,
+      "_tags":["1","2","3"]
 }
 
 ### Update search object (partner)
@@ -119,7 +126,8 @@ content-type: application/json
       // eslint-disable-next-line camelcase
       "location_address":"231",
       "pictureSources":"",
-      "points":1
+      "points":1,
+      "_tags":["1","2","3"]
 }
 
 ### Delete search object (class)
@@ -128,7 +136,7 @@ DELETE {{host}}/class/1
 content-type: application/json
 
 {
-      "id":1,
+      "id":3,
       "name":"zzk",
       "description":"qqw",
       // eslint-disable-next-line camelcase
@@ -143,7 +151,7 @@ DElETE {{host}}/partner/1
 content-type: application/json
 
 {
-      "id":1,
+      "id":11,
       "name":"zzk",
       "description":"qqw",
       // eslint-disable-next-line camelcase

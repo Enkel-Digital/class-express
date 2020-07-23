@@ -19,6 +19,7 @@ async function partialUpdateObjectMiddleware(req, res) {
       location_address,
       pictureSources,
       points,
+      _tags,
     } = req.body;
 
     const saveRecord = await index.partialUpdateObject(
@@ -31,6 +32,7 @@ async function partialUpdateObjectMiddleware(req, res) {
         location_address,
         pictureSources,
         points,
+        _tags,
       },
       { createIfNotExists: false }
     );

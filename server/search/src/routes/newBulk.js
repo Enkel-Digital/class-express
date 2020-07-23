@@ -19,6 +19,7 @@ async function addNewObjectsMiddleware(req, res) {
       location_address: reqBody.location_address,
       pictureSources: reqBody.pictureSources,
       points: reqBody.points,
+      _tags: reqBody._tags,
     }));
 
     const saveRecord = await index.saveObjects(req.body);
