@@ -1,0 +1,39 @@
+// https://www.dbml.org/docs/
+
+// Legend:
+// Trimmable (Attribute) -> Data that can be warehoused by deleting older data from production after backing up everything into data warehouse
+
+Project SearchService {
+  database_type: 'Algolia'
+  Note: 'DB for Class Express Search Service'
+}
+
+//generic table for classes and partners
+Table  searchObject{
+  id int [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] 
+  classID int [ref: > classes.id, null]
+  partnerID int [ref: > parters.id, null]
+  name varchar [not null]
+  description varchar [not null]
+  location_address varchar [not null] // for classes location of parter should be used if no custom class location 
+  pictureSources varchar [null]
+  points int [null] // can be null for partners
+}
+
+// Tags describing the classes
+Table classTags {
+  id bigint [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  classID int [ref: > classes.id, not null]
+  tag varchar [not null]
+}
+
+//  search a type or category
+// "_tags"
+//  https://www.algolia.com/doc/guides/managing-results/refine-results/filtering/how-to/filter-by-tags/
+
+// customizing ranking
+// If you want the most popular class to appear first in results
+// then we may need 'likes' 'sales' ?
+// https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/
