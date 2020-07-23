@@ -246,7 +246,7 @@ exports.seed = async function (knex) {
   await knex("classSchedule").insert([
     {
       classID: 1,
-      rruleSet: (function () {
+      rruleSetString: (function () {
         const rruleSet = new RRuleSet();
 
         // Add a rrule to rruleSet
@@ -280,7 +280,7 @@ exports.seed = async function (knex) {
     },
     {
       classID: 2,
-      rruleSet: (function () {
+      rruleSetString: (function () {
         const rruleSet = new RRuleSet();
 
         // Add a rrule to rruleSet

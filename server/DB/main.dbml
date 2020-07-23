@@ -176,7 +176,7 @@ Table classSchedule {
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   classID int [ref: > classes.id, not null]
   // @todo Add updatedAt to track when this is updated for analytics purposes
-  rruleSet varchar [not null]
+  rruleSetString varchar [not null]
 }
 
 // PG or FS
