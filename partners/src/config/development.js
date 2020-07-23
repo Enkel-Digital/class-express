@@ -6,6 +6,6 @@
 // Using this instead of es6 module syntax for easier export syntax + import destructuring.
 module.exports = {
   // URL cannot have ending slash "/"
-  apiUrl: "http://localhost:3000",
+  apiUrl: "http://localhost:3001",
   errorApiEndpoint: "http://localhost:3000/error",
 };

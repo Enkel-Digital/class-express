@@ -331,6 +331,11 @@ export default {
       ],
       ownerGeneralTabs: [
         {
+          icon: "mdi-cog",
+          text: "Profile",
+          link: { name: "partnerProfile" },
+        },
+        {
           icon: "mdi-account-group",
           text: "Manage Employee",
           link: { name: "manage-employee" },

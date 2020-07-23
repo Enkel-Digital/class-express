@@ -77,10 +77,11 @@ const routes = [
     props: true,
   },
   {
-    path: "/profile",
-    name: "profile",
-    component: () => import("@/views/Profile.vue"),
+    path: "/partnerProfile/:partnerID",
+    name: "partnerProfile",
+    component: () => import("@/views/PartnerProfile.vue"),
     meta: { Auth_requirements: AuthType.private },
+    props: true,
   },
   {
     path: "/settings",
