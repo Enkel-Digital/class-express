@@ -16,3 +16,47 @@ GET {{host}}/
 
 ### Health probe
 GET {{host}}/health
+
+### Create Customer
+POST {{host}}/user/create/customer
+content-type: application/json
+
+{
+    "userAccountID": "1",
+    "userDetails": {
+        "email": "api_tester@email.com",
+        "name": "Tester"
+    }
+}
+
+### Search Customer
+# GET /user/exists/:userID
+GET {{host}}/user/exists/1
+
+### Create Stripe Payment Method
+POST {{host}}/user/create/paymentMethod
+content-type: application/json
+
+{
+    "userAccountID": "1",
+    "type": "card",
+    "card": {
+        "number": "4242424242424242",
+        "exp_month": 7,
+        "exp_year": 2024,
+        "cvc": "424"
+    },
+    "billingDetails": {
+        "email": "ewqweewq@email.com",
+        "name": "James"
+    }
+}
+
+### Update Subscription Plan
+# POST /plans/update/:planID
+POST {{host}}/plans/update/3
+content-type: application/json
+
+{
+    "userAccountID":"1"
+}

@@ -33,15 +33,6 @@ GET {{host}}/
 ### Health probe
 GET {{host}}/health
 
-### new error
-POST {{host}}/error
-content-type: application/json
-
-{
-    "name": "sample",
-    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
-}
-
 ### Get User
 # GET /user/:userEmail
 GET {{host}}/user/jj@enkeldigital.com
