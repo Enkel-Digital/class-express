@@ -17,7 +17,6 @@ const logger = createLogger("routes:points");
 /**
  * Get a user's points, if new user, create default points object and save it
  * @name GET /points/:userID
- * @function
  * @returns {object} User's points object
  */
 router.get("/:userID", async (req, res) => {

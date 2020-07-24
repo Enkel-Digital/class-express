@@ -19,7 +19,6 @@ const logger = createLogger("routes:users");
 /**
  * Get user details object
  * @name GET /user/:userEmail
- * @function
  * @returns {object} User object
  */
 router.get("/:userEmail", onlyOwnResource, async (req, res) => {
@@ -42,7 +41,6 @@ router.get("/:userEmail", onlyOwnResource, async (req, res) => {
 /**
  * Create new user details object
  * @name POST /user/new/
- * @function
  * @param {String} userID
  * @param {Object} user
  * @returns {object} success indicator
@@ -69,7 +67,6 @@ router.post("/new", express.json(), async (req, res) => {
 /**
  * Update user details object
  * @name PUT /user/:userID
- * @function
  * @returns {object} success indicator
  */
 router.put("/", (req, res) => {

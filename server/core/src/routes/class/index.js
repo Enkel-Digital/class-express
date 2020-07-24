@@ -17,7 +17,6 @@ const logger = createLogger("routes:class");
 /**
  * Get class details
  * @name GET /class/details/:classID
- * @function
  * @returns {object} Class object
  */
 router.get("/details/:classID", async (req, res) => {
@@ -40,7 +39,6 @@ router.get("/details/:classID", async (req, res) => {
 /**
  * Compute schedule of a class with given classID on the given date
  * @name GET /class/schedule/:classID/:date
- * @function
  * @returns {object} Array of available timings for the selected class and date
  */
 router.get("/schedule/:classID/:date?", async (req, res) => {

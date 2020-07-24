@@ -15,7 +15,6 @@ const logger = createLogger("routes:partner");
 /**
  * Get partner details
  * @name GET /partner/details/:partnerID
- * @function
  * @returns {object} Partner object
  */
 router.get("/details/:partnerID", async (req, res) => {

@@ -19,7 +19,6 @@ const logger = createLogger("routes:favourites");
 /**
  * Get number of favourites for a particular class
  * @name GET /favourites/class/:classID
- * @function
  * @returns {object} favourites count
  */
 router.get("/class/:classID", onlyOwnResource, async (req, res) => {
@@ -44,7 +43,6 @@ router.get("/class/:classID", onlyOwnResource, async (req, res) => {
 /**
  * Get number of favourites for a particular partner
  * @name GET /favourites/partner/:partnerID
- * @function
  * @returns {object} favourites count
  */
 router.get("/partner/:partnerID", onlyOwnResource, async (req, res) => {
@@ -69,7 +67,6 @@ router.get("/partner/:partnerID", onlyOwnResource, async (req, res) => {
 /**
  * Get number of favourites across all classes of a partner
  * @name GET /favourites/all-classes/of/:partnerID
- * @function
  * @returns {object} favourites count
  */
 router.get("/all-classes/of/:partnerID", onlyOwnResource, async (req, res) => {

@@ -19,7 +19,6 @@ const logger = createLogger("routes:settings");
 /**
  * Get user's settings
  * @name GET /settings/user/:userID
- * @function
  * @returns {object} settings object
  */
 router.get("/user/:userID", onlyOwnResource, async (req, res) => {
@@ -39,7 +38,6 @@ router.get("/user/:userID", onlyOwnResource, async (req, res) => {
 /**
  * Update settings
  * @name POST /settings/update
- * @function
  * @param {String} userID
  * @param {number} settings Settings to be merged into original settings object
  * or like whole object

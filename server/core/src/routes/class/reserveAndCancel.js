@@ -21,7 +21,6 @@ const logger = createLogger("routes:class");
 /**
  * Reserve a class
  * @name POST /class/reserve
- * @function
  * @param {String} userID
  * @param {String} classID
  * @param {Object} selectedTime
@@ -99,7 +98,6 @@ router.post("/reserve", auth, express.json(), async (req, res) => {
 /**
  * Cancel a class reservation
  * @name POST /class/cancel
- * @function
  * @param {String} userID
  * @param {String} classID
  * @param {Object} selectedTime

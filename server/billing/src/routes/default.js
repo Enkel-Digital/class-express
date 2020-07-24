@@ -16,7 +16,6 @@ const router = express.Router();
 /**
  * Returns a welcome string
  * @name GET /
- * @function
  * @returns {String} welcome string
  */
 router.get("/", (_, res) => res.status(200).send("CE-Billing service"));
@@ -24,7 +23,6 @@ router.get("/", (_, res) => res.status(200).send("CE-Billing service"));
 /**
  * Server health check
  * @name GET /health
- * @function
  * @returns {Status} 200
  *
  * @notice Use this for both Kubernetes Liveness and Readiness probe.

@@ -21,7 +21,6 @@ const unixseconds = require("unixseconds");
 /**
  * Get subscriptionplans
  * @name GET /subscription/plans/all
- * @function
  * @returns {object} List of subscription plans
  */
 router.get("/plans/all", async (req, res) => {
@@ -46,7 +45,6 @@ router.get("/plans/all", async (req, res) => {
 /**
  * Get users' subscription plan
  * @name GET /subscription/:userID
- * @function
  * @returns {object} Full Subscription plan objects if any
  */
 router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
@@ -118,7 +116,6 @@ async function setNewPlan(userID, nowTS, subscriptionPlanID) {
 /**
  * Update or purchase plans
  * @name POST /subscription/update
- * @function
  * @param {String} userID
  * @param {String} subscriptionPlanID
  * @returns {object} success indicator
@@ -202,7 +199,6 @@ router.post(
  * @todo Do I need a undo cancel too?
  * Request to cancel subscription plan
  * @name POST /subscription/cancel
- * @function
  * @param {String} userID
  * @returns {object} success indicator
  */

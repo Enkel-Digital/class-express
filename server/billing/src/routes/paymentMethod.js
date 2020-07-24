@@ -7,7 +7,6 @@ const { getStripeCustomerId } = require("../db/getCustomer");
 /**
  * Checks if payment method object exists for this userID
  * @name GET /user/paymentMethod/available/:userID
- * @function
  * @returns {object} payment method
  */
 router.get("/available/:userID", async (req, res) => {
@@ -37,7 +36,6 @@ router.get("/available/:userID", async (req, res) => {
 /**
  * Create a new payment method
  * @name POST /paymentMethod/create
- * @function
  * @param {string} userAccountId  userAccount ID to set as doc ID in firestore
  * @param {string} type type of the payment method
  * @param {object} card card info including card number, expiration month,expiration year,cvc
@@ -92,7 +90,6 @@ router.post("/create", express.json(), async (req, res) => {
  * Save a payment method ID in db
  * Update customer default payment method
  * @name POST /paymentMethod/save
- * @function
  * @param {string} userAccountId  userAccount ID to set as doc ID in firestore
  * @param {string} paymentMethodID paymentMethod ID
  * @returns {object} success indicator

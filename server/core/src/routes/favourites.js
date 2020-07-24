@@ -19,7 +19,6 @@ const logger = createLogger("routes:favourites");
 /**
  * Get users' favourites, including BOTH favourite classes and favourite partners
  * @name GET /favourites/:userID
- * @function
  * @returns {object} favourites object
  */
 router.get("/:userID", onlyOwnResource, async (req, res) => {
@@ -61,7 +60,6 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
 /**
  * Favourite or un-favourite a class
  * @name POST /favourites/classes/update
- * @function
  * @param {String} userID
  * @param {number} classID Class with classID to update favourite status
  * @param {boolean} favourite True to set as favourite and false to unfavourite
@@ -98,7 +96,6 @@ router.post("/classes/update", express.json(), async (req, res) => {
 /**
  * Favourite or un-favourite a partner
  * @name POST /favourites/partner/update
- * @function
  * @param {String} userID
  * @param {number} partnerID Partner with partnerID to update favourite status
  * @param {boolean} favourite True to set as favourite and false to unfavourite

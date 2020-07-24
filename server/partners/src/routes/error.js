@@ -11,7 +11,6 @@ const router = express.Router();
 /**
  * Report a new error
  * @name POST /error
- * @function
  * @returns {object} success indicator and message
  */
 router.post("/", express.json(), (req, res) => {

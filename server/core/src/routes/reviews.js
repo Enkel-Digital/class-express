@@ -18,7 +18,6 @@ const logger = createLogger("routes:reviews");
 /**
  * Get reviews for a class
  * @name GET /reviews/class/:classID
- * @function
  * @returns {object} Array of Class review objects
  */
 router.get("/class/:classID", async (req, res) => {
@@ -65,7 +64,6 @@ router.get("/class/:classID", async (req, res) => {
 /**
  * Get reviews for a partner
  * @name GET /reviews/partner/:partnerID
- * @function
  * @returns {object} Partner Reviews object
  *
  * @todo To implement
@@ -121,7 +119,6 @@ router.get("/partner/:partnerID", async (req, res) => {
 /**
  * Leave a new review after user have attended a class
  * @name POST /reviews/new/:classID
- * @function
  * @param {String} userID
  * @param {String} description
  * @param {Number} points

@@ -18,7 +18,6 @@ const logger = createLogger("routes:topup");
 /**
  * Get all topupOptions
  * @name GET /topup/options
- * @function
  * @returns {object} List of topup options
  */
 router.get("/options", async (req, res) => {
@@ -43,7 +42,6 @@ router.get("/options", async (req, res) => {
 /**
  * Purchase a topup. Uses Stripe API / Billing service
  * @name POST /topup/purchase
- * @function
  * @param userID
  * @param topupID
  * @returns {object} Success indicator

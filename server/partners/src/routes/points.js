@@ -18,7 +18,6 @@ const logger = createLogger("routes:points");
 /**
  * Get pending points of partner where user booked class, but class have yet to end
  * @name GET /points/pending/:partnerID
- * @function
  * @returns {object} Points
  */
 router.get("/pending/:partnerID", async (req, res) => {
@@ -48,7 +47,6 @@ router.get("/pending/:partnerID", async (req, res) => {
 /**
  * Get points of partner where class has ended
  * @name GET /points/valid/:partnerID
- * @function
  * @returns {object} Points
  */
 router.get("/valid/:partnerID", async (req, res) => {

@@ -14,7 +14,6 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
 /**
  * Simple wrapper NEEDED to simplify "send" method's API
- * @function
  * @param {Object} emailContent Content object to be sent out
  */
 module.exports = (emailContent) => sendgrid.send(emailContent);

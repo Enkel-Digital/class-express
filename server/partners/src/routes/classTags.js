@@ -21,7 +21,6 @@ const logger = createLogger("routes:users");
 /**
  * Get all tags of a class
  * @name GET /tags/class/:classID
- * @function
  * @param {String} classID
  * @returns {Array} An array of class tags
  */
@@ -45,7 +44,6 @@ router.get("/:classID", onlyOwnResource, async (req, res) => {
 /**
  * Add new tag(s) for a class
  * @name POST /tags/class/new
- * @function
  * @param {String} classID
  * @param {Array} tags
  * @returns {object} success indicator

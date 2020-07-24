@@ -19,7 +19,6 @@ const unixseconds = require("unixseconds");
 /**
  * Get subscriptionplans
  * @name GET /subscription/plans/all
- * @function
  * @returns {object} List of subscription plans
  */
 router.get("/plans/all", async (req, res) => {
@@ -76,7 +75,6 @@ async function getPlans(userID) {
 /**
  * Get users' subscription plan
  * @name GET /subscription/:userID
- * @function
  * @returns {object} Full Subscription plan objects if any
  */
 router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
@@ -96,7 +94,6 @@ router.get("/:userID", auth, onlyOwnResource, async (req, res) => {
 /**
  * Update or purchase plans
  * @name POST /subscription/plans/update
- * @function
  * @param {String} userID
  * @param {String} subscriptionPlanID
  * @returns {object} success indicator
@@ -223,7 +220,6 @@ router.post(
 /**
  * Request to cancel subscription plan
  * @name POST /subscription/cancel
- * @function
  * @returns {object} success indicator
  */
 router.post("/cancel", auth, async (req, res) => {

@@ -17,7 +17,6 @@ const logger = createLogger("routes:class");
 /**
  * Get user's schedule/classes (both past and upcoming classes)
  * @name GET /class/user/:userID
- * @function
  * @todo Allow query strings to specify the date to filter by?
  * @param {String} [date] unix seconds
  * @returns {object} User class objects

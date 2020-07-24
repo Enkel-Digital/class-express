@@ -6,7 +6,6 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 /**
  * Checks if customer object exists for this userID
  * @name GET /user/exists/:userID
- * @function
  * @returns {object} customer ID and paymethod ID
  */
 router.get("/exists/:userID", async (req, res) => {
@@ -30,7 +29,6 @@ router.get("/exists/:userID", async (req, res) => {
 /**
  * Create a new customer
  * @name POST /user/create/customer
- * @function
  * @param {object} userDetails
  * @param {string} userAccountI  userAccount ID to set as doc ID in firestore
  * @returns {object} success indicator with customer object and doc reference ID

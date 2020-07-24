@@ -16,7 +16,6 @@ const logger = createLogger("routes:emailActionLinks");
 /**
  * Request for a new verification email to verify email address
  * @name POST /emailActionLinks/resendVerificationEmail
- * @function
  * @params {string} email Email address
  * @returns {object} User object
  *
