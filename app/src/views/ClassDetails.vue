@@ -1,7 +1,7 @@
 <template>
   <!-- @todo Change clas && partner v-if gaurd -->
   <!-- @todo show loading action either with something on v-else or with loader -->
-  <v-content v-if="clas && partner" id="ClassDetails">
+  <v-main v-if="clas && partner" id="ClassDetails">
     <v-app-bar app color="white" flat fixed>
       <BackBtn />
 
@@ -176,7 +176,7 @@
     </v-container>
 
     <!-- @todo Perhaps have a similiar classes/partners thing? -->
-  </v-content>
+  </v-main>
 </template>
 
 <script>

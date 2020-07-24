@@ -1,5 +1,5 @@
 <template>
-  <v-content class="favourite">
+  <v-main class="favourite">
     <v-app-bar app flat color="white">
       <v-toolbar-title style="font-weight: bold;">Favourites</v-toolbar-title>
 
@@ -37,7 +37,7 @@
         <FavouriteClasses />
       </v-tab-item>
     </v-tabs-items>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

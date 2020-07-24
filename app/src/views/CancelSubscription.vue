@@ -1,5 +1,5 @@
 <template>
-  <v-content id="cancel-subscription">
+  <v-main id="cancel-subscription">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Cancel Subscription</v-toolbar-title>
@@ -74,7 +74,7 @@
     >
       submit & cancel plan
     </v-btn>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

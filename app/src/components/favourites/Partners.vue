@@ -1,5 +1,5 @@
 <template>
-  <v-content style="padding: 0;">
+  <v-main style="padding: 0;">
     <v-responsive v-if="favouritePartners.length">
       <v-card
         v-for="partner in favouritePartners"
@@ -57,7 +57,7 @@
     <v-responsive v-else>
       Add partners to your favourites now!
     </v-responsive>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

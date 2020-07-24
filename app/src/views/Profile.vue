@@ -1,5 +1,5 @@
 <template>
-  <v-content id="profile">
+  <v-main id="profile">
     <v-app-bar app flat color="white">
       <v-toolbar-title style="font-weight: bold; color: orange;">
         <!-- <v-toolbar-title style="font-weight: bold; color: grey;"> -->
@@ -104,7 +104,7 @@
         </v-list-item>
       </v-card>
     </v-responsive>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

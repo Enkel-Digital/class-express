@@ -1,5 +1,5 @@
 <template>
-  <v-content class="reviews">
+  <v-main class="reviews">
     <!-- Allow user to skip review with exit to Home -->
     <v-row class="mt-2">
       <v-col cols="1">
@@ -50,7 +50,7 @@
     >
       submit
     </v-btn>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

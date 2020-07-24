@@ -1,5 +1,5 @@
 <template>
-  <v-content id="login">
+  <v-main id="login">
     <v-img
       alt="ClassExpress logo"
       src="../assets/logo.png"
@@ -54,7 +54,7 @@
     <br />
     <br />
     <br />
-  </v-content>
+  </v-main>
 </template>
 
 <script>

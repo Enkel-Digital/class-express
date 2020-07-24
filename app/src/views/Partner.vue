@@ -1,5 +1,5 @@
 <template>
-  <v-content id="partner" v-if="partner">
+  <v-main id="partner" v-if="partner">
     <v-app-bar app color="white" flat fixed>
       <BackBtn />
 
@@ -95,7 +95,7 @@
     </v-container>
 
     <!-- Perhaps have a similiar classes/partners thing? -->
-  </v-content>
+  </v-main>
 </template>
 
 <script>
