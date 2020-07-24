@@ -7,6 +7,7 @@ const auth = require("../middleware/auth");
 // Mount all the routes onto their respective base routes
 router.use("/", require("./default"));
 router.use("/class", require("./class"));
+router.use("/schedule", require("./schedule"));
 router.use("/partner", require("./partner"));
 router.use("/user", auth, require("./users"));
 router.use("/favourites", auth, require("./favourites"));

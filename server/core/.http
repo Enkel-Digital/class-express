@@ -92,8 +92,8 @@ Authorization: Bearer {{getAuth.response.body.idToken}}
 GET {{host}}/class/details/1
 
 ### Get class schedule
-# GET /class/schedule/:classID/:date?
-GET {{host}}/class/schedule/1/
+# GET /schedule/class/:classID/:date?
+GET {{host}}/schedule/class/1/
 
 ### Get Partner
 # GET /partner/details/:classID
