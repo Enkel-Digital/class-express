@@ -1,5 +1,5 @@
 <template>
-  <v-content class="ClassDetails">
+  <v-main class="ClassDetails">
     <v-app-bar app color="white" flat fixed>
       <BackBtn />
 
@@ -72,7 +72,7 @@
         </span>
       </v-tab-item>
     </v-tabs>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

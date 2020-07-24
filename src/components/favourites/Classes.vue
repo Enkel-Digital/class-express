@@ -1,5 +1,5 @@
 <template>
-  <v-content style="padding: 0;">
+  <v-main style="padding: 0;">
     <v-responsive v-if="favouriteClasses.length">
       <v-card
         v-for="clas in favouriteClasses"
@@ -69,7 +69,7 @@
     <v-responsive v-else>
       Add classes to your favourites now!
     </v-responsive>
-  </v-content>
+  </v-main>
 </template>
 
 <script>
@@ -82,6 +82,7 @@ export default {
   },
   computed: {
     ...mapGetters("classes", ["favouriteClasses"]),
+    // @todo update this to do in computed as a standalone method
     ...mapState("classes", ["partners"]),
   },
   watch: {

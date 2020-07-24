@@ -1,5 +1,5 @@
 <template>
-  <v-content class="upcoming">
+  <v-main class="upcoming">
     <!-- <v-app-bar app color="orange lighten-1" flat dark> -->
     <v-app-bar app flat color="white">
       <v-toolbar-title style="font-weight: bold;">
@@ -22,7 +22,7 @@
     <v-responsive v-else>
       No Upcoming Classes.
     </v-responsive>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <v-content id="explore">
+  <v-main id="explore">
     <v-app-bar app flat color="white">
       <v-toolbar-title style="font-weight: bold;">Explore</v-toolbar-title>
     </v-app-bar>
@@ -174,7 +174,7 @@
         </div>
       </div>
     </ais-instant-search>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

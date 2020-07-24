@@ -1,5 +1,5 @@
 <template>
-  <v-content class="upcoming">
+  <v-main class="upcoming">
     <v-app-bar app flat color="white">
       <v-toolbar-title style="font-weight: bold;">
         Past Classes
@@ -67,7 +67,7 @@
       You have not attended any classes yet!
       <v-btn :to="{ name: 'explore' }">Find a class now!</v-btn>
     </v-responsive>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

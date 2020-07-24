@@ -1,5 +1,5 @@
 <template>
-  <v-content
+  <v-main
     id="subscription"
     v-touch="{ right: () => $router.push({ name: 'profile' }) }"
   >
@@ -184,7 +184,7 @@
         </v-list-item-content>
       </v-list-item>
     </v-card>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

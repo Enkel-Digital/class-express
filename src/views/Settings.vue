@@ -1,5 +1,5 @@
 <template>
-  <v-content class="settings">
+  <v-main class="settings">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Settings</v-toolbar-title>
@@ -155,7 +155,7 @@
         Logout
       </v-list-item>
     </v-list>
-  </v-content>
+  </v-main>
 </template>
 
 <script>
