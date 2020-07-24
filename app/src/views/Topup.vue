@@ -22,6 +22,7 @@
       outlined
       style="text-align: left;"
       :to="{ name: 'subscription' }"
+      replace
     >
       <v-list-item>
         <v-list-item-content>
@@ -77,6 +78,7 @@
       outlined
       style="text-align: left;"
       :to="{ name: 'subscription' }"
+      replace
     >
       <v-list-item>
         <v-list-item-content>
@@ -99,6 +101,7 @@
       outlined
       style="text-align: left;"
       :to="{ name: 'faq' }"
+      replace
     >
       <v-list-item>
         <v-list-item-content>
