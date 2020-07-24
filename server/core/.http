@@ -3,6 +3,8 @@
 @port = 3000
 @host = {{hostname}}:{{port}}
 @firebaseAuthApiKey = AIzaSyAXQkdXjxHpZbEYNTXoyfyBXfWVEbm-tCA
+@authToken = Bearer {{getAuth.response.body.idToken}}
+@authHeader = Authorization: {{authToken}}
 
 ### Create api_tester account if none
 # @name signUp
@@ -35,8 +37,8 @@ GET {{host}}/health
 
 ### Get User
 # GET /user/:userEmail
-GET {{host}}/user/jj@enkeldigital.com
-Authorization: Bearer {{getAuth.response.body.idToken}}
+GET {{host}}/user/social@enkeldigital.com
+{{authHeader}}
 
 ### Get all subscription plans
 GET {{host}}/subscription/plans/all
@@ -45,7 +47,7 @@ GET {{host}}/subscription/plans/all
 # This does not need any authorization as user needs to access this before they are even logged in.
 # However, this is auto rate limited by firebase Auth
 # POST /emailActionLinks/resendVerificationEmail/:email
-POST {{host}}/emailActionLinks/resendVerificationEmail/jj@enkeldigital.com
+POST {{host}}/emailActionLinks/resendVerificationEmail/social@enkeldigital.com
 
 ### Get Topup Options
 GET {{host}}/topup/options
@@ -53,16 +55,16 @@ GET {{host}}/topup/options
 ### Get user's points
 # GET /points/:userID
 GET {{host}}/points/1
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Get favourites
 # GET /favourites/:userID
 GET {{host}}/favourites/1
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Update favourite class
 POST {{host}}/favourites/classes/update
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 content-type: application/json
 
 {
@@ -73,7 +75,7 @@ content-type: application/json
 
 ### Update favourite partner
 POST {{host}}/favourites/partner/update
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 content-type: application/json
 
 {
@@ -85,7 +87,7 @@ content-type: application/json
 ### Get user's plan
 # GET /subscription/:userID
 GET {{host}}/subscription/1
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Get class details
 # GET /class/details/:classID
@@ -110,12 +112,12 @@ GET {{host}}/reviews/partner/3
 ### Get user's classes (upcoming & past)
 # GET /class/user/:userID
 GET {{host}}/class/user/1
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Create new review
 # POST /reviews/new/:classID
 POST {{host}}/reviews/new/1
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 content-type: application/json
 
 {
@@ -126,7 +128,7 @@ content-type: application/json
 
 ### Update user's plan
 POST {{host}}/subscription/update
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 content-type: application/json
 
 {
@@ -136,7 +138,7 @@ content-type: application/json
 
 ### Reserve a class
 POST {{host}}/class/reserve
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 content-type: application/json
 
 {
@@ -147,7 +149,7 @@ content-type: application/json
 
 ### Cancel a reservation
 POST {{host}}/class/cancel
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 content-type: application/json
 
 {
@@ -158,7 +160,7 @@ content-type: application/json
 
 ### Cancel user's plan
 POST {{host}}/subscription/cancel
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 content-type: application/json
 
 {

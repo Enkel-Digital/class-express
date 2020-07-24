@@ -3,6 +3,8 @@
 @port = 3001
 @host = {{hostname}}:{{port}}
 @firebaseAuthApiKey = AIzaSyA6WspXWorAK_1HiwLAVht7-ujoUDdWsAs
+@authToken = Bearer {{getAuth.response.body.idToken}}
+@authHeader = Authorization: {{authToken}}
 
 ### Create api_tester account if none
 # @name signUp
@@ -36,7 +38,7 @@ GET {{host}}/health
 ### Get user
 # GET /user/:userEmail
 GET {{host}}/user/jj@enkeldigital.com
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Get class
 # GET /class/details/:classID
@@ -45,37 +47,37 @@ GET {{host}}/class/details/1
 ### Get class of partner
 # GET /class/of/:partnerID
 GET {{host}}/class/of/1
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Favourite count of class
 # GET /favourites/class/:classID
 GET {{host}}/favourites/class/2
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Favourite count of partner
 # GET /favourites/partner/:partnerID
 GET {{host}}/favourites/partner/1
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Favourite count of all classes from a partner
 # GET /favourites/all-classes/of/:partnerID
 GET {{host}}/favourites/all-classes/of/1
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Get pending points
 # GET /points/pending/:partnerID
 GET {{host}}/points/pending/3
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Get earned points
 # GET /points/valid/:partnerID
 GET {{host}}/points/valid/3
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Get all points earned from class
 # GET /points/class/:classID
 GET {{host}}/points/class/:classID
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Get all tags of a class
 # GET /tags/class/:classID
@@ -83,7 +85,7 @@ GET {{host}}/tags/class/1
 
 ### Add more tags for a class
 POST {{host}}/tags/class/new
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 content-type: application/json
 
 {
@@ -94,11 +96,11 @@ content-type: application/json
 ### Get all employees
 # GET /employees/all/:partnerID
 GET {{host}}/employees/all/1
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Create new employee
 POST {{host}}/employees/new
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 content-type: application/json
 
 {
@@ -113,7 +115,7 @@ content-type: application/json
 ### Update employee details
 # PATCH /employees/:employeeID
 PATCH {{host}}/employees/3
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 content-type: application/json
 
 {
@@ -125,19 +127,19 @@ content-type: application/json
 ### Get individual employee details
 # GET /employees/:employeeID
 GET {{host}}/employees/3
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Delete employee account
 # DELETE /employees/:employeeID
 DELETE {{host}}/employees/3
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Delete partner account
 # DELETE /partner/:partnerID
 DELETE {{host}}/partner/1
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
 
 ### Update partner details
 # PATCH /partner/:partnerID
 PATCH {{host}}/partner/1
-Authorization: Bearer {{getAuth.response.body.idToken}}
+{{authHeader}}
