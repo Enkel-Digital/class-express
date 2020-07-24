@@ -1,10 +1,7 @@
 <template>
-  <v-main
-    id="subscription"
-    v-touch="{ right: () => $router.push({ name: 'profile' }) }"
-  >
+  <v-main id="subscription">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
-      <BackBtn :to="{ name: 'profile' }" />
+      <BackBtn />
       <v-toolbar-title>Subscription</v-toolbar-title>
     </v-app-bar>
 
@@ -93,6 +90,7 @@
       outlined
       style="text-align: left;"
       :to="{ name: 'topup' }"
+      replace
     >
       <v-list-item>
         <v-list-item-content>
@@ -136,6 +134,7 @@
       outlined
       style="text-align: left;"
       :to="{ name: 'cancel-subscription' }"
+      replace
     >
       <v-list-item>
         <v-list-item-content>
@@ -173,6 +172,7 @@
       outlined
       style="text-align: left;"
       :to="{ name: 'faq' }"
+      replace
     >
       <v-list-item>
         <v-list-item-content>
@@ -188,16 +188,12 @@
 </template>
 
 <script>
-import { Touch } from "vuetify/lib/directives";
 import BackBtn from "@/components/BackBtn";
 import PointsCard from "@/components/PointsCard";
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "subscription",
-  directives: {
-    Touch,
-  },
   components: {
     BackBtn,
     PointsCard,
