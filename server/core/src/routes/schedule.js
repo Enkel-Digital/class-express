@@ -26,7 +26,10 @@ router.get("/class/:classID/:date?", async (req, res) => {
     const currentTime = req.params.date
       ? moment.unix(req.params.date)
       : moment.utc();
-    const getCurrentTime = currentTime.clone;
+
+    // Due to some weird magic prototype shit, we cannot write it simply as this, and instead need to wrap it in a function
+    // const getCurrentTime = currentTime.clone;
+    const getCurrentTime = () => currentTime.clone();
 
     // Read rruleSetString from DB
     // Extra || gaurd with default empty object to guard against classes without a rrule to prevent destructing "undefined"
