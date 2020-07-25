@@ -46,6 +46,11 @@ async function getScheduleOfClass(classID, date) {
   const start = getCurrentTime().startOf("day").toDate();
   const end = getCurrentTime().endOf("day").toDate();
 
+  // @todo Remove after testing is done
+  // console.log("1", start, end);
+  // console.log("2", rruleSet.all());
+  // console.log("3", rruleSet.between(start, end, true));
+
   return rruleSet.between(start, end, true);
 }
 

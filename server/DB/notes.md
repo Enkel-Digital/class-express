@@ -51,3 +51,9 @@ Yes and no,
 - Yes if it is a 1 to 1 and 1 to 0..1 relationships
 - Because primary keys always need to be unique
 - Refer to this [answer](https://stackoverflow.com/a/10983099/13137262) for more details
+
+## Using Cloud SQL
+How to set up connections for Cloud SQL and connect to it:
+- <https://cloud.google.com/sql/docs/postgres/configure-ip>
+- <https://stackoverflow.com/questions/55925270/connect-pgadmin4-to-cloud-sql/55939033#55939033>
+- <https://stackoverflow.com/questions/24749810/how-to-make-a-google-cloud-sql-instance-accessible-for-any-ip-address/24750403#24750403>
