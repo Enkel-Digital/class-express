@@ -15,6 +15,20 @@ const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:schedule");
 
 /**
+ * Test for all occurences in the rrule using given date
+ * @param {object} rruleSet rRule set object from rrule library
+ * @param {moment} dateToCheck Moment object of the date to check
+ * @returns {Array<Date>} Array of date objects if any for all occurences that lies on the given date
+ */
+function onThisDay(rruleSet, dateToCheck) {
+  // Get start and end time of selected date to test for timings/occurence between them
+  const start = dateToCheck.clone().startOf("day").toDate();
+  const end = dateToCheck.clone().endOf("day").toDate();
+
+  return rruleSet.between(start, end, true);
+}
+
+/**
  * Get the schedule of a single class
  * @function getScheduleOfClass
  * @param {*} classID
@@ -23,10 +37,6 @@ const logger = createLogger("routes:schedule");
  */
 async function getScheduleOfClass(classID, date) {
   const currentTime = date ? moment.unix(date) : moment.utc();
-
-  // Due to some weird magic prototype shit, we cannot write it simply as this, and instead need to wrap it in a function
-  // const getCurrentTime = currentTime.clone;
-  const getCurrentTime = () => currentTime.clone();
 
   // Read rruleSetString from DB
   // Extra || gaurd with default empty object to guard against classes without a rrule to prevent destructing "undefined"
@@ -43,15 +53,12 @@ async function getScheduleOfClass(classID, date) {
   // Force it to always parse and return as a rruleSet instead of an rrule for compatibility
   const rruleSet = rrulestr(rruleSetString, { forceset: true });
 
-  const start = getCurrentTime().startOf("day").toDate();
-  const end = getCurrentTime().endOf("day").toDate();
-
   // @todo Remove after testing is done
   // console.log("1", start, end);
   // console.log("2", rruleSet.all());
   // console.log("3", rruleSet.between(start, end, true));
 
-  return rruleSet.between(start, end, true);
+  return onThisDay(rruleSet, currentTime);
 }
 
 /**
