@@ -1,8 +1,8 @@
 /**
- * Express Router for class tags related routes
- * Mounted on /tags/class
- * @author JJ
- * @module class tag routes
+ * Express Router for partner tags related routes
+ * Mounted on /tags/partner
+ * @author Jessica
+ * @module partner tag routes
  *
  * No edit of tags, just delete the old one and insert a new one.
  *
@@ -19,19 +19,20 @@ const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:users");
 
 /**
- * Get all tags of a class
- * @name GET /tags/class/:classID
- * @param {String} classID
- * @returns {Array} An array of class tags
+ * Get all tags of a partner
+ * @name GET /tags/partner/:partnerID
+ * @function
+ * @param {String} partnerID
+ * @returns {Array} An array of partner tags
  */
-router.get("/:classID", onlyOwnResource, async (req, res) => {
+router.get("/:partnerID", onlyOwnResource, async (req, res) => {
   try {
-    const { classID } = req.params;
+    const { partnerID } = req.params;
 
     res.json({
       success: true,
       // Map it out to only contain the tag itself.
-      tags: (await SQLdb("classTags").where({ classID }).select("tag")).map(
+      tags: (await SQLdb("partnerTags").where({ partnerID }).select("tag")).map(
         (tagObject) => tagObject.tag
       ),
     });
@@ -42,21 +43,22 @@ router.get("/:classID", onlyOwnResource, async (req, res) => {
 });
 
 /**
- * Add new tag(s) for a class
- * @name POST /tags/class/new
- * @param {String} classID
+ * Add new tag(s) for a partner
+ * @name POST /tags/partner/new
+ * @function
+ * @param {String} partnerID
  * @param {Array} tags
  * @returns {object} success indicator
  */
 router.post("/new", express.json(), async (req, res) => {
   try {
-    const { classID, tags } = req.body;
+    const { partnerID, tags } = req.body;
 
     // @todo (Jess to implement) Prevent duplicate tags insertion
 
     // Insert the tags 1 by 1 and wait for all of them to complete.
     await Promise.all(
-      tags.map((tag) => SQLdb("classTags").insert({ classID, tag }))
+      tags.map((tag) => SQLdb("partnerTags").insert({ partnerID, tag }))
     );
 
     res.status(201).json({ success: true });
@@ -67,20 +69,20 @@ router.post("/new", express.json(), async (req, res) => {
 });
 
 /**
- * Delete tag of a class
- * @name DELETE /tags/class/:classID
+ * Delete tag(s) of a partner
+ * @name DELETE /tags/partner/:partnerID
  * @function
- * @param {String} classID
+ * @param {String} partnerID
  * @param {Array} tags
  * @returns {object} success indicator
  */
-router.delete("/:classID", express.json(), async (req, res) => {
+router.delete("/:partnerID", express.json(), async (req, res) => {
   try {
-    const { classID, tags } = req.body;
+    const { partnerID, tags } = req.body;
 
     await Promise.all(
       tags.map((tag) =>
-        SQLdb("classTags").where({ classID, tag: tag }).delete()
+        SQLdb("partnerTags").where({ partnerID, tag: tag }).delete()
       )
     );
 

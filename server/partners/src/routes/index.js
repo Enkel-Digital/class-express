@@ -11,11 +11,13 @@ router.use("/class", require("./class"));
 router.use("/partner", require("./partner"));
 router.use("/user", auth, require("./users"));
 router.use("/tags/class", auth, require("./classTags"));
+router.use("/tags/partner", auth, require("./partnerTags"));
 router.use("/favourites", auth, require("./favourites"));
 router.use("/subscription", require("./subscription"));
 router.use("/points", auth, require("./points"));
 router.use("/reviews", require("./reviews"));
 router.use("/settings", auth, require("./settings"));
 router.use("/emailActionLinks", require("./emailActionLinks"));
+router.use("/employees", require("./employees"));
 
 module.exports = router;

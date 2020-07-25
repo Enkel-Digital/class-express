@@ -73,4 +73,24 @@ router.put("/", (req, res) => {
   res.json({ success: false, error: "not implemented yet" });
 });
 
+/**
+ * Delete user account
+ * @name DELETE /user/:userID
+ * @function
+ * @param {object} user
+ * @returns {object} Success indicator
+ */
+router.delete("/:userID", express.json(), async (req, res) => {
+  try {
+    const { userID } = req.params;
+
+    await SQLdb("userAccounts").where({ id: userID }).update({ deleted: true });
+
+    res.json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 module.exports = router;
