@@ -18,14 +18,13 @@
 
           <v-list-item two-line>
             <v-list-item-content>
-              <v-list-item-title>company name</v-list-item-title>
+              <v-list-item-title>{{ partner.name }}</v-list-item-title>
               <v-list-item-subtitle
                 >Number of employees: 23</v-list-item-subtitle
               >
               <v-list-item-subtitle
                 >Number of Acitve Classes: 23</v-list-item-subtitle
               >
-              <v-list-item-subtitle>Available Points: 23</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-card>
@@ -40,14 +39,15 @@
             <br />
 
             <v-text-field
+              v-model="partner.name"
               :rules="nameRules"
               label="Company Name"
-              placeholder="Basic Guitar"
               color="#60696c"
               required
             />
 
             <v-text-field
+              v-model="partner.email"
               :rules="nameRules"
               label="Email"
               placeholder="abc@enkel.com"
@@ -56,6 +56,7 @@
             />
 
             <v-text-field
+              v-model="partner.phoneNumber"
               :rules="nameRules"
               label="Telephone No."
               placeholder="96475394"
@@ -64,6 +65,7 @@
             />
 
             <v-text-field
+              v-model="partner.website"
               :rules="nameRules"
               label="Website"
               placeholder="guitar.com"
@@ -95,12 +97,13 @@
             </v-combobox>
 
             <v-textarea
+              v-model="partner.description"
               v-autofocus
               type="text"
-              rows="4"
+              rows="5"
               outlined
               label="Company Description"
-              placeholder="Company Description"
+              hint="use HTML text formatting"
               no-resize
               color="#60696c"
               required
@@ -158,6 +161,15 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <br />
+    <v-row class="text-center">
+      <v-col cols="12" sm="12">
+        <v-btn color="#60696c" rounded width="15em" outlined depressed large>
+          Save Changes
+        </v-btn>
+      </v-col>
+    </v-row>
   </v-content>
   <!-- <div>
     {{ partner }}
@@ -176,28 +188,29 @@ export default {
   props: ["partnerID"],
   data() {
     return {
-      partner: undefined,
+      placeholder: "",
+      partner: {},
       classCategoryList: ["tech", "cooking", "lifestyle", "music", "art"],
 
-      nameRules: [
-        (v) => !!v || "Name is required",
-        (v) => (v && v.length <= 20) || "Please fill is the required space",
-      ],
-      classLengthRules: [
-        (length) => !!length || "Length is required",
-        (length) => length > 0 || "Cannot have a class of 0 mins or less",
-      ],
-      maxParticipantRules: [
-        (length) => !!length || "Max participant is required",
-        (length) => length > 0 || "Cannot have a class of 0 mins or less",
-      ],
-      rules: [
-        (value) =>
-          !value ||
-          value.size < 2000000 ||
-          "Avatar size should be less than 2 MB!",
-      ],
-      addressRules: [(v) => !!v || "Please fill is the required space"],
+      // nameRules: [
+      //   (v) => !!v || "Name is required",
+      //   (v) => (v && v.length <= 20) || "Please fill is the required space",
+      // ],
+      // classLengthRules: [
+      //   (length) => !!length || "Length is required",
+      //   (length) => length > 0 || "Cannot have a class of 0 mins or less",
+      // ],
+      // maxParticipantRules: [
+      //   (length) => !!length || "Max participant is required",
+      //   (length) => length > 0 || "Cannot have a class of 0 mins or less",
+      // ],
+      // rules: [
+      //   (value) =>
+      //     !value ||
+      //     value.size < 2000000 ||
+      //     "Avatar size should be less than 2 MB!",
+      // ],
+      // addressRules: [(v) => !!v || "Please fill is the required space"],
     };
   },
   created() {
