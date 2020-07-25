@@ -97,6 +97,10 @@ GET {{host}}/class/details/1
 # GET /schedule/class/:classID/:date?
 GET {{host}}/schedule/class/1/
 
+### Get schedules of classes of a partner
+# GET /schedule/partner/:partnerID/:date?
+GET {{host}}/schedule/partner/1/
+
 ### Get Partner
 # GET /partner/details/:classID
 GET {{host}}/partner/details/1
