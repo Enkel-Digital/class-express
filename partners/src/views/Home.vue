@@ -1,37 +1,35 @@
 <template>
-  <v-content class="ClassDetails">
-    <!-- <v-responsive class="mx-auto" style="max-width:1024px;"> -->
-    <v-container>
-      <v-toolbar dense class="elevation-1">
-        <v-toolbar-title>Your Dashboard</v-toolbar-title>
-      </v-toolbar>
+  <v-content id="Dashboard">
+    <v-toolbar dense outlined class="overline font-weight-light elevation-0">
+      <v-toolbar-title>Your Dashboard</v-toolbar-title>
+    </v-toolbar>
+    <!-- <br /> -->
 
-      <div class="row">
-        <BookingsCard />
-        <ActiveClassCard />
-        <ProfileVisitsCard />
-        <PointsEarnedCard
-          :label="pointCardLabels.weekly"
-          :points="pointCardPoints.weekly"
-        />
-        <PointsEarnedCard
-          :label="pointCardLabels.monthly"
-          :points="pointCardPoints.monthly"
-        />
-        <PointsEarnedCard
-          :label="pointCardLabels.total"
-          :points="pointCardPoints.total"
-        />
-      </div>
-
-      <br />
-
-      <EarningsChart :chartdata="chartdata" :options="options" />
+    <masonry
+      :cols="{ default: 5, 1000: 3, 700: 2, 400: 1 }"
+      :gutter="{ default: '0.5em', 700: '0.25em' }"
+    >
+      <BookingsCard />
+      <ActiveClassCard />
+      <ProfileVisitsCard />
+      <PointsEarnedCard
+        :label="pointCardLabels.weekly"
+        :points="pointCardPoints.weekly"
+      />
+      <PointsEarnedCard
+        :label="pointCardLabels.monthly"
+        :points="pointCardPoints.monthly"
+      />
+      <PointsEarnedCard
+        :label="pointCardLabels.total"
+        :points="pointCardPoints.total"
+      />
 
       <br />
-
-      <PastWeekEarningComparison />
-    </v-container>
+    </masonry>
+    <EarningsChart :chartdata="chartdata" :options="options" />
+    <br />
+    <PastWeekEarningComparison />
   </v-content>
 </template>
 
@@ -114,3 +112,14 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#Dashboard {
+  margin: 2em;
+  margin-top: 1em;
+}
+.class-card {
+  display: inline-block;
+  margin-bottom: 0.5em;
+}
+</style>

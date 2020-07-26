@@ -1,24 +1,26 @@
 <template>
   <div align="left">
-    <v-card width="500">
+    <v-card class="elevation-0" outlined width="500">
       <v-list-item two-line>
         <v-list-item-content>
-          <v-list-item-title class="headline"
+          <v-list-item-title class="overline font-weight-black"
             >Earning Comparison with Past Week</v-list-item-title
           >
           <!-- <v-list-item-subtitle>Mon, 12:30 PM, Mostly sunny</v-list-item-subtitle> -->
         </v-list-item-content>
       </v-list-item>
 
-      <v-list class="transparent">
+      <v-list>
         <v-list-item v-for="item in earnings" :key="item.day">
-          <v-list-item-title>{{ item.week }}</v-list-item-title>
+          <v-list-item-title class="overline">{{
+            item.week
+          }}</v-list-item-title>
 
           <!-- <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>-->
 
-          <v-list-item-action-text class="text-right">
+          <v-list-item-action-text class="font-weight-black text-right">
             {{ item.earning }} points
           </v-list-item-action-text>
         </v-list-item>
@@ -27,7 +29,7 @@
       <v-divider></v-divider>
 
       <v-card-actions>
-        <v-btn text @click="showFullReport">Full Report</v-btn>
+        <v-btn text class="overline" @click="showFullReport">Full Report</v-btn>
       </v-card-actions>
     </v-card>
   </div>
