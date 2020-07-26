@@ -116,14 +116,20 @@ export default function errorControllerFF(Vue, router, postToErrorService) {
         displayError.description +=
           "<br />Try contacting directly by screenshoting this and emailing instead?";
 
-        // Make error dialog non dismissable
-        displayError.dismissable = false;
+        // @todo setup linting and formatting for this repo
+        // Make error dialog non dismissable and only for internal errors other then failed calls to error service
+        if (
+          error.message ===
+          "Attempt to report Previous error to developers failed."
+        )
+          displayError.dismissable = true;
+        else displayError.dismissable = false;
 
-        Vue.set(
-          state.errors,
-          Math.random().toString(36).substring(2),
-          displayError
-        );
+        // Add an error ID,
+        // @todo however just like above use of errorID, this should be swapped out
+        displayError.errorID = Math.random().toString(36).substring(2);
+
+        Vue.set(state.errors, displayError.errorID, displayError);
       }
     },
     /**
