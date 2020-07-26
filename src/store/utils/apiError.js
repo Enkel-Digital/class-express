@@ -43,12 +43,13 @@ import Vue from "vue";
  * @notice The action needs to detemine how the action caller know that this is an errorID and not any other return value from the action
  * @todo Should also attach original error object as extended "more" property "original" for local use
  */
-export default function apiError(response, retry) {
+export default function apiError(response, retry, moreDescription) {
   // Return to allow the returned errorID from the action to bubble up.
   return Vue.$error.new(
     createError(ERROR.level.RETRY, ERROR.type.API, {
       reponseError: response.error || response,
       actions: { retry },
+      description: moreDescription,
     })
   );
 }
