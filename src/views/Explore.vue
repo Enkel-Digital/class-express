@@ -51,14 +51,14 @@
                           </v-col>
 
                           <v-col>
-                            <v-responsive id="class-image-container">
-                              <!-- @todo Update API to return an array from DB and Change to a image carousel -->
-                              <!-- <v-img id="class-image" :src="clas.pictureSources[0]" /> -->
-                              <v-img
-                                id="class-image"
-                                :src="item.pictureSources[0]"
-                              />
-                            </v-responsive>
+                            <!-- <v-responsive id="class-image-container"> -->
+                            <!-- @todo Update API to return an array from DB and Change to a image carousel -->
+                            <!-- <v-img id="class-image" :src="clas.pictureSources[0]" /> -->
+                            <v-img
+                              id="class-image"
+                              :src="item.pictureSources[0]"
+                            />
+                            <!-- </v-responsive> -->
 
                             <v-btn icon small @click="toggleFavourite(item.id)">
                               <v-icon color="red">mdi-heart</v-icon>
@@ -147,6 +147,7 @@ export default {
 }
 
 #class-image-container {
+  margin-right: 0;
   /*
     General height guidelines for the image loaded
     Max height is used to prevent the image being used to be too big
