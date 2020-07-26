@@ -16,7 +16,7 @@
 
       <v-data-table
         :headers="headers"
-        :items="bookings"
+        :items="earningsHistory"
         :search="search"
         class="elevation-1"
         :sort-desc="[false, true]"
@@ -48,10 +48,10 @@ export default {
       search: "",
       headers: [
         { text: "Booking ID", value: "id" },
-        { text: "Class Name", value: "name" },
-        { text: "Date", value: "className" },
-        { text: "No. of Participants", value: "startTime" },
-        { text: "Points Earned", value: "classID" },
+        { text: "Class Name", value: "className" },
+        { text: "Date", value: "date" },
+        { text: "No. of Participants", value: "noOfParticipants" },
+        { text: "Points Earned", value: "pointsEarned" },
       ],
     };
   },
