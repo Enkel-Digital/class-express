@@ -161,6 +161,11 @@ const ERROR = Object.freeze({
       name: "Internal error detected",
       description: "Internal logic failed somewhere... YIKES 😭",
     },
+    AUTH: {
+      type: "AUTH",
+      name: "Authentication failed",
+      description: "Unable to authenticate or bad credentials used",
+    },
     // @todo Perhaps allow some stack trace for undefined errors to better debug
     UNKNOWN: {
       type: "UNKNOWN",
