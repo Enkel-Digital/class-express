@@ -93,6 +93,17 @@ content-type: application/json
     "tags": ["test", "test2"]
 }
 
+### Delete tags of a class
+# DELETE /tags/class/:classID
+DELETE {{host}}/tags/class/1
+{{authHeader}}
+content-type: application/json
+
+{
+    "classID": 1,
+    "tags": ["test", "test2"]
+}
+
 ### Get all tags of a partner
 # GET /tags/partner/:partnerID
 GET {{host}}/tags/partner/1
@@ -106,6 +117,18 @@ content-type: application/json
     "partnerID": 1,
     "tags": ["test", "test2"]
 }
+
+### Delete tags of a parrner
+# DELETE /tags/partner/:partnerID
+DELETE {{host}}/tags/partner/1
+{{authHeader}}
+content-type: application/json
+
+{
+    "partnerID": 1,
+    "tags": ["test", "test2"]
+}
+
 
 ### Get all employees
 # GET /employees/all/:partnerID
