@@ -93,6 +93,20 @@ content-type: application/json
     "tags": ["test", "test2"]
 }
 
+### Get all tags of a partner
+# GET /tags/partner/:partnerID
+GET {{host}}/tags/partner/1
+
+### Add more tags for a partner
+POST {{host}}/tags/partner/new
+{{authHeader}}
+content-type: application/json
+
+{
+    "partnerID": 1,
+    "tags": ["test", "test2"]
+}
+
 ### Get all employees
 # GET /employees/all/:partnerID
 GET {{host}}/employees/all/1
