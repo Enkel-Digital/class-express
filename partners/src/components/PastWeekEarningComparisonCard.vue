@@ -29,7 +29,16 @@
       <v-divider></v-divider>
 
       <v-card-actions>
-        <v-btn text class="overline" @click="showFullReport">Full Report</v-btn>
+        <v-btn
+          text
+          class="overline"
+          @click="
+            $router.push({
+              name: 'earnings',
+            })
+          "
+          >Full Report</v-btn
+        >
       </v-card-actions>
     </v-card>
   </div>

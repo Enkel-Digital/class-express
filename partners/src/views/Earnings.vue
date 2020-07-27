@@ -53,10 +53,10 @@
     </v-row>
 
     <br />
-    <h3 class="text-center">
+    <h3 class="overline text-center">
       <!-- @todo create a view all history page -->
       <router-link :to="{ name: 'earningsHistory' }">
-        Click to View Earning History
+        Click to View Full Earning History
       </router-link>
     </h3>
 
