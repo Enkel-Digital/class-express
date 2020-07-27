@@ -20,10 +20,12 @@
             <v-list-item-content>
               <v-list-item-title>{{ partner.name }}</v-list-item-title>
               <v-list-item-subtitle
-                >Number of employees: 23</v-list-item-subtitle
+                >Number of employees:
+                {{ numberOfEmployees }}</v-list-item-subtitle
               >
               <v-list-item-subtitle
-                >Number of Acitve Classes: 23</v-list-item-subtitle
+                >Number of Classes:
+                {{ numberOfClass.length }}</v-list-item-subtitle
               >
             </v-list-item-content>
           </v-list-item>
@@ -74,6 +76,7 @@
             />
 
             <v-combobox
+              v-model="partnerTags"
               :items="classCategoryList"
               chips
               color="#60696c"
@@ -121,6 +124,7 @@
             <br />
 
             <v-text-field
+              v-model="partner.location_address"
               :rules="addressRules"
               label="Address Line 1"
               placeholder="123 Peach St"
@@ -171,9 +175,6 @@
       </v-col>
     </v-row>
   </v-content>
-  <!-- <div>
-    {{ partner }}
-  </div> -->
 </template>
 
 <script>
@@ -185,11 +186,19 @@ export default {
   components: {
     // MapImage,
   },
-  props: ["partnerID"],
+  props: {
+    partnerID: {
+      default: 1,
+      type: Number,
+    },
+  },
   data() {
     return {
       placeholder: "",
       partner: {},
+      partnerTags: [],
+      numberOfEmployees: {},
+      numberOfClass: {},
       classCategoryList: ["tech", "cooking", "lifestyle", "music", "art"],
 
       // nameRules: [
@@ -215,12 +224,30 @@ export default {
   },
   created() {
     this.getPartner();
+    this.getPartnerTags();
+    this.getNumberOfEmployees();
+    this.getNumberOfClass();
   },
   methods: {
     async getPartner() {
       this.partner = (
         await api.get(`/partner/details/${this.partnerID}`)
       ).partner;
+    },
+    async getPartnerTags() {
+      this.partnerTags = (
+        await api.get(`/tags/partner/${this.partnerID}`)
+      ).tags;
+    },
+    async getNumberOfEmployees() {
+      this.numberOfEmployees = (
+        await api.get(`/employees/all/${this.partnerID}`)
+      ).numberOfEmployees;
+    },
+    async getNumberOfClass() {
+      this.numberOfClass = (
+        await api.get(`/class/of/${this.partnerID}`)
+      ).arrayOfClassIDs;
     },
     remove(item) {
       this.clas.classCategory.splice(this.clas.classCategory.indexOf(item), 1);
