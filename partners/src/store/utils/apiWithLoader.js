@@ -32,4 +32,13 @@ export default {
   async post(url, data) {
     return withLoader(api.post, url, data);
   },
+  async patch(url, data) {
+    return withLoader(api.post, url, data);
+  },
+  async put(url, data) {
+    return withLoader(api.post, url, data);
+  },
+  async delete(url, data) {
+    return withLoader(api.post, url, data);
+  },
 };
