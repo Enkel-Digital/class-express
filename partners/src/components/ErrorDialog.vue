@@ -7,7 +7,7 @@
       the component is only rendered/created when there is an error and not always created + hidden.
       Which will presumably reduces memory usage as the component is not create yet.
     -->
-  <v-dialog v-if="error" v-model="alwaysShow" persistent max-width="40em">
+  <v-dialog v-if="error" v-model="alwaysShow" persistent>
     <v-card>
       <p class="overline ma-4 pa-4 mb-0 pb-0" style="color: red;">
         sadly, there is ({{ errorCount }}) error(s)
@@ -17,10 +17,33 @@
         class="headline mt-0 pt-0"
         style="word-break: keep-all;"
       />
+
+      <!-- Default error description for the specific Error type -->
       <v-card-text v-html="error.description" style="text-align: left;" />
 
+      <!-- Custom extra error description developers can add for a specific Error instance -->
+      <v-card-text
+        v-if="error.more && error.more.description"
+        v-html="error.more.description"
+        style="text-align: left;"
+      />
+
+      <!-- Allow debug directly from error dialog component using a "dropdown" view -->
+      <v-card-text v-if="error.more" style="text-align: left;">
+        <details>
+          <summary>
+            <h3 style="display: inline; text-decoration: none;">
+              <b><i>More debug info</i></b>
+            </h3>
+          </summary>
+          <ul>
+            <li v-for="(detail, i) in error.more" :key="i" v-html="detail" />
+          </ul>
+        </details>
+      </v-card-text>
+
       <v-card-text style="text-align: left;">
-        Issue is reported to the developer 🙏🏻
+        Issue reported to the developer 🙏🏻
         <br />
         Working on it now 💪🏻😁
       </v-card-text>
