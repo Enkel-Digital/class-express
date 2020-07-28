@@ -34,30 +34,40 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import api from "../store/utils/fetch";
 
 export default {
-  beforeMount() {
-    // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
-    // Request store to get and populate all bookings of all classes of the partner
-    // @todo To update this to prevent getting all data at once.
-    this.$store.dispatch("bookings/getAllBookings");
+  props: {
+    partnerID: {
+      default: 3,
+      type: Number,
+    },
   },
+
   data() {
     return {
+      bookings: [],
       search: "",
       headers: [
-        { text: "User ID", value: "id" },
-        { text: "Name", value: "name" },
+        { text: "User ID", value: "userID" },
         // { text: "Email", value: "email" }, // Not doing for now for privacy concerns
-        { text: "Class Name", value: "className" },
+        { text: "Class Name", value: "name" },
+        { text: "Points", value: "points" },
         { text: "Start Time", value: "startTime" },
         { text: "Class Detail", value: "classID" },
       ],
     };
   },
-  computed: {
-    ...mapState("bookings", ["bookings"]),
+  created() {
+    this.getBookings();
+  },
+  methods: {
+    async getBookings() {
+      this.bookings = (
+        await api.get(`/bookings/all/${this.partnerID}`)
+      ).bookingsOfPartner;
+      console.log("this", this.bookings);
+    },
   },
 };
 </script>

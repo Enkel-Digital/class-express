@@ -16,7 +16,7 @@
         "
         outlined
       >
-        <v-img class="class-image" :src="clas.pictureSources[0]" />
+        <v-img class="class-image" :src="clas.pictureSources" />
 
         <v-list-item one-line dense>
           <v-list-item-content>
@@ -30,20 +30,33 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import api from "../store/utils/fetch";
 
 export default {
   name: "AllClasses",
+  data() {
+    return {
+      classes: [],
+    };
+  },
   directives: {
     ResizeText: () => import("vue-resize-text"),
   },
-  beforeMount() {
-    // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
-    // Request store to get and populate all classes of partner
-    this.$store.dispatch("classes/getAllClasses");
+  props: {
+    partnerID: {
+      default: 1,
+      type: Number,
+    },
   },
-  computed: {
-    ...mapState("classes", ["classes"]),
+  created() {
+    this.getAllClasses();
+  },
+  methods: {
+    async getAllClasses() {
+      this.classes = (
+        await api.get(`/class/details/of/${this.partnerID}`)
+      ).class;
+    },
   },
 };
 </script>
