@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 import api from "../store/utils/fetch";
 
 export default {
