@@ -71,10 +71,12 @@
 <script>
 // import ResizeText from "vue-resize-text";
 import { mapState } from "vuex";
+import api from "../store/utils/fetch";
 
 export default {
   data() {
     return {
+      employees: [],
       dialog: false,
       employeeInfo: [
         {
@@ -93,27 +95,35 @@ export default {
   directives: {
     ResizeText: () => import("vue-resize-text"),
   },
-  beforeMount() {
-    // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
-    // Request store to get and populate all bookings of all classes of the partner
-    // @todo To update this to prevent getting all data at once.
-    this.$store.dispatch("employees/getAllEmployees");
+
+  props: {
+    partnerID: {
+      default: 1,
+      type: Number,
+    },
   },
-  computed: {
-    ...mapState("employees", ["employees"]),
+  created() {
+    this.getEmployees();
   },
   methods: {
+    async getEmployees() {
+      this.employees = (
+        await api.get(`/employees/all/${this.partnerID}`)
+      ).employees;
+      console.log("this", this.employees);
+    },
     moreInfo(id) {
+      console.log("id", this.employees[id - 1].name);
       this.dialog = true;
-      this.employeeInfo.id = id;
-      this.employeeInfo.name = this.employees[id].name;
-      this.employeeInfo.email = this.employees[id].email;
-      this.employeeInfo.mobile = this.employees[id].mobile;
-      this.employeeInfo.position = this.employees[id].position;
-      this.employeeInfo.birthdate = this.employees[id].birthdate;
-      this.employeeInfo.picture = this.employees[id].picture;
+      this.employeeInfo.id = id - 1;
+      this.employeeInfo.name = this.employees[id - 1].name;
+      this.employeeInfo.email = this.employees[id - 1].email;
+      this.employeeInfo.mobile = this.employees[id - 1].phoneNumber;
+      // this.employeeInfo.position = this.employees[id-1].position;
+      // this.employeeInfo.birthdate = this.employees[id].birthdate;
+      // this.employeeInfo.picture = this.employees[id].picture;
 
-      console.log("" + this.employees[id].name);
+      // console.log("id" + this.employees[id].name);
     },
   },
 };
