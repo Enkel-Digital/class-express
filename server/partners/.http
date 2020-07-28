@@ -49,6 +49,11 @@ GET {{host}}/class/details/1
 GET {{host}}/class/of/1
 {{authHeader}}
 
+### Get class details of a partner
+# GET /class/details/of/:partnerID
+GET {{host}}/class/details/of/1
+{{authHeader}}
+
 ### Favourite count of class
 # GET /favourites/class/:classID
 GET {{host}}/favourites/class/2
@@ -179,4 +184,9 @@ DELETE {{host}}/partner/1
 ### Update partner details
 # PATCH /partner/:partnerID
 PATCH {{host}}/partner/1
+{{authHeader}}
+
+### Get bookings of a partner
+# GET /bookings/all/:partnerID
+GET {{host}}/bookings/all/3
 {{authHeader}}

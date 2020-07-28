@@ -37,6 +37,26 @@ router.get("/details/:classID", async (req, res) => {
 });
 
 /**
+ * Get class details of a partner
+ * @name GET /class/details/of/:partnerID
+ * @returns {object} Class object
+ */
+router.get("/details/of/:partnerID", async (req, res) => {
+  try {
+    const { partnerID } = req.params;
+
+    const classObject = await SQLdb("classes")
+      .where({ partnerID: partnerID })
+      .where("deleted", false);
+    if (classObject) res.json({ success: true, class: classObject });
+    else res.status(404).json({ success: false, error: "No such Class" });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
  * Get classes of partner
  * @name GET /class/of/:partnerID
  * @returns {object} Array of classIDs
