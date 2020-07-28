@@ -19,5 +19,6 @@ router.use("/reviews", require("./reviews"));
 router.use("/settings", auth, require("./settings"));
 router.use("/emailActionLinks", require("./emailActionLinks"));
 router.use("/employees", require("./employees"));
+router.use("/bookings", require("./bookings"));
 
 module.exports = router;
