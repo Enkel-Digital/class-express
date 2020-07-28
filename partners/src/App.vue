@@ -13,8 +13,6 @@
       :clipped-left="true"
       color="#546E7A"
     >
-      <!-- No toggling for now -->
-      <!-- <v-app-bar-nav-icon @click.stop="showDrawer = !showDrawer"> -->
       <v-app-bar-nav-icon @click="$router.push({ name: 'home' })">
         <v-avatar size="2.6em" item>
           <v-img src="@/assets/logo.png" alt="Logo" />
