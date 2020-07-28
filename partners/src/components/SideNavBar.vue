@@ -17,8 +17,8 @@
       </v-list-item-avatar>
 
       <v-list-item-content>
-        <!-- Indicate whether the user is an owner or employee -->
-        <p class="overline">{{ owner ? "Owner" : "Employee" }}</p>
+        <!-- Indicate whether the user is an admin or employee -->
+        <p class="overline">{{ admin ? "Admin" : "Employee" }}</p>
 
         <v-list-item-title>{{ "JJ Lee" }}</v-list-item-title>
 
@@ -88,9 +88,9 @@
       <v-list-item
         exact
         ripple
-        v-for="item in owner
+        v-for="item in admin
           ? generalTabs
-          : generalTabs.filter((tab) => !tab.ownerOnly)"
+          : generalTabs.filter((tab) => !tab.adminOnly)"
         :key="item.title"
         :to="item.link"
       >
@@ -179,13 +179,13 @@ export default {
           icon: "mdi-account",
           text: "Company Profile",
           link: { name: "partnerProfile" },
-          ownerOnly: true,
+          adminOnly: true,
         },
         {
           icon: "mdi-account-group",
           text: "Manage Employee",
           link: { name: "manage-employee" },
-          ownerOnly: true,
+          adminOnly: true,
         },
         {
           icon: "mdi-help-circle",
@@ -207,7 +207,7 @@ export default {
   },
   computed: {
     ...mapState(["user"]),
-    owner() {
+    admin() {
       // Read from vuex
       return true;
     },
