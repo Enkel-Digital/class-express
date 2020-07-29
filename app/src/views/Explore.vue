@@ -1,7 +1,9 @@
 <template>
   <v-content id="explore">
     <v-app-bar app flat color="white">
-      <v-toolbar-title style="font-weight: bold;">Explore</v-toolbar-title>
+      <v-toolbar-title id="anchor" style="font-weight: bold;"
+        >Explore</v-toolbar-title
+      >
     </v-app-bar>
 
     <ais-instant-search index-name="classes" :search-client="searchClient">
@@ -34,7 +36,7 @@
                         outlined
                         :ripple="false"
                       >
-                        <v-row class="justify-center align-center">
+                        <v-row>
                           <v-col>
                             <v-list-item-content>
                               <v-list-item-title>
@@ -55,6 +57,8 @@
                             <!-- @todo Update API to return an array from DB and Change to a image carousel -->
                             <!-- <v-img id="class-image" :src="clas.pictureSources[0]" /> -->
                             <v-img
+                              max-height="15vh"
+                              max-width="15vh"
                               id="class-image"
                               :src="item.pictureSources[0]"
                             />
@@ -146,17 +150,6 @@ export default {
   font-style: normal;
 }
 
-#class-image-container {
-  margin-right: 0;
-  /*
-    General height guidelines for the image loaded
-    Max height is used to prevent the image being used to be too big
-    Min height ensures image will not collapse on itself into the height of the back button
-  */
-  max-height: 15vh;
-  max-width: 15vh;
-  min-height: 10vh;
-}
 .class-card {
   display: inline-block;
   margin-bottom: 0.5em;
