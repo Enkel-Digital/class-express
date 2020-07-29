@@ -11,7 +11,7 @@
             <ais-search-box placeholder="Search here…" class="searchbox" />
             <FilterMenu />
 
-            <!-- TODO: Mix Partner and Class card together -->
+            <!-- @todo: Mix Partner and Class card together -->
 
             <!-- Class -->
 
@@ -19,74 +19,60 @@
               <template slot-scope="{ query, hits }">
                 <app-infinite-hits v-if="query.length > 0 && hits.length > 0">
                   <template slot="item" slot-scope="{ item }">
-                    <v-responsive>
+                    <v-responsive
+                      @click="
+                        $router.push({
+                          name: 'ClassDetails',
+                          params: { classID: item.objectID },
+                        })
+                      "
+                    >
                       <v-card
                         :key="item.objectID"
-                        class="mx-auto mb-4"
+                        class="class-card mx-auto"
                         max-width="calc(100% - 1.6em)"
                         outlined
                         :ripple="false"
                       >
-                        <v-responsive
-                          @click="
-                            $router.push({
-                              name: 'ClassDetails',
-                              params: { classID: item.objectID },
-                            })
-                          "
-                        >
-                          <!-- @todo Change to a image carousel -->
-
-                          <v-img
-                            id="class-image"
-                            :src="item.pictureSources[0]"
-                          />
-                          <v-list-item>
-                            <div style="text-align: left;">
-                              <v-card-title class="headline pl-0">
-                                <ais-highlight
-                                  :hit="item"
-                                  attribute="name"
-                                  style="font-weight: bold;"
-                                  class="headline pl-0"
-                                />
-                              </v-card-title>
-
-                              <v-list-item-subtitle :set="item.provider.name">
-                                <div style="font-weight: bold;">
-                                  {{ item.provider.name }}
-                                </div>
-
-                                <div>
-                                  <!-- {{
-                                  item.location
-                                    ? item.location.address
-                                    : provider.location.address
-                                  }}-->
-                                  <ais-highlight
-                                    :hit="item"
-                                    attribute="location.address"
-                                  />
-                                </div>
+                        <v-row>
+                          <v-col>
+                            <v-list-item-content>
+                              <v-list-item-title>
+                                <ais-highlight :hit="item" attribute="name" />
+                              </v-list-item-title>
+                              <v-list-item-subtitle>
+                                {{ item.provider.name }}
                               </v-list-item-subtitle>
-                            </div>
-                          </v-list-item>
-                        </v-responsive>
 
-                        <v-card-actions>
-                          <v-spacer />
+                              <v-list-item-subtitle>
+                                {{ item.location.address }}
+                              </v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-col>
 
-                          <!-- Change this to a remove icon only. Cos dont need to toggle, here means confirm favourites already -->
-                          <v-btn icon @click="toggleFavourite(item.id)">
-                            <v-icon color="red">mdi-heart</v-icon>
-                          </v-btn>
+                          <v-col>
+                            <!-- <v-responsive id="class-image-container"> -->
+                            <!-- @todo Update API to return an array from DB and Change to a image carousel -->
+                            <!-- <v-img id="class-image" :src="clas.pictureSources[0]" /> -->
+                            <v-img
+                              max-height="15vh"
+                              max-width="15vh"
+                              id="class-image"
+                              :src="item.pictureSources[0]"
+                            />
+                            <!-- </v-responsive> -->
 
-                          <!-- @todo Extract out all share buttons to a common component -->
-                          <!-- @todo Implement PWA sharing and web share target code  -->
-                          <v-btn icon>
-                            <v-icon>mdi-share-variant</v-icon>
-                          </v-btn>
-                        </v-card-actions>
+                            <v-btn icon small @click="toggleFavourite(item.id)">
+                              <v-icon color="red">mdi-heart</v-icon>
+                            </v-btn>
+
+                            <!-- @todo Extract out all share buttons to a common component -->
+                            <!-- @todo Implement PWA sharing and web share target code  -->
+                            <v-btn small icon>
+                              <v-icon>mdi-share-variant</v-icon>
+                            </v-btn>
+                          </v-col>
+                        </v-row>
                       </v-card>
                     </v-responsive>
                     <!-- <h1><ais-highlight :hit="item" attribute="name" /></h1> -->
@@ -157,67 +143,13 @@ export default {
 </script>
 
 <style scoped>
-body,
-h1 {
-  margin: 0;
-  padding: 0;
-}
-
 .ais-Highlight-highlighted {
   background: cyan;
   font-style: normal;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  min-height: 50px;
-  padding: 0.5rem 1rem;
-  background-image: linear-gradient(to right, #4dba87, #2f9088);
-  color: #fff;
-  margin-bottom: 1rem;
-}
-
-.header a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.header-title {
-  font-size: 1.2rem;
-  font-weight: normal;
-}
-
-.header-title::after {
-  content: " ▸ ";
-  padding: 0 0.5rem;
-}
-
-.header-subtitle {
-  font-size: 1.2rem;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
-}
-
-.search-panel {
-  display: flex;
-}
-
-.search-panel__filters {
-  flex: 1;
-  margin-right: 1em;
-}
-
-.search-panel__results {
-  flex: 3;
-}
-
-.pagination {
-  margin: 2rem auto;
-  text-align: center;
+.class-card {
+  display: inline-block;
+  margin-bottom: 0.5em;
 }
 </style>
