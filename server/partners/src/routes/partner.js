@@ -75,6 +75,30 @@ router.delete("/:partnerID", express.json(), async (req, res) => {
   }
 });
 
-// @todo Create api for create new partner
+/**
+ * Create new partner details object
+ * @name POST /partner/new/
+ * @param {String} partnerID
+ * @param {Object} partner
+ * @returns {object} success indicator
+ *
+ * @todo Should support like a hook system.
+ * All the things that should be ran when a new user is created should be posted here as a hook
+ * then on user creation, either call all the hooks, or publish a event for all the listeners to use.
+ */
+router.post("/new", express.json(), async (req, res) => {
+  try {
+    // Refer to notes for why we are enforcing this lowercase usage.
+    req.body.partner.email = req.body.partner.email.toLowerCase();
+    const partner = req.body.partner;
+
+    await SQLdb("partners").insert(partner);
+
+    res.status(201).json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 
 module.exports = router;

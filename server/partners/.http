@@ -181,6 +181,23 @@ DELETE {{host}}/employees/3
 DELETE {{host}}/partner/1
 {{authHeader}}
 
+### Create new partner
+POST {{host}}/partner/new
+{{authHeader}}
+content-type: application/json
+
+{
+    "partner": {
+        "name": "test-partner",
+        "email": "test@gmail.com",
+        "phoneNumber": "+6512345678",
+        "description": "this is a description",
+        "location_address": "123 Main St",
+        "location_coordinates": "12345678"
+    }
+}
+
+
 ### Update partner details
 # PATCH /partner/:partnerID
 PATCH {{host}}/partner/1
