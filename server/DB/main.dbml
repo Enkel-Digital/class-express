@@ -47,6 +47,7 @@ Table partners {
   phoneNumber varchar [not null] // Includes area code
   location_address varchar [not null]
   location_coordinates varchar [not null]
+  location_postalCode varchar [null]
   website varchar [null]
   pictureSources varchar // Perhaps use an array?
   verified_email boolean [default: false]

@@ -11,7 +11,7 @@ const auth = require("../middleware/auth");
 const SQLdb = require("@enkeldigital/ce-sql");
 
 const createLogger = require("@lionellbriones/logging").default;
-const logger = createLogger("routes:reviews");
+const logger = createLogger("routes:employees");
 
 /**
  * Get employee details
