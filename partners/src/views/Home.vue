@@ -6,7 +6,7 @@
     <!-- <br /> -->
 
     <masonry
-      :cols="{ default: 5, 1000: 3, 700: 2, 400: 1 }"
+      :cols="{ default: 8, 1920: 6, 700: 4, 400: 3 }"
       :gutter="{ default: '0.5em', 700: '0.25em' }"
     >
       <BookingsCard />
