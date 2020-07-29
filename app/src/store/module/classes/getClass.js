@@ -44,17 +44,21 @@ async function _getClass(classes, commit, classID) {
 
   // Skip if class details is already downloaded and cached locally
   // Skip if classID is already requested for but not fulfilled yet
-  // @todo Return the class if in state and the promise if it is still pending, save the promise to classesToFetch queue?
-  if (classes[classID] || classesToFetch[classID]) return;
+  // Return the class if in state and the promise (that is saved in the classesToFetch queue) if it is still pending
+  if (classes[classID]) return classes[classID];
+  if (classesToFetch[classID]) return classesToFetch[classID];
+
+  const responsePromise = api.get(`/class/details/${classID}`);
 
   // Set classID into "Queue" to prevent getClass from being called again with same ID before this class is fetched
-  classesToFetch[classID] = true;
+  classesToFetch[classID] = responsePromise;
 
-  const response = await api.get(`/class/details/${classID}`);
+  const response = await responsePromise;
 
   // Clear classID immediately after API resolves to prevent this from being uncleared if retries if API failed
   delete classesToFetch[classID];
 
+  // @todo If res fails but the reason is because invalid classID, maybe I should do smth else instead?
   // @todo See if this.call(this) is actually valid
   if (!response.success) return apiError(response, () => this.call(this));
 
