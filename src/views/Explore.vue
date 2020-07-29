@@ -1,9 +1,7 @@
 <template>
   <v-content id="explore">
     <v-app-bar app flat color="white">
-      <v-toolbar-title id="anchor" style="font-weight: bold;"
-        >Explore</v-toolbar-title
-      >
+      <v-toolbar-title style="font-weight: bold;">Explore</v-toolbar-title>
     </v-app-bar>
 
     <ais-instant-search index-name="classes" :search-client="searchClient">
