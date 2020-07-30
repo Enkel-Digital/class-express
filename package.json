@@ -11,6 +11,7 @@
     "deploy:staging": "firebase use ce-staging-ae480 && npm run build && npm run deploy-firebase-hosting"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^1.7.0",
     "algoliasearch": "^4.2.0",
     "core-js": "^3.6.5",
     "fetch-with-fire": "^1.5.1",
