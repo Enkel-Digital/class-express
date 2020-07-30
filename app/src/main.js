@@ -21,6 +21,7 @@ import customLoader from "./components/Loader.vue";
 Vue.use(loader, { customLoader });
 
 import moment from "moment";
+moment.locale("en"); // Ensure locale is always default "en" locale like the one in moment's documentation
 Vue.prototype.moment = moment;
 
 Vue.config.productionTip = false;

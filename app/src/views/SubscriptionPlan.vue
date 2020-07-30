@@ -1,10 +1,7 @@
 <template>
-  <v-content
-    id="subscription"
-    v-touch="{ right: () => $router.push({ name: 'profile' }) }"
-  >
+  <v-main id="subscription">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
-      <BackBtn :to="{ name: 'profile' }" />
+      <BackBtn />
       <v-toolbar-title>Subscription</v-toolbar-title>
     </v-app-bar>
 
@@ -27,9 +24,7 @@
       </v-list-item>
     </v-responsive>
 
-    <!-- Hide action button when user have no plan -->
-    <!-- <PointsCard :hideActionButton="current" /> -->
-    <PointsCard :hideActionButton="!!current" />
+    <PointsCard />
 
     <br />
     <h3 class="opacity7 ml-5">
@@ -38,7 +33,8 @@
 
     <p v-if="current" class="opacity6 ml-5 mb-0">
       <span v-if="periodEndDate !== null" style="font-weight: bold;">
-        Your current plan ends on {{ moment.unix(periodEndDate).format("L") }}
+        Your current plan ends on
+        {{ moment.unix(periodEndDate).format("DD/MM/YYYY") }}
         <br />
       </span>
       Click to change next month's plan
@@ -94,6 +90,7 @@
       outlined
       style="text-align: left;"
       :to="{ name: 'topup' }"
+      replace
     >
       <v-list-item>
         <v-list-item-content>
@@ -137,6 +134,7 @@
       outlined
       style="text-align: left;"
       :to="{ name: 'cancel-subscription' }"
+      replace
     >
       <v-list-item>
         <v-list-item-content>
@@ -174,6 +172,7 @@
       outlined
       style="text-align: left;"
       :to="{ name: 'faq' }"
+      replace
     >
       <v-list-item>
         <v-list-item-content>
@@ -185,20 +184,16 @@
         </v-list-item-content>
       </v-list-item>
     </v-card>
-  </v-content>
+  </v-main>
 </template>
 
 <script>
-import { Touch } from "vuetify/lib/directives";
 import BackBtn from "@/components/BackBtn";
 import PointsCard from "@/components/PointsCard";
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "subscription",
-  directives: {
-    Touch,
-  },
   components: {
     BackBtn,
     PointsCard,

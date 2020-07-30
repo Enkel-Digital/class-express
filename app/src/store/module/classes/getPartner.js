@@ -25,13 +25,16 @@ async function _getPartner(partners, commit, partnerID) {
 
   // Skip if partner details is already downloaded and cached locally
   // Skip if partnerID is already requested for but not fulfilled yet
-  // @todo Return partner if in state and the promise if it is still pending, save the promise to partnersToFetch queue?
-  if (partners[partnerID] || partnersToFetch[partnerID]) return;
+  // Return partner if in state and the promise (that is saved in the partnersToFetch queue) if it is still pending
+  if (partners[partnerID]) return partners[partnerID];
+  if (partnersToFetch[partnerID]) return partnersToFetch[partnerID];
+
+  const responsePromise = await api.get(`/partner/details/${partnerID}`);
 
   // Set partnerID into "Queue" to prevent getPartner from being called again with same ID before this partner is fetched
-  partnersToFetch[partnerID] = true;
+  partnersToFetch[partnerID] = responsePromise;
 
-  const response = await api.get(`/partner/details/${partnerID}`);
+  const response = await responsePromise;
 
   // Clear partnerID immediately after API resolves to prevent this from being uncleared if retries if API failed
   delete partnersToFetch[partnerID];
@@ -54,8 +57,8 @@ async function _getPartner(partners, commit, partnerID) {
  * Will populate the partner into state once server responds.
  * Returns the requested partnerObject if value does not exist in state and not previously requested for.
  * However do not rely on the return value as if it is already in state or previously requested for it will return undefined
- * @param partners Partners object in classes vuex module's state
- * @param commit Commit method from vuex action of classes vuex module
+ * @param partners Partners object in partners vuex module's state
+ * @param commit Commit method from vuex action of partners vuex module
  * @param {(Number|Number[])} partnerID A partnerID or a list of partnerID that will be requested from server if not available locally
  * @returns {(undefined | Promise<partnerObject> | Promise<partnerObject>[])} A promise or an array of promise that resolves to partner object(s)
  */

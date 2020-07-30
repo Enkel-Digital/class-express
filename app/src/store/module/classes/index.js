@@ -81,84 +81,33 @@ export default {
         .map((partnerID) => state.partners[partnerID]) // Convert from partnerID to partner object
         .filter((partner) => partner); // Filter to remove undefined if any partner is not loaded into state yet
     },
-    /**
-     * @todo Sort by time class was attended
-     * @todo As time goes on, this will get larger and larger, thus we need a better way to pass this to the view component, instead of everything at once.
-     */
-    pastClasses(state) {
-      // If pastClasses is not loaded before getter is ran, skip getter.
-      if (!state.pastClasses) return [];
-
-      const pastClasses = {};
-
-      for (const classID of Object.keys(state.pastClasses))
-        pastClasses[classID] = state.classes[classID];
-
-      return Object.values(pastClasses).map((clas) => {
-        /** @notice Explicit data setting needed to prevent data caching */
-        if (state.favouriteClasses[clas.id]) clas.favourite = true;
-        else clas.favourite = false;
-
-        return clas;
-      });
-    },
-    /**
-     * Generate an array of upcoming classes Object(s) from an array of IDs of upcoming classes
-     * @todo Sort the classes by time of class for every day.
-     * @todo Return an Object with timestamp as key and an array of classes as value
-     */
-    upcomingClasses(state) {
-      const upcomingClasses = {};
-
-      for (const classID in state.upcomingClasses)
-        upcomingClasses[classID] = state.classes[classID];
-
-      return Object.values(upcomingClasses)
-        .filter((clas) => clas) // Filters out undefined classes that are yet to be fetched from API
-        .map((clas) => {
-          /** @notice Explicit data setting needed to prevent data caching */
-          if (state.favouriteClasses[clas.id]) clas.favourite = true;
-          else clas.favourite = false;
-
-          return clas;
-        });
-    },
   },
   actions: {
     getClass,
     getPartner,
     /**
-     * Get list of upcomingClasses from API
-     * @function getUpcomingClasses
+     * Get list of user's classes from API
+     * This includes both upcoming and past classes
+     * @function getUsersClasses
      */
-    async getUpcomingClasses({ rootState, dispatch, commit }) {
+    async getUsersClasses({ rootState, dispatch, commit }) {
       const response = await apiWithLoader.get(
-        `/class/user/upcoming/${rootState.user.id}`
+        `/class/user/${rootState.user.id}`
       );
 
       if (!response.success)
-        return apiError(response, () => dispatch("getUpcomingClasses"));
+        return apiError(response, () => dispatch("getUsersClasses"));
 
-      const upcomingClasses = response.upcomingClasses;
+      dispatch(
+        "getClass",
+        response.classes.map((clas) => clas.classID)
+      );
 
-      // @todo Instead of storing in upcoming classes, store it in userClasses
       // when I call api for upcoming, give upcoming at READ TIME
       // However store it in userClasses, then differentiate them to be either upcoming or past classes depending on the current time of display
       // If I call past classes, API gets past classes filtering by READ TIME, then store in past classes
       // past classes might not be accurate too, as a upcomingClass can become a past class while using the app,
-      commit("setter", ["upcomingClasses", upcomingClasses]);
-
-      // @todo Does this still work?
-      dispatch("getClass", Object.keys(upcomingClasses));
-    },
-    /**
-     * Get list of pastClasses from API
-     * @function getPastClasses
-     */
-    async getPastClasses({ state, dispatch, commit }) {
-      // @todo Replace with API call
-      // commit("setter", ["pastClasses", pastClasses]);
-      // dispatch("getClass", Object.keys(pastClasses));
+      commit("setter", ["userClasses", response.classes]);
     },
     /**
      * Call API for BOTH favourite classes and partners
@@ -167,6 +116,7 @@ export default {
      */
     async getFavourites({ state, commit, dispatch, rootState }) {
       // @todo Now we always call the API, but to udpate by sending the API the last update time
+      // Else just ignore if favourites is already cached as user cant update favourites from another device anyways
       const response = await apiWithLoader.get(
         `/favourites/${rootState.user.id}`
       );

@@ -1,5 +1,5 @@
 <template>
-  <v-content class="explore">
+  <v-main class="explore">
     <!-- @todo Only show if user did not search for anything -->
     <v-responsive class="ma-4" v-if="categories.length">
       <h4>Show a Category</h4>
@@ -14,7 +14,7 @@
         {{ category }}
       </v-btn>
     </v-responsive>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

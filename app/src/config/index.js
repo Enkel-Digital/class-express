@@ -3,6 +3,7 @@
  * @references https://paulund.co.uk/create-config-files-for-vuejs
  */
 
+// Where NODE_ENV is auto injected by vue CLI depending on whether npm run serve or npm run build is used.
 // Seperate out reading the env var to prevent loading issue when used directly in "require"
 const NODE_ENV = process.env.NODE_ENV.toLowerCase();
 

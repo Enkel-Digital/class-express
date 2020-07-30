@@ -1,5 +1,5 @@
 <template>
-  <v-content id="welcome">
+  <v-main id="welcome">
     <v-img
       eager
       alt="ClassExpress logo"
@@ -29,7 +29,7 @@
     >
       Login
     </v-btn>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

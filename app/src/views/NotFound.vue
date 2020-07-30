@@ -1,5 +1,5 @@
 <template>
-  <v-content>
+  <v-main>
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Page Not Found</v-toolbar-title>
@@ -14,7 +14,7 @@
       Go home now?
       <v-btn :to="{ name: 'home' }">Home</v-btn>
     </div>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <v-content class="home">
+  <v-main class="home">
     <v-responsive>
       <!-- The carousel of images / latest news -->
       <!-- @todo https://vuetifyjs.com/en/components/aspect-ratios/ -->
@@ -76,7 +76,7 @@
     <br />
 
     <p>Invite your friends to start learning new skills together!</p>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

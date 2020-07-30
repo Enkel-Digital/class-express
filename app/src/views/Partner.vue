@@ -1,9 +1,5 @@
 <template>
-  <v-content
-    id="partner"
-    v-if="partner"
-    v-touch="{ right: () => $router.back() }"
-  >
+  <v-main id="partner" v-if="partner">
     <v-app-bar app color="white" flat fixed>
       <BackBtn />
 
@@ -22,8 +18,9 @@
     </v-app-bar>
 
     <v-responsive id="class-image-container">
-      <!-- @todo Change to a image carousel -->
-      <v-img id="class-image" :src="partner.pictureSources[0]" />
+      <!-- @todo Update API to return an array from DB and Change to a image carousel -->
+      <!-- <v-img id="class-image" :src="partner.pictureSources[0]" /> -->
+      <v-img id="class-image" :src="partner.pictureSources" />
     </v-responsive>
 
     <v-responsive style="margin: 1em;">
@@ -98,11 +95,10 @@
     </v-container>
 
     <!-- Perhaps have a similiar classes/partners thing? -->
-  </v-content>
+  </v-main>
 </template>
 
 <script>
-import { Touch } from "vuetify/lib/directives";
 import { mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 import MapImage from "@/components/MapImage";
@@ -111,9 +107,6 @@ import getClassAndPartnerMixin from "../utils/getClassAndPartnerMixin";
 
 export default {
   name: "partner",
-  directives: {
-    Touch,
-  },
   components: {
     BackBtn,
     MapImage,
