@@ -7,5 +7,6 @@
 module.exports = {
   // URL cannot have ending slash "/"
   apiUrl: "http://localhost:3000",
-  errorApiEndpoint: "http://localhost:3000/error",
+  errorApiEndpoint: "http://localhost:3003/new",
+  billingApiEndpoint: "http://localhost:3002",
 };
