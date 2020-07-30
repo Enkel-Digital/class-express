@@ -84,6 +84,14 @@
 <script>
 import { loadStripe } from "@stripe/stripe-js";
 
+import firebase from "firebase/app";
+import "firebase/auth";
+import fetch from "fetch-with-fire";
+import { billingApiEndpoint } from "@/config";
+const api = new fetch(firebase.auth, billingApiEndpoint);
+
+
+
 export default {
   // "redirectObject" Is any valid object for router.replace(redirectObject). Ref to https://router.vuejs.org/guide/essentials/navigation.html#router-replace-location-oncomplete-onabort
   props: ["redirectObject"],
@@ -95,6 +103,7 @@ export default {
       cardExpiryElement: null,
       cardCvcElement: null,
       amount: 1,
+      // @todo Change or remove these variables.
       publishableKey: "",
       customer: {},
       customerId: "cus_HeOaho2iPOkSFW",
@@ -185,20 +194,13 @@ export default {
 
     createSubscription({ customerId, paymentMethodId, priceId }) {
       return (
-        fetch("/create-subscription", {
-          method: "post",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
+        api
+          .post("/create-subscription", {
             customerId: customerId,
             paymentMethodId: paymentMethodId,
             priceId: priceId,
-          }),
-        })
-          .then((response) => {
-            return response.json();
           })
+          .then((response) => response.json())
           // If the card is declined, display an error to the user.
           .then((result) => {
             if (result.error) {
