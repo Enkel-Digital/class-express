@@ -12,24 +12,25 @@
           </v-card>
 
           <v-card max width="450">
-            <v-carousel height="400">
+            @todo Implement carousel to show all class images
+            <!-- <v-carousel height="400">
               <v-carousel-item
-                v-for="(pictureSrc, i) in clas.pictureSources"
+                v-for="(pictureSrc, i) in classDetails.pictureSources"
                 :key="i"
                 :src="pictureSrc"
                 reverse-transition="fade-transition"
                 transition="fade-transition"
               />
-            </v-carousel>
+            </v-carousel> -->
+            <v-img :src="classDetails.pictureSources" />
           </v-card>
 
           <v-card max width="450" class="my-2">
             <v-responsive style="text-align: left;" class="mx-4 pa-0">
               <v-row>
                 <v-col>
-                  <h3 class="headline" v-text="clas.name"></h3>
-                  <p>{{ clas.provider.name }}</p>
-                  <p>{{ clas.location.address }}</p>
+                  <h3 class="headline" v-text="classDetails.name"></h3>
+                  <p>{{ classDetails.location_address }}</p>
                 </v-col>
               </v-row>
             </v-responsive>
@@ -40,28 +41,31 @@
               <v-list-item>
                 <v-list-item-content>
                   <p class="overline">
-                    Reviews based on {{ review.numberOfReviews }} reviews
+                    Reviews based on {{ classReview.numberOfReviews }} reviews
                   </p>
 
-                  <v-list-item-subtitle v-if="review">
+                  <v-list-item-subtitle v-if="classReview.numberOfReviews">
                     <!-- Do the star icon thing for the reviews -->
                     <v-rating
-                      :value="review.ratings"
+                      :value="4"
                       color="amber"
                       dense
                       half-increments
                       readonly
                       size="14"
                     />
-                    {{ review.ratings }} / 5 based on
-                    {{ review.numberOfReviews }} reviews
+                    {{ classReview.ratings }} / 5 based on
+                    {{ classReview.numberOfReviews }} reviews
                   </v-list-item-subtitle>
 
                   <v-list-item-subtitle v-else>Loading...</v-list-item-subtitle>
                 </v-list-item-content>
 
                 <v-btn
-                  :to="{ name: 'reviews', params: { classID: clas.id } }"
+                  :to="{
+                    name: 'reviews',
+                    params: { classID: this.classID },
+                  }"
                   text
                   small
                   color="primary"
@@ -79,7 +83,7 @@
                   <p class="overline">Class Desciption</p>
 
                   <!-- Change to a more readable font -->
-                  <span v-html="clas.description" />
+                  <span v-html="classDetails.description" />
                 </v-list-item-content>
               </v-list-item>
             </v-responsive>
@@ -93,7 +97,7 @@
               Getting here
             </h2>
 
-            <MapImage :classID="clas.id" />
+            <MapImage :classID="classDetails.id" />
             <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
           </v-card>
         </v-col>
@@ -128,23 +132,36 @@
 
 <script>
 import MapImage from "@/components/MapImage";
+import api from "../store/utils/fetch";
 
 export default {
   name: "ClassDetails",
+  data() {
+    return {
+      classDetails: {},
+      classReview: {},
+    };
+  },
   components: {
     MapImage,
   },
   created() {
-    // Call action to fetch review of this class
-    this.$store.dispatch("classes/getReview", this.classID);
+    this.getClassDetails();
+    this.getClassReviews();
   },
   props: ["classID"],
-  computed: {
-    clas() {
-      return this.$store.state.classes.classes[this.classID];
+  methods: {
+    async getClassDetails() {
+      this.classDetails = (
+        await api.get(`/class/details/${this.classID}`)
+      ).class;
+      console.log("this", this.classDetails);
     },
-    review() {
-      return this.$store.state.classes.review;
+    async getClassReviews() {
+      this.classReview = (
+        await api.get(`/reviews/class/${this.classID}`)
+      ).reviews;
+      console.log("this", this.classReview);
     },
   },
 };
