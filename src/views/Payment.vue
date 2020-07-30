@@ -1,50 +1,92 @@
 <template>
-  <div>
-    <v-card class="mx-auto" max-width="344">
+  <v-main id="create-payment-method">
+    <v-app-bar app flat color="white">
+      <v-toolbar-title style="font-weight: bold;">
+        Create New Payment Method
+      </v-toolbar-title>
+    </v-app-bar>
+
+    <v-card
+      class="mx-auto"
+      max-width="calc(100% - 3em)"
+      style="padding: 1em; border: 1px solid #e6e5e5;"
+    >
+      <ul>
+        <li>
+          You do not have a payment method currently.
+        </li>
+
+        <li>
+          Please create a new payment method before any purchases can be made.
+        </li>
+
+        <li>
+          Note that all future purchases in App will utilize this payment method
+          until you cancel this or choose to change your payment method.
+        </li>
+      </ul>
+    </v-card>
+
+    <br />
+
+    <v-card
+      class="mx-auto"
+      max-width="calc(100% - 3em)"
+      style="padding: 1em; border: 1px solid #e6e5e5;"
+    >
       <v-card-text>
-        <p class="display-1 text--primary">
-          Payment Method
-        </p>
-        <p>Subscription Plan {{ $route.params.planID }}</p>
+        <h2>
+          New Payment Method
+        </h2>
+
+        <br />
 
         <div class="error red center-align white-text">
           {{ stripeValidationError }}
         </div>
 
-        <div class="col s12 card-element">
+        <div class="card-element">
           <label>Card Number</label>
           <div id="card-number-element" class="input-value"></div>
         </div>
 
-        <div class="col s6 card-element">
+        <br />
+
+        <div class="card-element">
           <label>Expiry Date</label>
           <div id="card-expiry-element"></div>
         </div>
 
-        <div class="col s6 card-element">
+        <br />
+
+        <div class="card-element">
           <label>CVC</label>
           <div id="card-cvc-element"></div>
         </div>
       </v-card-text>
+
       <v-card-actions>
         <v-btn
           text
-          class="col s12"
-          color="deep-purple centre"
+          class="col"
+          color="deep-purple"
           @click="placeOrderButtonPressed"
         >
-          PlaceOrder
+          create payment method
         </v-btn>
       </v-card-actions>
     </v-card>
-  </div>
+
+    <br />
+  </v-main>
 </template>
 
 <script>
 import { loadStripe } from "@stripe/stripe-js";
 
 export default {
-  components: {},
+  // "redirectObject" Is any valid object for router.replace(redirectObject). Ref to https://router.vuejs.org/guide/essentials/navigation.html#router-replace-location-oncomplete-onabort
+  props: ["redirectObject"],
 
   data() {
     return {
@@ -58,18 +100,19 @@ export default {
       customerId: "cus_HeOaho2iPOkSFW",
       billingName: "zzk",
       priceId: "plan_HEDADPvhVD1zls",
+
+      // Registering on the component first before using
+      stripeValidationError: undefined,
     };
   },
 
   mounted() {
     (async () => {
-      // this.stripe = Stripe("pk_test_LIc2NCzFeOD5ng6VrGwNE8Dx00Z67P4mCD");
       this.stripe = await loadStripe(
         "pk_test_LIc2NCzFeOD5ng6VrGwNE8Dx00Z67P4mCD"
       );
       this.createAndMountFormElement();
-
-      this.createCustomer().then(console.log);
+      // this.createCustomer().then(console.log);
     })();
   },
 
@@ -117,7 +160,6 @@ export default {
 
     // create payment method in frontend
     // then send the payment method to billing service
-    //
     createPaymentMethod(cardElement, customerId, priceId) {
       return this.stripe
         .createPaymentMethod({
@@ -202,10 +244,9 @@ export default {
       paymentMethodId,
       isRetry,
     }) {
-      if (subscription && subscription.status === "active") {
-        // subscription is active, no customer actions required.
+      // subscription is active, no customer actions required.
+      if (subscription && subscription.status === "active")
         return { subscription, priceId, paymentMethodId };
-      }
 
       // If it's a first payment attempt, the payment intent is on the subscription latest invoice.
       // If it's a retry, the payment intent will be on the invoice itself.
@@ -216,7 +257,7 @@ export default {
       if (
         paymentIntent.status === "requires_action" ||
         (isRetry === true && paymentIntent.status === "requires_payment_method")
-      ) {
+      )
         return this.stripe
           .confirmCardPayment(paymentIntent.client_secret, {
             payment_method: paymentMethodId,
@@ -241,17 +282,15 @@ export default {
               }
             }
           });
-      } else {
-        // No customer action needed
-        return { subscription, priceId, paymentMethodId };
-      }
+      // No customer action needed
+      else return { subscription, priceId, paymentMethodId };
     },
 
     handlePaymentMethodRequired({ subscription, paymentMethodId, priceId }) {
-      if (subscription.status === "active") {
-        // subscription is active, no customer actions required.
+      // subscription is active, no customer actions required.
+      if (subscription.status === "active")
         return { subscription, priceId, paymentMethodId };
-      } else if (
+      else if (
         subscription.latest_invoice.payment_intent.status ===
         "requires_payment_method"
       ) {
@@ -264,9 +303,7 @@ export default {
           subscription.latest_invoice.payment_intent.status
         );
         throw { error: { message: "Your card was declined." } };
-      } else {
-        return { subscription, priceId, paymentMethodId };
-      }
+      } else return { subscription, priceId, paymentMethodId };
     },
 
     onSubscriptionComplete(result) {
@@ -276,6 +313,10 @@ export default {
         // Call your backend to grant access to your service based on
         // `result.subscription.items.data[0].price.product` the customer subscribed to.
         // Store the product.id and subscription.id in db
+
+        // Redirect user back to the view that requested for a payment method creation or a custom location
+        if (this.redirectObject) this.$router.replace(this.redirectObject);
+        else this.$router.go(-1);
       }
     },
 
@@ -291,31 +332,14 @@ export default {
 </script>
 
 <style>
-.payment-form {
-  max-width: 400px;
-  margin: 20px auto;
-  border: 1px solid #ececec;
-}
-
-.payment-form h5 {
-  margin: 0;
-  padding: 10px;
-  font-size: 1.2rem;
-}
-
-.card-element {
-  margin-top: 5px;
+#create-payment-method {
+  text-align: left;
 }
 
 #card-number-element,
 #card-expiry-element,
 #card-cvc-element {
-  background: white;
-  padding: 5px;
-  border: 1px solid #ececec;
-}
-
-.place-order-button-block {
-  margin: 10px 0;
+  padding: 1em;
+  border: 1px solid #e6e5e5;
 }
 </style>
