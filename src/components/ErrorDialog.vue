@@ -18,16 +18,32 @@
         style="word-break: keep-all;"
       />
 
+      <!-- Default error description for the specific Error type -->
       <v-card-text v-html="error.description" style="text-align: left;" />
 
+      <!-- Custom extra error description developers can add for a specific Error instance -->
       <v-card-text
         v-if="error.more && error.more.description"
         v-html="error.more.description"
         style="text-align: left;"
       />
 
+      <!-- Allow debug directly from error dialog component using a "dropdown" view -->
+      <v-card-text v-if="error.more" style="text-align: left;">
+        <details>
+          <summary>
+            <h3 style="display: inline; text-decoration: none;">
+              <b><i>More debug info</i></b>
+            </h3>
+          </summary>
+          <ul>
+            <li v-for="(detail, i) in error.more" :key="i" v-html="detail" />
+          </ul>
+        </details>
+      </v-card-text>
+
       <v-card-text style="text-align: left;">
-        Issue is reported to the developer 🙏🏻
+        Issue reported to the developer 🙏🏻
         <br />
         Working on it now 💪🏻😁
       </v-card-text>

@@ -1,5 +1,5 @@
 <template>
-  <v-content style="padding: 0;">
+  <v-main style="padding: 0;">
     <v-responsive v-if="favouritePartners.length">
       <v-card
         v-for="partner in favouritePartners"
@@ -17,8 +17,9 @@
             })
           "
         >
-          <!-- @todo Change to a image carousel -->
-          <v-img id="class-image" :src="partner.pictureSources[0]" />
+          <!-- @todo Update API to return an array from DB and Change to a image carousel -->
+          <!-- <v-img id="class-image" :src="partner.pictureSources[0]" /> -->
+          <v-img id="class-image" :src="partner.pictureSources" />
 
           <v-list-item>
             <div style="text-align: left;">
@@ -56,7 +57,7 @@
     <v-responsive v-else>
       Add partners to your favourites now!
     </v-responsive>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

@@ -61,16 +61,16 @@ export default {
 
       if (confirm("Confirm change of Subscription Plan!")) {
         // Call API to update the plan
-        const response = await apiWithLoader.post(
-          "/subscription/plans/update",
-          {
-            userID: rootState.user.id,
-            subscriptionPlanID: planID,
-          }
-        );
+        const response = await apiWithLoader.post("/subscription/update", {
+          userID: rootState.user.id,
+          subscriptionPlanID: planID,
+        });
 
         if (!response.success)
           return apiError(response, () => dispatch("updatePlan", planID));
+
+        // Call getPoints just in case this plan update caused an update to points value
+        dispatch("points/getPoints", undefined, { root: true });
 
         // Pessimistic UI, show after network update is complete, using the users' plans the API returned
         commit("setter", ["current", response.plans.current]);

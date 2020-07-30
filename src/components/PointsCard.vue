@@ -1,8 +1,8 @@
 <template>
   <v-responsive id="points-card">
-    <!-- If user already has a plan -->
+    <!-- If user already has a plan and points object is loaded from API -->
     <v-card
-      v-if="currentPlanID"
+      v-if="current && points"
       class="mx-auto"
       max-width="calc(100% - 3em)"
       outlined
@@ -16,7 +16,8 @@
           </v-list-item-title>
 
           <v-list-item-subtitle>
-            Period ends on: {{ moment.unix(points.period.end).format("L") }}
+            Period ends on:
+            {{ moment.unix(points.period.end).format("DD/MM/YYYY") }}
           </v-list-item-subtitle>
         </v-list-item-content>
 
@@ -58,11 +59,11 @@ import logout from "@/controllers/logout";
 import { mapState } from "vuex";
 
 export default {
-  name: "profile",
+  name: "PointsCard",
   props: ["hideActionButton"],
   computed: {
     ...mapState("points", ["points"]),
-    ...mapState("subscription", ["currentPlanID"]),
+    ...mapState("subscription", ["current"]),
   },
 };
 </script>

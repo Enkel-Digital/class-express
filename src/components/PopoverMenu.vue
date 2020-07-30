@@ -54,7 +54,7 @@
 
         <v-card-text>
           <h2 class="title mb-2">Choose</h2>
-          <ais-menu attribute="name">
+          <ais-menu attribute="_tags">
             <v-chip-group column multiple slot-scope="{ items, refine }">
               <template v-for="item in items">
                 <v-chip

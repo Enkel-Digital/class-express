@@ -14,11 +14,10 @@ export default {
     setter,
     topupPoints(state, pointsBought) {
       state.points.left += pointsBought;
+      state.points.total += pointsBought;
     },
     /**
      * Function to deduct points needed to book a class
-     * @function deductPoints
-     * @param {*} state
      * @param {number} classPoints Points needed for the class
      */
     deductPoints(state, classPoints) {
@@ -26,19 +25,11 @@ export default {
     },
     /**
      * Function to refund back points from a class booking
-     * @function refundPoints
-     * @param {*} state
      * @param {number} classPoints Points needed for the class
      */
     refundPoints(state, classPoints) {
       state.points.left += classPoints;
     },
-  },
-  getters: {
-    topupOption: (state) => (topupOptionID) =>
-      state.topupOptions.find(
-        (topupOption) => topupOption.id === topupOptionID
-      ),
   },
   actions: {
     /**
@@ -53,14 +44,6 @@ export default {
      * @function getPlans
      */
     async getPoints({ commit, dispatch, rootState }) {
-      // Wait until email is available.
-      // @todo Might cause issues if the user API fails this will continue looping forever.
-      // @todo Update this to throw error instead if email is not available
-      while (!rootState.user.id) {
-        const sleep = (await import("@/utils/sleep")).default;
-        await sleep.milli(100);
-      }
-
       const response = await apiWithLoader.get(`/points/${rootState.user.id}`);
 
       if (!response.success)
@@ -84,18 +67,23 @@ export default {
      * Buy/Topup points
      * @function buyPoints
      */
-    async buyPoints({ commit, getters }, topupOptionID) {
-      const points = getters.topupOption(topupOptionID).totalPoints;
+    async buyPoints({ state, commit, rootState, dispatch }, topupID) {
+      const points = state.topupOptions.find(
+        (topupOption) => topupOption.id === topupID
+      ).totalPoints;
 
       // Set the selected Plan to show on the radio buttons
-      console.log(`Requested ${points} points topup, option ${topupOptionID}`);
+      console.log(`Requested ${points} points topup, option ${topupID}`);
 
       if (confirm("Confirm topup?")) {
-        // @todo Show loading bar before calling API for pessimistic UI
+        // Call API to topup points
+        const response = await apiWithLoader.post("/topup/purchase", {
+          userID: rootState.user.id,
+          topupID,
+        });
 
-        // Call logic to topup points
-
-        console.log("Points added!");
+        if (!response.success)
+          return apiError(response, () => dispatch("updatePlan", topupID));
 
         commit("topupPoints", points);
       }

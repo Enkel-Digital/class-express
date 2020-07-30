@@ -1,5 +1,5 @@
 <template>
-  <v-content id="verify-email">
+  <v-main id="verify-email">
     <v-img alt="ClassExpress logo" src="../assets/logo.png" />
 
     <h2>Hello! Plz login after<br />verifying ur emailz</h2>
@@ -26,7 +26,7 @@
     >
       Login
     </v-btn>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <v-content id="cancel-subscription">
+  <v-main id="cancel-subscription">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Cancel Subscription</v-toolbar-title>
@@ -29,7 +29,7 @@
     <p style="color: rgba(0, 0, 0, 0.6);" class="ml-5 mb-0">
       Your current plan is ... and will end on
       <span style="font-weight: bold;">
-        will end on {{ moment.unix(periodEndDate).format("L") }}
+        will end on {{ moment.unix(periodEndDate).format("DD/MM/YYYY") }}
       </span>
     </p>
 
@@ -74,7 +74,7 @@
     >
       submit & cancel plan
     </v-btn>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <v-content class="reviews">
+  <v-main class="reviews">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>{{ name }}</v-toolbar-title>
@@ -90,7 +90,7 @@
         <v-list-item>{{ review.description }}</v-list-item>
       </v-card>
     </v-responsive>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

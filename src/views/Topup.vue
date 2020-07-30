@@ -1,5 +1,5 @@
 <template>
-  <v-content class="topup" v-touch="{ right: () => $router.back() }">
+  <v-main class="topup">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Topup</v-toolbar-title>
@@ -12,27 +12,9 @@
       Need more points? Topup anytime at flat rates!
     </p>
 
-    <!-- @todo If user does not have a plan, show card to ask user to buy a subscription plan -->
-    <v-card
-      id="points-card"
-      class="mx-auto mb-4"
-      max-width="calc(100% - 3em)"
-      outlined
-    >
-      <v-list-item>
-        <v-list-item-content>
-          <p class="overline">your points</p>
+    <PointsCard :hideActionButton="true" />
 
-          <v-list-item-subtitle>
-            Period ends on: {{ moment.unix(points.period.end).format("L") }}
-          </v-list-item-subtitle>
-
-          <v-list-item-title class="headline mb-1">
-            {{ points.left }} / {{ points.total }} points left
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-card>
+    <br />
 
     <v-card
       class="mx-auto mb-4"
@@ -40,6 +22,7 @@
       outlined
       style="text-align: left;"
       :to="{ name: 'subscription' }"
+      replace
     >
       <v-list-item>
         <v-list-item-content>
@@ -74,8 +57,8 @@
 
           <v-list-item-title class="headline mb-1">
             {{ topupOption.totalPoints }} points for
-            {{ topupOption.price.currency }}
-            {{ topupOption.price.value }}
+            {{ topupOption.currency }}
+            {{ topupOption.price }}
           </v-list-item-title>
 
           <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;" class="mb-0">
@@ -95,6 +78,7 @@
       outlined
       style="text-align: left;"
       :to="{ name: 'subscription' }"
+      replace
     >
       <v-list-item>
         <v-list-item-content>
@@ -117,6 +101,7 @@
       outlined
       style="text-align: left;"
       :to="{ name: 'faq' }"
+      replace
     >
       <v-list-item>
         <v-list-item-content>
@@ -128,22 +113,20 @@
         </v-list-item-content>
       </v-list-item>
     </v-card>
-  </v-content>
+  </v-main>
 </template>
 
 <script>
-import { Touch } from "vuetify/lib/directives";
 import logout from "@/controllers/logout";
 import BackBtn from "@/components/BackBtn";
+import PointsCard from "@/components/PointsCard";
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "topup",
-  directives: {
-    Touch,
-  },
   components: {
     BackBtn,
+    PointsCard,
   },
   beforeCreate() {
     // Request vuex to update/populate list of topup options
@@ -162,9 +145,5 @@ export default {
   text-align: left;
   margin: 1em;
   margin-top: 2em;
-}
-
-#points-card {
-  text-align: left;
 }
 </style>

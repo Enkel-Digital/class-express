@@ -1,5 +1,5 @@
 <template>
-  <v-content id="about">
+  <v-main id="about">
     <ul>
       <li>
         Developers:
@@ -27,7 +27,7 @@
         {{ constantKey }}: {{ constants[constantKey] }}
       </li>
     </ul>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

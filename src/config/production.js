@@ -7,6 +7,6 @@
 module.exports = {
   // URL cannot have ending slash "/"
   // @todo To update URL once domain is fixed
-  apiUrl: "https://ce-core.api.enkeldigital.com/",
+  apiUrl: process.env.VUE_APP_apiUrl || "https://ce-core.api.enkeldigital.com",
   errorApiEndpoint: "https://ce-core.api.enkeldigital.com/error",
 };

@@ -1,5 +1,5 @@
 <template>
-  <v-content style="padding: 0;">
+  <v-main style="padding: 0;">
     <v-responsive v-if="favouriteClasses.length">
       <v-card
         v-for="clas in favouriteClasses"
@@ -17,8 +17,9 @@
             })
           "
         >
-          <!-- @todo Change to a image carousel -->
-          <v-img id="class-image" :src="clas.pictureSources[0]" />
+          <!-- @todo Update API to return an array from DB and Change to a image carousel -->
+          <!-- <v-img id="class-image" :src="clas.pictureSources[0]" /> -->
+          <v-img id="class-image" :src="clas.pictureSources" />
 
           <v-list-item>
             <div style="text-align: left;">
@@ -68,7 +69,7 @@
     <v-responsive v-else>
       Add classes to your favourites now!
     </v-responsive>
-  </v-content>
+  </v-main>
 </template>
 
 <script>
@@ -81,6 +82,7 @@ export default {
   },
   computed: {
     ...mapGetters("classes", ["favouriteClasses"]),
+    // @todo update this to do in computed as a standalone method
     ...mapState("classes", ["partners"]),
   },
   watch: {

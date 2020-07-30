@@ -1,4 +1,4 @@
-const apiKey = "AIzaSyDLcotbAj1ymo_cxeuPXVpbE0M7GW1wedU";
+const apiKey = "AIzaSyBcL1pj_PfdU6DlVbAS1l7z3QrptvWs0EE";
 
 const GmapsUrlConcat = (
   coordinates,

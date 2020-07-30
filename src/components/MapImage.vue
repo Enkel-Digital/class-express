@@ -25,13 +25,14 @@ export default {
       if (this.src) return;
 
       // If the map image for a class is requested, check if there is a custom class location else use partner's location
+      // null coalescing to protect against undefined if clas or partner object is not loaded yet.
       if (this.clas)
         return (
-          this.clas.location_coordinates ||
+          this.clas?.location_coordinates ||
           this.$store.state.classes.partners[this.clas.partnerID]
-            .location_coordinates
+            ?.location_coordinates
         );
-      else if (this.partner) return this.partner.location_coordinates;
+      else if (this.partner) return this.partner?.location_coordinates;
       else return undefined; // If neither clas nor partner is loaded yet, return nothing first
     },
     locationImage() {
