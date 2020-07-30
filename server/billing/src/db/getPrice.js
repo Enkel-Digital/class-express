@@ -1,17 +1,17 @@
 const db = require("./../utils/db.js");
 
-// get stripe price ID base on the plan id inn db
-async function getPriceId(planId) {
+/**
+ * get stripe price ID base on the plan id inn db
+ * @param {*} planID Plan ID
+ */
+async function getPriceID(planID) {
   const subscriptionRef = db.collection("subscription");
 
-  const snapshot = await subscriptionRef.doc(planId).get();
-  if (snapshot.empty) {
-    console.log("No matching subscription.");
-    return;
-  }
-  const priceId = snapshot.data().priceID;
+  const priceID = (await subscriptionRef.doc(planID).get()).data().priceID;
 
-  return priceId;
+  if (!priceID) return console.log("No matching subscription.");
+
+  return priceID;
 }
 
-module.exports = getPriceId;
+module.exports = getPriceID;

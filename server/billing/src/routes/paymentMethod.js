@@ -2,41 +2,38 @@ const express = require("express");
 const router = express.Router();
 const db = require("./../utils/db.js");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-const { getStripeCustomerId } = require("../db/getCustomer");
+const { getStripeCustomerID } = require("../db/getCustomer");
 
 /**
  * Checks if payment method object exists for this userID
- * @name GET /user/paymentMethod/available/:userID
- * @returns {object} payment method
+ * @name GET /paymentMethod/available/:userID
+ * @returns {object} Boolean
  */
 router.get("/available/:userID", async (req, res) => {
   try {
     const { userID } = req.params;
 
-    const userAccountRef = db.collection("userAccount");
-    const snapshot = await userAccountRef.doc(userID).get();
-    if (snapshot.empty) {
-      console.log("No matching documents.");
-      return;
-    }
+    const user = (await db.collection("userAccounts").doc(userID).get()).data();
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, error: "User does not exist" });
 
-    const customerID = snapshot.data().customerID;
-
-    const listpaymentMethod = await stripe.paymentMethods.list({
-      customer: customerID,
+    const usersPaymentMethods = await stripe.paymentMethods.list({
+      customer: user.customerID,
       type: "card",
     });
 
-    return res.json({ success: true, data: listpaymentMethod });
+    res.json({ success: true, available: Boolean(usersPaymentMethods) });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
 /**
- * Create a new payment method
+ * Create new payment method
  * @name POST /paymentMethod/create
- * @param {string} userAccountId  userAccount ID to set as doc ID in firestore
+ * @param {string} userAccountID  userAccount ID to set as doc ID in firestore
  * @param {string} type type of the payment method
  * @param {object} card card info including card number, expiration month,expiration year,cvc
  * @param {object} billingdetails name, email....
@@ -44,7 +41,7 @@ router.get("/available/:userID", async (req, res) => {
  */
 router.post("/create", express.json(), async (req, res) => {
   try {
-    const { userAccountId, type, card, billingDetails } = req.body;
+    const { userAccountID, type, card, billingDetails } = req.body;
 
     const paymentMethod = await stripe.paymentMethods.create({
       type: type,
@@ -60,65 +57,54 @@ router.post("/create", express.json(), async (req, res) => {
       },
     });
 
-    const userAccountRef = db.collection("userAccount");
-    const stripeCustomerId = await getStripeCustomerId(userAccountId);
+    const stripeCustomerID = await getStripeCustomerID(userAccountID);
 
     // updateCustomerDefaultPaymentMethod
-    await stripe.customers.update(stripeCustomerId, {
+    await stripe.customers.update(stripeCustomerID, {
       invoice_settings: {
         default_payment_method: paymentMethod.id,
       },
     });
 
-    const res = await userAccountRef
-      .doc(userAccountId)
-      .update({ paymentMethodID: paymentMethod.id })
+    await db
+      .collection("userAccounts")
+      .doc(userAccountID)
+      .update({ paymentMethodID: paymentMethod.id });
 
-      .then(function (docRef) {
-        console.log("Document written with ID: ", docRef.id);
-        res.json({ success: true, docRefId: docRef.id });
-      })
-      .catch(function (error) {
-        console.error("Error adding document: ", error);
-      });
+    res.status(201).json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
 /**
- * Save a payment method ID in db
- * Update customer default payment method
- * @name POST /paymentMethod/save
- * @param {string} userAccountId  userAccount ID to set as doc ID in firestore
+ * @todo Fix and test this, user should send over a new payment Method instead of just a payment ID?
+ *
+ * Update customer's default payment method
+ * @name PATCH /paymentMethod/:
+ * @param {string} userAccountID  userAccount ID to set as doc ID in firestore
  * @param {string} paymentMethodID paymentMethod ID
  * @returns {object} success indicator
  */
-router.post("/save", express.json(), async (req, res) => {
+router.patch("/save", express.json(), async (req, res) => {
   try {
     const { userAccountID, paymentMethodID } = req.body;
 
-    const userAccountRef = db.collection("userAccount");
-    const stripeCustomerId = await getStripeCustomerId(userAccountID);
+    const stripeCustomerID = await getStripeCustomerID(userAccountID);
 
     // updateCustomerDefaultPaymentMethod
-    await stripe.customers.update(stripeCustomerId, {
+    await stripe.customers.update(stripeCustomerID, {
       invoice_settings: {
         default_payment_method: paymentMethodID,
       },
     });
 
-    const res = await userAccountRef
+    await db
+      .collection("userAccounts")
       .doc(userAccountID)
-      .update({ paymentMethodID: paymentMethodID })
+      .update({ paymentMethodID: paymentMethodID });
 
-      .then(function (docRef) {
-        console.log("Document written with ID: ", docRef.id);
-        res.json({ success: true, docRefId: docRef.id });
-      })
-      .catch(function (error) {
-        console.error("Error adding document: ", error);
-      });
+    res.json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }

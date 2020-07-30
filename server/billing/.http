@@ -17,8 +17,12 @@ GET {{host}}/
 ### Health probe
 GET {{host}}/health
 
+### Check if user exists as a stripe Customer
+# GET /user/exists/:userID
+GET {{host}}/user/exists/1
+
 ### Create Customer
-POST {{host}}/user/create/customer
+POST {{host}}/user/create
 content-type: application/json
 
 {
@@ -29,12 +33,28 @@ content-type: application/json
     }
 }
 
-### Search Customer
-# GET /user/exists/:userID
-GET {{host}}/user/exists/1
-
 ### Create Stripe Payment Method
-POST {{host}}/user/create/paymentMethod
+POST {{host}}/paymentMethod/create
+content-type: application/json
+
+{
+    "userAccountID": "1",
+    "type": "card",
+    "card": {
+        "number": "4242424242424242",
+        "exp_month": 7,
+        "exp_year": 2024,
+        "cvc": "424"
+    },
+    "billingDetails": {
+        "email": "ewqweewq@email.com",
+        "name": "James"
+    }
+}
+
+### Update Stripe Payment Method
+# @todo To fix this up.
+PATCH {{host}}/paymentMethod
 content-type: application/json
 
 {
