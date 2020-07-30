@@ -16,3 +16,146 @@ GET {{host}}/
 
 ### Health probe
 GET {{host}}/health
+
+### Add new search object (class)
+POST {{host}}/new/class
+content-type: application/json
+
+{
+      "id":3,
+      "name":"zzk",
+      "description":"qqw",
+      // eslint-disable-next-line camelcase
+      "location_address":"231",
+      "pictureSources":"",
+      "points":1,
+      "_tags":["1","2","3"]
+}
+
+### Add new search object (partner)
+POST {{host}}/new/partner
+content-type: application/json
+
+{
+      "id":11,
+      "name":"zzk",
+      "description":"qqw",
+      // eslint-disable-next-line camelcase
+      "location_address":"231",
+      "pictureSources":"",
+      "points":1,
+      "_tags":["1","2","3"]
+}
+
+### Mass insert new search objects
+POST {{host}}/new/bulk/class
+content-type: application/json
+
+[
+  {
+    "id": 2,
+    "name": "zzk",
+    "description": "qqw",
+    "location_address": "231",
+    "pictureSources": "",
+    "points": 1,
+    "_tags":["1","2","3"]
+  },
+  {
+    "id": 3,
+    "name": "zzk",
+    "description": "qqw",
+    "location_address": "231",
+    "pictureSources": "",
+    "points": 1,
+    "_tags":["1","2","3"]
+  }
+]
+
+
+### Mass insert new search objects
+POST {{host}}/new/bulk/partner
+content-type: application/json
+
+[
+  {
+    "id": 2,
+    "name": "zzk",
+    "description": "qqw",
+    "location_address": "231",
+    "pictureSources": "",
+    "points": 1,
+    "_tags":["1","2","3"]
+  },
+  {
+    "id": 3,
+    "name": "zzk",
+    "description": "qqw",
+    "location_address": "231",
+    "pictureSources": "",
+    "points": 1,
+    "_tags":["1","2","3"]
+  }
+]
+
+### Update search object (class)
+# PATCH /class/:classID
+PATCH {{host}}/class/1
+content-type: application/json
+
+{
+      "id":1,
+      "name":"lok111",
+      "description":"qqw",
+      // eslint-disable-next-line camelcase
+      "location_address":"231",
+      "pictureSources":"",
+      "points":1,
+      "_tags":["1","2","3"]
+}
+
+### Update search object (partner)
+# PATCH /partner/:partnerID
+PATCH {{host}}/partner/1
+content-type: application/json
+
+{
+      "id":11,
+      "name":"qqqq",
+      "description":"qqw",
+      // eslint-disable-next-line camelcase
+      "location_address":"231",
+      "pictureSources":"",
+      "points":1,
+      "_tags":["1","2","3"]
+}
+
+### Delete search object (class)
+# DELETE /class/:classID
+DELETE {{host}}/class/1
+content-type: application/json
+
+{
+      "id":3,
+      "name":"zzk",
+      "description":"qqw",
+      // eslint-disable-next-line camelcase
+      "location_address":"231",
+      "pictureSources":"",
+      "points":1
+}
+
+### Delete search object (partner)
+# DElETE /partner/:partnerID
+DElETE {{host}}/partner/1
+content-type: application/json
+
+{
+      "id":11,
+      "name":"zzk",
+      "description":"qqw",
+      // eslint-disable-next-line camelcase
+      "location_address":"231",
+      "pictureSources":"",
+      "points":1
+}
