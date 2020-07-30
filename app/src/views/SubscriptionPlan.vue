@@ -215,7 +215,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions("subscription", ["updatePlan"]),
+    // ...mapActions("subscription", ["updatePlan"]),
+    updatePlan(id) {
+      //this.$router.push("Payment");
+      this.$router.push({ name: "payment", params: { planID: id } });
+    },
     pauseSubscriptionPlan() {
       // @todo Implement this
       alert("This feature is not supported yet!");

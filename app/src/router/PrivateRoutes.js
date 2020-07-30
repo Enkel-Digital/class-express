@@ -124,6 +124,12 @@ const routes = [
     component: () => import("@/views/PastClasses.vue"),
     meta: { Auth_requirements: AuthType.private },
   },
+  {
+    path: "/payment",
+    name: "payment",
+    component: () => import("@/views/Payment.vue"),
+    meta: { Auth_requirements: AuthType.private },
+  },
 ];
 
 export default routes;
