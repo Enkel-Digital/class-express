@@ -8,7 +8,7 @@
         height="360"
       />
 
-      <input
+      <v-text-field
         v-autofocus
         type="text"
         v-model="email"
@@ -16,8 +16,8 @@
         @keypress.enter="login"
         required
       />
-      <br />
-      <input
+
+      <v-text-field
         type="password"
         v-model="password"
         placeholder="Password"
@@ -25,9 +25,22 @@
         required
       />
 
-      <button @click="login">Login</button>
       <br />
-      <button id="back-btn" @click="back">Back</button>
+
+      <v-btn color="#60696c" width="30em" outlined @click="login">Login</v-btn>
+
+      <br />
+      <br />
+      <h4 class="font-weight-light">
+        Don't have an account?
+        <router-link :to="{ name: 'signup' }">
+          Sign up here!
+        </router-link>
+      </h4>
+
+      <!-- <v-btn id="back-btn" color="#60696c" width="20em" outlined @click="back"
+        >Back</v-btn
+      > -->
     </div>
   </v-row>
 </template>
@@ -127,31 +140,16 @@ img {
   background-size: cover;
 }
 
-input {
-  margin: 1em 0;
-  padding: 1em;
+.login {
+  /* display: flex; */
+  flex-direction: column;
 
-  width: 70%;
-  max-width: 20em;
+  align-items: center;
 
-  border-radius: 1em;
-}
-
-button {
-  margin: 1em 0 0 0;
-
-  width: 70%;
-  height: 3em;
-  max-width: 20em;
-
-  border-style: solid;
-  border-width: thin;
-  border-radius: 4em;
-}
-
-#back-btn {
-  border-style: solid;
-  border-width: thin;
-  border-radius: 4em;
+  position: absolute;
+  top: 10vh;
+  left: 35%;
+  right: 35%;
+  bottom: 10vh;
 }
 </style>

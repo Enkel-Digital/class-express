@@ -1,32 +1,34 @@
 <template>
-  <v-main id="verify-email">
-    <v-img alt="ClassExpress logo" src="../assets/logo.png" />
+  <div class="verifyEmail" id="verify-email">
+    <v-img
+      max-width="25em"
+      max-height="25em"
+      alt="ClassExpress logo"
+      src="../assets/logo.png"
+    />
 
-    <h2>Hello! Plz login after<br />verifying ur emailz</h2>
+    <h2 class="font-weight-light">
+      hello! please check your inbox and verify your email! ☻
+    </h2>
 
     <br />
     <br />
 
     <v-btn
       @click="resendVerificationEmail"
-      width="calc(100% - 5em)"
-      color="orange darken-1"
+      width="30em"
+      color="#60696c"
+      outlined
     >
       resend verification email
     </v-btn>
 
     <br />
-    <br />
 
-    <v-btn
-      :to="{ name: 'login' }"
-      width="calc(100% - 5em)"
-      color="blue darken-2"
-      dark
-    >
+    <v-btn :to="{ name: 'login' }" width="30em" color="#60696c" outlined dark>
       Login
     </v-btn>
-  </v-main>
+  </div>
 </template>
 
 <script>
@@ -60,3 +62,18 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.verifyEmail {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  position: absolute;
+  top: 10vh;
+  left: 25%;
+  right: 25%;
+  bottom: 10vh;
+}
+</style>
