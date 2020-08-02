@@ -19,7 +19,7 @@ router.get("/exists/:userID", async (req, res) => {
         .status(404)
         .json({ success: false, error: "User does not exist" });
 
-    return res.json({ success: true, exists: true });
+    return res.status(200).json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -37,7 +37,6 @@ router.post("/create", express.json(), async (req, res) => {
     const { userDetails, userAccountID } = req.body;
 
     const customer = await stripe.customers.create({
-      email: userDetails.email,
       // Spread out user details directly
       // @todo Might want to enforce and limit the schema
       ...userDetails,

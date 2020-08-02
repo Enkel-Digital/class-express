@@ -42,17 +42,17 @@ router.post("/update/:planId", express.json(), async (req, res) => {
     }
 
     // if the user is new registered customer
-    // @todo What does number 0 even mean?
+    // currentSubscriptionPlan.data is an array
+    // user always have one current subscription plan
+    // so user's current plan will at fisrt index of the array
     if (currentSubscriptionPlan.data.length === 0) {
       const newSubscription = await stripe.subscriptions.create({
         customer: testCustomerID,
         items: [{ price: priceID }],
       });
-      // @todo Should the function end here or continue?
-      res.json({ success: true, subscription: newSubscription });
+      return res.json({ success: true, subscription: newSubscription });
     }
 
-    // @todo Is array the best option here?
     const currentSubscriptionID = currentSubscriptionPlan.data[0].id;
 
     // cancel the subscription at the end of the current billing period
