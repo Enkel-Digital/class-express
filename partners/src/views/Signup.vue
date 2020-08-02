@@ -1,243 +1,254 @@
 <template>
   <div class="owner">
     <v-row>
-      <v-col cols="15" sm="6" md="4">
+      <v-col cols="10" sm="5">
         <img
           alt="Login image"
           src="../assets/logo.png"
           width="360"
           height="360"
         />
-        <h1>Let's Get Started!</h1>
-        <v-btn :disabled="employee || owner" @click="owner = true"
+        <h2 class="font-weight-light">Let's Get Started!</h2>
+
+        <br />
+
+        <v-btn
+          color="#60696c"
+          outlined
+          width="20em"
+          rounded
+          :disabled="employee || owner"
+          @click="owner = true"
           >I am an Owner</v-btn
         >
-        <v-btn :disabled="owner || employee" @click="employee = true"
+
+        <br />
+        <br />
+
+        <v-btn
+          color="#60696c"
+          outlined
+          rounded
+          width="20em"
+          :disabled="owner || employee"
+          @click="employee = true"
           >I am an Employee</v-btn
         >
-        <v-btn @click="$router.push({ name: 'login' })"
-          >Have An Account? Login here!</v-btn
-        >
+        <br />
+        <br />
+
+        <h4 class="font-weight-light">
+          Already have an account?
+          <router-link :to="{ name: 'login' }">
+            Login here!
+          </router-link>
+        </h4>
       </v-col>
 
       <!-- stepper for owner -->
-      <v-col cols="15" sm="6" md="7">
+      <v-col cols="10" sm="5">
         <v-stepper v-if="owner" v-model="step" vertical>
-          <v-stepper-step :complete="step > 1" step="1">
+          <v-stepper-step color="#60696c" :complete="step > 1" step="1">
             Login Details
           </v-stepper-step>
 
           <v-stepper-content step="1">
             <v-form ref="ownerLoginDetails">
-              <v-row>
-                <v-col cols="15" sm="6" md="5">
-                  <v-text-field
-                    v-model="firstName"
-                    label="First Name"
-                    :rules="nameRules"
-                    prepend-icon="mdi-account"
-                  ></v-text-field>
-                </v-col>
+              <v-text-field
+                v-model="firstName"
+                label="First Name"
+                :rules="nameRules"
+                prepend-icon="mdi-account"
+              ></v-text-field>
 
-                <v-col cols="15" sm="6" md="5">
-                  <v-text-field
-                    v-model="lastName"
-                    label="Last Name"
-                    :rules="nameRules"
-                  ></v-text-field>
-                </v-col>
+              <v-text-field
+                v-model="lastName"
+                label="Last Name"
+                :rules="nameRules"
+                prepend-icon=" "
+              ></v-text-field>
 
-                <v-col cols="15" sm="6" md="10">
-                  <v-text-field
-                    v-model="phoneNumber"
-                    :rules="phoneRules"
-                    label="Mobile Number"
-                    hint="For emergency purposes"
-                    prepend-icon="mdi-cellphone"
-                    required
-                  ></v-text-field>
-                </v-col>
+              <v-text-field
+                v-model="phoneNumber"
+                :rules="phoneRules"
+                label="Mobile Number"
+                hint="For emergency purposes"
+                prepend-icon="mdi-cellphone"
+                required
+              ></v-text-field>
 
-                <v-col cols="15" sm="6" md="10">
-                  <v-text-field
-                    v-model="email"
-                    :rules="emailRules"
-                    label="Email"
-                    prepend-icon="mdi-email"
-                    required
-                  ></v-text-field>
-                </v-col>
+              <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                label="Email"
+                prepend-icon="mdi-email"
+                required
+              ></v-text-field>
 
-                <v-col cols="15" sm="6" md="10">
-                  <v-text-field
-                    v-model="password"
-                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[rules.required]"
-                    :type="show1 ? 'text' : 'password'"
-                    name="input-10-1"
-                    label="Password"
-                    prepend-icon="mdi-lock"
-                    hint="At least 8 characters"
-                    counter
-                    @click:append="show1 = !show1"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
+              <v-text-field
+                v-model="password"
+                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :rules="[rules.required]"
+                :type="show1 ? 'text' : 'password'"
+                name="input-10-1"
+                label="Password"
+                prepend-icon="mdi-lock"
+                hint="At least 8 characters"
+                counter
+                @click:append="show1 = !show1"
+              ></v-text-field>
             </v-form>
 
-            <v-btn color="primary" @click="validateOwnerLoginDetails"
+            <v-btn
+              width="20em"
+              color="#60696c"
+              outlined
+              @click="validateOwnerLoginDetails"
               >Continue</v-btn
             >
           </v-stepper-content>
 
-          <v-stepper-step :complete="step > 2" step="2"
+          <v-stepper-step color="#60696c" :complete="step > 2" step="2"
             >Company Information</v-stepper-step
           >
           <v-stepper-content step="2">
             <v-form ref="ownerCompanyDetails">
-              <v-row>
-                <v-col cols="15" sm="6" md="10">
-                  <v-text-field
-                    v-model="companyName"
-                    :rules="nameRules"
-                    label="Company Name"
-                    required
-                    prepend-icon="mdi-card-account-details"
-                  ></v-text-field>
-                </v-col>
+              <v-text-field
+                v-model="companyName"
+                :rules="nameRules"
+                label="Company Name"
+                required
+                prepend-icon="mdi-card-account-details"
+              ></v-text-field>
 
-                <v-col cols="15" sm="6" md="10">
-                  <v-text-field
-                    v-model="companyPhoneNumber"
-                    :rules="phoneRules"
-                    label="Telephone Number"
-                    prepend-icon="mdi-phone"
-                    required
-                  ></v-text-field>
-                </v-col>
+              <v-text-field
+                v-model="companyPhoneNumber"
+                :rules="phoneRules"
+                label="Telephone Number"
+                prepend-icon="mdi-phone"
+                required
+              ></v-text-field>
 
-                <v-col cols="15" sm="6" md="10">
-                  <v-text-field
-                    v-model="companyEmail"
-                    :rules="emailRules"
-                    label="Email"
-                    prepend-icon="mdi-email"
-                    required
-                  ></v-text-field>
-                </v-col>
+              <v-text-field
+                v-model="companyEmail"
+                :rules="emailRules"
+                label="Email"
+                prepend-icon="mdi-email"
+                required
+              ></v-text-field>
 
-                <v-col cols="15" sm="6" md="10">
-                  <v-text-field
-                    v-model="companyWebsite"
-                    label="Website"
-                    prepend-icon="mdi-web"
-                  ></v-text-field>
-                </v-col>
+              <v-text-field
+                v-model="companyWebsite"
+                label="Website"
+                prepend-icon="mdi-web"
+              ></v-text-field>
 
-                <v-col cols="15" sm="6" md="5">
-                  <v-text-field
-                    v-model="addressLine1"
-                    label="Address Line 1"
-                    :rules="nameRules"
-                    prepend-icon="mdi-map-marker"
-                    required
-                  ></v-text-field>
-                </v-col>
+              <v-text-field
+                v-model="addressLine1"
+                label="Address Line 1"
+                :rules="nameRules"
+                prepend-icon="mdi-map-marker"
+                required
+              ></v-text-field>
 
-                <v-col cols="15" sm="6" md="5">
-                  <v-text-field
-                    v-model="addressLine2"
-                    label="Address Line 2 (optional)"
-                    prepend-icon
-                  ></v-text-field>
-                </v-col>
+              <v-text-field
+                v-model="addressLine2"
+                label="Address Line 2 (optional)"
+                prepend-icon=" "
+              ></v-text-field>
 
-                <v-col cols="15" sm="6" md="5">
-                  <v-text-field
-                    v-model="unitNumber"
-                    :rules="nameRules"
-                    label="Unit No."
-                    hint="e.g. 100/01-02"
-                    prepend-icon="map-marker"
-                    required
-                  ></v-text-field>
-                </v-col>
+              <v-text-field
+                v-model="unitNumber"
+                :rules="nameRules"
+                label="Unit No."
+                hint="e.g. 01-02"
+                prepend-icon=" "
+                required
+              ></v-text-field>
 
-                <v-col cols="15" sm="6" md="5">
-                  <v-text-field
-                    v-model="postalCode"
-                    label="Postal Code"
-                    :rules="postalRules"
-                    prepend-icon
-                    required
-                  ></v-text-field>
-                </v-col>
+              <v-text-field
+                v-model="postalCode"
+                label="Postal Code"
+                :rules="postalRules"
+                prepend-icon=" "
+                required
+              ></v-text-field>
 
-                <v-col class="d-flex" cols="15" sm="6" md="10">
-                  <v-combobox
-                    v-model="partnerTags"
-                    :items="partnerTagsList"
-                    :rules="[(v) => !!v || 'Selection is required']"
-                    chips
-                    color="#60696c"
-                    clearable
-                    label="Select Your Class Categories"
-                    multiple
-                    single-line
+              <v-combobox
+                v-model="partnerTags"
+                :items="partnerTagsList"
+                :rules="[(v) => !!v || 'Selection is required']"
+                chips
+                color="#60696c"
+                clearable
+                label="Select Your Class Categories"
+                multiple
+                single-line
+              >
+                <template v-slot:selection="{ attrs, item, select, selected }">
+                  <v-chip
+                    v-bind="attrs"
+                    :input-value="selected"
+                    close
+                    small
+                    @click="select"
+                    @click:close="remove(item)"
                   >
-                    <template
-                      v-slot:selection="{ attrs, item, select, selected }"
-                    >
-                      <v-chip
-                        v-bind="attrs"
-                        :input-value="selected"
-                        close
-                        small
-                        @click="select"
-                        @click:close="remove(item)"
-                      >
-                        <strong>{{ item }}</strong>
-                      </v-chip>
-                    </template>
-                  </v-combobox>
-                </v-col>
+                    <strong>{{ item }}</strong>
+                  </v-chip>
+                </template>
+              </v-combobox>
 
-                <v-col class="d-flex" cols="15" sm="6" md="10">
-                  <v-textarea
-                    v-autofocus
-                    type="text"
-                    v-model="companyDescription"
-                    rows="4"
-                    outlined
-                    placeholder="Enter Your Class Description"
-                    no-resize
-                    color="#60696c"
-                    required
-                  />
-                </v-col>
-              </v-row>
+              <v-textarea
+                v-autofocus
+                type="text"
+                v-model="companyDescription"
+                rows="4"
+                :rules="nameRules"
+                outlined
+                placeholder="Enter Your Class Description"
+                no-resize
+                color="#60696c"
+                required
+              />
             </v-form>
 
-            <v-btn color="primary" @click="validateOwnerCompanyDetails"
+            <v-btn
+              outlined
+              color="#60696c"
+              width="20em"
+              @click="validateOwnerCompanyDetails"
               >Continue</v-btn
             >
-            <v-btn text @click="step -= 1">Back</v-btn>
+            <v-btn color="#60696c" outlined width="20em" text @click="step -= 1"
+              >Back</v-btn
+            >
           </v-stepper-content>
 
           <v-stepper-step :complete="step > 3" step="3">Finish</v-stepper-step>
           <v-stepper-content step="3">
             <h2>You're Set to Go!</h2>
             <p>Please check your inbox and verify your email</p>
-            <v-btn color="primary" @click="partnerSignUp">Finish</v-btn>
+            <v-btn width="20em" color="#60696c" outlined @click="partnerSignUp"
+              >Finish</v-btn
+            >
           </v-stepper-content>
         </v-stepper>
-        <v-btn v-if="owner" @click="(owner = false), (employee = false)"
+
+        <br />
+
+        <v-btn
+          color="#60696c"
+          outlined
+          v-if="owner"
+          width="20em"
+          @click="(owner = false), (employee = false)"
           >Back</v-btn
         >
         <!-- end of stepper for owner -->
 
         <!-- stepper for employee -->
-        <v-col cols="15" sm="6" md="7">
+        <v-col cols="15" sm="5">
           <v-stepper v-if="employee" v-model="step" vertical>
             <v-overlay v-if="employee" :opacity="opacity" :absolute="absolute">
               <p>This feature is coming soon!</p>
@@ -248,49 +259,43 @@
             </v-stepper-step>
             <v-stepper-content step="1">
               <v-form ref="employeeLoginDetails">
-                <v-row>
-                  <v-col cols="15" sm="6" md="5">
-                    <v-text-field
-                      label="First Name"
-                      :rules="nameRules"
-                      prepend-icon="mdi-account"
-                    ></v-text-field>
-                  </v-col>
+                <v-text-field
+                  label="First Name"
+                  :rules="nameRules"
+                  prepend-icon="mdi-account"
+                ></v-text-field>
 
-                  <v-col cols="15" sm="6" md="5">
-                    <v-text-field
-                      label="Last Name"
-                      :rules="nameRules"
-                      prepend-icon="mdi-account"
-                    ></v-text-field>
-                  </v-col>
+                <v-text-field
+                  label="Last Name"
+                  :rules="nameRules"
+                  prepend-icon=" "
+                ></v-text-field>
 
-                  <v-col cols="15" sm="6" md="10">
-                    <v-text-field
-                      :rules="emailRules"
-                      label="Email"
-                      prepend-icon="mdi-email"
-                      required
-                    ></v-text-field>
-                  </v-col>
+                <v-text-field
+                  :rules="emailRules"
+                  label="Email"
+                  prepend-icon="mdi-email"
+                  required
+                ></v-text-field>
 
-                  <v-col cols="15" sm="6" md="10">
-                    <v-text-field
-                      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                      :rules="[rules.required]"
-                      :type="show1 ? 'text' : 'password'"
-                      name="input-10-1"
-                      label="Password"
-                      prepend-icon="mdi-lock"
-                      hint="At least 8 characters"
-                      counter
-                      @click:append="show1 = !show1"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
+                <v-text-field
+                  :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                  :rules="[rules.required]"
+                  :type="show1 ? 'text' : 'password'"
+                  name="input-10-1"
+                  label="Password"
+                  prepend-icon="mdi-lock"
+                  hint="At least 8 characters"
+                  counter
+                  @click:append="show1 = !show1"
+                ></v-text-field>
               </v-form>
 
-              <v-btn color="primary" @click="validateEmployeeLoginDetails"
+              <v-btn
+                width="20em"
+                color="#60696c"
+                outlined
+                @click="validateEmployeeLoginDetails"
                 >Continue
               </v-btn>
             </v-stepper-content>
@@ -300,25 +305,32 @@
             >
             <v-stepper-content step="2">
               <v-form ref="employeeCompanyDetails">
-                <v-row>
-                  <v-col cols="15" sm="6" md="10">
-                    <v-autocomplete
-                      :items="company"
-                      :filter="customFilter"
-                      :rules="[(v) => !!v || 'Selection is required']"
-                      color="white"
-                      item-text="name"
-                      prepend-icon="mdi-card-account-details"
-                      label="Select your company"
-                    ></v-autocomplete>
-                  </v-col>
-                </v-row>
+                <v-autocomplete
+                  :items="company"
+                  :filter="customFilter"
+                  :rules="[(v) => !!v || 'Selection is required']"
+                  color="white"
+                  item-text="name"
+                  prepend-icon="mdi-card-account-details"
+                  label="Select your company"
+                ></v-autocomplete>
               </v-form>
 
-              <v-btn color="primary" @click="validateEmployeeCompanyDetails"
+              <v-btn
+                width="20em"
+                color="#60696c"
+                outlined
+                @click="validateEmployeeCompanyDetails"
                 >Continue
               </v-btn>
-              <v-btn text @click="step -= 1">Back</v-btn>
+              <v-btn
+                width="20em"
+                color="#60696c"
+                outlined
+                text
+                @click="step -= 1"
+                >Back</v-btn
+              >
             </v-stepper-content>
 
             <v-stepper-step :complete="step > 3" step="3"
@@ -327,12 +339,24 @@
             <v-stepper-content step="3">
               <h2>You're Set to Go!</h2>
               <p>Please check your inbox and verify your email</p>
-              <v-btn color="primary" @click="$router.push({ name: 'login' })"
+              <v-btn
+                width="20em"
+                color="#60696c"
+                outlined
+                @click="$router.push({ name: 'login' })"
                 >Finish</v-btn
               >
             </v-stepper-content>
           </v-stepper>
-          <v-btn v-if="employee" @click="(owner = false), (employee = false)"
+
+          <br />
+
+          <v-btn
+            width="20em"
+            color="#60696c"
+            outlined
+            v-if="employee"
+            @click="(owner = false), (employee = false)"
             >Back</v-btn
           >
         </v-col>
@@ -499,7 +523,7 @@ export default {
               this.addressLine2 +
               " " +
               this.unitNumber,
-            location_postalCode: this.companyPostalCode,
+            location_postalCode: this.postalCode,
             location_coordinates: "123.1234454, 23.234512",
             description: this.companyDescription,
             website: this.companyWebsite,
@@ -510,11 +534,6 @@ export default {
         const res_Partner = await api.post("/partner/new", newPartner);
 
         await firebase.auth().signOut();
-
-        // const storeUser = this.$store.state.user;
-        // storeUser.email = this.email;
-        // storeUser.name = this.name;
-        // this.$store.commit("setter", ["user", storeUser]);
 
         // @todo push data to the server and push the new data into vuex
         // @todo perhaps can route them to a signup page, where instead of use 1 screen like now, we can do the UI below
@@ -554,17 +573,6 @@ input {
   max-width: 20em;
 
   border-radius: 1em;
-}
-
-button {
-  margin: 1em 0 0 0;
-  width: 100%;
-  height: 3em;
-  max-width: 20em;
-
-  border-style: solid;
-  border-width: thin;
-  border-radius: 4em;
 }
 
 .error {
