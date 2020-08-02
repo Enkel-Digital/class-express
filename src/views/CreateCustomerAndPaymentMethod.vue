@@ -90,8 +90,6 @@ import fetch from "fetch-with-fire";
 import { billingApiEndpoint } from "@/config";
 const api = new fetch(firebase.auth, billingApiEndpoint);
 
-
-
 export default {
   // "redirectObject" Is any valid object for router.replace(redirectObject). Ref to https://router.vuejs.org/guide/essentials/navigation.html#router-replace-location-oncomplete-onabort
   props: ["redirectObject"],
@@ -138,6 +136,7 @@ export default {
       this.cardCvcElement = elements.create("cardCvc");
       this.cardCvcElement.mount("#card-cvc-element");
 
+      // @todo Maybe dont do it like this? Only check / validate once the user press the button?
       this.cardNumberElement.on("change", this.validateCardOnChange);
       this.cardExpiryElement.on("change", this.validateCardOnChange);
       this.cardCvcElement.on("change", this.validateCardOnChange);

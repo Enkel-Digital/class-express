@@ -127,7 +127,7 @@ const routes = [
   {
     path: "/payment",
     name: "payment",
-    component: () => import("@/views/Payment.vue"),
+    component: () => import("@/views/CreateCustomerAndPaymentMethod.vue"),
     meta: { Auth_requirements: AuthType.private },
   },
 ];
