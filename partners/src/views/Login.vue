@@ -12,8 +12,9 @@
         v-autofocus
         type="text"
         v-model="email"
-        placeholder="Username"
+        placeholder="Email Address"
         @keypress.enter="login"
+        prepend-icon="mdi-email"
         required
       />
 
@@ -22,6 +23,7 @@
         v-model="password"
         placeholder="Password"
         @keypress.enter="login"
+        prepend-icon="mdi-lock"
         required
       />
 
@@ -148,8 +150,8 @@ img {
 
   position: absolute;
   top: 10vh;
-  left: 35%;
-  right: 35%;
+  left: 38%;
+  right: 38%;
   bottom: 10vh;
 }
 </style>
