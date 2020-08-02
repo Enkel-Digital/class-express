@@ -15,7 +15,7 @@
         <v-btn :disabled="owner || employee" @click="employee = true"
           >I am an Employee</v-btn
         >
-        <v-btn @click="$router.push({ name: 'home' })"
+        <v-btn @click="$router.push({ name: 'login' })"
           >Have An Account? Login here!</v-btn
         >
       </v-col>
@@ -30,16 +30,26 @@
           <v-stepper-content step="1">
             <v-form ref="ownerLoginDetails">
               <v-row>
-                <v-col cols="15" sm="6" md="10">
+                <v-col cols="15" sm="6" md="5">
                   <v-text-field
-                    label="Name"
+                    v-model="firstName"
+                    label="First Name"
                     :rules="nameRules"
                     prepend-icon="mdi-account"
                   ></v-text-field>
                 </v-col>
 
+                <v-col cols="15" sm="6" md="5">
+                  <v-text-field
+                    v-model="lastName"
+                    label="Last Name"
+                    :rules="nameRules"
+                  ></v-text-field>
+                </v-col>
+
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
+                    v-model="phoneNumber"
                     :rules="phoneRules"
                     label="Mobile Number"
                     hint="For emergency purposes"
@@ -50,6 +60,7 @@
 
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
+                    v-model="email"
                     :rules="emailRules"
                     label="Email"
                     prepend-icon="mdi-email"
@@ -59,6 +70,7 @@
 
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
+                    v-model="password"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[rules.required]"
                     :type="show1 ? 'text' : 'password'"
@@ -86,6 +98,7 @@
               <v-row>
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
+                    v-model="companyName"
                     :rules="nameRules"
                     label="Company Name"
                     required
@@ -95,6 +108,7 @@
 
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
+                    v-model="companyPhoneNumber"
                     :rules="phoneRules"
                     label="Telephone Number"
                     prepend-icon="mdi-phone"
@@ -104,6 +118,7 @@
 
                 <v-col cols="15" sm="6" md="10">
                   <v-text-field
+                    v-model="companyEmail"
                     :rules="emailRules"
                     label="Email"
                     prepend-icon="mdi-email"
@@ -111,8 +126,17 @@
                   ></v-text-field>
                 </v-col>
 
+                <v-col cols="15" sm="6" md="10">
+                  <v-text-field
+                    v-model="companyWebsite"
+                    label="Website"
+                    prepend-icon="mdi-web"
+                  ></v-text-field>
+                </v-col>
+
                 <v-col cols="15" sm="6" md="5">
                   <v-text-field
+                    v-model="addressLine1"
                     label="Address Line 1"
                     :rules="nameRules"
                     prepend-icon="mdi-map-marker"
@@ -122,6 +146,7 @@
 
                 <v-col cols="15" sm="6" md="5">
                   <v-text-field
+                    v-model="addressLine2"
                     label="Address Line 2 (optional)"
                     prepend-icon
                   ></v-text-field>
@@ -129,8 +154,9 @@
 
                 <v-col cols="15" sm="6" md="5">
                   <v-text-field
+                    v-model="unitNumber"
                     :rules="nameRules"
-                    label="Blk/Unit No."
+                    label="Unit No."
                     hint="e.g. 100/01-02"
                     prepend-icon="map-marker"
                     required
@@ -139,6 +165,7 @@
 
                 <v-col cols="15" sm="6" md="5">
                   <v-text-field
+                    v-model="postalCode"
                     label="Postal Code"
                     :rules="postalRules"
                     prepend-icon
@@ -147,15 +174,46 @@
                 </v-col>
 
                 <v-col class="d-flex" cols="15" sm="6" md="10">
-                  <v-autocomplete
-                    :items="businessTypes"
-                    :filter="customFilter"
+                  <v-combobox
+                    v-model="partnerTags"
+                    :items="partnerTagsList"
                     :rules="[(v) => !!v || 'Selection is required']"
-                    color="white"
-                    item-text="name"
-                    prepend-icon="mdi-format-list-bulleted-type"
-                    label="Type of Business"
-                  ></v-autocomplete>
+                    chips
+                    color="#60696c"
+                    clearable
+                    label="Select Your Class Categories"
+                    multiple
+                    single-line
+                  >
+                    <template
+                      v-slot:selection="{ attrs, item, select, selected }"
+                    >
+                      <v-chip
+                        v-bind="attrs"
+                        :input-value="selected"
+                        close
+                        small
+                        @click="select"
+                        @click:close="remove(item)"
+                      >
+                        <strong>{{ item }}</strong>
+                      </v-chip>
+                    </template>
+                  </v-combobox>
+                </v-col>
+
+                <v-col class="d-flex" cols="15" sm="6" md="10">
+                  <v-textarea
+                    v-autofocus
+                    type="text"
+                    v-model="companyDescription"
+                    rows="4"
+                    outlined
+                    placeholder="Enter Your Class Description"
+                    no-resize
+                    color="#60696c"
+                    required
+                  />
                 </v-col>
               </v-row>
             </v-form>
@@ -170,9 +228,7 @@
           <v-stepper-content step="3">
             <h2>You're Set to Go!</h2>
             <p>Please check your inbox and verify your email</p>
-            <v-btn color="primary" @click="$router.push({ name: 'home' })"
-              >Finish</v-btn
-            >
+            <v-btn color="primary" @click="partnerSignUp">Finish</v-btn>
           </v-stepper-content>
         </v-stepper>
         <v-btn v-if="owner" @click="(owner = false), (employee = false)"
@@ -193,9 +249,17 @@
             <v-stepper-content step="1">
               <v-form ref="employeeLoginDetails">
                 <v-row>
-                  <v-col cols="15" sm="6" md="10">
+                  <v-col cols="15" sm="6" md="5">
                     <v-text-field
-                      label="Name"
+                      label="First Name"
+                      :rules="nameRules"
+                      prepend-icon="mdi-account"
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="15" sm="6" md="5">
+                    <v-text-field
+                      label="Last Name"
                       :rules="nameRules"
                       prepend-icon="mdi-account"
                     ></v-text-field>
@@ -263,7 +327,7 @@
             <v-stepper-content step="3">
               <h2>You're Set to Go!</h2>
               <p>Please check your inbox and verify your email</p>
-              <v-btn color="primary" @click="$router.push({ name: 'home' })"
+              <v-btn color="primary" @click="$router.push({ name: 'login' })"
                 >Finish</v-btn
               >
             </v-stepper-content>
@@ -285,6 +349,7 @@
 
 import firebase from "firebase/app";
 import "firebase/auth";
+import api from "../store/utils/fetch";
 
 // Function to map and return a given err.code to a user friendly message
 function error_msg(err) {
@@ -304,17 +369,31 @@ export default {
   name: "signUp",
   data() {
     return {
+      partnerTagsList: ["tech", "cooking", "lifestyle", "music", "art"],
+
       owner: false,
       employee: false,
-      name: "",
-      email: "Email",
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      phoneNumber: "",
+      companyName: "",
+      companyEmail: "",
+      companyWebsite: "",
+      companyPhoneNumber: "",
+      addressLine1: "",
+      addressLine2: "",
+      unitNumber: "",
+      postalCode: "",
+      companyDescription: "",
+      partnerTags: "",
       error_msg: "",
       step: 1,
       absolute: true,
       opacity: 0.8,
 
       show1: false,
-      password: "Password",
       rules: {
         required: (value) => !!value || "Required.",
         // min: (v) => v.length >= 8 || "Min 8 characters",
@@ -385,29 +464,78 @@ export default {
         textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
       );
     },
-    signUp: async function () {
+
+    // when an admin register his/her account along with the business profile
+    async partnerSignUp() {
       try {
+        // Make lowercase, refer to notes & faq on why this is lowercase.
+        // tl;dr Firebase auth like google ignores the email RFC and forces email case-insensitivity
+        // this.email = this.email.toLowerCase();
+
         // After signup, user will be automatically signed in, redirect to home
         // eslint-disable-next-line no-unused-vars
         const usr = await firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password);
 
-        const storeUser = this.$store.state.user;
-        storeUser.email = this.email;
-        storeUser.name = this.name;
-        this.$store.commit("setter", ["user", storeUser]);
+        const newEmployee = {
+          employee: {
+            partnerID: 2,
+            name: this.firstName + " " + this.lastName,
+            phoneNumber: this.phoneNumber,
+            email: this.email,
+            admin: true,
+          },
+        };
+
+        const newPartner = {
+          partner: {
+            name: this.companyName,
+            phoneNumber: this.companyPhoneNumber,
+            email: this.companyEmail,
+            location_address:
+              this.addressLine1 +
+              " " +
+              this.addressLine2 +
+              " " +
+              this.unitNumber,
+            location_postalCode: this.companyPostalCode,
+            location_coordinates: "123.1234454, 23.234512",
+            description: this.companyDescription,
+            website: this.companyWebsite,
+          },
+        };
+
+        const res_Employee = await api.post("/employees/new", newEmployee);
+        const res_Partner = await api.post("/partner/new", newPartner);
+
+        await firebase.auth().signOut();
+
+        // const storeUser = this.$store.state.user;
+        // storeUser.email = this.email;
+        // storeUser.name = this.name;
+        // this.$store.commit("setter", ["user", storeUser]);
 
         // @todo push data to the server and push the new data into vuex
         // @todo perhaps can route them to a signup page, where instead of use 1 screen like now, we can do the UI below
         // https://vuetifyjs.com/en/components/windows/#account-creation
         // https://vuetifyjs.com/en/components/steppers/#usage
 
-        this.$router.replace({ name: "home" });
+        this.$router.replace({ name: "login" });
       } catch (error) {
+        const userError = this.$error.createError(
+          this.$error.ERROR.level.RETRY,
+          this.$error.ERROR.custom("Signup Failed", error_msg(error))
+        );
+        this.$error.new(userError);
+
         // Set the message into the error box to show user the error
         this.error_msg = error_msg(error);
       }
+    },
+    remove(item) {
+      this.partnerTags.splice(this.partnerTags.indexOf(item), 1);
+      this.partnerTags = [...this.partnerTags];
     },
   },
 };
