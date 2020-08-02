@@ -8,5 +8,6 @@ router.use("/", require("./default"));
 router.use("/user", require("./user"));
 router.use("/paymentMethod", require("./paymentMethod"));
 router.use("/plans", require("./plans"));
+router.use("/stripe-webhook", require("./webhooks"));
 
 module.exports = router;
