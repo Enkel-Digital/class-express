@@ -70,7 +70,7 @@
           text
           class="col"
           color="deep-purple"
-          @click="placeOrderButtonPressed"
+          @click="createPaymentMethod"
         >
           create payment method
         </v-btn>
@@ -96,12 +96,12 @@ export default {
 
   created() {
     (async () => {
+      if (this.shouldCreateCustomer) this.createCustomer();
+
       this.stripe = await loadStripe(
         process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY
       );
       this.createAndMountFormElement();
-
-      if (this.shouldCreateCustomer) this.createCustomer();
     })();
   },
 
@@ -140,7 +140,7 @@ export default {
     },
 
     createAndMountFormElement() {
-      var elements = this.stripe.elements();
+      const elements = this.stripe.elements();
 
       this.cardNumberElement = elements.create("cardNumber");
       this.cardNumberElement.mount("#card-number-element");
@@ -170,40 +170,29 @@ export default {
       }
     },
 
-    placeOrderButtonPressed() {
+    // create payment method in frontend
+    // then send the payment method to billing service
+    async createPaymentMethod() {
+      const cardElement = this.cardNumberElement;
       const priceId = this.priceId;
       const customerId = this.customerID;
 
-      this.createPaymentMethod({
-        cardElement: this.cardNumberElement,
-        customerId,
-        priceId,
+      const result = await this.stripe.createPaymentMethod({
+        type: "card",
+        card: this.cardNumberElement,
+        billing_details: {
+          name: this.billingName,
+        },
       });
-    },
 
-    // create payment method in frontend
-    // then send the payment method to billing service
-    createPaymentMethod(cardElement, customerId, priceId) {
-      return this.stripe
-        .createPaymentMethod({
-          type: "card",
-          card: this.cardNumberElement,
-          billing_details: {
-            name: this.billingName,
-          },
-        })
-        .then((result) => {
-          if (result.error) {
-            this.displayError(result.error);
-          } else {
-            //   this.createSubscription({
-            //     customerId: customerId,
-            //     paymentMethodId: result.paymentMethod.id,
-            //     priceId: priceId,
-            //   });
-            console.log(result);
-          }
-        });
+      if (result.error) return this.displayError(result.error);
+
+      console.log(result);
+      //   this.createSubscription({
+      //     customerId: customerId,
+      //     paymentMethodId: result.paymentMethod.id,
+      //     priceId: priceId,
+      //   });
     },
 
     createSubscription({ customerId, paymentMethodId, priceId }) {
@@ -337,11 +326,8 @@ export default {
     },
 
     displayError(event) {
-      if (event.error) {
-        this.stripeValidationError = event.error.message;
-      } else {
-        this.stripeValidationError = "";
-      }
+      if (event.error) this.stripeValidationError = event.error.message;
+      else this.stripeValidationError = "";
     },
   },
 };
