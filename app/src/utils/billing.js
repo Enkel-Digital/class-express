@@ -4,8 +4,6 @@ import fetch from "fetch-with-fire";
 import { billingApiEndpoint } from "@/config";
 const api = new fetch(firebase.auth, billingApiEndpoint);
 
-import apiError from "@/store/utils/apiError";
-
 /**
  * Checks if this userID maps to an existing customerID with billing service and if they have a valid payment method
  * @param {*} userID
