@@ -28,15 +28,4 @@ async function checkCustomerAndPaymentMethodStatus(userID) {
   };
 }
 
-/**
- * Creates a new customer with billing service
- * @returns Response object of an API call
- */
-async function createBillingCustomer(userAccountID, userDetails) {
-  return api.post("/user/create", {
-    userAccountID,
-    userDetails,
-  });
-}
-
-export { checkCustomerAndPaymentMethodStatus, createBillingCustomer };
+export { api, checkCustomerAndPaymentMethodStatus };

@@ -83,6 +83,7 @@
 
 <script>
 import { loadStripe } from "@stripe/stripe-js";
+import { api } from "@/utils/billing";
 
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -92,7 +93,22 @@ const api = new fetch(firebase.auth, billingApiEndpoint);
 
 export default {
   // "redirectObject" Is any valid object for router.replace(redirectObject). Ref to https://router.vuejs.org/guide/essentials/navigation.html#router-replace-location-oncomplete-onabort
-  props: ["redirectObject"],
+  props: [
+    "redirectObject",
+    "shouldCreateCustomer",
+    "shouldCreatePaymentMethod",
+  ],
+
+  created() {
+    (async () => {
+      this.stripe = await loadStripe(
+        process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY
+      );
+      this.createAndMountFormElement();
+
+      if (this.shouldCreateCustomer) this.createCustomer();
+    })();
+  },
 
   data() {
     return {
