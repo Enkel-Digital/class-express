@@ -215,7 +215,24 @@ export default {
     },
   },
   methods: {
-    ...mapActions("subscription", ["updatePlan"]),
+    async updatePlan() {
+      const billing = await import("@/utils/billing");
+      const {
+        customerDoesNotExists,
+        paymentMethodNotAvailable,
+      } = await billing.checkCustomerAndPaymentMethodStatus(this.user.id);
+
+      if (customerDoesNotExists || paymentMethodNotAvailable)
+        return this.$router.push({
+          name: "payment",
+          query: {
+            shouldCreateCustomer: customerDoesNotExists,
+            shouldCreatePaymentMethod: paymentMethodNotAvailable,
+          },
+        });
+
+      this.$store.dispatch("subscription/updatePlan", ...arguments);
+    },
     pauseSubscriptionPlan() {
       // @todo Implement this
       alert("This feature is not supported yet!");
