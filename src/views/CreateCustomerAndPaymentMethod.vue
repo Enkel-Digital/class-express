@@ -84,12 +84,7 @@
 <script>
 import { loadStripe } from "@stripe/stripe-js";
 import { api } from "@/utils/billing";
-
-import firebase from "firebase/app";
-import "firebase/auth";
-import fetch from "fetch-with-fire";
-import { billingApiEndpoint } from "@/config";
-const api = new fetch(firebase.auth, billingApiEndpoint);
+import apiError from "@/store/utils/apiError";
 
 export default {
   // "redirectObject" Is any valid object for router.replace(redirectObject). Ref to https://router.vuejs.org/guide/essentials/navigation.html#router-replace-location-oncomplete-onabort
@@ -129,17 +124,21 @@ export default {
     };
   },
 
-  mounted() {
-    (async () => {
-      this.stripe = await loadStripe(
-        "pk_test_LIc2NCzFeOD5ng6VrGwNE8Dx00Z67P4mCD"
-      );
-      this.createAndMountFormElement();
-      // this.createCustomer().then(console.log);
-    })();
-  },
-
   methods: {
+    // Creates billing customer with billing service using user details in vuex store
+    async createCustomer() {
+      const { id, email, firstName } = this.$store.state.user;
+      const response = await api.post("/user/create", {
+        userAccountID: id,
+        userDetails: {
+          email,
+          firstName,
+        },
+      });
+
+      if (!response.success) return apiError(response, this.createCustomer);
+    },
+
     createAndMountFormElement() {
       var elements = this.stripe.elements();
 
