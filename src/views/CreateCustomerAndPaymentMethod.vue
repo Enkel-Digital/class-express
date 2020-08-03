@@ -96,11 +96,13 @@ export default {
 
   created() {
     (async () => {
-      if (this.shouldCreateCustomer) this.createCustomer();
-
       this.stripe = await loadStripe(
         process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY
       );
+
+      // Load stripe object first as we need stripe object to create customer
+      if (this.shouldCreateCustomer) this.createCustomer();
+
       this.createAndMountFormElement();
     })();
   },
@@ -126,17 +128,30 @@ export default {
 
   methods: {
     // Creates billing customer with billing service using user details in vuex store
+    // Needs stripe object to be loaded first
     async createCustomer() {
-      const { id, email, firstName } = this.$store.state.user;
-      const response = await api.post("/user/create", {
-        userAccountID: id,
-        userDetails: {
+      try {
+        const { id, email, firstName, lastName } = this.$store.state.user;
+
+        const customer = await this.stripe.customers.create({
           email,
           firstName,
-        },
-      });
+          lastName,
+        });
 
-      if (!response.success) return apiError(response, this.createCustomer);
+        const response = await api.post("/user/create", {
+          userAccountID: id,
+          customerID: customer.id,
+        });
+
+        if (!response.success) return apiError(response, this.createCustomer);
+      } catch (error) {
+        apiError(
+          error.message,
+          this.createCustomer,
+          "Failed to create Stripe billing customer instance"
+        );
+      }
     },
 
     createAndMountFormElement() {
@@ -185,9 +200,15 @@ export default {
         },
       });
 
+      // @todo Update this to use errorDialog and allow user to retry
       if (result.error) return this.displayError(result.error);
+      else {
+        // Do not need to save into billing service as billing service can retrieve payment method via customer ID
+        // Redirect user back to the view that requested for a payment method creation or a custom location
+        if (this.redirectObject) this.$router.replace(this.redirectObject);
+        else this.$router.go(-1);
+      }
 
-      console.log(result);
       //   this.createSubscription({
       //     customerId: customerId,
       //     paymentMethodId: result.paymentMethod.id,
