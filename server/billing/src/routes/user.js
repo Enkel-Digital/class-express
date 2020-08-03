@@ -11,15 +11,11 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 router.get("/exists/:userID", async (req, res) => {
   try {
     const { userID } = req.params;
+    const user = (
+      await db.collection("billingCustomerAccounts").doc(userID).get()
+    ).data();
 
-    const user = (await db.collection("userAccounts").doc(userID).get()).data();
-
-    if (!user)
-      return res
-        .status(404)
-        .json({ success: false, error: "User does not exist" });
-
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, exists: Boolean(user) });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -43,7 +39,7 @@ router.post("/create", express.json(), async (req, res) => {
     });
 
     // save stripe's customer.id as customerID in db
-    await db.collection("userAccounts").doc(userAccountID).set({
+    await db.collection("billingCustomerAccounts").doc(userAccountID).set({
       customerID: customer.id,
     });
 

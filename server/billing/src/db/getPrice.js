@@ -5,7 +5,7 @@ const db = require("./../utils/db.js");
  * @param {*} planID Plan ID
  */
 async function getPriceID(planID) {
-  const subscriptionRef = db.collection("subscription");
+  const subscriptionRef = db.collection("billingSubscriptions");
 
   const priceID = (await subscriptionRef.doc(planID).get()).data().priceID;
 
