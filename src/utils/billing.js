@@ -14,17 +14,17 @@ import apiError from "@/store/utils/apiError";
 async function checkCustomerAndPaymentMethodStatus(userID) {
   const userExistsRes = await api.get(`/user/exists/${userID}`);
 
-  if (!userExistsRes.success)
+  if (!userExistsRes.exists)
     return {
-      customerExists: false,
-      paymentMethodAvailable: false,
+      customerDoesNotExists: true,
+      paymentMethodNotAvailable: true,
     };
 
   const paymentMethodRes = await api.get(`/paymentMethod/available/${userID}`);
 
   return {
-    customerExists: true,
-    paymentMethodAvailable: paymentMethodRes.available,
+    customerDoesNotExists: false,
+    paymentMethodNotAvailable: !paymentMethodRes.available,
   };
 }
 
@@ -38,24 +38,5 @@ async function createBillingCustomer(userAccountID, userDetails) {
     userDetails,
   });
 }
-
-// async function createCustomerAndPaymentMethodIfNotAvailable(userAccountID) {
-//   // Check with billing service if user is a registered customer and if they have a valid payment method
-//   const {
-//     customerExists,
-//     paymentMethodAvailable,
-//   } = await checkCustomerAndPaymentMethodStatus(userAccountID);
-
-//   // Call billing API to create a customer if does not exists yet
-//   if (!customerExists) {
-//     const customerCreation = await createBillingCustomer(userAccountID);
-//     if (!customerCreation.success) return false;
-//   }
-
-//   // If no payment method, redirect to create payment method view to create a new payment method
-//   if (!paymentMethodAvailable) {
-//     //
-//   }
-// }
 
 export { checkCustomerAndPaymentMethodStatus, createBillingCustomer };
