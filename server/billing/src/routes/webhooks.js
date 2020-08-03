@@ -18,7 +18,7 @@ router.post(
         req.headers["stripe-signature"],
         // for test only: webhook signing secret using stripe CLI
         // for production: use endpoint's secret in webhook settings in the Developer Dashboard
-        "whsec_RTDcgLzJAaNjRzbv2iqU3dCoZ8MQtbAC"
+        process.env.STRIPE_WEBHOOK_SECRET
       );
     } catch (err) {
       console.error(err);
