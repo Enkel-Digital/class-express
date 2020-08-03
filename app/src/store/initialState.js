@@ -5,6 +5,7 @@
 export default function initialState() {
   return {
     user: {
+      id: undefined,
       email: undefined,
       name: undefined,
       firstName: undefined,
