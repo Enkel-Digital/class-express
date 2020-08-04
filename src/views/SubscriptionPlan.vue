@@ -226,6 +226,8 @@ export default {
         return this.$router.push({
           name: "payment",
           query: {
+            // @todo This works, HOWEVER, this might be vulnerable as we are passing JS objects via URL, which potentially is an attack surface for attackers to inject code into router.push directly.
+            redirectObject: { name: "subscription" },
             shouldCreateCustomer: customerDoesNotExists,
             shouldCreatePaymentMethod: paymentMethodNotAvailable,
           },
