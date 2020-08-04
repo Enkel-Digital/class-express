@@ -101,11 +101,6 @@ export default {
       cardElement: null,
       client_secret: null,
 
-      // @todo Change these hard coded values
-      customerId: "cus_HluwbIn7YkMRgf",
-      billingName: "Tester",
-      priceId: "plan_HEDADPvhVD1zls",
-
       // Registering on the component first before using
       stripeValidationError: undefined,
     };
@@ -163,15 +158,15 @@ export default {
     // create payment method in frontend
     // then send the payment method to billing service
     async createPaymentMethod() {
+      const { firstName, lastName } = this.$store.state.user;
+
       const cardElement = this.cardNumberElement;
-      const priceId = this.priceId;
-      const customerId = this.customerID;
 
       const result = await this.stripe.createPaymentMethod({
         type: "card",
         card: this.cardElement,
         billing_details: {
-          name: this.billingName,
+          name: `${firstName} ${lastName || ""}`,
         },
       });
 
@@ -233,51 +228,21 @@ export default {
       }
     },
 
-    createSubscription({ customerId, paymentMethodId, priceId }) {
-      return (
-        api
-          .post("/create-subscription", {
-            customerId: customerId,
-            paymentMethodId: paymentMethodId,
-            priceId: priceId,
-          })
-          .then((response) => response.json())
-          // If the card is declined, display an error to the user.
-          .then((result) => {
-            if (result.error) {
-              // The card had an error when trying to attach it to a customer
-              console.log(result.error);
-              throw result;
-            }
-            return result;
-          })
-          // Normalize the result to contain the object returned
-          // by Stripe. Add the addional details we need.
-          .then((result) => {
-            return {
-              // Use the Stripe 'object' property on the
-              // returned result to understand what object is returned.
-              subscription: result,
-              paymentMethodId: paymentMethodId,
-              priceId: priceId,
-            };
-          })
-          // Some payment methods require a customer to do additional
-          // authentication with their financial institution.
-          // Eg: 2FA for cards.
-          .then(this.handleCustomerActionRequired)
-          // If attaching this card to a Customer object succeeds,
-          // but attempts to charge the customer fail. You will
-          // get a requires_payment_method error.
-          .then(this.handlePaymentMethodRequired)
-          // No more actions required. Provision your service for the user.
-          .then(this.onSubscriptionComplete)
-          .catch((error) => {
-            // An error has happened. Display the failure to the user here.
-            // We utilize the HTML element we created.
-            this.displayError(error);
-          })
-      );
+    async createSubscription(planId) {
+      try {
+        const { id } = this.$store.state.user;
+        const response = await api.get(`/plans/update/${planId}`, {
+          userAccountID: id,
+        });
+        if (!response.success)
+          return apiError(response, this.createSubscription);
+      } catch (error) {
+        apiError(
+          error.message,
+          this.createSubscription,
+          "Failed to create Subscription"
+        );
+      }
     },
 
     handleCustomerActionRequired({
