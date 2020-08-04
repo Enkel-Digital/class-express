@@ -42,8 +42,9 @@ router.post("/create", express.json(), async (req, res) => {
   try {
     const { userAccountID, userDetails } = req.body;
 
+    // End request if stripe customer object already exists
     if (await customerExists(userAccountID))
-      res
+      return res
         .status(200) // Use 200 code to indicate no error, as technically the user already exists and is "created"
         .json({
           success: true,
