@@ -22,15 +22,15 @@
                 transition="fade-transition"
               />
             </v-carousel> -->
-            <v-img :src="classDetails.pictureSources" />
+            <v-img :src="clas.pictureSources" />
           </v-card>
 
           <v-card max width="450" class="my-2">
             <v-responsive style="text-align: left;" class="mx-4 pa-0">
               <v-row>
                 <v-col>
-                  <h3 class="headline" v-text="classDetails.name"></h3>
-                  <p>{{ classDetails.location_address }}</p>
+                  <h3 class="headline" v-text="clas.name"></h3>
+                  <p>{{ clas.location_address }}</p>
                 </v-col>
               </v-row>
             </v-responsive>
@@ -41,10 +41,10 @@
               <v-list-item>
                 <v-list-item-content>
                   <p class="overline">
-                    Reviews based on {{ classReview.numberOfReviews }} reviews
+                    Reviews based on {{ review.numberOfReviews }} reviews
                   </p>
 
-                  <v-list-item-subtitle v-if="classReview.numberOfReviews">
+                  <v-list-item-subtitle v-if="review.numberOfReviews">
                     <!-- Do the star icon thing for the reviews -->
                     <v-rating
                       :value="4"
@@ -54,8 +54,8 @@
                       readonly
                       size="14"
                     />
-                    {{ classReview.ratings }} / 5 based on
-                    {{ classReview.numberOfReviews }} reviews
+                    {{ review.ratings }} / 5 based on
+                    {{ review.numberOfReviews }} reviews
                   </v-list-item-subtitle>
 
                   <v-list-item-subtitle v-else>Loading...</v-list-item-subtitle>
@@ -83,7 +83,7 @@
                   <p class="overline">Class Desciption</p>
 
                   <!-- Change to a more readable font -->
-                  <span v-html="classDetails.description" />
+                  <span v-html="clas.description" />
                 </v-list-item-content>
               </v-list-item>
             </v-responsive>
@@ -97,7 +97,7 @@
               Getting here
             </h2>
 
-            <MapImage :classID="classDetails.id" />
+            <MapImage :classID="clas.id" />
             <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
           </v-card>
         </v-col>
@@ -133,35 +133,50 @@
 <script>
 import MapImage from "@/components/MapImage";
 import api from "../store/utils/fetch";
+import unixseconds from "unixseconds";
+import { mapActions } from "vuex";
+
+import getClassAndPartnerMixin from "../utils/getClassAndPartnerMixin";
 
 export default {
   name: "ClassDetails",
-  data() {
-    return {
-      classDetails: {},
-      classReview: {},
-    };
-  },
+
   components: {
     MapImage,
   },
+  mixins: [getClassAndPartnerMixin],
+
   created() {
-    this.getClassDetails();
-    this.getClassReviews();
+    // this.getClassDetails();
+    // this.getClassReviews();
+    this.$store.dispatch("classes/getReview", this.classID);
   },
-  props: ["classID"],
+  props: ["classID", "selectedTime"],
   methods: {
-    async getClassDetails() {
-      this.classDetails = (
-        await api.get(`/class/details/${this.classID}`)
-      ).class;
-      console.log("this", this.classDetails);
+    // ...mapActions("classes", [
+    //   "toggleFavouriteClass",
+    //   "reserveClass",
+    //   "cancelClass",
+    // ]),
+  },
+  computed: {
+    dateObject() {
+      return this.selectedTime
+        ? this.moment.unix(parseInt(this.selectedTime))
+        : undefined;
     },
-    async getClassReviews() {
-      this.classReview = (
-        await api.get(`/reviews/class/${this.classID}`)
-      ).reviews;
-      console.log("this", this.classReview);
+    clas() {
+      return this.$store.state.classes.classes[this.classID];
+    },
+    partnerID() {
+      // Null coalescing to prevent failure when clas is still being loaded and is undefined
+      return this.clas?.partnerID;
+    },
+    partner() {
+      return this.$store.state.classes.partners[this.partnerID];
+    },
+    review() {
+      return this.$store.state.classes.review;
     },
   },
 };
