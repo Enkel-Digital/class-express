@@ -16,7 +16,7 @@
 
       <v-data-table
         :headers="headers"
-        :items="bookings"
+        :items="booking"
         :search="search"
         class="elevation-1"
         :sort-desc="[false, true]"
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import api from "../store/utils/fetch";
 
 export default {
@@ -43,10 +44,11 @@ export default {
       type: Number,
     },
   },
-
+  created() {
+    this.$store.dispatch("bookings/getBookings", this.partnerID);
+  },
   data() {
     return {
-      bookings: [],
       search: "",
       headers: [
         { text: "User ID", value: "userID" },
@@ -58,16 +60,8 @@ export default {
       ],
     };
   },
-  created() {
-    this.getBookings();
-  },
-  methods: {
-    async getBookings() {
-      this.bookings = (
-        await api.get(`/bookings/all/${this.partnerID}`)
-      ).bookingsOfPartner;
-      console.log("this", this.bookings);
-    },
+  computed: {
+    ...mapState("bookings", ["booking"]),
   },
 };
 </script>

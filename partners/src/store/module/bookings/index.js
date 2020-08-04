@@ -4,6 +4,8 @@
 
 import initialState from "./initialState";
 import setter from "../../utils/setter";
+import apiError from "@/store/utils/apiError";
+import apiWithLoader from "@/store/utils/apiWithLoader";
 
 // @todo Remove mock data
 import mock from "../../mockData";
@@ -16,10 +18,14 @@ export default {
   },
   getters: {},
   actions: {
-    async getAllBookings({ commit }) {
-      // @todo Replace with API call
+    async getBookings({ state, commit, dispatch }, partnerID) {
+      const response = await apiWithLoader.get(`/bookings/all/${partnerID}`);
+      if (!response.success)
+        return apiError(response, () => dispatch("getBookings"));
 
-      commit("setter", ["bookings", mock.bookings]);
+      console.log("bookings", response);
+
+      commit("setter", ["booking", response.bookingsOfPartner]);
     },
   },
 };
