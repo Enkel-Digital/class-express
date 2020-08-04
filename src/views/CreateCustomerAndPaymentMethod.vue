@@ -45,7 +45,7 @@
           {{ stripeValidationError }}
         </div>
         <div class="card-element">
-          <form id="setup-form">
+          <form id="setup-form" data-secret="client_secret">
             <div id="card-element"></div>
           </form>
         </div>
@@ -87,7 +87,9 @@ export default {
       );
 
       // Load stripe object first as we need stripe object to create customer
-      if (this.shouldCreateCustomer) this.createCustomer();
+      if (this.shouldCreateCustomer)
+        this.createCustomer().then(this.getSetupIntentClientSecret);
+      else this.getSetupIntentClientSecret();
 
       this.createAndMountFormElement();
     })();
@@ -97,13 +99,11 @@ export default {
     return {
       stripe: null,
       cardElement: null,
-      cardNumberElement: null,
-      cardExpiryElement: null,
-      cardCvcElement: null,
+      client_secret: null,
 
       // @todo Change these hard coded values
-      customerId: "cus_HeOaho2iPOkSFW",
-      billingName: "zzk",
+      customerId: "cus_HluwbIn7YkMRgf",
+      billingName: "Tester",
       priceId: "plan_HEDADPvhVD1zls",
 
       // Registering on the component first before using
@@ -120,10 +120,10 @@ export default {
 
         const response = await api.post("/user/create", {
           userAccountID: id,
+          // User details object MUST follow stripe customer object. Ref: https://stripe.com/docs/api/customers/create
           userDetails: {
             email,
-            firstName,
-            lastName,
+            name: `${firstName} ${lastName || ""}`, // Prevent saving null last names
           },
         });
 
@@ -169,10 +169,7 @@ export default {
 
       const result = await this.stripe.createPaymentMethod({
         type: "card",
-        // @todo
-        // firstly can just use cardElement
-        // secondly, why only card number? I tot need more then that? What about the cvc and expiry numbers???
-        card: this.cardNumberElement,
+        card: this.cardElement,
         billing_details: {
           name: this.billingName,
         },
@@ -181,17 +178,59 @@ export default {
       // @todo Update this to use errorDialog and allow user to retry
       if (result.error) return this.displayError(result.error);
       else {
-        // Do not need to save into billing service as billing service can retrieve payment method via customer ID
-        // Redirect user back to the view that requested for a payment method creation or a custom location
-        if (this.redirectObject) this.$router.replace(this.redirectObject);
-        else this.$router.go(-1);
+        // to create setupIntent
+        this.createSetupIntent(result.paymentMethod.id);
       }
+    },
 
-      //   this.createSubscription({
-      //     customerId: customerId,
-      //     paymentMethodId: result.paymentMethod.id,
-      //     priceId: priceId,
-      //   });
+    // create setupIntent in frontend
+    // stripe.confirmCardSetup may take several seconds to complete.
+    // During that time, disable form from being resubmitted
+    // and show a waiting indicator.
+    // this may reigger 3D secure authentication
+    // walks them through check flow.
+    async createSetupIntent(paymentMethodID) {
+      const { setupIntent, error } = await this.stripe.confirmCardSetup(
+        this.client_secret,
+        {
+          payment_method: paymentMethodID,
+          // return_url:
+          // If handling next actions by ourselves, pass in a return_url.
+          // If the subsequent action is redirect_to_url, this URL will be used on the return path for the redirect.
+          // https://stripe.com/docs/payments/payment-intents/verifying-status#next-actions
+        }
+      );
+
+      if (error) {
+        this.displayError(error);
+      } else {
+        if (setupIntent.status === "succeeded") {
+          // Do not need to save into billing service as billing service can retrieve payment method via customer ID
+          // Redirect user back to the view that requested for a payment method creation or a custom location
+          if (this.redirectObject) this.$router.replace(this.redirectObject);
+          else this.$router.go(-1);
+        }
+      }
+    },
+
+    // get setupIntent client secret
+    async getSetupIntentClientSecret() {
+      try {
+        const { id } = this.$store.state.user;
+
+        const response = await api.get(`/setupIntent/card-wallet/${id}`, {
+          userAccountID: id,
+        });
+        if (!response.success) return apiError(response, this.createCustomer);
+
+        this.client_secret = response.client_secret;
+      } catch (error) {
+        apiError(
+          error.message,
+          this.getSetupIntentClientSecret,
+          "Failed to get SetupIntent Client Secret"
+        );
+      }
     },
 
     createSubscription({ customerId, paymentMethodId, priceId }) {
