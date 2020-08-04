@@ -2,7 +2,10 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import fetch from "fetch-with-fire";
 import { billingApiEndpoint } from "@/config";
-const api = new fetch(firebase.auth, billingApiEndpoint);
+import { createApiWithLoader } from "@/store/utils/apiWithLoader";
+const apiWithLoader = createApiWithLoader(
+  new fetch(firebase.auth, billingApiEndpoint)
+);
 
 /**
  * Checks if this userID maps to an existing customerID with billing service and if they have a valid payment method
@@ -10,7 +13,7 @@ const api = new fetch(firebase.auth, billingApiEndpoint);
  * @returns {boolean}
  */
 async function checkCustomerAndPaymentMethodStatus(userID) {
-  const userExistsRes = await api.get(`/user/exists/${userID}`);
+  const userExistsRes = await apiWithLoader.get(`/user/exists/${userID}`);
 
   if (!userExistsRes.exists)
     return {
@@ -18,7 +21,9 @@ async function checkCustomerAndPaymentMethodStatus(userID) {
       paymentMethodNotAvailable: true,
     };
 
-  const paymentMethodRes = await api.get(`/paymentMethod/available/${userID}`);
+  const paymentMethodRes = await apiWithLoader.get(
+    `/paymentMethod/available/${userID}`
+  );
 
   return {
     customerDoesNotExists: false,
@@ -26,4 +31,4 @@ async function checkCustomerAndPaymentMethodStatus(userID) {
   };
 }
 
-export { api, checkCustomerAndPaymentMethodStatus };
+export { apiWithLoader, checkCustomerAndPaymentMethodStatus };

@@ -1,6 +1,8 @@
 <template>
   <v-main id="create-payment-method">
     <v-app-bar app flat color="white">
+      <BackBtn />
+
       <v-toolbar-title style="font-weight: bold;">
         Create New Payment Method
       </v-toolbar-title>
@@ -13,7 +15,7 @@
     >
       <ul>
         <li>
-          You do not have a payment method currently.
+          You do not have a valid payment method currently.
         </li>
 
         <li>
@@ -21,8 +23,9 @@
         </li>
 
         <li>
-          Note that all future purchases in App will utilize this payment method
-          until you cancel this or choose to change your payment method.
+          Note that all future purchases in App will utilize this payment
+          method, until you cancel this payment method, this payment method
+          expires or till you choose to change your payment method.
         </li>
       </ul>
     </v-card>
@@ -69,10 +72,15 @@
 
 <script>
 import { loadStripe } from "@stripe/stripe-js";
-import { api } from "@/utils/billing";
+import { apiWithLoader } from "@/utils/billing";
 import apiError from "@/store/utils/apiError";
+import BackBtn from "@/components/BackBtn";
 
 export default {
+  components: {
+    BackBtn,
+  },
+
   // "redirectObject" Is any valid object for router.replace(redirectObject). Ref to https://router.vuejs.org/guide/essentials/navigation.html#router-replace-location-oncomplete-onabort
   props: [
     "redirectObject",
@@ -113,7 +121,7 @@ export default {
       try {
         const { id, email, firstName, lastName } = this.$store.state.user;
 
-        const response = await api.post("/user/create", {
+        const response = await apiWithLoader.post("/user/create", {
           userAccountID: id,
           // User details object MUST follow stripe customer object. Ref: https://stripe.com/docs/api/customers/create
           userDetails: {
@@ -214,9 +222,12 @@ export default {
       try {
         const { id } = this.$store.state.user;
 
-        const response = await api.get(`/setupIntent/card-wallet/${id}`, {
-          userAccountID: id,
-        });
+        const response = await apiWithLoader.get(
+          `/setupIntent/card-wallet/${id}`,
+          {
+            userAccountID: id,
+          }
+        );
         if (!response.success) return apiError(response, this.createCustomer);
 
         this.client_secret = response.client_secret;
@@ -232,7 +243,7 @@ export default {
     async createSubscription(planId) {
       try {
         const { id } = this.$store.state.user;
-        const response = await api.get(`/plans/update/${planId}`, {
+        const response = await apiWithLoader.get(`/plans/update/${planId}`, {
           userAccountID: id,
         });
         if (!response.success)
