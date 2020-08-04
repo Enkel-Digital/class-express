@@ -1,5 +1,5 @@
 <template>
-  <v-content class="ClassDetails">
+  <v-content v-if="clas" class="ClassDetails">
     <v-container fluid>
       <v-row no-gutters>
         <!-- @todo Please label stuff like this. What is this for? -->
