@@ -113,10 +113,7 @@ export default {
       cardNumberElement: null,
       cardExpiryElement: null,
       cardCvcElement: null,
-      amount: 1,
-      // @todo Change or remove these variables.
-      publishableKey: "",
-      customer: {},
+      // @todo Change these hard coded values
       customerId: "cus_HeOaho2iPOkSFW",
       billingName: "zzk",
       priceId: "plan_HEDADPvhVD1zls",
@@ -133,15 +130,13 @@ export default {
       try {
         const { id, email, firstName, lastName } = this.$store.state.user;
 
-        const customer = await this.stripe.customers.create({
-          email,
-          firstName,
-          lastName,
-        });
-
         const response = await api.post("/user/create", {
           userAccountID: id,
-          customerID: customer.id,
+          userDetails: {
+            email,
+            firstName,
+            lastName,
+          },
         });
 
         if (!response.success) return apiError(response, this.createCustomer);
@@ -194,6 +189,9 @@ export default {
 
       const result = await this.stripe.createPaymentMethod({
         type: "card",
+        // @todo
+        // firstly can just use cardElement
+        // secondly, why only card number? I tot need more then that? What about the cvc and expiry numbers???
         card: this.cardNumberElement,
         billing_details: {
           name: this.billingName,
