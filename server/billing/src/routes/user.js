@@ -3,6 +3,17 @@ const router = express.Router();
 const db = require("./../utils/db.js");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
+async function customerExists(userID) {
+  return Boolean(
+    (
+      await db
+        .collection("billingCustomerAccounts")
+        .doc(userID.toString()) // As userAccountID is a number, WE MUST CONVERT it to string first, as firestore NEEDS string for document path!!!
+        .get()
+    ).data()
+  );
+}
+
 /**
  * Checks if customer object exists for this userID
  * @name GET /user/exists/:userID
@@ -11,11 +22,10 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 router.get("/exists/:userID", async (req, res) => {
   try {
     const { userID } = req.params;
-    const user = (
-      await db.collection("billingCustomerAccounts").doc(userID).get()
-    ).data();
 
-    return res.status(200).json({ success: true, exists: Boolean(user) });
+    return res
+      .status(200)
+      .json({ success: true, exists: await customerExists(userID) });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -32,9 +42,15 @@ router.post("/create", express.json(), async (req, res) => {
   try {
     const { userAccountID, userDetails } = req.body;
 
-    const customer = await stripe.customers.create(userDetails);
+    if (await customerExists(userAccountID))
+      res
+        .status(200) // Use 200 code to indicate no error, as technically the user already exists and is "created"
+        .json({
+          success: true,
+          message: "Duplicate user account. Creation skipped.",
+        });
 
-    console.log("create", userAccountID);
+    const customer = await stripe.customers.create(userDetails);
 
     // save stripe's customer.id as customerID in db
     await db
