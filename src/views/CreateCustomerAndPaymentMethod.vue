@@ -209,6 +209,7 @@ export default {
     },
 
     // get setupIntent client secret
+    // reference: https://stripe.com/docs/payments/save-and-reuse#web-collect-card-details
     async getSetupIntentClientSecret() {
       try {
         const { id } = this.$store.state.user;
@@ -242,89 +243,6 @@ export default {
           this.createSubscription,
           "Failed to create Subscription"
         );
-      }
-    },
-
-    handleCustomerActionRequired({
-      subscription,
-      invoice,
-      priceId,
-      paymentMethodId,
-      isRetry,
-    }) {
-      // subscription is active, no customer actions required.
-      if (subscription && subscription.status === "active")
-        return { subscription, priceId, paymentMethodId };
-
-      // If it's a first payment attempt, the payment intent is on the subscription latest invoice.
-      // If it's a retry, the payment intent will be on the invoice itself.
-      let paymentIntent = invoice
-        ? invoice.payment_intent
-        : subscription.latest_invoice.payment_intent;
-
-      if (
-        paymentIntent.status === "requires_action" ||
-        (isRetry === true && paymentIntent.status === "requires_payment_method")
-      )
-        return this.stripe
-          .confirmCardPayment(paymentIntent.client_secret, {
-            payment_method: paymentMethodId,
-          })
-          .then((result) => {
-            if (result.error) {
-              // start code flow to handle updating the payment details
-              // Display error message in your UI.
-              // The card was declined (i.e. insufficient funds, card has expired, etc)
-              throw result;
-            } else {
-              if (result.paymentIntent.status === "succeeded") {
-                // There's a risk of the customer closing the window before callback
-                // execution. To handle this case, set up a webhook endpoint and
-                // listen to invoice.paid. This webhook endpoint returns an Invoice.
-                return {
-                  priceId: priceId,
-                  subscription: subscription,
-                  invoice: invoice,
-                  paymentMethodId: paymentMethodId,
-                };
-              }
-            }
-          });
-      // No customer action needed
-      else return { subscription, priceId, paymentMethodId };
-    },
-
-    handlePaymentMethodRequired({ subscription, paymentMethodId, priceId }) {
-      // subscription is active, no customer actions required.
-      if (subscription.status === "active")
-        return { subscription, priceId, paymentMethodId };
-      else if (
-        subscription.latest_invoice.payment_intent.status ===
-        "requires_payment_method"
-      ) {
-        // Using localStorage to store the state of the retry here
-        // (feel free to replace with what you prefer)
-        // Store the latest invoice ID and status
-        localStorage.setItem("latestInvoiceId", subscription.latest_invoice.id);
-        localStorage.setItem(
-          "latestInvoicePaymentIntentStatus",
-          subscription.latest_invoice.payment_intent.status
-        );
-        throw { error: { message: "Your card was declined." } };
-      } else return { subscription, priceId, paymentMethodId };
-    },
-
-    onSubscriptionComplete(result) {
-      // Payment was successful.
-      if (result.subscription.status === "active") {
-        // show a success message
-        // Call your backend to grant access to your service based on
-        // `result.subscription.items.data[0].price.product` the customer subscribed to.
-        // Store the product.id and subscription.id in db
-
-        // Redirect user back to the view that requested for a payment method creation or a custom location
-        if (this.redirectObject) this.$router.replace(this.redirectObject);
-        else this.$router.go(-1);
       }
     },
 
