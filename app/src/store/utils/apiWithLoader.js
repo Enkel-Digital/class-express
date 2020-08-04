@@ -1,4 +1,4 @@
-import api from "./fetch";
+import fetch from "./fetch";
 import Vue from "vue";
 
 /**
@@ -22,14 +22,24 @@ async function withLoader(fn, ...fnArgs) {
   return response;
 }
 
-/**
- * Simple wrapper over api from fetch to execute it sandwiched in a loader set and loader clear call
- */
-export default {
-  async get(url) {
-    return withLoader(api.get, url);
-  },
-  async post(url, data) {
-    return withLoader(api.post, url, data);
-  },
-};
+export function createApiWithLoader(api) {
+  return {
+    async get(url) {
+      return withLoader(api.get, url);
+    },
+    async post(url, data) {
+      return withLoader(api.post, url, data);
+    },
+    async patch(url, data) {
+      return withLoader(api.post, url, data);
+    },
+    async put(url, data) {
+      return withLoader(api.post, url, data);
+    },
+    async delete(url, data) {
+      return withLoader(api.post, url, data);
+    },
+  };
+}
+
+export default createApiWithLoader(fetch);
