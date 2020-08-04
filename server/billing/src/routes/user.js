@@ -32,12 +32,14 @@ router.post("/create", express.json(), async (req, res) => {
   try {
     const { userAccountID, userDetails } = req.body;
 
-    const customer = await this.stripe.customers.create(userDetails);
+    const customer = await stripe.customers.create(userDetails);
+
+    console.log("create", userAccountID);
 
     // save stripe's customer.id as customerID in db
     await db
       .collection("billingCustomerAccounts")
-      .doc(userAccountID)
+      .doc(userAccountID.toString()) // As userAccountID is a number, WE MUST CONVERT it to string first, as firestore NEEDS string for document path!!!
       .set({ customerID: customer.id });
 
     res.status(201).json({ success: true });
