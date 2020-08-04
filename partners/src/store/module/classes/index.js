@@ -3,12 +3,15 @@
  */
 
 import Vue from "vue";
-import moment from "moment";
 import initialState from "./initialState";
 import setter from "../../utils/setter";
+import apiError from "@/store/utils/apiError";
+import apiWithLoader from "@/store/utils/apiWithLoader";
 
 // @todo Remove mock data
 import mock from "../../mockData";
+import { getClass, addClass } from "./getClass";
+import { getPartner, addPartner } from "./getPartner";
 
 export default {
   namespaced: true,
@@ -24,6 +27,8 @@ export default {
       else if (remove) Vue.delete(state.classes, classObject.id);
       else throw new Error("Invalid action used on updateClassesToFetch");
     },
+    addClass,
+    addPartner,
   },
   getters: {
     /**
@@ -34,30 +39,24 @@ export default {
     },
   },
   actions: {
+    getClass,
+    getPartner,
     async getAllClasses({ commit }) {
       // @todo Replace with API call
 
       commit("setter", ["classes", mock.classes]);
     },
-    async getReview({ commit }, classID) {
-      // If the review is already in state, ignore it
+    // @todo Update to get only the basic review data instead of using the whole reviews object
+    // API should return result without userReview
+    async getReview({ state, commit, dispatch }, classID) {
+      // If review is already in state, ignore request
+      if (state.review && classID === state.review[classID]) return;
 
-      // @todo Replace with API call
-      // @notice Using shallow copy to prevent deleting value from mock data
-      const review = { ...mock.reviews[classID] };
+      const response = await apiWithLoader.get(`/reviews/class/${classID}`);
+      if (!response.success)
+        return apiError(response, () => dispatch("getReview"));
 
-      // @todo To remove once API is done, as API will return result without userReview
-      delete review.userReviews;
-
-      commit("setter", ["review", review]);
-    },
-    async getUserReview({ commit }, classID) {
-      // If the review is already in state, ignore it
-
-      // @todo Replace with API call
-      const review = mock.reviews[classID];
-
-      commit("setter", ["review", review]);
+      commit("setter", ["review", response.reviews]);
     },
     /**
      * @returns classID of newly created class if class creation succeeded, else returns false and trigger error dialog
