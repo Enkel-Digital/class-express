@@ -44,24 +44,10 @@
         <div class="error red center-align white-text">
           {{ stripeValidationError }}
         </div>
-
         <div class="card-element">
-          <label>Card Number</label>
-          <div id="card-number-element" class="input-value"></div>
-        </div>
-
-        <br />
-
-        <div class="card-element">
-          <label>Expiry Date</label>
-          <div id="card-expiry-element"></div>
-        </div>
-
-        <br />
-
-        <div class="card-element">
-          <label>CVC</label>
-          <div id="card-cvc-element"></div>
+          <form id="setup-form">
+            <div id="card-element"></div>
+          </form>
         </div>
       </v-card-text>
 
@@ -110,9 +96,11 @@ export default {
   data() {
     return {
       stripe: null,
+      cardElement: null,
       cardNumberElement: null,
       cardExpiryElement: null,
       cardCvcElement: null,
+
       // @todo Change these hard coded values
       customerId: "cus_HeOaho2iPOkSFW",
       billingName: "zzk",
@@ -152,19 +140,11 @@ export default {
     createAndMountFormElement() {
       const elements = this.stripe.elements();
 
-      this.cardNumberElement = elements.create("cardNumber");
-      this.cardNumberElement.mount("#card-number-element");
-
-      this.cardExpiryElement = elements.create("cardExpiry");
-      this.cardExpiryElement.mount("#card-expiry-element");
-
-      this.cardCvcElement = elements.create("cardCvc");
-      this.cardCvcElement.mount("#card-cvc-element");
+      this.cardElement = elements.create("card");
+      this.cardElement.mount("#card-element");
 
       // @todo Maybe dont do it like this? Only check / validate once the user press the button?
-      this.cardNumberElement.on("change", this.validateCardOnChange);
-      this.cardExpiryElement.on("change", this.validateCardOnChange);
-      this.cardCvcElement.on("change", this.validateCardOnChange);
+      this.cardElement.on("change", this.validateCardOnChange);
     },
 
     validateCardOnChange(event) {
