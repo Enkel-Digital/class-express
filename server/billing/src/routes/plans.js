@@ -12,18 +12,15 @@ router.post("/update/:planId", express.json(), async (req, res) => {
     const stripeCustomerId = await getStripeCustomerID(userAccountId);
     const priceID = await getPriceID(planId);
 
-    // @todo Remove
-    const testCustomerID = "cus_HcIjLOcL3Fo4Go";
-
     // get the current subscription plan
     const currentSubscriptionPlan = await stripe.subscriptions.list({
-      customer: testCustomerID,
+      customer: stripeCustomerId,
       status: "active",
     });
 
     // get Subscription Schedule
     const currentSubscriptionSchedule = await stripe.subscriptionSchedules.list(
-      { customer: testCustomerID, scheduled: true }
+      { customer: stripeCustomerId, scheduled: true }
     );
 
     // if got future scheduled plans
@@ -47,7 +44,7 @@ router.post("/update/:planId", express.json(), async (req, res) => {
     // so user's current plan will at fisrt index of the array
     if (currentSubscriptionPlan.data.length === 0) {
       const newSubscription = await stripe.subscriptions.create({
-        customer: testCustomerID,
+        customer: stripeCustomerId,
         items: [{ price: priceID }],
       });
       return res.json({ success: true, subscription: newSubscription });
@@ -66,7 +63,7 @@ router.post("/update/:planId", express.json(), async (req, res) => {
     // @todo Are these still needed
     // create new subscription start at the day after the previous subscription end
     // const newSubscription = await stripe.subscriptions.create({
-    //   customer: testCustomerID,
+    //   customer: stripeCustomerId,
     //   items: [{ price: priceID }],
 
     // });
@@ -77,7 +74,7 @@ router.post("/update/:planId", express.json(), async (req, res) => {
 
     const updateSchedule = await stripe.subscriptionSchedules.create({
       // @todo To remove test customer ID
-      customer: testCustomerID,
+      customer: stripeCustomerId,
       start_date: endDate,
       end_behavior: "release",
       phases: [
