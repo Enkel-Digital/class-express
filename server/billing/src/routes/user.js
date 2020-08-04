@@ -25,20 +25,20 @@ router.get("/exists/:userID", async (req, res) => {
  * Create a new customer
  * @name POST /user/create
  * @param {string} userAccountID  userAccount ID to set as doc ID in firestore
- * @param {object} customerID customer id as saved in stripe's service
+ * @param {object} userDetails Details of the user, used to create the stripe customer object
  * @returns {object} Boolean
  */
 router.post("/create", express.json(), async (req, res) => {
   try {
-    const { userAccountID, customerID } = req.body;
+    const { userAccountID, userDetails } = req.body;
 
-    console.log("Create", userAccountID, customerID);
+    const customer = await this.stripe.customers.create(userDetails);
 
     // save stripe's customer.id as customerID in db
     await db
       .collection("billingCustomerAccounts")
       .doc(userAccountID)
-      .set({ customerID });
+      .set({ customerID: customer.id });
 
     res.status(201).json({ success: true });
   } catch (error) {
