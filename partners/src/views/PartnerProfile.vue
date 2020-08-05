@@ -180,6 +180,7 @@
 <script>
 import MapImage from "@/components/MapImage";
 import api from "../store/utils/fetch";
+import { mapState } from "vuex";
 
 export default {
   name: "PartnerProfile",
@@ -195,7 +196,6 @@ export default {
   data() {
     return {
       placeholder: "",
-      partner: {},
       partnerTags: [],
       numberOfEmployees: {},
       numberOfClass: {},
@@ -223,36 +223,10 @@ export default {
     };
   },
   created() {
-    this.getPartner();
-    this.getPartnerTags();
-    this.getNumberOfEmployees();
-    this.getNumberOfClass();
+    this.$store.dispatch("partner/getPartnerDetails", this.partnerID);
   },
-  methods: {
-    async getPartner() {
-      this.partner = (
-        await api.get(`/partner/details/${this.partnerID}`)
-      ).partner;
-    },
-    async getPartnerTags() {
-      this.partnerTags = (
-        await api.get(`/tags/partner/${this.partnerID}`)
-      ).tags;
-    },
-    async getNumberOfEmployees() {
-      this.numberOfEmployees = (
-        await api.get(`/employees/all/${this.partnerID}`)
-      ).numberOfEmployees;
-    },
-    async getNumberOfClass() {
-      this.numberOfClass = (
-        await api.get(`/class/of/${this.partnerID}`)
-      ).arrayOfClassIDs;
-    },
-    remove(item) {
-      this.clas.classCategory.splice(this.clas.classCategory.indexOf(item), 1);
-      this.clas.classCategory = [...this.clas.classCategory];
-    },
+  computed: {
+    ...mapState("partner", ["partner"]),
   },
 };
 </script>

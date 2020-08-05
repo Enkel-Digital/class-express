@@ -103,7 +103,6 @@ export default {
   },
   created() {
     this.$store.dispatch("employees/getEmployees", this.partnerID);
-    console.log("haha", this.employee);
   },
   methods: {
     moreInfo(id) {
