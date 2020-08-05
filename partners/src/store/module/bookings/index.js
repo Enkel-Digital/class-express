@@ -7,9 +7,6 @@ import setter from "../../utils/setter";
 import apiError from "@/store/utils/apiError";
 import apiWithLoader from "@/store/utils/apiWithLoader";
 
-// @todo Remove mock data
-import mock from "../../mockData";
-
 export default {
   namespaced: true,
   state: initialState(),
