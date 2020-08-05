@@ -5,7 +5,7 @@
       :gutter="{ default: '0.5em', 700: '0.25em' }"
     >
       <v-card
-        v-for="employee in employees"
+        v-for="employee in employee"
         class="class-card"
         :key="employee.id"
         outlined
@@ -76,7 +76,6 @@ import api from "../store/utils/fetch";
 export default {
   data() {
     return {
-      employees: [],
       dialog: false,
       employeeInfo: [
         {
@@ -103,28 +102,26 @@ export default {
     },
   },
   created() {
-    this.getEmployees();
+    this.$store.dispatch("employees/getEmployees", this.partnerID);
+    console.log("haha", this.employee);
   },
   methods: {
-    async getEmployees() {
-      this.employees = (
-        await api.get(`/employees/all/${this.partnerID}`)
-      ).employees;
-      console.log("this", this.employees);
-    },
     moreInfo(id) {
-      console.log("id", this.employees[id - 1].name);
+      console.log("id", this.employee[id - 1].name);
       this.dialog = true;
       this.employeeInfo.id = id - 1;
-      this.employeeInfo.name = this.employees[id - 1].name;
-      this.employeeInfo.email = this.employees[id - 1].email;
-      this.employeeInfo.mobile = this.employees[id - 1].phoneNumber;
+      this.employeeInfo.name = this.employee[id - 1].name;
+      this.employeeInfo.email = this.employee[id - 1].email;
+      this.employeeInfo.mobile = this.employee[id - 1].phoneNumber;
       // this.employeeInfo.position = this.employees[id-1].position;
       // this.employeeInfo.birthdate = this.employees[id].birthdate;
       // this.employeeInfo.picture = this.employees[id].picture;
 
       // console.log("id" + this.employees[id].name);
     },
+  },
+  computed: {
+    ...mapState("employees", ["employee"]),
   },
 };
 </script>
