@@ -196,7 +196,6 @@ export default {
   data() {
     return {
       placeholder: "",
-      partnerTags: [],
       numberOfEmployees: {},
       numberOfClass: {},
       classCategoryList: ["tech", "cooking", "lifestyle", "music", "art"],
@@ -224,9 +223,10 @@ export default {
   },
   created() {
     this.$store.dispatch("partner/getPartnerDetails", this.partnerID);
+    this.$store.dispatch("partner/getPartnerTags", this.partnerID);
   },
   computed: {
-    ...mapState("partner", ["partner"]),
+    ...mapState("partner", ["partner", "partnerTags"]),
   },
 };
 </script>

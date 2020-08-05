@@ -26,5 +26,14 @@ export default {
 
       commit("setter", ["partner", response.partner]);
     },
+    async getPartnerTags({ state, commit, dispatch }, partnerID) {
+      const response = await apiWithLoader.get(`/tags/partner/${partnerID}`);
+      if (!response.success)
+        return apiError(response, () => dispatch("getPartnerTags"));
+
+      console.log("tags", response);
+
+      commit("setter", ["partnerTags", response.tags]);
+    },
   },
 };
