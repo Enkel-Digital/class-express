@@ -68,7 +68,6 @@
 
             <v-text-field
               v-model="partner.website"
-              :rules="nameRules"
               label="Website"
               placeholder="guitar.com"
               color="#60696c"
@@ -77,7 +76,7 @@
 
             <v-combobox
               v-model="partnerTags"
-              :items="classCategoryList"
+              :items="partnerTagsList"
               chips
               color="#60696c"
               clearable
@@ -139,7 +138,6 @@
             ></v-text-field>
 
             <v-text-field
-              :rules="addressRules"
               label="Unit No."
               color="#60696c"
               placeholder="12-02"
@@ -147,7 +145,7 @@
             ></v-text-field>
 
             <v-text-field
-              :rules="addressRules"
+              :rules="nameRules"
               label="Postal Code"
               required
               placeholder="111222"
@@ -155,7 +153,7 @@
             ></v-text-field>
 
             <v-text-field
-              :rules="addressRules"
+              :rules="nameRules"
               label="Country"
               required
               color="#60696c"
@@ -195,35 +193,26 @@ export default {
   },
   data() {
     return {
-      placeholder: "",
       numberOfEmployees: {},
       numberOfClass: {},
-      classCategoryList: ["tech", "cooking", "lifestyle", "music", "art"],
+      partnerTagsList: ["tech", "cooking", "lifestyle", "music", "art"],
 
-      // nameRules: [
-      //   (v) => !!v || "Name is required",
-      //   (v) => (v && v.length <= 20) || "Please fill is the required space",
-      // ],
-      // classLengthRules: [
-      //   (length) => !!length || "Length is required",
-      //   (length) => length > 0 || "Cannot have a class of 0 mins or less",
-      // ],
-      // maxParticipantRules: [
-      //   (length) => !!length || "Max participant is required",
-      //   (length) => length > 0 || "Cannot have a class of 0 mins or less",
-      // ],
-      // rules: [
-      //   (value) =>
-      //     !value ||
-      //     value.size < 2000000 ||
-      //     "Avatar size should be less than 2 MB!",
-      // ],
-      // addressRules: [(v) => !!v || "Please fill is the required space"],
+      nameRules: [
+        (v) => !!v || "Name is required",
+        (v) => (v && v.length <= 20) || "Please fill is the required space",
+      ],
+      addressRules: [(v) => !!v || "Please fill is the required space"],
     };
   },
   created() {
     this.$store.dispatch("partner/getPartnerDetails", this.partnerID);
     this.$store.dispatch("partner/getPartnerTags", this.partnerID);
+  },
+  methods: {
+    remove(item) {
+      this.partnerTags.splice(this.partnerTags.indexOf(item), 1);
+      this.partnerTags = [...this.partnerTags];
+    },
   },
   computed: {
     ...mapState("partner", ["partner", "partnerTags"]),
