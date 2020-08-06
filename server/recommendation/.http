@@ -1,0 +1,52 @@
+# Global file variable definitions
+@hostname = http://localhost
+@port = 3005
+@host = {{hostname}}:{{port}}
+@firebaseAuthApiKey = UR_API_KEY_HERE
+@authToken = Bearer {{getAuth.response.body.idToken}}
+@authHeader = Authorization: {{authToken}}
+
+### Create api_tester account if none
+# @name signUp
+POST https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "api_tester@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
+
+### Get auth credentials
+# @name getAuth
+POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "api_tester@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
+### ping
+GET {{host}}/
+
+### Health probe
+GET {{host}}/health
+
+### Example GET with auth header
+# GET /user/:userEmail
+GET {{host}}/user/social@enkeldigital.com
+{{authHeader}}
+
+### Example POST with auth header and body
+POST {{host}}/data/save
+{{authHeader}}
+content-type: application/json
+
+{
+    "sample": "test",
+    "sample2": true,
+    "sample3": 1
+}
