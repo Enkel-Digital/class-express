@@ -1,0 +1,25 @@
+{
+  "local": {
+    "url": "http://localhost",
+    "ports": {
+      "core": 3000,
+      "partner": 3001,
+      "billing": 3002,
+      "error": 3003,
+      "search": 3004,
+      "recommendation": 3005,
+      "notification": 3006
+    }
+  },
+  "production": {
+    "url": {
+      "core": "https://ce-core.api.enkeldigital.com/",
+      "partner": "https://ce-partner.api.enkeldigital.com/",
+      "billing": "https://ce-billing.api.enkeldigital.com/",
+      "error": "https://ce-error.api.enkeldigital.com/",
+      "search": "https://ce-search.api.enkeldigital.com/",
+      "recommendation": "https://ce-recommendation.api.enkeldigital.com/",
+      "notification": "https://ce-notification.api.enkeldigital.com/"
+    }
+  }
+}

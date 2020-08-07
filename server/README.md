@@ -14,6 +14,9 @@ Monorepo for all the backend services used to power [Class Express](https://gith
 - The commands in the services for docker are for pushing to gcr and running on gcp/cloud-run
 
 ## Repos and contents
+- config.json
+    - Bunch of configuration values that is used throughout the mono repo
+    - Used more for documentation purposes then as a IaC module
 - DB
     - main.dbml
         - dbml file for SQL schema definition of the main database
@@ -36,6 +39,10 @@ Monorepo for all the backend services used to power [Class Express](https://gith
     - Billing Service wraps around the strip service for core and partners services.
 - search
     - Search service wraps around the algolia service
+- recommendation
+    - Recommendation service to generate personalised recommendations for users.
+- notification
+    - Notification service wraps around other external services like sendgrid to deliver notifications that are set by the other services or through the admin portal
 - error
     - Service used for error reporting and application monitoring.
 - others
