@@ -13,7 +13,9 @@ router.get("/available/:userID", async (req, res) => {
   try {
     const { userID } = req.params;
 
-    const user = (await db.collection("userAccounts").doc(userID).get()).data();
+    const user = (
+      await db.collection("billingCustomerAccounts").doc(userID).get()
+    ).data();
     if (!user)
       return res
         .status(404)
@@ -67,7 +69,7 @@ router.post("/create", express.json(), async (req, res) => {
     });
 
     await db
-      .collection("userAccounts")
+      .collection("billingCustomerAccounts")
       .doc(userAccountID)
       .update({ paymentMethodID: paymentMethod.id });
 
@@ -100,7 +102,7 @@ router.patch("/save", express.json(), async (req, res) => {
     });
 
     await db
-      .collection("userAccounts")
+      .collection("billingCustomerAccounts")
       .doc(userAccountID)
       .update({ paymentMethodID: paymentMethodID });
 

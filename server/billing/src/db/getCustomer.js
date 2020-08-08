@@ -1,17 +1,15 @@
 const db = require("./../utils/db.js");
 
-// get stripe customer id base on customer account id in db
-async function getStripeCustomerID(userAccountId) {
-  const userAccountRef = db.collection("userAccount");
+// Get stripe customer ID using user's account ID from DB
+async function getStripeCustomerID(userAccountID) {
+  const snapshot = await db
+    .collection("billingCustomerAccounts")
+    .doc(userAccountID)
+    .get();
 
-  const snapshot = await userAccountRef.doc(userAccountId).get();
-  if (snapshot.empty) {
-    console.log("No matching documents.");
-    return;
-  }
-  const stripeCustomerId = snapshot.data().customerID;
+  if (snapshot.empty) return;
 
-  return stripeCustomerId;
+  return snapshot.data().customerID;
 }
 
 module.exports = getStripeCustomerID;

@@ -57,3 +57,6 @@ How to set up connections for Cloud SQL and connect to it:
 - <https://cloud.google.com/sql/docs/postgres/configure-ip>
 - <https://stackoverflow.com/questions/55925270/connect-pgadmin4-to-cloud-sql/55939033#55939033>
 - <https://stackoverflow.com/questions/24749810/how-to-make-a-google-cloud-sql-instance-accessible-for-any-ip-address/24750403#24750403>
+
+## Firstore
+- Firestore document paths MUST BE STRINGS, therefore, and numbers should all be converted to string first.

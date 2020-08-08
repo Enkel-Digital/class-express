@@ -80,3 +80,7 @@ content-type: application/json
 {
     "userAccountID":"1"
 }
+
+### get stripe client secret
+# GET /setupIntent/card-wallet/:userAccountID
+GET {{host}}/setupIntent/card-wallet/1
