@@ -2,7 +2,7 @@
   <v-content id="AddClasses">
     <v-row>
       <v-col cols="12" sm="4">
-        <v-card outlined ref="form">
+        <v-card outlined ref="form" v-model="valid">
           <v-card-text>
             <h2 style="color: #455a64;" class="text-left font-weight-light">
               CLASS DETAILS
@@ -93,6 +93,7 @@
               color="#60696c"
               required
             />
+            <span v-html="sanitizeMessage"></span>
 
             <v-switch
               v-model="allowWalkinCheckbox"
@@ -159,7 +160,7 @@
       </v-col>
 
       <v-col cols="12" sm="4">
-        <v-card outlined ref="form">
+        <v-card outlined ref="form" v-model="valid">
           <v-card-text>
             <!-- <h2 style="color: #455a64;" class="text-left font-weight-light">
               CLASS START DATE
@@ -343,6 +344,11 @@ export default {
       addressRules: [(v) => !!v || "Please fill is the required space"],
     };
   },
+  computed: {
+    sanitizeMessage() {
+      return this.$sanitize(this.clas.description);
+    },
+  },
   methods: {
     async addClass() {
       if (!this.validate()) return;
@@ -377,7 +383,7 @@ export default {
         this.$router.push({ name: "ClassDetails", params: { classID } });
     },
     validate() {
-      return this.$refs.form.validate();
+      this.$refs.form.validate();
     },
     reset() {
       this.$refs.form.reset();

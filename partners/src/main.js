@@ -2,6 +2,7 @@
 import setupOutcome from "./setup"; // Returns either true or false
 import "./registerServiceWorker";
 import "./plugins/vue-masonry";
+import "./plugins/vue-sanitize";
 
 import Vue from "vue";
 import App from "./App.vue";
