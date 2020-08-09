@@ -23,10 +23,14 @@ router.get("/available/:userID", async (req, res) => {
 
     const usersPaymentMethods = await stripe.paymentMethods.list({
       customer: user.customerID,
-      type: "card",
+      type: "card", // Currently only accepts card based payment methods
     });
 
-    res.json({ success: true, available: Boolean(usersPaymentMethods) });
+    res.json({
+      success: true,
+      // Payment methods are returned in an array under the "data" key
+      available: Boolean(usersPaymentMethods.data.length),
+    });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
