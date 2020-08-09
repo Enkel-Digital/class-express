@@ -41,12 +41,13 @@
         <h2>
           New Payment Method
         </h2>
-
         <br />
 
         <div class="error red center-align white-text">
           {{ stripeValidationError }}
         </div>
+        <br />
+
         <div class="card-element">
           <form id="setup-form" data-secret="client_secret">
             <div id="card-element"></div>
@@ -89,12 +90,15 @@ export default {
   ],
 
   created() {
+    // Wrapped in an async IIFE as we need to use await
     (async () => {
+      // Load stripe object first as we need stripe object to create customer
       this.stripe = await loadStripe(
         process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY
       );
 
-      // Load stripe object first as we need stripe object to create customer
+      // Create customer if needed to, and call get setup intent client secret
+      // Called without await to not block form creation process
       if (this.shouldCreateCustomer)
         this.createCustomer().then(this.getSetupIntentClientSecret);
       else this.getSetupIntentClientSecret();
@@ -147,20 +151,12 @@ export default {
       this.cardElement.mount("#card-element");
 
       // @todo Maybe dont do it like this? Only check / validate once the user press the button?
-      this.cardElement.on("change", this.validateCardOnChange);
-    },
-
-    validateCardOnChange(event) {
-      this.stripeValidationError = event.error ? event.error.message : "";
-
-      if (this.stripeValidationError) {
-        // Create new user error and show with ErrorDialog
-        const userError = this.$error.createError(
-          this.$error.ERROR.level.RETRY,
-          this.$error.ERROR.custom("Invalid input", this.stripeValidationError)
-        );
-        this.$error.new(userError);
-      }
+      // Using arrow function to keep "this" binding
+      this.cardElement.on("change", (event) => {
+        const { error } = event;
+        if (error) this.displayError(error);
+        else this.stripeValidationError = ""; // Clear any previous error if no error in the latest validation
+      });
     },
 
     // create payment method in frontend
@@ -193,6 +189,9 @@ export default {
     // this may reigger 3D secure authentication
     // walks them through check flow.
     async createSetupIntent(paymentMethodID) {
+      // Add a loader here as the following stripe API might take a while
+      const loaderID = await this.$loader.new();
+
       const { setupIntent, error } = await this.stripe.confirmCardSetup(
         this.client_secret,
         {
@@ -204,14 +203,17 @@ export default {
         }
       );
 
-      if (error) {
-        this.displayError(error);
-      } else {
+      // Remove loader after stripe API responds
+      this.$loader.clear(loaderID);
+
+      if (error) this.displayError(error);
+      else {
         if (setupIntent.status === "succeeded") {
-          // Do not need to save into billing service as billing service can retrieve payment method via customer ID
-          // Redirect user back to the view that requested for a payment method creation or a custom location
+          // Redirect user back to custom redirect location or the view that requested for a payment method creation
           if (this.redirectObject) this.$router.replace(this.redirectObject);
           else this.$router.go(-1);
+        } else {
+          // @todo Do something here? What other status are there other then succeeded? And how to deal with them?
         }
       }
     },
@@ -257,9 +259,17 @@ export default {
       }
     },
 
-    displayError(event) {
-      if (event.error) this.stripeValidationError = event.error.message;
-      else this.stripeValidationError = "";
+    displayError(error) {
+      this.stripeValidationError = error.message || "error";
+
+      // Create new error and show with ErrorDialog too
+      this.$error.new(
+        this.$error.createError(
+          this.$error.ERROR.level.RETRY,
+          this.$error.ERROR.custom("BILLING", this.stripeValidationError),
+          error
+        )
+      );
     },
   },
 };
