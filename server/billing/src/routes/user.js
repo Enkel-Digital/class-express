@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require("./../utils/db.js");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
+// @todo This might be an issue if customer is deleted on stripe but not deleted from database.
 async function customerExists(userID) {
   return Boolean(
     (

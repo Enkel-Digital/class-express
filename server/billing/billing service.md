@@ -3,6 +3,10 @@
 - Key idea is for user to register with Billing Service first to create a customer and paymentMethod entry with Stripe service so from here on, whenever user purchases anything or updates their subscription plan, it will automatically get charged instead of doing the payment process everytime.
 - on frontend payment view, MAKE IT CLEAR that the user is not charged until they select a plan or topup.
 
+## Testing the service
+- When using stripe dashboard to look at test data, make sure "view test data" toggle switch is enabled in order to see testing data
+- When testing cards, always prefer to test with the card type with the most requirements like 3DS or 2FA stuff
+    - 4000002500003155  (3DS required)
 
 ## Use case flow for frontend Subscription plan update and Points topups
 If first time user, steps 1 - 4
