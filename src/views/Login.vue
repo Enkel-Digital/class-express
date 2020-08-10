@@ -87,7 +87,6 @@ export default {
     return {
       email: "",
       password: "",
-      error_msg: "",
     };
   },
   methods: {
@@ -105,32 +104,29 @@ export default {
           .signInWithEmailAndPassword(this.email, this.password);
 
         if (!firebase.auth().currentUser.emailVerified) {
-          // Signout the user and redirect to verifyEmail view
-          await firebase.auth().signOut();
-
           // Throw new error with pre-defined code to get the right error_msg
           const error = new Error();
           error.code = "email/no-verify";
           throw error;
-        } else {
-          // Await for async dispatch to ensure app only starts after user info is available.
-          await this.$store.dispatch("getUserDetails", this.email);
-          this.$store.dispatch("init");
-
-          // Route to the user's home page, after login
-          this.$router.replace({ name: "home", params: { user: name } });
         }
+
+        // Await for async dispatch to ensure app only starts after user info is available.
+        await this.$store.dispatch("getUserDetails", this.email);
+        this.$store.dispatch("init");
+
+        // Route to the user's home page, after login
+        this.$router.replace({ name: "home" });
       } catch (error) {
+        if (
+          error.code === "email/no-verify" &&
+          confirm("Please verify your email first! Resend verification email?")
+        ) {
+          firebase.auth().currentUser.sendEmailVerification();
+          return firebase.auth().signOut();
+        }
+
         // If there is an error but user is somehow logged in, sign user out to try again
         if (firebase.auth().currentUser) await firebase.auth().signOut();
-
-        // @todo Instead of changing route, perhaps, show via ErrorDialog and let user know they need to verify their email
-        // @todo Then use internal notification dialog to show email verification after user signup.
-        if (error.code === "email/no-verify")
-          return this.$router.replace({
-            name: "verify-email",
-            params: { emailAddress: this.email },
-          });
 
         // Create new user error and show with ErrorDialog
         const userError = this.$error.createError(
