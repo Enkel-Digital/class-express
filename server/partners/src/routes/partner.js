@@ -92,6 +92,11 @@ router.post("/new", express.json(), async (req, res) => {
     req.body.partner.email = req.body.partner.email.toLowerCase();
     const partner = req.body.partner;
 
+    const validateURL = require("../validations/isHTTPS");
+
+    if (!validateURL(partner.website))
+      throw new Error("Website URL should be HTTPS only");
+
     await SQLdb("partners").insert(partner);
 
     res.status(201).json({ success: true });
