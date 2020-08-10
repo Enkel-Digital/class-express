@@ -57,6 +57,7 @@
 
       <v-card-actions>
         <v-btn
+          v-if="showCreateButton"
           text
           class="col"
           color="deep-purple"
@@ -115,6 +116,7 @@ export default {
 
       // Registering on the component first before using
       stripeValidationError: undefined,
+      showCreateButton: true,
     };
   },
 
@@ -157,8 +159,10 @@ export default {
     },
 
     // create payment method in frontend
-    // then send the payment method to billing service
+    // Create payment method button is disabled to prevent multiple clicks as create payment method with stripe takes some time
     async createPaymentMethod() {
+      this.showCreateButton = false;
+
       const { firstName, lastName } = this.$store.state.user;
 
       const result = await this.stripe.createPaymentMethod({
@@ -169,36 +173,32 @@ export default {
         },
       });
 
-      if (result.error) return this.displayError(result.error);
-      else this.createSetupIntent(result.paymentMethod.id); // Create setupIntent after payment method is created
+      if (result.error) {
+        // Show create button to allow user to retry
+        this.showCreateButton = true;
+        return this.displayError(result.error);
+      } else this.createSetupIntent(result.paymentMethod.id); // Create setupIntent after payment method is created
     },
 
-    // create setupIntent in frontend
+    // create setupIntent in frontend this may reigger 3D secure authentication
     // stripe.confirmCardSetup may take several seconds to complete.
-    // During that time, disable form from being resubmitted
-    // and show a waiting indicator.
-    // this may reigger 3D secure authentication
-    // walks them through check flow.
     async createSetupIntent(paymentMethodID) {
       // Add a loader here as the following stripe API might take a while
       const loaderID = await this.$loader.new();
 
       const { setupIntent, error } = await this.stripe.confirmCardSetup(
         this.client_secret,
-        {
-          payment_method: paymentMethodID,
-          // return_url:
-          // If handling next actions by ourselves, pass in a return_url.
-          // If the subsequent action is redirect_to_url, this URL will be used on the return path for the redirect.
-          // https://stripe.com/docs/payments/payment-intents/verifying-status#next-actions
-        }
+        { payment_method: paymentMethodID }
       );
 
       // Remove loader after stripe API responds
       this.$loader.clear(loaderID);
 
-      if (error) this.displayError(error);
-      else {
+      if (error) {
+        // Show create button to allow user to retry
+        this.showCreateButton = true;
+        this.displayError(error);
+      } else {
         if (setupIntent.status === "succeeded") {
           // Redirect user back to custom redirect location or the view that requested for a payment method creation
           if (this.redirectObject) this.$router.replace(this.redirectObject);
@@ -226,23 +226,6 @@ export default {
         );
 
       this.client_secret = response.client_secret;
-    },
-
-    async createSubscription(planId) {
-      try {
-        const { id } = this.$store.state.user;
-        const response = await apiWithLoader.get(`/plans/update/${planId}`, {
-          userAccountID: id,
-        });
-        if (!response.success)
-          return apiError(response, this.createSubscription);
-      } catch (error) {
-        apiError(
-          error.message,
-          this.createSubscription,
-          "Failed to create Subscription"
-        );
-      }
     },
 
     // Wrapper method around setting custom error on UI and triggering error controller
