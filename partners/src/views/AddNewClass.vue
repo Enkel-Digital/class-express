@@ -81,10 +81,11 @@
               You are allowed to use most valid HTML to format your description.
               Script tags and others are not allowed.
             </p>
-            <!-- @todo Sanitize HTML input to prevent script injection attacks -->
+
             <v-textarea
               v-autofocus
               type="text"
+              @change="sanitized = false"
               v-model="clas.description"
               rows="4"
               outlined
@@ -93,8 +94,40 @@
               color="#60696c"
               required
             />
-            <span v-html="sanitizeMessage"></span>
 
+            <p>
+              Below is the how your text will look like, click the confirm
+              button to proceed.
+            </p>
+
+            <span
+              v-if="!sanitized && clas.description != null"
+              v-html="sanitizeMessage"
+              >Above</span
+            >
+
+            <br v-if="!sanitized && clas.description != null" />
+            <br v-if="!sanitized && clas.description != null" />
+
+            <v-btn
+              v-if="!sanitized"
+              class="ma-2 white--text"
+              @click="replaceMessage"
+              color="#60696c"
+              block
+              >confirm html</v-btn
+            >
+          </v-card-text>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" sm="8">
+        <AddNewStartTime :classLengthInMinutes="clas.length" />
+      </v-col>
+
+      <v-col cols="12" sm="4">
+        <v-card outlined ref="form" v-model="valid">
+          <v-card-text>
             <v-switch
               v-model="allowWalkinCheckbox"
               label="Allow Walk-in Registrations"
@@ -107,7 +140,6 @@
               color="#60696c"
             ></v-switch>
           </v-card-text>
-
           <v-expand-transition>
             <div v-show="addLocationCheckbox">
               <v-divider></v-divider>
@@ -153,10 +185,6 @@
             </div>
           </v-expand-transition>
         </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="8">
-        <AddNewStartTime :classLengthInMinutes="clas.length" />
       </v-col>
 
       <v-col cols="12" sm="4">
@@ -306,6 +334,7 @@ export default {
   },
   data() {
     return {
+      sanitized: false,
       startDateMenu: false,
       endDateMenu: false,
       classCategoryList: ["tech", "cooking", "lifestyle", "music", "art"],
@@ -350,6 +379,10 @@ export default {
     },
   },
   methods: {
+    replaceMessage() {
+      this.clas.description = this.$sanitize(this.clas.description);
+      this.sanitized = true;
+    },
     async addClass() {
       if (!this.validate()) return;
 
