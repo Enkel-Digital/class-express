@@ -7,6 +7,8 @@
 - When using stripe dashboard to look at test data, make sure "view test data" toggle switch is enabled in order to see testing data
 - When testing cards, always prefer to test with the card type with the most requirements like 3DS or 2FA stuff
     - 4000002500003155  (3DS required)
+    - more test reference: https://stripe.com/docs/testing#cards-responses
+    
 
 ## Use case flow for frontend Subscription plan update and Points topups
 If first time user, steps 1 - 4
@@ -17,6 +19,7 @@ If second time user, step 4 only.
     - return false and continue with creation process.
 2. redirect user to payment.vue to create a new paymentMethod
     - frontend calls stripe or billing service to create customer object
+    - frontned calls stripe or billing service to create setupIntent after creating customer object
     - frontned calls stripe to create paymentMethod with (type / card / billing_details..)
     - frontend sends payment method to billing service to store.
     - once all is complete, redirect user back to where they came from.
@@ -64,6 +67,11 @@ Legend:
             - exp_year: 2021,
             - cvc: '314',
         - billing_details... can be expanded (meta data)
+- GET /card-wallet/:userAccountID --> Boolean
+    - get client secret when creating setupIntent
+    - Called by frontend directly after creating the stripe Customer
+    - https://stripe.com/docs/payments/setup-intents
+    - https://stripe.com/docs/payments/save-and-reuse
 - POST /plans/update --> Boolean
     - Called only by CORE API
     - Update the user's plans
@@ -84,6 +92,13 @@ Legend:
     - req.body
         - userID
         - planID --> planID is used to retrieve priceID from database
+- POST /stripe-webhook
+    - Webhook handler for asynchronous events
+        - invoice.paid
+        - invoice.payment_failed
+        - customer.subscription.deleted
+        - customer.subscription.trial_will_end
+        - more: https://stripe.com/docs/api/events/types
 - todo:
     - Update payment method if user wishes to change, or if the previous payment method becomes invalid.
     - points topup APIs.
