@@ -1,10 +1,7 @@
 <template>
   <v-content>
     You will be redirected back to your previous page in 5 seconds
-    <v-img
-      src="https://www.artzstudio.com/wp-content/uploads/2020/05/404-error-not-found-page-lost.png"
-    >
-    </v-img>
+    <v-img src="@/assets/404.png"> </v-img>
     <v-row>
       <v-col>
         <v-btn :to="{ name: 'home' }">Home</v-btn>
@@ -35,7 +32,7 @@ export default {
           // Else, redirect back home
           else router.push({ name: "home" });
         },
-        5000,
+        // 5000,
         this.$router
       ),
     };
