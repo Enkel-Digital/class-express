@@ -1,25 +1,25 @@
 <template>
   <v-content>
-    <v-app-bar app color="orange lighten-1" flat dark fixed>
-      <BackBtn />
-      <v-toolbar-title>Page Not Found</v-toolbar-title>
-    </v-app-bar>
-
-    <div id="notFound">
-      <br />
-      <p>Oops we are really sorry but the page is not found...</p>
-      <p>You will be redirected back in 3 seconds...</p>
-
-      <br />
-      Go home now?
-      <v-btn :to="{ name: 'home' }">Home</v-btn>
-    </div>
+    You will be redirected back to your previous page in 5 seconds
+    <v-img src="@/assets/404.png"> </v-img>
+    <v-row>
+      <v-col>
+        <v-btn :to="{ name: 'home' }">Home</v-btn>
+        <br />
+        Go home now?
+      </v-col>
+      <v-col>
+        <v-btn id="button" @click="goBack">
+          Back
+        </v-btn>
+        <br />
+        Back to previous page
+      </v-col>
+    </v-row>
   </v-content>
 </template>
 
 <script>
-import BackBtn from "@/components/BackBtn";
-
 export default {
   name: "notFound",
   data() {
@@ -32,13 +32,16 @@ export default {
           // Else, redirect back home
           else router.push({ name: "home" });
         },
-        3000,
+        // 5000,
         this.$router
       ),
     };
   },
-  components: {
-    BackBtn,
+
+  methods: {
+    goBack() {
+      this.$router.back();
+    },
   },
   beforeDestroy() {
     // Prevent the timeout from still routing to home if user already navigated away themselves
@@ -49,7 +52,8 @@ export default {
 
 <style scoped>
 #notFound {
-  margin: 1em;
   text-align: left;
+  margin: 0;
+  padding: 0;
 }
 </style>
