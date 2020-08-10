@@ -30,12 +30,6 @@ const routes = [
     meta: { Auth_requirements: AuthType.public_only },
   },
   {
-    path: "/verify/email",
-    name: "verify-email",
-    component: () => import("@/views/VerifyEmail.vue"),
-    meta: { Auth_requirements: AuthType.public_only },
-  },
-  {
     path: "/about",
     name: "about",
     component: () => import("../views/About.vue"),

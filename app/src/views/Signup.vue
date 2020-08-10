@@ -1,5 +1,26 @@
 <template>
   <v-main id="signup">
+    <!-- Dialog to inform user to verify email before redirecting them to the signup page -->
+    <v-dialog v-model="verifyEmailDialog" max-width="calc(100% - 2em)">
+      <v-card>
+        <v-card-title class="headline">
+          Please verify your email before logging in!
+        </v-card-title>
+
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="$router.replace({ name: 'login' })"
+          >
+            login now!
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-img
       alt="ClassExpress logo"
       src="../assets/logo.png"
@@ -107,6 +128,8 @@ export default {
   name: "signUp",
   data() {
     return {
+      verifyEmailDialog: false,
+
       email: "",
       firstName: "",
       lastName: "",
@@ -151,10 +174,11 @@ export default {
         // await to prevent signout from executing before post which will delete the JWT and make this call rejected with a 401
         const res = await api.post("/user/new", newUser);
 
-        // Sign user out and redirect to verifyEmail view
+        // Sign user out
         await firebase.auth().signOut();
 
-        this.$router.replace({ name: "verify-email" });
+        // Show dialog to inform user to verify email and allow them to redirect to login view
+        this.verifyEmailDialog = true;
       } catch (error) {
         /**
          * If there is an error before user is signed out, sign user out to try again
