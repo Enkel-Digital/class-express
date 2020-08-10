@@ -48,7 +48,7 @@ content-type: application/json
 {
     "clas": {
         "partnerID": 1,
-        "name": "Barista Training",
+        "name": "Barista ",
         "description": "Learn basic barista training taught by a licensed and experienced barista",
         "length": 45,
         "points": 5,
@@ -67,6 +67,18 @@ GET {{host}}/class/details/1
 # GET /class/of/:partnerID
 GET {{host}}/class/of/1
 {{authHeader}}
+
+### Update class details
+# PATCH /class/:classID
+PATCH {{host}}/class/3
+{{authHeader}}
+content-type: application/json
+
+{
+    "clas": {
+        "description": "this is a description"
+    }
+}
 
 ### Get class details of a partner
 # GET /class/details/of/:partnerID
