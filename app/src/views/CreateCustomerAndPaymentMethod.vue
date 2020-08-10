@@ -145,12 +145,9 @@ export default {
     },
 
     createAndMountFormElement() {
-      const elements = this.stripe.elements();
-
-      this.cardElement = elements.create("card");
+      this.cardElement = this.stripe.elements().create("card");
       this.cardElement.mount("#card-element");
 
-      // @todo Maybe dont do it like this? Only check / validate once the user press the button?
       // Using arrow function to keep "this" binding
       this.cardElement.on("change", (event) => {
         const { error } = event;
@@ -164,8 +161,6 @@ export default {
     async createPaymentMethod() {
       const { firstName, lastName } = this.$store.state.user;
 
-      const cardElement = this.cardNumberElement;
-
       const result = await this.stripe.createPaymentMethod({
         type: "card",
         card: this.cardElement,
@@ -174,12 +169,8 @@ export default {
         },
       });
 
-      // @todo Update this to use errorDialog and allow user to retry
       if (result.error) return this.displayError(result.error);
-      else {
-        // to create setupIntent
-        this.createSetupIntent(result.paymentMethod.id);
-      }
+      else this.createSetupIntent(result.paymentMethod.id); // Create setupIntent after payment method is created
     },
 
     // create setupIntent in frontend
@@ -221,25 +212,20 @@ export default {
     // get setupIntent client secret
     // reference: https://stripe.com/docs/payments/save-and-reuse#web-collect-card-details
     async getSetupIntentClientSecret() {
-      try {
-        const { id } = this.$store.state.user;
+      const { id } = this.$store.state.user;
 
-        const response = await apiWithLoader.get(
-          `/setupIntent/card-wallet/${id}`,
-          {
-            userAccountID: id,
-          }
-        );
-        if (!response.success) return apiError(response, this.createCustomer);
+      const response = await apiWithLoader.get(
+        `/setupIntent/card-wallet/${id}`
+      );
 
-        this.client_secret = response.client_secret;
-      } catch (error) {
-        apiError(
-          error.message,
-          this.getSetupIntentClientSecret,
-          "Failed to get SetupIntent Client Secret"
+      if (!response.success)
+        return apiError(
+          "Failed to get SetupIntent Client Secret needed to setup payment intent with payment method",
+          this.getSetupIntentClientSecret, // @todo Need to test this, not sure if this retry method actually works
+          "Failure in getSetupIntentClientSecret"
         );
-      }
+
+      this.client_secret = response.client_secret;
     },
 
     async createSubscription(planId) {
@@ -259,6 +245,7 @@ export default {
       }
     },
 
+    // Wrapper method around setting custom error on UI and triggering error controller
     displayError(error) {
       this.stripeValidationError = error.message || "error";
 
