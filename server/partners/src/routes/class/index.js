@@ -3,12 +3,19 @@
  * Mounted on /class
  * @author JJ
  * @module Class routes
+ *
+ * @todo
+ * we need to have past classes for partners too.
+ * partnerClasses --> this one just looking at classes / but deleted.
+ *                --> then see the updatedAt timestamp for the time of setting deleted:true
+ * @todo
  */
 
 const express = require("express");
 const router = express.Router();
 const { RRule, RRuleSet, rrulestr } = require("rrule");
 const auth = require("../../middleware/auth");
+const onlyOwnResource = require("../../middleware/onlyOwnResource");
 const SQLdb = require("@enkeldigital/ce-sql");
 
 const createLogger = require("@lionellbriones/logging").default;
@@ -61,7 +68,7 @@ router.get("/details/of/:partnerID", async (req, res) => {
  * @name GET /class/of/:partnerID
  * @returns {object} Array of classIDs
  */
-router.get("/of/:partnerID", async (req, res) => {
+router.get("/of/:partnerID", auth, onlyOwnResource, async (req, res) => {
   try {
     const { partnerID } = req.params;
 
