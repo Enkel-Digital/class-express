@@ -2,7 +2,7 @@
  * Express Router for creating a new class
  * Mounted on /class
  * @author JJ
- * @module create new class route
+ * @module Update class route
  */
 
 const express = require("express");
@@ -16,8 +16,8 @@ const logger = createLogger("routes:users");
 
 /**
  * Create new class for partner
- * @name POST /class/new
- * @param {String} partnerID
+ * @name PATCH /class/:classID
+ * @param {String} classID
  * @param {Object} clas
  * @returns {object} success indicator
  *
@@ -27,11 +27,17 @@ const logger = createLogger("routes:users");
  * All the things that should be ran when a new class is created should be posted here as a hook
  * then on user creation, either call all the hooks, or publish a event for all the listeners to use.
  */
-router.post("/new", express.json(), async (req, res) => {
+router.patch("/:classID", express.json(), async (req, res) => {
   try {
+    const { classID } = req.params;
     const { clas } = req.body;
 
-    await validateAndSetClass(clas, SQLdb("classes").insert);
+    console.log(SQLdb("classes").where({ id: classID }).update);
+
+    await validateAndSetClass(
+      clas,
+      SQLdb("classes").where({ id: classID }).update
+    );
 
     res.status(201).json({ success: true });
   } catch (error) {
@@ -40,6 +46,13 @@ router.post("/new", express.json(), async (req, res) => {
   }
 });
 
-router.use(require("./validateAndSetClass"));
+/**
+ * Update class details object
+ * @name PUT /user/:userID
+ * @returns {object} success indicator
+ */
+router.put("/", (req, res) => {
+  res.json({ success: false, error: "not implemented yet" });
+});
 
 module.exports = router;

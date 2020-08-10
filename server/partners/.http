@@ -40,6 +40,25 @@ GET {{host}}/health
 GET {{host}}/user/jj@enkeldigital.com
 {{authHeader}}
 
+### Create new class
+POST {{host}}/class/new
+{{authHeader}}
+content-type: application/json
+
+{
+    "clas": {
+        "partnerID": 1,
+        "name": "Barista ",
+        "description": "Learn basic barista training taught by a licensed and experienced barista",
+        "length": 45,
+        "points": 5,
+        "maxParticipants": 30,
+        "pictureSources": "https://cdn.shopify.com/s/files/1/0245/7727/8015/products/barista_class_for_2_5_2_1024x.jpg?v=1579094260",
+        "location_address": "Orchard road, Plaza Singapura",
+        "location_coordinates": "1.3006954, 103.84475"
+    }
+}
+
 ### Get class
 # GET /class/details/:classID
 GET {{host}}/class/details/1
@@ -48,6 +67,18 @@ GET {{host}}/class/details/1
 # GET /class/of/:partnerID
 GET {{host}}/class/of/1
 {{authHeader}}
+
+### Update class details
+# PATCH /class/:classID
+PATCH {{host}}/class/3
+{{authHeader}}
+content-type: application/json
+
+{
+    "clas": {
+        "description": "this is a description"
+    }
+}
 
 ### Get class details of a partner
 # GET /class/details/of/:partnerID
@@ -206,4 +237,9 @@ PATCH {{host}}/partner/1
 ### Get bookings of a partner
 # GET /bookings/all/:partnerID
 GET {{host}}/bookings/all/3
+{{authHeader}}
+
+### Get reviews for a class
+# GET /reviews/class/:classID
+GET {{host}}/reviews/class/1
 {{authHeader}}

@@ -157,4 +157,7 @@ router.delete("/:classID", express.json(), async (req, res) => {
   }
 });
 
+router.use(require("./newClass"));
+router.use(require("./updateClass"));
+
 module.exports = router;
