@@ -9,7 +9,7 @@ const express = require("express");
 const router = express.Router();
 const SQLdb = require("@enkeldigital/ce-sql");
 const onlyOwnResource = require("../../middleware/onlyOwnResource");
-const validateAndSetClass = require("./validateAndSetClass");
+const isSafeHtml = require("../../validations/isSafeHTML");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:users");
@@ -32,27 +32,16 @@ router.patch("/:classID", express.json(), async (req, res) => {
     const { classID } = req.params;
     const { clas } = req.body;
 
-    console.log(SQLdb("classes").where({ id: classID }).update);
+    if (!isSafeHtml(clas.description))
+      throw new Error("Class description is not a sanitized HTML.");
 
-    await validateAndSetClass(
-      clas,
-      SQLdb("classes").where({ id: classID }).update
-    );
+    await SQLdb("classes").where({ id: classID }).update(clas);
 
     res.status(201).json({ success: true });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });
   }
-});
-
-/**
- * Update class details object
- * @name PUT /user/:userID
- * @returns {object} success indicator
- */
-router.put("/", (req, res) => {
-  res.json({ success: false, error: "not implemented yet" });
 });
 
 module.exports = router;
