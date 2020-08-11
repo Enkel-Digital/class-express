@@ -9,7 +9,7 @@ const express = require("express");
 const router = express.Router();
 const SQLdb = require("@enkeldigital/ce-sql");
 const onlyOwnResource = require("../../middleware/onlyOwnResource");
-const validateAndSetClass = require("./validateAndSetClass");
+const isSafeHtml = require("../../validations/isSafeHTML");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:users");
@@ -31,7 +31,10 @@ router.post("/new", express.json(), async (req, res) => {
   try {
     const { clas } = req.body;
 
-    await validateAndSetClass(clas, SQLdb("classes").insert);
+    if (!isSafeHtml(clas.description))
+      throw new Error("Class description is not a sanitized HTML.");
+
+    await SQLdb("classes").insert(clas);
 
     res.status(201).json({ success: true });
   } catch (error) {
@@ -39,7 +42,5 @@ router.post("/new", express.json(), async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-
-router.use(require("./validateAndSetClass"));
 
 module.exports = router;
