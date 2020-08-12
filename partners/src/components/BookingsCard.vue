@@ -1,6 +1,6 @@
 <template>
   <!-- <v-card outlined :to="{name: 'bookings'}"> -->
-  <v-card outlined text width="15em" class="class-card text-left">
+  <v-card outlined text max-width="15em" class="class-card text-left">
     <v-list-item two-line>
       <!-- <v-icon color="#C62828">
         mdi-folder-account

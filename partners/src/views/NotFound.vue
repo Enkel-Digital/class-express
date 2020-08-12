@@ -1,6 +1,7 @@
 <template>
   <v-main>
     You will be redirected back to the previous page in 5 seconds.
+    <!-- @todo either bundle the image or host it on our own block storage  -->
     <v-img src="@/assets/404.png" height="50%" :contain="true" />
 
     <v-row>

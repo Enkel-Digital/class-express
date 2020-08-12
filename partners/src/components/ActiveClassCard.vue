@@ -7,7 +7,7 @@
         mdi-folder-account
       </v-icon> -->
       <v-list-item-content>
-        <div v-resize-text class="overline">{{ "Current Active Classes" }}</div>
+        <div class="overline">{{ "Current Active Classes" }}</div>
 
         <v-list-item-subtitle class="font-weight-black">
           {{ "18" }}

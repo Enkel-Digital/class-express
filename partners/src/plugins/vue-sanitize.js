@@ -2,8 +2,7 @@ import Vue from "vue";
 import VueSanitize from "vue-sanitize";
 
 // script, style, iframe, inner style
-let defaults = VueSanitize.defaults;
-defaults = {
+Vue.use(VueSanitize, {
   allowedTags: [
     "h3",
     "h4",
@@ -21,8 +20,6 @@ defaults = {
     "strong",
     "em",
     "strike",
-    "abbr",
-    "code",
     "hr",
     "br",
     "div",
@@ -38,5 +35,4 @@ defaults = {
   allowedAttributes: {
     a: ["href"],
   },
-};
-Vue.use(VueSanitize, defaults);
+});
