@@ -110,16 +110,16 @@ export default {
           this.$router.replace({ name: "home", params: { user: name } });
         }
       } catch (error) {
+        if (
+          error.code === "email/no-verify" &&
+          confirm("Please verify your email first! Resend verification email?")
+        ) {
+          firebase.auth().currentUser.sendEmailVerification();
+          return firebase.auth().signOut();
+        }
+
         // If there is an error but user is somehow logged in, sign user out to try again
         if (firebase.auth().currentUser) await firebase.auth().signOut();
-
-        // @todo Instead of changing route, perhaps, show via ErrorDialog and let user know they need to verify their email
-        // @todo Then use internal notification dialog to show email verification after user signup.
-        if (error.code === "email/no-verify")
-          return this.$router.replace({
-            name: "verify-email",
-            params: { emailAddress: this.email },
-          });
 
         // Create new user error and show with ErrorDialog
         const userError = this.$error.createError(
