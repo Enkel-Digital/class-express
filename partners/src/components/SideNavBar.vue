@@ -20,9 +20,9 @@
         <!-- Indicate whether the user is an admin or employee -->
         <p class="overline">{{ admin ? "Admin" : "Employee" }}</p>
 
-        <v-list-item-title>{{ "JJ Lee" }}</v-list-item-title>
+        <v-list-item-title>{{ user.name }}</v-list-item-title>
 
-        <v-list-item-subtitle>{{ "JJ@enkeldigital.com" }}</v-list-item-subtitle>
+        <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
       </v-list-item-content>
 
       <v-btn icon @click.stop="mini = !mini">
