@@ -154,6 +154,7 @@ export default {
         await firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password);
+        // Send user email verification email right await after account creation
         firebase.auth().currentUser.sendEmailVerification();
 
         const newUser = {
@@ -175,7 +176,7 @@ export default {
         const res = await api.post("/user/new", newUser);
 
         // Sign user out
-        await firebase.auth().signOut();
+        firebase.auth().signOut();
 
         // Show dialog to inform user to verify email and allow them to redirect to login view
         this.verifyEmailDialog = true;
@@ -185,7 +186,7 @@ export default {
          * @notice This is not ideal as if the store dispatch / API failed then user needs to login directly instead of retry.
          * @todo To optimize this.
          */
-        if (firebase.auth().currentUser) await firebase.auth().signOut();
+        if (firebase.auth().currentUser) firebase.auth().signOut();
 
         // @todo Remove before production
         console.error(error);
