@@ -530,7 +530,11 @@ export default {
         // Send user email verification email right await after account creation
         firebase.auth().currentUser.sendEmailVerification();
 
-        /* Execute the specific signup logic based on the type of user */
+        /*
+          Execute the specific signup logic based on the type of user
+          This needs to be done before signout as the API calls in these signup flows need the auth token
+          await to prevent signout from executing before API completes which might delete JWT before the API call is made due to nature of async call
+        */
         if (this.owner) await this.partnerSignUp();
         else if (this.employee) await this.employeeSignUp();
         else throw new Error("Signup triggered with unspecified user type");
@@ -557,18 +561,9 @@ export default {
     },
 
     // when an admin register his/her account along with the business profile
+    // partner needs to be created first, since SQL schema depends on partner to exists before a new partnerAccount can be created
     async partnerSignUp() {
-      const newEmployee = {
-        employee: {
-          partnerID: 2,
-          name: this.firstName + " " + this.lastName,
-          phoneNumber: this.phoneNumber,
-          email: this.email,
-          admin: true,
-        },
-      };
-
-      const newPartner = {
+      const resPartner = await api.post("/partner/new", {
         partner: {
           name: this.companyName,
           phoneNumber: this.companyPhoneNumber,
@@ -580,14 +575,23 @@ export default {
           description: this.companyDescription,
           website: this.companyWebsite,
         },
-      };
+      });
 
+      // Check for success with resPartner and throw for signup logic to catch
+      if (!resPartner.success) throw new Error(resPartner.error);
 
-      // @todo To fix this, cant be both sign up at once right...
-      // OHHH This is because is create admin account and create partner account...
-      // In this case, the partner needs to be created first, since the SQL depends on partner to exists before new partnerAccount can be created...
-      const res_Employee = await api.post("/employees/new", newEmployee);
-      const res_Partner = await api.post("/partner/new", newPartner);
+      const resEmployee = await api.post("/employees/new", {
+        employee: {
+          partnerID: resPartner.partnerID, // Use partnerID that is returned from partner creation call
+          name: this.firstName + " " + this.lastName,
+          phoneNumber: this.phoneNumber,
+          email: this.email,
+          admin: true, // First user defaults to becoming an admin
+        },
+      });
+
+      // Check for success with resEmployee and throw for signup logic to catch
+      if (!resEmployee.success) throw new Error(resEmployee.error);
     },
 
     remove(item) {
