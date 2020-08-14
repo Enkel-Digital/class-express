@@ -94,21 +94,18 @@ export default {
           .signInWithEmailAndPassword(this.email, this.password);
 
         if (!firebase.auth().currentUser.emailVerified) {
-          // Signout the user and redirect to verifyEmail view
-          await firebase.auth().signOut();
-
           // Throw new error with pre-defined code to get the right error_msg
           const error = new Error();
           error.code = "email/no-verify";
           throw error;
-        } else {
-          // Await for async dispatch to ensure app only starts after user info is available.
-          await this.$store.dispatch("getUserDetails", this.email);
-          this.$store.dispatch("init");
-
-          // Route to the user's home page, after login
-          this.$router.replace({ name: "home", params: { user: name } });
         }
+
+        // Await for async dispatch to ensure app only starts after user info is available.
+        await this.$store.dispatch("getUserDetails", this.email);
+        this.$store.dispatch("init");
+
+        // Route to the user's home page, after login
+        this.$router.replace({ name: "home" });
       } catch (error) {
         if (
           error.code === "email/no-verify" &&
