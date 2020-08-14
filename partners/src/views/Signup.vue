@@ -40,8 +40,9 @@
           rounded
           :disabled="employee || owner"
           @click="owner = true"
-          >I am an Owner</v-btn
         >
+          I am an Owner
+        </v-btn>
 
         <br />
         <br />
@@ -53,8 +54,9 @@
           width="20em"
           :disabled="owner || employee"
           @click="employee = true"
-          >I am an Employee</v-btn
         >
+          I am an Employee
+        </v-btn>
         <br />
         <br />
 
@@ -511,8 +513,8 @@ export default {
       );
     },
 
-    // when an admin register his/her account along with the business profile
-    async partnerSignUp() {
+    // Signups for employee / admin share the same flow, thus signup abstracts the common logic out and wraps calls to the specific signup flows.
+    async signup() {
       // Show loading screen before signUp logic executes
       const loaderRequestID = this.$loader.new();
 
@@ -528,39 +530,10 @@ export default {
         // Send user email verification email right await after account creation
         firebase.auth().currentUser.sendEmailVerification();
 
-        const newEmployee = {
-          employee: {
-            partnerID: 2,
-            name: this.firstName + " " + this.lastName,
-            phoneNumber: this.phoneNumber,
-            email: this.email,
-            admin: true,
-          },
-        };
-
-        const newPartner = {
-          partner: {
-            name: this.companyName,
-            phoneNumber: this.companyPhoneNumber,
-            email: this.companyEmail,
-            location_address:
-              this.addressLine1 +
-              " " +
-              this.addressLine2 +
-              " " +
-              this.unitNumber,
-            location_postalCode: this.postalCode,
-            location_coordinates: "123.1234454, 23.234512",
-            description: this.companyDescription,
-            website: this.companyWebsite,
-          },
-        };
-
-        // @todo To fix this, cant be both sign up at once right...
-        // OHHH This is because is create admin account and create partner account...
-        // In this case, the partner needs to be created first, since the SQL depends on partner to exists before new partnerAccount can be created...
-        const res_Employee = await api.post("/employees/new", newEmployee);
-        const res_Partner = await api.post("/partner/new", newPartner);
+        /* Execute the specific signup logic based on the type of user */
+        if (this.owner) await this.partnerSignUp();
+        else if (this.employee) await this.employeeSignUp();
+        else throw new Error("Signup triggered with unspecified user type");
 
         // Sign user out first as users need to verify email and wait for approval first before they can login and use app
         await firebase.auth().signOut();
@@ -582,6 +555,41 @@ export default {
         this.$loader.clear(loaderRequestID);
       }
     },
+
+    // when an admin register his/her account along with the business profile
+    async partnerSignUp() {
+      const newEmployee = {
+        employee: {
+          partnerID: 2,
+          name: this.firstName + " " + this.lastName,
+          phoneNumber: this.phoneNumber,
+          email: this.email,
+          admin: true,
+        },
+      };
+
+      const newPartner = {
+        partner: {
+          name: this.companyName,
+          phoneNumber: this.companyPhoneNumber,
+          email: this.companyEmail,
+          location_address:
+            this.addressLine1 + " " + this.addressLine2 + " " + this.unitNumber,
+          location_postalCode: this.postalCode,
+          location_coordinates: "123.1234454, 23.234512",
+          description: this.companyDescription,
+          website: this.companyWebsite,
+        },
+      };
+
+
+      // @todo To fix this, cant be both sign up at once right...
+      // OHHH This is because is create admin account and create partner account...
+      // In this case, the partner needs to be created first, since the SQL depends on partner to exists before new partnerAccount can be created...
+      const res_Employee = await api.post("/employees/new", newEmployee);
+      const res_Partner = await api.post("/partner/new", newPartner);
+    },
+
     remove(item) {
       this.partnerTags.splice(this.partnerTags.indexOf(item), 1);
       this.partnerTags = [...this.partnerTags];
