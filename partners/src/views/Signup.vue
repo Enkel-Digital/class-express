@@ -1,5 +1,26 @@
 <template>
   <div class="owner">
+    <!-- Dialog to inform user to verify email before redirecting them to the signup page -->
+    <v-dialog v-model="verifyEmailDialog" max-width="calc(100% - 2em)">
+      <v-card>
+        <v-card-title class="headline">
+          Please verify your email before logging in!
+        </v-card-title>
+
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="$router.replace({ name: 'login' })"
+          >
+            login now!
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-row>
       <v-col cols="10" sm="5">
         <img
@@ -393,8 +414,9 @@ export default {
   name: "signUp",
   data() {
     return {
-      partnerTagsList: ["tech", "cooking", "lifestyle", "music", "art"],
+      verifyEmailDialog: false,
 
+      partnerTagsList: ["tech", "cooking", "lifestyle", "music", "art"],
       owner: false,
       employee: false,
       firstName: "",
@@ -412,11 +434,11 @@ export default {
       postalCode: "",
       companyDescription: "",
       partnerTags: "",
-      error_msg: "",
       step: 1,
       absolute: true,
       opacity: 0.8,
 
+      // @todo Use a better name
       show1: false,
       rules: {
         required: (value) => !!value || "Required.",
@@ -491,16 +513,20 @@ export default {
 
     // when an admin register his/her account along with the business profile
     async partnerSignUp() {
+      // Show loading screen before signUp logic executes
+      const loaderRequestID = this.$loader.new();
+
       try {
         // Make lowercase, refer to notes & faq on why this is lowercase.
         // tl;dr Firebase auth like google ignores the email RFC and forces email case-insensitivity
-        // this.email = this.email.toLowerCase();
+        this.email = this.email.toLowerCase();
 
-        // After signup, user will be automatically signed in, redirect to home
-        // eslint-disable-next-line no-unused-vars
-        const usr = await firebase
+        // Create new user and send them a email verification email
+        await firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password);
+        // Send user email verification email right await after account creation
+        firebase.auth().currentUser.sendEmailVerification();
 
         const newEmployee = {
           employee: {
@@ -530,26 +556,30 @@ export default {
           },
         };
 
+        // @todo To fix this, cant be both sign up at once right...
+        // OHHH This is because is create admin account and create partner account...
+        // In this case, the partner needs to be created first, since the SQL depends on partner to exists before new partnerAccount can be created...
         const res_Employee = await api.post("/employees/new", newEmployee);
         const res_Partner = await api.post("/partner/new", newPartner);
 
+        // Sign user out first as users need to verify email and wait for approval first before they can login and use app
         await firebase.auth().signOut();
 
-        // @todo push data to the server and push the new data into vuex
-        // @todo perhaps can route them to a signup page, where instead of use 1 screen like now, we can do the UI below
-        // https://vuetifyjs.com/en/components/windows/#account-creation
-        // https://vuetifyjs.com/en/components/steppers/#usage
-
-        this.$router.replace({ name: "login" });
+        // Show dialog to inform user to verify email and allow them to redirect to login view
+        this.verifyEmailDialog = true;
       } catch (error) {
+        // In case user is not signed out when an error is thrown, this makes sure we sign the user out with firebase auth
+        if (firebase.auth().currentUser) firebase.auth().signOut();
+
         const userError = this.$error.createError(
           this.$error.ERROR.level.RETRY,
           this.$error.ERROR.custom("Signup Failed", error_msg(error))
         );
         this.$error.new(userError);
-
-        // Set the message into the error box to show user the error
-        this.error_msg = error_msg(error);
+      } finally {
+        // Remove loader after login logic completes regardless of whether signup failed or succeeded
+        // Inside finally to ensure execution even if catch block was ran
+        this.$loader.clear(loaderRequestID);
       }
     },
     remove(item) {
