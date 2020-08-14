@@ -107,12 +107,15 @@ export default {
         // Route to the user's home page, after login
         this.$router.replace({ name: "home" });
       } catch (error) {
-        if (
-          error.code === "email/no-verify" &&
-          confirm("Please verify your email first! Resend verification email?")
-        ) {
-          firebase.auth().currentUser.sendEmailVerification();
-          return firebase.auth().signOut();
+        // Only resend verification email if needed, but both will end early after signout without continuing to normal error handling
+        if (error.code === "email/no-verify") {
+          if (
+            confirm(
+              "Please verify your email first! Resend verification email?"
+            )
+          )
+            firebase.auth().currentUser.sendEmailVerification();
+          return await firebase.auth().signOut();
         }
 
         // If there is an error but user is somehow logged in, sign user out to try again
