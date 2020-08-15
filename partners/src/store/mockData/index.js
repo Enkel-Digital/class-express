@@ -11,7 +11,6 @@ module.exports = {
   paymentDetails,
   ...require("./points"),
   ...require("./bookings"),
-  ...require("./employees"),
   ...require("./classes"),
   ...require("./subscriptionPlan"),
   ...require("./news"),
