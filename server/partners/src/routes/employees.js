@@ -14,35 +14,6 @@ const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:employees");
 
 /**
- * Get employee details
- * @name GET /employees/:employeeID
- * @function
- * @returns {object} Employee object
- *
- * @todo Employee can only get his/her own data
- */
-router.get("/:employeeID", async (req, res) => {
-  try {
-    const { employeeID } = req.params;
-
-    const employee = await SQLdb("partnerAccounts")
-      .where({
-        id: employeeID,
-        deleted: false,
-      })
-      .first();
-
-    res.json({
-      success: true,
-      employee,
-    });
-  } catch (error) {
-    logger.error(error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-/**
  * Get all employees of partner
  * @name GET /employees/all/:partnerID
  * @function
@@ -72,6 +43,7 @@ router.get("/all/:partnerID", async (req, res) => {
 
 /**
  * Create new employee
+ * Admin generate the code to send to the frontend
  * @name POST /employees/new
  * @function
  * @param {object} employee
@@ -82,49 +54,6 @@ router.post("/new", express.json(), async (req, res) => {
     const { employee } = req.body;
 
     await SQLdb("partnerAccounts").insert(employee);
-
-    res.json({ success: true });
-  } catch (error) {
-    logger.error(error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-/**
- * Update employee details
- * @name PATCH /employees/:employeeID
- * @function
- * @param {object} employee
- * @returns {object} Success indicator
- */
-router.patch("/:employeeID", express.json(), async (req, res) => {
-  try {
-    const { employeeID } = req.params;
-    const { employee } = req.body;
-
-    await SQLdb("partnerAccounts").where({ id: employeeID }).update(employee);
-
-    res.json({ success: true });
-  } catch (error) {
-    logger.error(error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-/**
- * Delete employee account
- * @name DELETE /employees/:employeeID
- * @function
- * @param {object} employee
- * @returns {object} Success indicator
- */
-router.delete("/:employeeID", express.json(), async (req, res) => {
-  try {
-    const { employeeID } = req.params;
-
-    await SQLdb("partnerAccounts")
-      .where({ id: employeeID })
-      .update({ deleted: true });
 
     res.json({ success: true });
   } catch (error) {

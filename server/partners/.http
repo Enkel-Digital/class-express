@@ -40,6 +40,23 @@ GET {{host}}/health
 GET {{host}}/user/jj@enkeldigital.com
 {{authHeader}}
 
+### Update user details
+# PATCH /user/:employeeID
+PATCH {{host}}/user/3
+{{authHeader}}
+content-type: application/json
+
+{
+    "employee": {
+        "verified_email": true
+    }
+}
+
+### Delete employee account
+# DELETE /user/:employeeID
+DELETE {{host}}/user/3
+{{authHeader}}
+
 ### Create new class
 POST {{host}}/class/new
 {{authHeader}}
@@ -185,34 +202,12 @@ content-type: application/json
     }
 }
 
-### Update employee details
-# PATCH /employees/:employeeID
-PATCH {{host}}/employees/3
-{{authHeader}}
-content-type: application/json
-
-{
-    "employee": {
-        "verified_email": true
-    }
-}
-
-### Get individual employee details
-# GET /employees/:employeeID
-GET {{host}}/employees/3
-{{authHeader}}
-
-### Delete employee account
-# DELETE /employees/:employeeID
-DELETE {{host}}/employees/3
-{{authHeader}}
-
-### Delete partner account
-# DELETE /partner/:partnerID
-DELETE {{host}}/partner/1
-{{authHeader}}
+### Get partner details
+# GET /partner/:partnerID
+GET {{host}}/partner/1
 
 ### Create new partner
+# Can change website value to http or remove the http protocol directly to test isHttps url validator
 POST {{host}}/partner/new
 {{authHeader}}
 content-type: application/json
@@ -220,11 +215,13 @@ content-type: application/json
 {
     "partner": {
         "name": "test-partner",
-        "email": "test@gmail.com",
-        "phoneNumber": "+6512345678",
+        "email": "test@enkeldigital.com",
+        "phoneNumber": "+65 12345678",
         "description": "this is a description",
+        "website": "https://enkeldigital.com",
         "location_address": "123 Main St",
-        "location_coordinates": "12345678"
+        "location_postalCode": "600500",
+        "location_coordinates": "123.1234454, 23.234512"
     }
 }
 
@@ -232,6 +229,11 @@ content-type: application/json
 ### Update partner details
 # PATCH /partner/:partnerID
 PATCH {{host}}/partner/1
+{{authHeader}}
+
+### Delete partner / business organisation and all of its accounts and classes
+# DELETE /partner/:partnerID
+DELETE {{host}}/partner/1
 {{authHeader}}
 
 ### Get bookings of a partner

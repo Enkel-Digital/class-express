@@ -14,10 +14,10 @@ const logger = createLogger("routes:partner");
 
 /**
  * Get partner details
- * @name GET /partner/details/:partnerID
+ * @name GET /partner/:partnerID
  * @returns {object} Partner object
  */
-router.get("/details/:partnerID", async (req, res) => {
+router.get("/:partnerID", async (req, res) => {
   try {
     const { partnerID } = req.params;
 
@@ -56,7 +56,7 @@ router.patch("/:partnerID", express.json(), async (req, res) => {
 });
 
 /**
- * Delete partner account
+ * "Delete" partner / business organization profile, and with it, all partnerAccounts and classes belonging to this partner.
  * @name DELETE /partner/:partnerID
  * @function
  * @param {object} partner
@@ -76,11 +76,10 @@ router.delete("/:partnerID", express.json(), async (req, res) => {
 });
 
 /**
- * Create new partner details object
+ * Create new partner / business organization
  * @name POST /partner/new/
- * @param {String} partnerID
  * @param {Object} partner
- * @returns {object} success indicator
+ * @returns {object} success indicator and partnerID
  *
  * @todo Should support like a hook system.
  * All the things that should be ran when a new user is created should be posted here as a hook
@@ -88,18 +87,20 @@ router.delete("/:partnerID", express.json(), async (req, res) => {
  */
 router.post("/new", express.json(), async (req, res) => {
   try {
-    // Refer to notes for why we are enforcing this lowercase usage.
-    req.body.partner.email = req.body.partner.email.toLowerCase();
-    const partner = req.body.partner;
+    const { partner } = req.body;
 
     const validateURL = require("../validations/isHTTPS");
 
     if (!validateURL(partner.website))
       throw new Error("Website URL should be HTTPS only");
 
-    await SQLdb("partners").insert(partner);
+    // Insert the partner object and request for id of newly inserted row to be returned
+    const partnerID = (
+      await SQLdb("partners").insert(partner).returning("id")
+    )[0];
 
-    res.status(201).json({ success: true });
+    // Return partnerID for frontend to use and create partner accounts
+    res.status(201).json({ success: true, partnerID });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });
