@@ -36,7 +36,7 @@ router.post("/reserve", auth, express.json(), async (req, res) => {
     )
       return res
         .status(404)
-        .json({ success: false, error: "Class not available for booking" });
+        .json({ success: false, error: "Class is deleted" });
 
     // check the rrule in classes Schedule to see if the class is running in that selected time
 

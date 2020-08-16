@@ -97,7 +97,8 @@ content-type: application/json
     }
 }
 
-### Get class details of a partner
+# @todo to remove this and replace with just return the classID only then the getClass will handle it in the background
+### Get all classes of a partner
 # GET /class/details/of/:partnerID
 GET {{host}}/class/details/of/1
 {{authHeader}}

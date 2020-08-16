@@ -36,6 +36,7 @@ router.get("/:partnerID", async (req, res) => {
 
 /**
  * Update partner details
+ * @todo Only admins can do this
  * @name PATCH /partner/:partnerID
  * @function
  * @param {object} partner
@@ -57,6 +58,7 @@ router.patch("/:partnerID", express.json(), async (req, res) => {
 
 /**
  * "Delete" partner / business organization profile, and with it, all partnerAccounts and classes belonging to this partner.
+ * @todo Only admins can do this
  * @name DELETE /partner/:partnerID
  * @function
  * @param {object} partner
@@ -81,6 +83,7 @@ router.delete("/:partnerID", express.json(), async (req, res) => {
  * @param {Object} partner
  * @returns {object} success indicator and partnerID
  *
+ * @todo Perhaps return a unique token for the admin that created this account to create an account without requiring admin approval...
  * @todo Should support like a hook system.
  * All the things that should be ran when a new user is created should be posted here as a hook
  * then on user creation, either call all the hooks, or publish a event for all the listeners to use.
@@ -100,6 +103,7 @@ router.post("/new", express.json(), async (req, res) => {
     )[0];
 
     // Return partnerID for frontend to use and create partner accounts
+    // @todo is ANYONE allowed to specify a partner ID and sign in from? Shouldnt we have a admin approval process
     res.status(201).json({ success: true, partnerID });
   } catch (error) {
     logger.error(error);

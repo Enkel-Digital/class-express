@@ -52,6 +52,9 @@ Yes and no,
 - Because primary keys always need to be unique
 - Refer to this [answer](https://stackoverflow.com/a/10983099/13137262) for more details
 
+## Handling cyclic constraints
+- <https://begriffs.com/posts/2017-08-27-deferrable-sql-constraints.html>
+
 ## Using Cloud SQL
 How to set up connections for Cloud SQL and connect to it:
 - <https://cloud.google.com/sql/docs/postgres/configure-ip>

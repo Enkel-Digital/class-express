@@ -43,13 +43,14 @@ Table partners {
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   name varchar [not null]
   description varchar [not null]
-  email varchar [not null, unique]
+  email varchar [not null, unique] // Company email
+  // @todo might not need country code here? we should include country code somewhere else? or base64 encode this...
   phoneNumber varchar [not null] // Includes area code
   location_address varchar [not null]
-  location_coordinates varchar [not null]
+  location_coordinates varchar [not null] // @todo shouldnt this be generated instead??
   location_postalCode varchar [null]
   website varchar [null]
-  pictureSources varchar // Perhaps use an array?
+  pictureSources varchar [null] // Perhaps use an array?
   verified_email boolean [default: false]
   verified_phone boolean [default: false]
   verified boolean [default: false] // Is the business verified by us (Class Express)?
@@ -127,6 +128,7 @@ Table userBookingTransactions {
   // Only store start time as end time should be computed using length of class
   // Might look into using ISO 8061 defaults, but using unix seconds for now for consistency
   startTime bigint [not null]
+  // @todo might store end time too as a hack guard, as partners can change the length of the class to cheat the system and gain points even before class actually ended and then the user's cannot cancel.
 }
 
 // @todo need to add selected time of class to this too right?
@@ -156,6 +158,7 @@ Table classes {
   length int [not null]
   points int [not null]
   maxParticipants int [not null]
+  walkIn boolean [default: false] // Default to not allow users to walkIn, matching the partner add new class UI
   pictureSources varchar [null] // Perhaps use an array?
   location_address varchar [null]
   location_coordinates varchar [null]
@@ -175,6 +178,8 @@ Table classTags {
 Table classSchedule {
   id bigint [pk, increment, not null]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  // @todo Technically, if storing the whole rruleset, each class should only have a single row.
+  // classID int [ref: - classes.id, not null]
   classID int [ref: > classes.id, not null]
   // @todo Add updatedAt to track when this is updated for analytics purposes
   rruleSetString varchar [not null]

@@ -127,26 +127,26 @@ Legend:
 
 
 ### Billing Service workflow for Partners
-    - When accepting a payment from a customer, we need to create a charge.
-        - Direct charges (not applicable for our app)
-            - Customers directly transact with partner, often unaware of our existence
-            - eg. e-commerce like shopee
-        - Destination charges
-            - Customers transact with our app for services provided by partner
-        - Separate charges and transfers (not applicable for our app)
-            - Multiple users are involved in the transaction
-            - eg. Foodpanda=> Driver restaurant customer...
-    
-    - Implemention of Destination charges and payout
-        - partner should have a Connected account (stripe API)
-        - workflow
-            - reference link:
-                - https://stripe.com/docs/connect/destination-charges
-                - https://stripe.com/docs/connect/manual-payouts
-            - billing service charge on partner's subscription or topup, money is in our platform account
-            - when partner would like to withdraw money, billing service will transfer money to partner's Connected account
-                - applicable fee and stripe fee will be subtracted
-            - then perform manual payouts to partner's bank account
+- When accepting a payment from a customer, we need to create a charge.
+    - Direct charges (not applicable for our app)
+        - Customers directly transact with partner, often unaware of our existence
+        - eg. e-commerce like shopee
+    - Destination charges
+        - Customers transact with our app for services provided by partner
+    - Separate charges and transfers (not applicable for our app)
+        - Multiple users are involved in the transaction
+        - eg. Foodpanda=> Driver restaurant customer...
+
+- Implemention of Destination charges and payout
+    - partner should have a Connected account (stripe API)
+    - workflow
+        - reference link:
+            - https://stripe.com/docs/connect/destination-charges
+            - https://stripe.com/docs/connect/manual-payouts
+        - billing service charge on partner's subscription or topup, money is in our platform account
+        - when partner would like to withdraw money, billing service will transfer money to partner's Connected account
+            - applicable fee and stripe fee will be subtracted
+        - then perform manual payouts to partner's bank account
             
             
 ### Billing Service API for Partners

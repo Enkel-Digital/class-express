@@ -8,6 +8,10 @@
  * This middleware enforces that users can only access their own resources
  */
 module.exports = async function onlyOwnResource(req, res, next) {
+  return next();
+  // Explore something like --> await admin.auth().getUserByEmail
+  /* eslint-disable no-unreachable */
+
   // @todo To migrate to only userEmail and only userID, where userID will no longer be email
   const { userID, userEmail } = req.params;
 
@@ -21,13 +25,15 @@ module.exports = async function onlyOwnResource(req, res, next) {
       error: "Missing authenticated user data from token",
     });
 
-  if (
-    req.authenticatedUser.email !== userID &&
-    req.authenticatedUser.email !== userEmail
-  )
-    return res.status(403).json({
-      success: false,
-      error: "Forbidden",
-    });
-  else return next();
+  // // Cache the entire user email to userID mapping???
+  // if (
+  //   req.authenticatedUser.email !== userID &&
+  //   req.authenticatedUser.email !== userEmail
+  // )
+  //   return res.status(403).json({
+  //     success: false,
+  //     error: "Forbidden",
+  //   });
+  // else return next();
+  next();
 };
