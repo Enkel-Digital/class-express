@@ -189,7 +189,8 @@ content-type: application/json
 GET {{host}}/employees/all/1
 {{authHeader}}
 
-### Create new employee
+### Create new employee account and send them a email with a link to complete account creation
+# Use a local address in the optional redirectUrl field
 POST {{host}}/employees/new
 {{authHeader}}
 content-type: application/json
@@ -197,10 +198,10 @@ content-type: application/json
 {
     "employee": {
         "partnerID": 1,
-        "name": "Kong Wei",
-        "email": "kongwei@gmail.com",
-        "phoneNumber": "+6512345678"
-    }
+        "email": "test@enkeldigital.com",
+        "admin": false
+    },
+    "redirectUrl": "http://localhost:8081/#/signup"
 }
 
 ### Get partner details
