@@ -34,6 +34,22 @@
       </v-card>
     </masonry>
 
+    <v-fab-transition>
+      <v-btn
+        v-show="!hidden"
+        @click="addEmployeeDialog = true"
+        color="#60696c"
+        fab
+        dark
+        large
+        absolute
+        bottom
+        right
+      >
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-fab-transition>
+
     <v-dialog v-model="dialog" width="20em">
       <v-card>
         <v-card-actions>
@@ -65,6 +81,59 @@
         </v-list-item>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="addEmployeeDialog" width="calc(100% - 60em)">
+      <v-form ref="form">
+        <v-card>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              color="rgb(65.9%, 65.9%, 65.9%)"
+              icon
+              @click="addEmployeeDialog = false"
+              ><v-icon>mdi-window-close</v-icon></v-btn
+            >
+          </v-card-actions>
+
+          <h2 style="color: #455a64;" class="font-weight-light">
+            ADD NEW EMPLOYEE
+          </h2>
+
+          <v-card-text>
+            <v-text-field
+              v-model="employee.name"
+              label="Employee Name"
+              :rules="formRule"
+              color="#60696c"
+              required
+            />
+            <v-text-field
+              v-model="employee.email"
+              label="Employee Email"
+              :rules="formRule"
+              color="#60696c"
+              required
+            />
+
+            <v-switch
+              v-model="employeeIsAdmin"
+              label="Grant employee admin access?"
+              color="#60696c"
+            ></v-switch>
+            <v-btn
+              color="#60696c"
+              @click="validate"
+              rounded
+              width="10em"
+              outlined
+              depressed
+            >
+              Submit
+            </v-btn>
+          </v-card-text>
+        </v-card>
+      </v-form>
+    </v-dialog>
   </v-content>
 </template>
 
@@ -76,7 +145,13 @@ import api from "../store/utils/fetch";
 export default {
   data() {
     return {
+      addEmployeeDialog: false,
+      employeeIsAdmin: false,
       dialog: false,
+      formRule: [
+        (v) => !!v || "Field is required!",
+        (v) => (v && v.length <= 20) || "Please fill is the required space",
+      ],
       employeeInfo: [
         {
           id: "",
@@ -115,8 +190,12 @@ export default {
       // this.employeeInfo.position = this.employees[id-1].position;
       // this.employeeInfo.birthdate = this.employees[id].birthdate;
       // this.employeeInfo.picture = this.employees[id].picture;
+    },
 
-      // console.log("id" + this.employees[id].name);
+    validate() {
+      if (this.$refs.form.validate()) {
+        this.addEmployeeDialog = false;
+      }
     },
   },
   computed: {
