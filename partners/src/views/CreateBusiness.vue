@@ -413,7 +413,7 @@ function error_msg(err) {
 }
 
 export default {
-  name: "signUp",
+  name: "CreateBusiness",
   data() {
     return {
       verifyEmailDialog: false,
@@ -565,6 +565,7 @@ export default {
           website: this.companyWebsite,
         },
       });
+      // @todo Keep partner create here, and remove partnerAccount
 
       // Check for success with resPartner and throw for signup logic to catch
       if (!resPartner.success) throw new Error(resPartner.error);

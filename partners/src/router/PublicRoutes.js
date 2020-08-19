@@ -22,14 +22,22 @@ const routes = [
     meta: { Auth_requirements: AuthType.public_only },
   },
   {
+    path: "/create-business",
+    name: "CreateBusiness",
+    component: () => import("@/views/CreateBusiness.vue"),
+    meta: { Auth_requirements: AuthType.public_only },
+    props: (route) => route.query, // Pass all queries as props to the component
+  },
+  {
     path: "/signup",
     name: "signup",
     component: () => import("@/views/Signup.vue"),
     meta: { Auth_requirements: AuthType.public_only },
+    props: (route) => route.query, // Pass all queries as props to the component
   },
   {
     path: "/about",
-    name: "About",
+    name: "about",
     component: () => import("../views/About.vue"),
     meta: { Auth_requirements: AuthType.public_only },
   },
