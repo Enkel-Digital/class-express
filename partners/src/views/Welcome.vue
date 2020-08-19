@@ -1,14 +1,20 @@
 <template>
   <div class="welcome">
-    <img alt="Login image" src="../assets/logo.png" width="360" height="370" />
+    <img alt="Login image" src="../assets/logo.png" width="360" height="360" />
 
-    <v-btn :to="{ name: 'signup' }" width="25em" color="#60696c" outlined dark>
+    <v-btn
+      :to="{ name: 'CreateBusiness' }"
+      width="30em"
+      color="#60696c"
+      outlined
+      dark
+    >
       Signup
     </v-btn>
 
     <br />
 
-    <v-btn :to="{ name: 'login' }" width="25em" color="#60696c" outlined dark>
+    <v-btn :to="{ name: 'login' }" width="30em" color="#60696c" outlined dark>
       Login
     </v-btn>
   </div>
