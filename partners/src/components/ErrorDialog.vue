@@ -7,7 +7,7 @@
       the component is only rendered/created when there is an error and not always created + hidden.
       Which will presumably reduces memory usage as the component is not create yet.
     -->
-  <v-dialog v-if="error" v-model="alwaysShow" persistent>
+  <v-dialog v-if="error" v-model="alwaysShow" persistent max-width="40%">
     <v-card>
       <p class="overline ma-4 pa-4 mb-0 pb-0" style="color: red;">
         sadly, there is ({{ errorCount }}) error(s)
@@ -15,7 +15,7 @@
       <v-card-title
         v-html="error.name"
         class="headline mt-0 pt-0"
-        style="word-break: keep-all;"
+        style="text-align: left; word-break: keep-all;"
       />
 
       <!-- Default error description for the specific Error type -->

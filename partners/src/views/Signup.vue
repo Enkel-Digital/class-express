@@ -1,7 +1,7 @@
 <template>
-  <div class="owner">
+  <div>
     <!-- Dialog to inform user to verify email before redirecting them to the signup page -->
-    <v-dialog v-model="verifyEmailDialog" max-width="calc(100% - 2em)">
+    <v-dialog v-model="verifyEmailDialog" max-width="40%">
       <v-card>
         <v-card-title class="headline">
           Please verify your email before logging in!
@@ -435,7 +435,7 @@ export default {
       unitNumber: "",
       postalCode: "",
       companyDescription: "",
-      partnerTags: "",
+      partnerTags: "", // @todo Shouldnt this be an array?
       step: 1,
       absolute: true,
       opacity: 0.8,
@@ -480,28 +480,16 @@ export default {
       this.$router.push({ name: "welcome" });
     },
     validateOwnerLoginDetails() {
-      this.$refs.ownerLoginDetails.validate();
-      if (this.$refs.ownerLoginDetails.validate()) {
-        this.step++;
-      }
+      if (this.$refs.ownerLoginDetails.validate()) this.step++;
     },
     validateOwnerCompanyDetails() {
-      this.$refs.ownerCompanyDetails.validate();
-      if (this.$refs.ownerCompanyDetails.validate()) {
-        this.step++;
-      }
+      if (this.$refs.ownerCompanyDetails.validate()) this.step++;
     },
     validateEmployeeLoginDetails() {
-      this.$refs.employeeLoginDetails.validate();
-      if (this.$refs.employeeLoginDetails.validate()) {
-        this.step++;
-      }
+      if (this.$refs.employeeLoginDetails.validate()) this.step++;
     },
     validateEmployeeCompanyDetails() {
-      this.$refs.employeeCompanyDetails.validate();
-      if (this.$refs.employeeCompanyDetails.validate()) {
-        this.step++;
-      }
+      if (this.$refs.employeeCompanyDetails.validate()) this.step++;
     },
     customFilter(item, queryText, itemText) {
       const textOne = item.name.toLowerCase();
@@ -534,6 +522,7 @@ export default {
           Execute the specific signup logic based on the type of user
           This needs to be done before signout as the API calls in these signup flows need the auth token
           await to prevent signout from executing before API completes which might delete JWT before the API call is made due to nature of async call
+          @todo Change this to be just create partner, instead of account creation
         */
         if (this.owner) await this.partnerSignUp();
         else if (this.employee) await this.employeeSignUp();
