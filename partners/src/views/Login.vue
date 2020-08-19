@@ -1,12 +1,7 @@
 <template>
   <v-row justify="center">
     <div class="login">
-      <img
-        alt="Login image"
-        src="../assets/logo.png"
-        width="360"
-        height="360"
-      />
+      <img alt="Logo" src="../assets/logo.png" width="360" height="360" />
 
       <v-text-field
         v-autofocus
@@ -143,13 +138,12 @@ img {
 }
 
 .login {
-  /* display: flex; */
   flex-direction: column;
 
   align-items: center;
 
   position: absolute;
-  top: 10vh;
+  top: 8vh;
   left: 38%;
   right: 38%;
   bottom: 10vh;
