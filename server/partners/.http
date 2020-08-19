@@ -204,6 +204,30 @@ content-type: application/json
     "redirectUrl": "http://localhost:8081/#/signup"
 }
 
+### Validate link received in the user's emali
+# POST /employees/new/validate-link
+POST {{host}}/employees/new/validate-link
+content-type: application/json
+
+{
+    "email": "test@enkeldigital.com",
+    "token": "1whsho21c3"
+}
+
+### Complete partnerAccount creation process, by saving the update name after firebase auth account is created
+# This will verify the email and token against the firebase auth JWT's email field too
+# @important MAKE SURE test@enkeldigital.com is the email used for firebase auth account creation
+POST {{host}}/employees/new/complete
+{{authHeader}}
+content-type: application/json
+
+{
+    "employee": {
+        "name": "TestPartner"
+    }
+    "token": "1whsho21c3"
+}
+
 ### Get partner details
 # GET /partner/:partnerID
 GET {{host}}/partner/1

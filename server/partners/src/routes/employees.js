@@ -92,4 +92,73 @@ router.post("/new", express.json(), async (req, res) => {
   }
 });
 
+/**
+ * @param {*} email
+ * @param {*} token
+ */
+function partnerAccountWithEmailAndToken(email, token) {
+  return SQLdb("partnerAccounts").where({ name: email + token });
+}
+
+/**
+ * Validate the partnerAccount email and token combination to see if it is a valid account creation link
+ * @name POST /employees/new/validate-link
+ * @function
+ * @param {object} name
+ * @param {object} token
+ * @returns {object} Success indicator
+ */
+router.post("/new/validate-link", express.json(), async (req, res) => {
+  try {
+    // @todo Validate the input, make sure not empty or some random weird shit that can fk up the DB query
+    const { email, token } = req.body;
+
+    const partnerAccount = await partnerAccountWithEmailAndToken(email, token)
+      .select("createdAt")
+      .first();
+
+    // If account does not exist, it means the link is not valid
+    if (!partnerAccount)
+      return res
+        .status(422) // Although it is user not found (usually 404), this is a validation failure, thus 422
+        .json({ success: false, error: "Invalid link" });
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * API to be called after Employees complete their account creation step.
+ * This API is used to update their name in the DB
+ * @name POST /employees/new/complete
+ * @function
+ * @param {object} details or smth????
+ * @returns {object} Success indicator
+ */
+router.post("/new/complete", express.json(), async (req, res) => {
+  try {
+    const { employee, token } = req.body;
+
+    const { email, uid } = req.authenticatedUser;
+
+    // @todo Verify that link is not yet expired
+    await partnerAccountWithEmailAndToken(email, token).update(employee);
+
+    // Set email to be Verified using uid from JWT
+    // Email is considered to be verified when the user is able to get the generated token sent only to their email
+    const userRecord = await admin
+      .auth()
+      .updateUser(uid, { emailVerified: true });
+
+    // Although this is an update internally, to the frontend UX, this is a partner account that is just created
+    res.status(201).json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 module.exports = router;
