@@ -7,6 +7,7 @@
 
 const express = require("express");
 const router = express.Router();
+const admin = require("../utils/firebaseAdmin");
 const auth = require("../middleware/auth");
 const SQLdb = require("@enkeldigital/ce-sql");
 const sendMail = require("../utils/sendMail");
@@ -64,6 +65,10 @@ router.post("/new", express.json(), async (req, res) => {
     // Generate a secret token user can use to identify/prove themselves, where this token will ONLY be sent to their email address
     const token = Math.random().toString(36).substring(2);
 
+    // Make lowercase, refer to notes & faq on why this is lowercase.
+    // tl;dr Firebase auth like google ignores the email RFC and forces email case-insensitivity
+    employee.email = employee.email.toLowerCase();
+
     // Set the name (a non null compulsory field in the DB) to their email + token first, used later for verification without using an additional token column
     employee.name = employee.email + token;
 
@@ -93,6 +98,7 @@ router.post("/new", express.json(), async (req, res) => {
 });
 
 /**
+ * Utility function to get partnerAccount from DB using email and token
  * @param {*} email
  * @param {*} token
  */
@@ -133,25 +139,34 @@ router.post("/new/validate-link", express.json(), async (req, res) => {
 /**
  * API to be called after Employees complete their account creation step.
  * This API is used to update their name in the DB
+ * @notice AUTH token NEEDS TO BE PRESENT, as email from the token will be used for verification
  * @name POST /employees/new/complete
  * @function
  * @param {object} details or smth????
  * @returns {object} Success indicator
  */
-router.post("/new/complete", express.json(), async (req, res) => {
+router.post("/new/complete", auth, express.json(), async (req, res) => {
   try {
     const { employee, token } = req.body;
 
+    // Parse out email and uid from the firebase auth JWT for verification and account update
     const { email, uid } = req.authenticatedUser;
 
+    // Verify the email and token combo by checking if the user exists in the DB
+    if (!(await partnerAccountWithEmailAndToken(email, token).first()))
+      return res
+        .status(422) // Although it is user not found (usually 404), this is a validation failure, thus 422
+        .json({ success: false, error: "Invalid email and token combination" });
+
     // @todo Verify that link is not yet expired
+
+    // Update user with the updated details from frontend
     await partnerAccountWithEmailAndToken(email, token).update(employee);
 
     // Set email to be Verified using uid from JWT
     // Email is considered to be verified when the user is able to get the generated token sent only to their email
-    const userRecord = await admin
-      .auth()
-      .updateUser(uid, { emailVerified: true });
+    // To see the UserRecord reference returned, save as userRecord, then run userRecord.toJSON()
+    await admin.auth().updateUser(uid, { emailVerified: true });
 
     // Although this is an update internally, to the frontend UX, this is a partner account that is just created
     res.status(201).json({ success: true });
