@@ -2,6 +2,7 @@
 @hostname = http://localhost
 @port = 3001
 @host = {{hostname}}:{{port}}
+# This should be the apiKey for the partners' firebase project
 @firebaseAuthApiKey = AIzaSyA6WspXWorAK_1HiwLAVht7-ujoUDdWsAs
 @authToken = Bearer {{getAuth.response.body.idToken}}
 @authHeader = Authorization: {{authToken}}
@@ -37,6 +38,8 @@ GET {{host}}/health
 
 ### Get user
 # GET /user/:userEmail
+# GET {{host}}/user/test@enkeldigital.com @todo Test that this does not work when still in account creation stage
+# Does it matter? since they wont be able to login anyways...
 GET {{host}}/user/jj@enkeldigital.com
 {{authHeader}}
 
@@ -205,6 +208,7 @@ content-type: application/json
 }
 
 ### Validate link received in the user's emali
+# Get the token from the email/DB to test
 # POST /employees/new/validate-link
 POST {{host}}/employees/new/validate-link
 content-type: application/json
@@ -214,17 +218,41 @@ content-type: application/json
     "token": "1whsho21c3"
 }
 
+
+### Create test@enkeldigital.com account with firebase, mimicing user signup behaviour
+# MAKE SURE the same email in /employees/new is used for firebase auth account creation
+# @name createEmployeeAccount
+POST https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "test@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
+
+### Get auth credentials for the test@enkeldigital.com account if already created
+# @name getEmployeeAccount
+POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "test@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
 ### Complete partnerAccount creation process, by saving the update name after firebase auth account is created
-# This will verify the email and token against the firebase auth JWT's email field too
-# @important MAKE SURE test@enkeldigital.com is the email used for firebase auth account creation
+# This will verify the email from the JWT and the token in the body with the DB
 POST {{host}}/employees/new/complete
-{{authHeader}}
+Authorization: Bearer {{getEmployeeAccount.response.body.idToken}}
 content-type: application/json
 
 {
     "employee": {
         "name": "TestPartner"
-    }
+    },
     "token": "1whsho21c3"
 }
 
