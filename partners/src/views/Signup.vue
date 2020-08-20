@@ -107,7 +107,6 @@ export default {
 
   // On created / basically when user first loads the page, check if link is valid
   created() {
-    console.log("calling validate link");
     this._validateLink();
   },
 
@@ -137,21 +136,12 @@ export default {
 
         if (!this.token) throw new Error("Missing token");
 
-        const callValue = {
-          email: this.email,
-          token: this.token,
-        };
-
-        console.log("called again, valu of email is? ", callValue);
-
-        debugger;
         // This API must allow unauthenticated calls as the user is not logged in at this point, but should support rate limiting
         // Pass the data received in the URL query to the server for validation
-        const response = await api.post(
-          "/employees/new/validate-link",
-          callValue
-        );
-        console.log("completed validation check ", response, callValue);
+        const response = await api.post("/employees/new/validate-link", {
+          email: this.email,
+          token: this.token,
+        });
 
         // Let the catch block handle this
         if (!response.success)
@@ -184,21 +174,15 @@ export default {
         // tl;dr Firebase auth like google ignores the email RFC and forces email case-insensitivity
         this.email = this.email.toLowerCase();
 
-        console.log("here BEFORE fire auth acc created", this.email);
-
-        // for wtv reason this triggers created hook?
         // Create new user and send them a email verification email
         await firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password);
 
-        console.log("here BEFORE employee continue API is called", this.email);
-
         /*
           This needs to be done before signout as the API calls in these signup flows need the auth token
           await to prevent signout from executing before API completes which might delete JWT before the API call is made due to nature of async call
         */
-        debugger;
         const res = await api.post("/employees/new/complete", {
           employee: {
             name: this.name, // The actual name of the user, and not the email + token temporarily stored in the DB
@@ -213,36 +197,20 @@ export default {
         // @todo Handle this failure case more specifically?
         if (!res.success) throw new Error(res.error);
 
-        console.log(
-          "here after employee continue API is called",
-          this.email,
-          res
-        );
-
-        // redirect user to homescreen after auth process is all completed
-
-        // Await for async dispatch to ensure app only starts after user info is available.
-        await this.$store.dispatch("getUserDetails", this.email);
-        this.$store.dispatch("init"); // Basically replace this with a signIn action
-
-        // Route to the user's home page, after login
+        /* Dispatch signin action and redirect to homescreen after auth process completes */
+        this.$store.dispatch("signin", this.email);
         this.$router.replace({ name: "home" });
       } catch (error) {
         // In case user is not signed out when an error is thrown, this makes sure we sign the user out with firebase auth
         if (firebase.auth().currentUser) firebase.auth().signOut();
 
-        // @todo Technically I can leave this for global error handler to catch right? Only reason for this is better readability and since we also wanna sign user out and call the finally thing...
-        // @todo throw api error instead and pass in retry?
         this.$error.new(
           this.$error.createError(
             this.$error.ERROR.level.RETRY,
-            // @todo Change this to use the AUTH error type then
-            // this.$error.ERROR.custom("Signup Failed", getErrorMessage(error))
             this.$error.ERROR.custom(
               "Signup failure",
               getErrorMessage(error) || error.message
-            ),
-            { actions: { retry: () => this.signUp() } }
+            )
           )
 
           // @todo Need to delete firebase auth account anot?

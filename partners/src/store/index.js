@@ -38,6 +38,12 @@ export default new Vuex.Store({
     setter,
   },
   actions: {
+    // Action to be only called after firebase auth successfully signs in, in Login and Signup views
+    async signin({ dispatch }, email) {
+      // await as getUserDetails must complete before init should be called
+      await dispatch("getUserDetails", email);
+      dispatch("init");
+    },
     /**
      * Main init function of store that calls all the other init actions from all the modules
      * @function init

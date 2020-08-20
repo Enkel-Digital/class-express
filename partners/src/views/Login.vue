@@ -50,21 +50,14 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
-// Function to map and return a given err.code to a user friendly message
-function error_msg(err) {
-  switch (err.code) {
-    case "auth/wrong-password":
-      return "Invalid password or email!";
-    case "auth/network-request-failed":
-      return "Oops, check your internet connection!";
-    case "auth/user-not-found":
-      return "Sorry but you dont have an account with us 😭<br />Signup now!";
-    case "email/no-verify":
-      return "Email not verified.<br />Please verify before trying again";
-    default:
-      return "Something went wrong! Please try again.";
-  }
-}
+// Function to map a given err.code and return a user friendly message
+const getErrorMessage = (err) =>
+  ({
+    "auth/wrong-password": "Invalid password or email!",
+    "auth/network-request-failed": "Oops, check your internet connection!",
+    "auth/user-not-found":
+      "Sorry but you dont have an account with us 😭<br />Signup now!",
+  }[err.code]);
 
 export default {
   name: "login",
@@ -88,38 +81,20 @@ export default {
           .auth()
           .signInWithEmailAndPassword(this.email, this.password);
 
-        if (!firebase.auth().currentUser.emailVerified) {
-          // Throw new error with pre-defined code to get the right error_msg
-          const error = new Error();
-          error.code = "email/no-verify";
-          throw error;
-        }
-
-        // Await for async dispatch to ensure app only starts after user info is available.
-        await this.$store.dispatch("getUserDetails", this.email);
-        this.$store.dispatch("init");
-
-        // Route to the user's home page, after login
+        /* Dispatch signin action and redirect to homescreen after auth process completes */
+        this.$store.dispatch("signin", this.email);
         this.$router.replace({ name: "home" });
       } catch (error) {
-        // Only resend verification email if needed, but both will end early after signout without continuing to normal error handling
-        if (error.code === "email/no-verify") {
-          if (
-            confirm(
-              "Please verify your email first! Resend verification email?"
-            )
-          )
-            firebase.auth().currentUser.sendEmailVerification();
-          return await firebase.auth().signOut();
-        }
-
         // If there is an error but user is somehow logged in, sign user out to try again
         if (firebase.auth().currentUser) await firebase.auth().signOut();
 
         // Create new user error and show with ErrorDialog
         const userError = this.$error.createError(
           this.$error.ERROR.level.RETRY,
-          this.$error.ERROR.custom("Authentication Failed", error_msg(error))
+          this.$error.ERROR.custom(
+            "Authentication Failed",
+            getErrorMessage(error) || error.message
+          )
         );
         this.$error.new(userError);
       } finally {
