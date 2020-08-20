@@ -81,6 +81,18 @@ Table partnerAccounts {
   deleted boolean [default: false]
 }
 
+// Table used to temporarily store new partnerAccounts creation requests
+// Data stored here will also be sent to the employees' email for them to proof their identify
+// Will be removed once partnerAccount creation is fully completed
+Table new_partnerAccounts {
+  id int [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  partnerID int [ref: > partners.id, not null]
+  email varchar [not null, unique]
+  token varchar [not null]
+  admin boolean [default: false]
+}
+
 // FS
 Table partnerSettings {
   userID int [pk, ref: - partnerAccounts.id, not null]
