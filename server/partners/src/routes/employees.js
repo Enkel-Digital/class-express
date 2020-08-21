@@ -10,6 +10,7 @@ const router = express.Router();
 const admin = require("../utils/firebaseAdmin");
 const auth = require("../middleware/auth");
 const SQLdb = require("@enkeldigital/ce-sql");
+const { getBase64, getObject } = require("../utils/base64");
 const sendMail = require("../utils/sendMail");
 
 const createLogger = require("@lionellbriones/logging").default;
@@ -62,7 +63,9 @@ router.post("/new", express.json(), async (req, res) => {
       redirectUrl = "https://partners.enkeldigital.com/#/signup",
     } = req.body;
 
-    // Generate a secret token user can use to identify/prove themselves, where this token will ONLY be sent to their email address
+    // @todo Add validation for accountCreationRequest
+
+    // Generate a random secret token user can use to identify/prove themselves, where this token will ONLY be sent to their email address
     accountCreationRequest.token = Math.random().toString(36).substring(2);
 
     // Make lowercase, refer to notes & faq on why this is lowercase.
@@ -75,6 +78,7 @@ router.post("/new", express.json(), async (req, res) => {
 
     // Generate link for user to click
     // Encode the data object to base64 to pass it along safely via the URL
+    // Insert keys onto object 1 by 1 to prevent malicious users from adding extra data onto the accountCreationRequest object, and us using it blindly
     // Parse and get back the data object on the frontend using -> JSON.parse(atob(accountCreationRequest))
     // @todo We might want to sign this to prevent tampering
     const link = `${redirectUrl}?accountCreationRequest=${getBase64({
@@ -109,11 +113,19 @@ router.post("/new", express.json(), async (req, res) => {
 
 /**
  * Utility function to check if there is a valid pending partnerAccount in DB
- * @param {String} email
- * @param {String} token
+ * @param {String} accountCreationRequest Base64 encoded string of a account creation request object
  */
-function isValidPendingAccount(email, token) {
-  return SQLdb("new_partnerAccounts").where({ email, token }).first();
+async function isValidPendingAccount(accountCreationRequest) {
+  const { email, token, partnerID, admin } = getObject(accountCreationRequest);
+  console.log("valid new link", email, token, partnerID, admin);
+
+  return (
+    SQLdb("new_partnerAccounts")
+      .where({ email, token, partnerID, admin })
+      // Do not select "id" and "createdAt", because when using to insert into partnerAccounts, it will cause conflicts
+      .select("partnerID", "email", "token", "admin")
+      .first()
+  );
 }
 
 /**
@@ -127,9 +139,9 @@ function isValidPendingAccount(email, token) {
 router.post("/new/validate-link", express.json(), async (req, res) => {
   try {
     // @todo Validate the input, make sure not empty or some random weird shit that can fk up the DB query
-    const { email, token } = req.body;
+    const { accountCreationRequest } = req.body;
 
-    const partnerAccount = await isValidPendingAccount(email, token);
+    const partnerAccount = await isValidPendingAccount(accountCreationRequest);
 
     // If account does not exist, it means the link is not valid
     if (!partnerAccount)
@@ -155,24 +167,35 @@ router.post("/new/validate-link", express.json(), async (req, res) => {
  */
 router.post("/new/complete", auth, express.json(), async (req, res) => {
   try {
-    const { employee, token } = req.body;
+    // @todo Validate inputs
+    const { employee, accountCreationRequest } = req.body;
 
     // Parse out email and uid from the firebase auth JWT for verification and account update
     const { email, uid } = req.authenticatedUser;
 
-    // Verify email and token combo by checking if the user exists in the DB
-    if (!(await isValidPendingAccount(email, token)))
+    // Get pending partner account from DB if valid using the accountCreationRequest string
+    const pendingPartnerAccount = await isValidPendingAccount(
+      accountCreationRequest
+    );
+
+    // End request if there isnt a valid pending partner account request in the DB
+    if (!pendingPartnerAccount)
       return res
         .status(422) // Although it is user not found (usually 404), this is a validation failure, thus 422
-        .json({ success: false, error: "Invalid email and token combination" });
+        .json({ success: false, error: "Invalid token and data combination" });
 
     // @todo Verify that link is not yet expired
 
-    // Inject the email value from JWT into the employee object. To make sure the email cannot be modified after confirmation.
-    employee.email = email;
+    /*
+      Spread the values of input employee object and from the now verified accountCreationRequest onto the employee object,
+      to ensure data is the same in partnerAccounts as what was inserted into new_partnerAccounts during account creation request
+      Inject the email value from JWT into the employee object. To make sure the email cannot be modified after confirmation.
+    */
+    const finalEmployee = { ...employee, ...pendingPartnerAccount };
+    finalEmployee.email = email;
 
-    // Update user with the updated details from frontend
-    await SQLdb("partnerAccounts").insert(employee);
+    // Create new partnerAccount using the data from partner account creation request and new data from the frontend form
+    await SQLdb("partnerAccounts").insert(finalEmployee);
 
     // Set email to be Verified using uid from JWT
     // Email is considered to be verified when the user is able to get the generated token sent only to their email
