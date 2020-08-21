@@ -50,44 +50,46 @@ router.get("/all/:partnerID", async (req, res) => {
  * @todo Add expiration date to the generated link. Or since there is a created time right, we should just use that, so like 1 week from that createdDate time
  * @name POST /employees/new
  * @function
- * @param {object} employee
+ * @param {object} accountCreationRequest
  * @returns {object} Success indicator
  */
 router.post("/new", express.json(), async (req, res) => {
   try {
     const {
-      employee,
+      accountCreationRequest,
       // Defaults to the production url if undefined
       // @todo To update URL link once domain is finalized
       redirectUrl = "https://partners.enkeldigital.com/#/signup",
     } = req.body;
 
     // Generate a secret token user can use to identify/prove themselves, where this token will ONLY be sent to their email address
-    const token = Math.random().toString(36).substring(2);
+    accountCreationRequest.token = Math.random().toString(36).substring(2);
 
     // Make lowercase, refer to notes & faq on why this is lowercase.
     // tl;dr Firebase auth like google ignores the email RFC and forces email case-insensitivity
-    employee.email = employee.email.toLowerCase();
+    accountCreationRequest.email = accountCreationRequest.email.toLowerCase();
 
-    // Set the name (a non null compulsory field in the DB) to their email + token first, used later for verification without using an additional token column
-    employee.name = employee.email + token;
+    // @todo Check if the account is already created
 
-    await SQLdb("partnerAccounts").insert(employee);
+    await SQLdb("new_partnerAccounts").insert(accountCreationRequest);
 
-    const type = employee.admin ? "admin" : "employee";
+    // Generate link for user to click
+    const link = `${redirectUrl}?email=${accountCreationRequest.email}&token=${accountCreationRequest.token}&partnerID=${accountCreationRequest.partnerID}&admin=${accountCreationRequest.admin}`;
 
     // Send user email verification link only after successful DB insert
     // await to ensure only respond with success only after the mail has been sent
     // @todo To use sendgrid template instead of this in code mail template
     await sendMail({
-      to: employee.email,
+      to: accountCreationRequest.email,
       from: "Accounts@classexpress.com",
-      subject: `New ClassExpress partner "${type}" account created`,
+      subject: `New ClassExpress partner "${
+        accountCreationRequest.admin ? "admin" : "employee"
+      }" account created`,
       html:
         `A ClassExpress partner account has been created for this email.<br />` +
         "Click the link to complete account creation now or safely ignore this email if you did not request for this.<br />" +
         "<br />" +
-        `${redirectUrl}?email=${employee.email}&token=${token}`, // Generate link for user to click
+        link,
     });
 
     res.status(201).json({ success: true });
@@ -98,12 +100,12 @@ router.post("/new", express.json(), async (req, res) => {
 });
 
 /**
- * Utility function to get partnerAccount from DB using email and token
- * @param {*} email
- * @param {*} token
+ * Utility function to check if there is a valid pending partnerAccount in DB
+ * @param {String} email
+ * @param {String} token
  */
-function partnerAccountWithEmailAndToken(email, token) {
-  return SQLdb("partnerAccounts").where({ name: email + token });
+function isValidPendingAccount(email, token) {
+  return SQLdb("new_partnerAccounts").where({ email, token }).first();
 }
 
 /**
@@ -119,9 +121,7 @@ router.post("/new/validate-link", express.json(), async (req, res) => {
     // @todo Validate the input, make sure not empty or some random weird shit that can fk up the DB query
     const { email, token } = req.body;
 
-    const partnerAccount = await partnerAccountWithEmailAndToken(email, token)
-      .select("createdAt")
-      .first();
+    const partnerAccount = await isValidPendingAccount(email, token);
 
     // If account does not exist, it means the link is not valid
     if (!partnerAccount)
@@ -152,16 +152,19 @@ router.post("/new/complete", auth, express.json(), async (req, res) => {
     // Parse out email and uid from the firebase auth JWT for verification and account update
     const { email, uid } = req.authenticatedUser;
 
-    // Verify the email and token combo by checking if the user exists in the DB
-    if (!(await partnerAccountWithEmailAndToken(email, token).first()))
+    // Verify email and token combo by checking if the user exists in the DB
+    if (!(await isValidPendingAccount(email, token)))
       return res
         .status(422) // Although it is user not found (usually 404), this is a validation failure, thus 422
         .json({ success: false, error: "Invalid email and token combination" });
 
     // @todo Verify that link is not yet expired
 
+    // Inject the email value from JWT into the employee object. To make sure the email cannot be modified after confirmation.
+    employee.email = email;
+
     // Update user with the updated details from frontend
-    await partnerAccountWithEmailAndToken(email, token).update(employee);
+    await SQLdb("partnerAccounts").insert(employee);
 
     // Set email to be Verified using uid from JWT
     // Email is considered to be verified when the user is able to get the generated token sent only to their email

@@ -199,7 +199,7 @@ POST {{host}}/employees/new
 content-type: application/json
 
 {
-    "employee": {
+    "accountCreationRequest": {
         "partnerID": 1,
         "email": "test@enkeldigital.com",
         "admin": false
@@ -251,7 +251,9 @@ content-type: application/json
 
 {
     "employee": {
-        "name": "TestPartner"
+        "name": "TestPartner",
+        "partnerID": 1,
+        "admin": false
     },
     "token": "1whsho21c3"
 }
