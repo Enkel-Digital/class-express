@@ -117,7 +117,8 @@ router.post("/new", express.json(), async (req, res) => {
  */
 async function isValidPendingAccount(accountCreationRequest) {
   const { email, token, partnerID, admin } = getObject(accountCreationRequest);
-  console.log("valid new link", email, token, partnerID, admin);
+  // @todo Used for debugging only
+  // console.log("valid new link", email, token, partnerID, admin);
 
   return (
     SQLdb("new_partnerAccounts")
@@ -149,6 +150,7 @@ router.post("/new/validate-link", express.json(), async (req, res) => {
     // If account does not exist, it means the accountCreationRequest string is invalid
     if (!partnerAccount) throw new Error("Account Creation Request is invalid");
 
+    // @todo Implement , timeLeft: partnerAccount.createdAt , but might be hard since the func no longer returns createdAt
     res.status(200).json({ success: true });
   } catch (error) {
     logger.error(error);
@@ -186,15 +188,27 @@ router.post("/new/complete", auth, express.json(), async (req, res) => {
         .status(422) // Although it is user not found (usually 404), this is a validation failure, thus 422
         .json({ success: false, error: "Invalid token and data combination" });
 
+    /*
+      MAKE SURE the email from JWT is the SAME as the one in the accountCreationRequest.
+      The email CANNOT be different from the firebase auth account created and cannot be modified after confirmation.
+
+      Without this, malicious users' can change the email address on the frontend and create a firebase auth
+      account with an email different from the one specified in accountCreationRequest and thus be able to take
+      over the account from the legitimate user.
+    */
+    if (email !== pendingPartnerAccount.email)
+      throw new Error(
+        "Account Email is different from the email specified in the Account Creation Request"
+      );
+
     // @todo Verify that link is not yet expired
 
     /*
-      Spread the values of input employee object and from the now verified accountCreationRequest onto the employee object,
-      to ensure data is the same in partnerAccounts as what was inserted into new_partnerAccounts during account creation request
-      Inject the email value from JWT into the employee object. To make sure the email cannot be modified after confirmation.
+      Spread values from the input employee object and the now verified accountCreationRequest onto the final employee object,
+      to ensure data is the same in partnerAccounts as what was inserted into new_partnerAccounts during account creation request.
+      Preventing malicious users from tampering with the employee object, and e.g. promote themselves to be admins.
     */
     const finalEmployee = { ...employee, ...pendingPartnerAccount };
-    finalEmployee.email = email;
 
     // Create new partnerAccount using the data from partner account creation request and new data from the frontend form
     await SQLdb("partnerAccounts").insert(finalEmployee);
