@@ -123,13 +123,16 @@ async function isValidPendingAccount(accountCreationRequest) {
     SQLdb("new_partnerAccounts")
       .where({ email, token, partnerID, admin })
       // Do not select "id" and "createdAt", because when using to insert into partnerAccounts, it will cause conflicts
-      .select("partnerID", "email", "token", "admin")
+      // "token" is also not selected, as it should not be accessed again or accidentally sent back to the user.
+      .select("partnerID", "email", "admin")
       .first()
   );
 }
 
 /**
  * Validate the partnerAccount email and token combination to see if it is a valid account creation link
+ * @todo Need to  support the admin RE-creating the user, if the employee fails to click link and requests for a new one!
+ * @todo Only need to do if we are to support a expiration time. Do in beta maybe??
  * @name POST /employees/new/validate-link
  * @function
  * @param {object} name
@@ -143,16 +146,15 @@ router.post("/new/validate-link", express.json(), async (req, res) => {
 
     const partnerAccount = await isValidPendingAccount(accountCreationRequest);
 
-    // If account does not exist, it means the link is not valid
-    if (!partnerAccount)
-      return res
-        .status(422) // Although it is user not found (usually 404), this is a validation failure, thus 422
-        .json({ success: false, error: "Invalid link" });
+    // If account does not exist, it means the accountCreationRequest string is invalid
+    if (!partnerAccount) throw new Error("Account Creation Request is invalid");
 
     res.status(200).json({ success: true });
   } catch (error) {
     logger.error(error);
-    res.status(500).json({ success: false, error: error.message });
+    res
+      .status(422) // Although it is user not found (usually 404), this is a validation failure, thus 422
+      .json({ success: false, error: ["Invalid link", error.message] });
   }
 });
 
@@ -196,6 +198,15 @@ router.post("/new/complete", auth, express.json(), async (req, res) => {
 
     // Create new partnerAccount using the data from partner account creation request and new data from the frontend form
     await SQLdb("partnerAccounts").insert(finalEmployee);
+
+    // Remove the entry in new_partnerAccounts ONLY AFTER insert to partnerAccounts table is successful
+    await SQLdb("new_partnerAccounts")
+      .where({
+        email,
+        partnerID: pendingPartnerAccount.partnerID,
+        admin: pendingPartnerAccount.admin,
+      })
+      .del();
 
     // Set email to be Verified using uid from JWT
     // Email is considered to be verified when the user is able to get the generated token sent only to their email

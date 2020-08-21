@@ -207,15 +207,13 @@ content-type: application/json
     "redirectUrl": "http://localhost:8081/#/signup"
 }
 
-### Validate link received in the user's emali
-# Get the token from the email/DB to test
+### (Rate limited) Validate link received in the user's email with the value of "accountCreationRequest" URL query
 # POST /employees/new/validate-link
 POST {{host}}/employees/new/validate-link
 content-type: application/json
 
 {
-    "email": "test@enkeldigital.com",
-    "token": "1whsho21c3"
+    "accountCreationRequest": "eyJwYXJ0bmVySUQiOjEsImVtYWlsIjoidGVzdEBlbmtlbGRpZ2l0YWwuY29tIiwiYWRtaW4iOmZhbHNlLCJ0b2tlbiI6Im1laGE2OTZkbCJ9"
 }
 
 
@@ -250,12 +248,10 @@ Authorization: Bearer {{getEmployeeAccount.response.body.idToken}}
 content-type: application/json
 
 {
+    "accountCreationRequest": "eyJwYXJ0bmVySUQiOjEsImVtYWlsIjoidGVzdEBlbmtlbGRpZ2l0YWwuY29tIiwiYWRtaW4iOmZhbHNlLCJ0b2tlbiI6Im1laGE2OTZkbCJ9",
     "employee": {
-        "name": "TestPartner",
-        "partnerID": 1,
-        "admin": false
-    },
-    "token": "1whsho21c3"
+        "name": "TestPartner"
+    }
 }
 
 ### Get partner details
