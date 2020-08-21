@@ -74,7 +74,15 @@ router.post("/new", express.json(), async (req, res) => {
     await SQLdb("new_partnerAccounts").insert(accountCreationRequest);
 
     // Generate link for user to click
-    const link = `${redirectUrl}?email=${accountCreationRequest.email}&token=${accountCreationRequest.token}&partnerID=${accountCreationRequest.partnerID}&admin=${accountCreationRequest.admin}`;
+    // Encode the data object to base64 to pass it along safely via the URL
+    // Parse and get back the data object on the frontend using -> JSON.parse(atob(accountCreationRequest))
+    // @todo We might want to sign this to prevent tampering
+    const link = `${redirectUrl}?accountCreationRequest=${getBase64({
+      partnerID: accountCreationRequest.partnerID,
+      email: accountCreationRequest.email,
+      admin: accountCreationRequest.admin,
+      token: accountCreationRequest.token,
+    })}`;
 
     // Send user email verification link only after successful DB insert
     // await to ensure only respond with success only after the mail has been sent
