@@ -207,9 +207,9 @@ content-type: application/json
     "redirectUrl": "http://localhost:8081/#/signup"
 }
 
-### (Rate limited) Validate link received in the user's email with the value of "accountCreationRequest" URL query
-# POST /employees/new/validate-link
-POST {{host}}/employees/new/validate-link
+### (Rate limited) Verify the "accountCreationRequest" string received in the user's email
+# POST /employees/new/verify
+POST {{host}}/employees/new/verify
 content-type: application/json
 
 {

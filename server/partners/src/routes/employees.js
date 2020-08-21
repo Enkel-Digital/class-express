@@ -131,16 +131,16 @@ async function isValidPendingAccount(accountCreationRequest) {
 }
 
 /**
- * Validate the partnerAccount email and token combination to see if it is a valid account creation link
+ * Verify the partnerAccount email and token combination to see if it is a valid account creation link
  * @todo Need to  support the admin RE-creating the user, if the employee fails to click link and requests for a new one!
  * @todo Only need to do if we are to support a expiration time. Do in beta maybe??
- * @name POST /employees/new/validate-link
+ * @name POST /employees/new/verify
  * @function
  * @param {object} name
  * @param {object} token
  * @returns {object} Success indicator
  */
-router.post("/new/validate-link", express.json(), async (req, res) => {
+router.post("/new/verify", express.json(), async (req, res) => {
   try {
     // @todo Validate the input, make sure not empty or some random weird shit that can fk up the DB query
     const { accountCreationRequest } = req.body;
@@ -207,8 +207,14 @@ router.post("/new/complete", auth, express.json(), async (req, res) => {
       Spread values from the input employee object and the now verified accountCreationRequest onto the final employee object,
       to ensure data is the same in partnerAccounts as what was inserted into new_partnerAccounts during account creation request.
       Preventing malicious users from tampering with the employee object, and e.g. promote themselves to be admins.
+      
+      Also email is considered verified as accountCreationRequest is only sent to the user's email
     */
-    const finalEmployee = { ...employee, ...pendingPartnerAccount };
+    const finalEmployee = {
+      ...employee,
+      ...pendingPartnerAccount,
+      verified_email: true,
+    };
 
     // Create new partnerAccount using the data from partner account creation request and new data from the frontend form
     await SQLdb("partnerAccounts").insert(finalEmployee);
