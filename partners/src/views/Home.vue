@@ -1,5 +1,5 @@
 <template>
-  <v-content id="Dashboard">
+  <v-main id="Dashboard">
     <v-toolbar dense class="overline font-weight-light elevation-0">
       <v-toolbar-title>Your Dashboard</v-toolbar-title>
     </v-toolbar>
@@ -30,7 +30,7 @@
     <EarningsChart :chartdata="chartdata" :options="options" />
     <br />
     <PastWeekEarningComparison />
-  </v-content>
+  </v-main>
 </template>
 
 <script>

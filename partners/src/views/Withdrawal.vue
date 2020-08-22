@@ -1,5 +1,5 @@
 <template>
-  <v-content id="currency">
+  <v-main id="currency">
     <v-card class="ma-4">
       <v-row>
         <v-col class="my-0 py-0">
@@ -56,7 +56,7 @@
         </v-list-item>
       </v-list-item-group>
     </v-card>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <v-content v-if="clas" class="ClassDetails">
+  <v-main v-if="clas" class="ClassDetails">
     <v-container fluid>
       <v-row no-gutters>
         <!-- @todo Please label stuff like this. What is this for? -->
@@ -127,7 +127,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

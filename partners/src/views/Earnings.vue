@@ -1,5 +1,5 @@
 <template>
-  <v-content id="AllClasses">
+  <v-main id="AllClasses">
     <v-btn class="ma-2" outlined color="#546E7A"> Weekly</v-btn>
 
     <EarningsChart :chartdata="weeklyChartData" :options="weeklyChartOptions" />
@@ -87,7 +87,7 @@
         <v-spacer></v-spacer>
       </v-card>
     </v-container> -->
-  </v-content>
+  </v-main>
 </template>
 
 <script>

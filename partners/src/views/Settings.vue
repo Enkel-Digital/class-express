@@ -1,5 +1,5 @@
 <template>
-  <v-content class="settings">
+  <v-main class="settings">
     <!-- Add a loader banner showing the update process and notify user if failed. -->
 
     <v-app-bar app color="orange lighten-1" flat dark fixed>
@@ -148,7 +148,7 @@
         Logout
       </v-list-item>
     </v-list>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

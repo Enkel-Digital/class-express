@@ -1,5 +1,5 @@
 <template>
-  <v-content id="ManageEmployee">
+  <v-main id="ManageEmployee">
     <masonry
       :cols="{ default: 6, 1000: 3, 700: 2, 400: 1 }"
       :gutter="{ default: '0.5em', 700: '0.25em' }"
@@ -134,7 +134,7 @@
         </v-card>
       </v-form>
     </v-dialog>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

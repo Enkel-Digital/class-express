@@ -1,5 +1,5 @@
 <template>
-  <v-content>
+  <v-main>
     <v-card outlined>
       <v-card-title>
         Active Classes Booking List
@@ -30,7 +30,7 @@
         </template></v-data-table
       >
     </v-card>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

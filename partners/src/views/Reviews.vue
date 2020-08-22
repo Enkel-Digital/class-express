@@ -1,5 +1,5 @@
 <template>
-  <v-content class="reviews">
+  <v-main class="reviews">
     <br />
 
     <h2 class="text-center">Reviews and Ratings of {{ className }} Class</h2>
@@ -94,7 +94,7 @@
     </v-row>
 
     <!-- Change this to use a universal error overlay instead. Moved the logic into script instead of template too. -->
-  </v-content>
+  </v-main>
 </template>
 
 <script>

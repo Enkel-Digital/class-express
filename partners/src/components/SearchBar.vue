@@ -1,5 +1,5 @@
 <template>
-  <v-content class="search">
+  <v-main class="search">
     <v-autocomplete
       :loading="loading"
       :items="items"
@@ -21,7 +21,7 @@
       color="grey"
       background-color="grey"
     />
-  </v-content>
+  </v-main>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <v-content id="AddClasses">
+  <v-main id="AddClasses">
     <v-row>
       <v-col cols="12" sm="4">
         <v-card outlined ref="form" v-model="valid">
@@ -314,7 +314,7 @@
         </v-btn>
       </v-col>
     </v-row>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

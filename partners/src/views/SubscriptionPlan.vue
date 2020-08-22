@@ -1,5 +1,5 @@
 <template>
-  <v-content class="subscription">
+  <v-main class="subscription">
     <v-app-bar app color="orange lighten-1" flat dark fixed>
       <BackBtn />
       <v-toolbar-title>Subscription</v-toolbar-title>
@@ -116,7 +116,7 @@
         </v-list-item-content>
       </v-list-item>
     </v-card>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

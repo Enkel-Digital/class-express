@@ -1,5 +1,5 @@
 <template>
-  <v-content id="PartnerProfile">
+  <v-main id="PartnerProfile">
     <v-row>
       <v-col cols="12" sm="3">
         <v-card outlined ref="form">
@@ -172,7 +172,7 @@
         </v-btn>
       </v-col>
     </v-row>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

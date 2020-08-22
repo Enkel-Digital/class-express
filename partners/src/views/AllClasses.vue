@@ -1,5 +1,5 @@
 <template>
-  <v-content id="AllClasses">
+  <v-main id="AllClasses">
     <masonry
       :cols="{ default: 5, 1000: 3, 700: 2, 400: 1 }"
       :gutter="{ default: '0.5em', 700: '0.25em' }"
@@ -26,7 +26,7 @@
         </v-list-item>
       </v-card>
     </masonry>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

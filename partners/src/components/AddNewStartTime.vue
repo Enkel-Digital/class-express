@@ -1,7 +1,7 @@
 <template>
-  <!-- <v-content id="AddNewStartTime"> -->
+  <!-- <v-main id="AddNewStartTime"> -->
   <!-- Select start times in the week -->
-  <!-- <v-content id="AddNewStartTime"> -->
+  <!-- <v-main id="AddNewStartTime"> -->
   <v-responsive>
     <v-card outlined ref="form">
       <v-card-text>
@@ -133,7 +133,7 @@
     </v-card>
   </v-responsive>
 
-  <!-- </v-content> -->
+  <!-- </v-main> -->
 </template>
 
 <script>
