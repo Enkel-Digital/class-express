@@ -36,7 +36,6 @@
 
     <v-fab-transition>
       <v-btn
-        v-show="!hidden"
         @click="addEmployeeDialog = true"
         color="#60696c"
         fab
@@ -54,35 +53,34 @@
       <v-card>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="rgb(65.9%, 65.9%, 65.9%)" icon @click="dialog = false"
-            ><v-icon>mdi-window-close</v-icon></v-btn
-          >
+          <v-btn color="rgb(65.9%, 65.9%, 65.9%)" icon @click="dialog = false">
+            <v-icon>mdi-window-close</v-icon>
+          </v-btn>
         </v-card-actions>
 
         <v-list-item class="text-left">
           <v-list-item-content>
-            <v-list-item-subtitle
-              >Name: {{ this.employeeInfo.name }}</v-list-item-subtitle
-            >
-            <v-list-item-subtitle
-              >Email: {{ this.employeeInfo.email }}</v-list-item-subtitle
-            >
-            <v-list-item-subtitle
-              >Mobile No: {{ this.employeeInfo.mobile }}</v-list-item-subtitle
-            >
-            <v-list-item-subtitle
-              >Position:{{ this.employeeInfo.position }}</v-list-item-subtitle
-            >
-            <v-list-item-subtitle
-              >Birthdate:
-              {{ this.employeeInfo.birthdate }}</v-list-item-subtitle
-            >
+            <v-list-item-subtitle>
+              Name: {{ this.employeeInfo.name }}
+            </v-list-item-subtitle>
+            <v-list-item-subtitle>
+              Email: {{ this.employeeInfo.email }}
+            </v-list-item-subtitle>
+            <v-list-item-subtitle>
+              Mobile No: {{ this.employeeInfo.mobile }}
+            </v-list-item-subtitle>
+            <v-list-item-subtitle>
+              Position: {{ this.employeeInfo.position }}
+            </v-list-item-subtitle>
+            <v-list-item-subtitle>
+              Birthdate: {{ this.employeeInfo.birthdate }}
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="addEmployeeDialog" width="calc(100% - 60em)">
+    <v-dialog v-model="addEmployeeDialog" width="50%">
       <v-form ref="form">
         <v-card>
           <v-card-actions>
@@ -91,8 +89,9 @@
               color="rgb(65.9%, 65.9%, 65.9%)"
               icon
               @click="addEmployeeDialog = false"
-              ><v-icon>mdi-window-close</v-icon></v-btn
             >
+              <v-icon>mdi-window-close</v-icon>
+            </v-btn>
           </v-card-actions>
 
           <h2 style="color: #455a64;" class="font-weight-light">
@@ -101,14 +100,14 @@
 
           <v-card-text>
             <v-text-field
-              v-model="employee.name"
+              v-model="newEmployee.name"
               label="Employee Name"
               :rules="formRule"
               color="#60696c"
               required
             />
             <v-text-field
-              v-model="employee.email"
+              v-model="newEmployee.email"
               label="Employee Email"
               :rules="formRule"
               color="#60696c"
@@ -116,13 +115,13 @@
             />
 
             <v-switch
-              v-model="employeeIsAdmin"
+              v-model="newEmployee.admin"
               label="Grant employee admin access?"
               color="#60696c"
-            ></v-switch>
+            />
             <v-btn
               color="#60696c"
-              @click="validate"
+              @click="createNewEmployee"
               rounded
               width="10em"
               outlined
@@ -146,7 +145,6 @@ export default {
   data() {
     return {
       addEmployeeDialog: false,
-      employeeIsAdmin: false,
       dialog: false,
       formRule: [
         (v) => !!v || "Field is required!",
@@ -163,6 +161,13 @@ export default {
           picture: "",
         },
       ],
+
+      // Object for inserting values for creating new employees
+      newEmployee: {
+        name: "",
+        email: "",
+        admin: false,
+      },
     };
   },
   name: "ManageEmployees",
@@ -190,6 +195,22 @@ export default {
       // this.employeeInfo.position = this.employees[id-1].position;
       // this.employeeInfo.birthdate = this.employees[id].birthdate;
       // this.employeeInfo.picture = this.employees[id].picture;
+    },
+
+    createNewEmployee() {
+      // @todo Call validate? Does this return?
+      this.validate();
+
+      console.log("newEmployee", this.newEmployee);
+
+      // @todo Submit data to API
+
+      // Reset the data after submit to allow another request
+      this.newEmployee = {
+        name: "",
+        email: "",
+        admin: false,
+      };
     },
 
     validate() {
