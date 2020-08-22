@@ -18,7 +18,7 @@
 
       <v-list-item-content>
         <!-- Indicate whether the user is an admin or employee -->
-        <p class="overline">{{ admin ? "Admin" : "Employee" }}</p>
+        <p class="overline">{{ user.admin ? "Admin" : "Employee" }}</p>
 
         <v-list-item-title>{{ user.name }}</v-list-item-title>
 
@@ -88,7 +88,7 @@
       <v-list-item
         exact
         ripple
-        v-for="item in admin
+        v-for="item in user.admin
           ? generalTabs
           : generalTabs.filter((tab) => !tab.adminOnly)"
         :key="item.title"
@@ -207,10 +207,6 @@ export default {
   },
   computed: {
     ...mapState(["user"]),
-    admin() {
-      // Read from vuex
-      return true;
-    },
   },
   methods: {
     logout,
