@@ -4,6 +4,13 @@
       <div class="signup">
         <img alt="Logo" src="../assets/logo.png" width="360" height="360" />
 
+        <p>
+          <span style="color: #2457ff;">
+            {{ parsed_admin ? "Admin" : "Employee" }}
+          </span>
+          account creation link
+        </p>
+
         <v-text-field
           v-autofocus
           type="text"
@@ -18,7 +25,7 @@
         <v-text-field
           type="text"
           readonly
-          v-model="email"
+          v-model="parsed_email"
           prepend-icon="mdi-email"
           required
         />
@@ -99,19 +106,22 @@ const getErrorMessage = (err) =>
 export default {
   name: "SignUp",
 
-  // Props only have basic type check, as link verification logic is in _validateLink() for more complex validation
+  // Props only have basic type check, as link verification is in _verifyAccountCreationRequest() for more complex verification logic
   props: {
-    token: String,
-    email: String,
+    accountCreationRequest: String,
   },
 
   // On created / basically when user first loads the page, check if link is valid
   created() {
-    this._validateLink();
+    this._verifyAccountCreationRequest();
   },
 
   data() {
     return {
+      // parsed_email and parsed_admin values are inserted by _verifyAccountCreationRequest() logic and should not be user modified
+      parsed_email: "",
+      parsed_admin: "",
+
       name: "",
       password: "",
       phoneNumber: "", // Make an optional input box for the user
@@ -123,34 +133,33 @@ export default {
       this.$router.push({ name: "welcome" });
     },
 
-    // Checks if expired and Validate email and token first before calling API to validate the combination
-    // Manual validation is used instead of prop validation functions as this flow is more complexed and async
-    // Only called by the created Hook, to validate first before user goes through signup flow, to prevent them from creating if invalid
-    // Disables signup flow on failure using a non-dimissable ErrorDialog
-    async _validateLink() {
+    // Call API to verify the accountCreationRequest string, and inject the values into the component once they are verified
+    // Only called by created Hook to verify before user creates account, preventing them if invalid with a non-dimissable ErrorDialog
+    async _verifyAccountCreationRequest() {
       try {
-        // Maybe this should be the code in the backend??
-        const isEmailValid = this.email && /.+@.+\..+/.test(this.email);
-        if (!isEmailValid)
-          throw new Error("Invalid email in link, double check or contact us");
-
-        if (!this.token) throw new Error("Missing token");
-
         // This API must allow unauthenticated calls as the user is not logged in at this point, but should support rate limiting
-        // Pass the data received in the URL query to the server for validation
-        const response = await api.post("/employees/new/validate-link", {
-          email: this.email,
-          token: this.token,
+        // Pass the encoded accountCreationRequest object received in the URL query directly back to the server for verification
+        const response = await api.post("/employees/new/verify", {
+          accountCreationRequest: this.accountCreationRequest,
         });
 
         // Let the catch block handle this
         if (!response.success)
-          throw new Error("Link failed API validation with: " + response.error);
+          throw new Error(
+            "Link failed API verification with: " + response.error
+          );
+
+        // Parse the encoded accountCreationRequest object from base64 ONLY AFTER validating with the API
+        const { email, admin } = JSON.parse(atob(this.accountCreationRequest));
+
+        // Attached the values parsed out, onto the component to show on the UI
+        this.parsed_email = email;
+        this.parsed_admin = admin;
       } catch (error) {
-        const validationError = this.$error.createError(
+        const verificationError = this.$error.createError(
           this.$error.ERROR.level.FATAL,
           this.$error.ERROR.custom(
-            "Account creation link validation failed!",
+            "Account creation link verification failed!",
             error.message
           )
         );
@@ -158,8 +167,8 @@ export default {
         // http://localhost:8081/#/signup?token=1whsho21c3&email=test%40enkeldigital.com
 
         // Set dismissable to false as users should not continue with signup flow if the link is invalid in whatever way
-        validationError.dismissable = false;
-        this.$error.new(validationError);
+        verificationError.dismissable = false;
+        this.$error.new(verificationError);
       }
     },
 
@@ -170,26 +179,23 @@ export default {
       const loaderRequestID = this.$loader.new();
 
       try {
-        // Make lowercase, refer to notes & faq on why this is lowercase.
-        // tl;dr Firebase auth like google ignores the email RFC and forces email case-insensitivity
-        this.email = this.email.toLowerCase();
-
         // Create new user and send them a email verification email
         await firebase
           .auth()
-          .createUserWithEmailAndPassword(this.email, this.password);
+          .createUserWithEmailAndPassword(this.parsed_email, this.password);
 
         /*
           This needs to be done before signout as the API calls in these signup flows need the auth token
           await to prevent signout from executing before API completes which might delete JWT before the API call is made due to nature of async call
+       
+          The email will be retrieved from the firebase auth JWT to prove that the user really used that email for account creation
         */
         const res = await api.post("/employees/new/complete", {
+          // Pass the encoded accountCreationRequest string right back to API for verification
+          accountCreationRequest: this.accountCreationRequest,
           employee: {
-            name: this.name, // The actual name of the user, and not the email + token temporarily stored in the DB
+            name: this.name,
           },
-          // Pass the token back to the API for verification
-          // @note The email will be retrieved from the firebase auth JWT to prove that the user really used that email for account creation
-          token: this.token,
         });
 
         // Check for success with res and throw for signup logic to catch
@@ -198,7 +204,7 @@ export default {
         if (!res.success) throw new Error(res.error);
 
         /* Dispatch signin action and redirect to homescreen after auth process completes */
-        this.$store.dispatch("signin", this.email);
+        this.$store.dispatch("signin", this.parsed_email);
         this.$router.replace({ name: "home" });
       } catch (error) {
         // In case user is not signed out when an error is thrown, this makes sure we sign the user out with firebase auth
