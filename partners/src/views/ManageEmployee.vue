@@ -139,9 +139,16 @@
 <script>
 // import ResizeText from "vue-resize-text";
 import { mapState } from "vuex";
-import api from "../store/utils/fetch";
+import apiError from "@/store/utils/apiError";
+import apiWithLoader from "@/store/utils/apiWithLoader";
 
 export default {
+  name: "ManageEmployees",
+
+  directives: {
+    ResizeText: () => import("vue-resize-text"),
+  },
+
   data() {
     return {
       addEmployeeDialog: false,
@@ -170,10 +177,6 @@ export default {
       },
     };
   },
-  name: "ManageEmployees",
-  directives: {
-    ResizeText: () => import("vue-resize-text"),
-  },
 
   props: {
     partnerID: {
@@ -197,13 +200,27 @@ export default {
       // this.employeeInfo.picture = this.employees[id].picture;
     },
 
-    createNewEmployee() {
+    async createNewEmployee() {
       // @todo Call validate? Does this return?
       this.validate();
 
-      console.log("newEmployee", this.newEmployee);
+      const response = await apiWithLoader.post("/employees/new", {
+        accountCreationRequest: {
+          ...this.newEmployee,
+          partnerID: this.$store.state.user.partnerID,
+        },
+        // Set the redirectUrl according to the build environment to allow for local testing
+        redirectUrl:
+          process.env.NODE_ENV.toLowerCase() === "production"
+            ? // @todo Update the URL once it is confirmed
+              "https://partners.enkeldigital.com/#/signup"
+            : "http://localhost:8081/#/signup",
+      });
 
-      // @todo Submit data to API
+      if (!response.success) return apiError(response, this.createNewEmployee);
+
+      // Close the new employee dialog
+      this.addEmployeeDialog = false;
 
       // Reset the data after submit to allow another request
       this.newEmployee = {
