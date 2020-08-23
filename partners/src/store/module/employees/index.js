@@ -13,16 +13,15 @@ export default {
   mutations: {
     setter,
   },
-  getters: {},
   actions: {
-    async getEmployees({ state, commit, dispatch }, partnerID) {
-      const response = await apiWithLoader.get(`/employees/all/${partnerID}`);
+    async getEmployees({ commit, dispatch, rootState }) {
+      const response = await apiWithLoader.get(
+        `/employees/all/${rootState.user.partnerID}`
+      );
       if (!response.success)
         return apiError(response, () => dispatch("getEmployees"));
 
-      console.log("employees", response);
-
-      commit("setter", ["employee", response.employees]);
+      commit("setter", ["employees", response.employees]);
     },
   },
 };

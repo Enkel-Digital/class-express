@@ -5,78 +5,57 @@
       :gutter="{ default: '0.5em', 700: '0.25em' }"
     >
       <v-card
-        v-for="employee in employee"
-        class="class-card"
+        v-for="employee in employees"
+        class="employee-card"
         :key="employee.id"
         outlined
         width="15em"
       >
-        <v-list-item two-line>
-          <v-list-item-content>
-            <div v-resize-text>{{ employee.name }}</div>
-            <v-list-item-subtitle>{{ employee.email }}</v-list-item-subtitle>
-            <v-list-item-subtitle>{{ employee.position }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
+        <div @click="moreInfo(employee.id)">
+          <v-list-item two-line>
+            <v-list-item-content>
+              <div v-resize-text>{{ employee.name }}</div>
+            </v-list-item-content>
+          </v-list-item>
 
-        <v-list-item-avatar size="80">
-          <v-img :src="employee.picture" alt="Logo" />
-        </v-list-item-avatar>
-
-        <v-card-actions class="justify-center pa-0">
-          <v-btn small text>Delete</v-btn>
-          <v-btn small text @click="moreInfo(employee.id)">more info</v-btn>
-        </v-card-actions>
-
-        <!-- <v-card-actions class="justify-center pa-0">
-          <v-btn text>more info</v-btn>
-        </v-card-actions> -->
+          <v-list-item-avatar size="80">
+            <!-- @todo Add a default generic avatar image -->
+            <v-img :src="employee.picture" alt="Logo" />
+          </v-list-item-avatar>
+        </div>
       </v-card>
     </masonry>
 
-    <v-fab-transition>
-      <v-btn
-        @click="addEmployeeDialog = true"
-        color="#60696c"
-        fab
-        dark
-        large
-        absolute
-        bottom
-        right
-      >
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-    </v-fab-transition>
-
-    <v-dialog v-model="dialog" width="20em">
+    <v-dialog v-model="employeeDetailDialog" width="20em">
       <v-card>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="rgb(65.9%, 65.9%, 65.9%)" icon @click="dialog = false">
-            <v-icon>mdi-window-close</v-icon>
-          </v-btn>
-        </v-card-actions>
-
+        <!-- @todo Add a createdAt time with moments -->
+        <!-- @todo Fix the UI, use higher contrasts -->
         <v-list-item class="text-left">
           <v-list-item-content>
-            <v-list-item-subtitle>
-              Name: {{ this.employeeInfo.name }}
-            </v-list-item-subtitle>
-            <v-list-item-subtitle>
-              Email: {{ this.employeeInfo.email }}
-            </v-list-item-subtitle>
-            <v-list-item-subtitle>
-              Mobile No: {{ this.employeeInfo.mobile }}
-            </v-list-item-subtitle>
-            <v-list-item-subtitle>
-              Position: {{ this.employeeInfo.position }}
-            </v-list-item-subtitle>
-            <v-list-item-subtitle>
-              Birthdate: {{ this.employeeInfo.birthdate }}
-            </v-list-item-subtitle>
+            <v-list-item-title>
+              Name: {{ employeeInfo.name }}
+            </v-list-item-title>
+            <v-list-item-title>
+              Admin: {{ employeeInfo.admin }}
+            </v-list-item-title>
+            <v-list-item-title>
+              Email: {{ employeeInfo.email }}
+            </v-list-item-title>
+            <v-list-item-title>
+              Phone Number: {{ employeeInfo.phoneNumber }}
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-card-actions>
+          <v-spacer />
+          <v-btn text color="red" @click="deleteEmployee(employeeInfo.id)">
+            Delete
+          </v-btn>
+
+          <!-- <v-btn text @click="moreInfo(employeeInfo.id)">more info</v-btn> -->
+          <!-- <v-spacer /> -->
+        </v-card-actions>
       </v-card>
     </v-dialog>
 
@@ -85,11 +64,7 @@
         <v-card>
           <v-card-actions>
             <v-spacer />
-            <v-btn
-              color="rgb(65.9%, 65.9%, 65.9%)"
-              icon
-              @click="addEmployeeDialog = false"
-            >
+            <v-btn color="grey" icon @click="addEmployeeDialog = false">
               <v-icon>mdi-window-close</v-icon>
             </v-btn>
           </v-card-actions>
@@ -133,6 +108,21 @@
         </v-card>
       </v-form>
     </v-dialog>
+
+    <v-fab-transition>
+      <v-btn
+        @click="addEmployeeDialog = true"
+        color="#60696c"
+        fab
+        dark
+        large
+        absolute
+        bottom
+        right
+      >
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-fab-transition>
   </v-main>
 </template>
 
@@ -149,25 +139,23 @@ export default {
     ResizeText: () => import("vue-resize-text"),
   },
 
+  created() {
+    // Always reload employee data from API on load
+    // @todo Can optimize by checking with the API, instead of getting directly, e.g. GET /employees/:partnerID?lastQueryTime=...&hash-...
+    // @todo Check for new updates using either the last query time or a hash of the current items.
+    this.$store.dispatch("employees/getEmployees");
+  },
+
   data() {
     return {
+      employeeDetailDialog: false,
+
       addEmployeeDialog: false,
-      dialog: false,
-      formRule: [
-        (v) => !!v || "Field is required!",
-        (v) => (v && v.length <= 20) || "Please fill is the required space",
-      ],
-      employeeInfo: [
-        {
-          id: "",
-          name: "",
-          email: "",
-          mobile: "",
-          position: "",
-          birthdate: "",
-          picture: "",
-        },
-      ],
+
+      formRule: [(v) => !!v || "Field is required!"],
+
+      // Used to store the currently selected employee details
+      employeeInfo: {},
 
       // Object for inserting values for creating new employees
       newEmployee: {
@@ -178,26 +166,13 @@ export default {
     };
   },
 
-  props: {
-    partnerID: {
-      default: 1,
-      type: Number,
-    },
-  },
-  created() {
-    this.$store.dispatch("employees/getEmployees", this.partnerID);
-  },
+  // Only employees values are needed to be binded in from vuex
+  computed: mapState("employees", ["employees"]),
+
   methods: {
     moreInfo(id) {
-      console.log("id", this.employee[id - 1].name);
-      this.dialog = true;
-      this.employeeInfo.id = id - 1;
-      this.employeeInfo.name = this.employee[id - 1].name;
-      this.employeeInfo.email = this.employee[id - 1].email;
-      this.employeeInfo.mobile = this.employee[id - 1].phoneNumber;
-      // this.employeeInfo.position = this.employees[id-1].position;
-      // this.employeeInfo.birthdate = this.employees[id].birthdate;
-      // this.employeeInfo.picture = this.employees[id].picture;
+      this.employeeInfo = this.employees.find((employee) => id === employee.id);
+      this.employeeDetailDialog = true;
     },
 
     async createNewEmployee() {
@@ -230,14 +205,19 @@ export default {
       };
     },
 
+    // @todo
+    async deleteEmployee() {
+      // @todo Add a confirmation check
+
+      // Close the employee details dialog once delete completes
+      this.employeeDetailDialog = false;
+    },
+
     validate() {
       if (this.$refs.form.validate()) {
         this.addEmployeeDialog = false;
       }
     },
-  },
-  computed: {
-    ...mapState("employees", ["employee"]),
   },
 };
 </script>
@@ -247,7 +227,7 @@ export default {
   margin: 2em;
   margin-top: 2em;
 }
-.class-card {
+.employee-card {
   display: inline-block;
   margin-bottom: 0.5em;
 }
