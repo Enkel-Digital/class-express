@@ -193,7 +193,7 @@ export default {
   },
   data() {
     return {
-      numberOfEmployees: {},
+      numberOfEmployees: undefined,
       numberOfClass: {},
       partnerTagsList: ["tech", "cooking", "lifestyle", "music", "art"],
 

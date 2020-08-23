@@ -29,7 +29,7 @@ async function _getPartner(partners, commit, partnerID) {
   if (partners[partnerID]) return partners[partnerID];
   if (partnersToFetch[partnerID]) return partnersToFetch[partnerID];
 
-  const responsePromise = await api.get(`/partner/details/${partnerID}`);
+  const responsePromise = await api.get(`/partner/${partnerID}`);
 
   // Set partnerID into "Queue" to prevent getPartner from being called again with same ID before this partner is fetched
   partnersToFetch[partnerID] = responsePromise;

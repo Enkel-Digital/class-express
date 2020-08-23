@@ -18,11 +18,9 @@ export default {
   getters: {},
   actions: {
     async getPartnerDetails({ state, commit, dispatch }, partnerID) {
-      const response = await apiWithLoader.get(`/partner/details/${partnerID}`);
+      const response = await apiWithLoader.get(`/partner/${partnerID}`);
       if (!response.success)
         return apiError(response, () => dispatch("getPartnerDetails"));
-
-      console.log("partner", response);
 
       commit("setter", ["partner", response.partner]);
     },
@@ -30,8 +28,6 @@ export default {
       const response = await apiWithLoader.get(`/tags/partner/${partnerID}`);
       if (!response.success)
         return apiError(response, () => dispatch("getPartnerTags"));
-
-      console.log("tags", response);
 
       commit("setter", ["partnerTags", response.tags]);
     },
