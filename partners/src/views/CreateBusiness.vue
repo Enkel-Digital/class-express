@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Dialog to inform user to verify email before redirecting them to the signup page -->
+    <!-- Dialog to inform user to verify email before redirecting them to the login page -->
     <v-dialog v-model="verifyEmailDialog" max-width="40%">
       <v-card>
         <v-card-title class="headline">
@@ -33,33 +33,6 @@
 
         <br />
 
-        <v-btn
-          color="#60696c"
-          outlined
-          width="20em"
-          rounded
-          :disabled="employee || owner"
-          @click="owner = true"
-        >
-          I am an Owner
-        </v-btn>
-
-        <br />
-        <br />
-
-        <v-btn
-          color="#60696c"
-          outlined
-          rounded
-          width="20em"
-          :disabled="owner || employee"
-          @click="employee = true"
-        >
-          I am an Employee
-        </v-btn>
-        <br />
-        <br />
-
         <h4 class="font-weight-light">
           Already have an account?
           <router-link :to="{ name: 'login' }">
@@ -68,58 +41,39 @@
         </h4>
       </v-col>
 
-      <!-- stepper for owner -->
+      <!-- stepper componentr -->
       <v-col cols="10" sm="5">
-        <v-stepper v-if="owner" v-model="step" vertical>
+        <v-stepper v-model="step" vertical>
           <v-stepper-step color="#60696c" :complete="step > 1" step="1">
-            Login Details
+            Business Owner Details
           </v-stepper-step>
 
           <v-stepper-content step="1">
             <v-form ref="ownerLoginDetails">
               <v-text-field
-                v-model="firstName"
-                label="First Name"
+                v-model="name"
+                label="Name"
                 :rules="nameRules"
                 prepend-icon="mdi-account"
-              ></v-text-field>
+              />
 
-              <v-text-field
-                v-model="lastName"
-                label="Last Name"
-                :rules="nameRules"
-                prepend-icon=" "
-              ></v-text-field>
-
-              <v-text-field
-                v-model="phoneNumber"
-                :rules="phoneRules"
-                label="Mobile Number"
-                hint="For emergency purposes"
-                prepend-icon="mdi-cellphone"
-                required
-              ></v-text-field>
-
+              <!-- @todo Show a tip or something to let user know that this should be a "company" email and this email will be the one used for registration -->
               <v-text-field
                 v-model="email"
                 :rules="emailRules"
                 label="Email"
                 prepend-icon="mdi-email"
                 required
-              ></v-text-field>
+              />
 
               <v-text-field
-                v-model="password"
-                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="[rules.required]"
-                :type="show1 ? 'text' : 'password'"
-                name="input-10-1"
-                label="Password"
-                prepend-icon="mdi-lock"
-                hint="At least 8 characters"
-                counter
-                @click:append="show1 = !show1"
-              ></v-text-field>
+                v-model="phoneNumber"
+                :rules="phoneRules"
+                label="Mobile Number"
+                hint="For verification and emergency purposes"
+                prepend-icon="mdi-cellphone"
+                required
+              />
             </v-form>
 
             <v-btn
@@ -127,13 +81,14 @@
               color="#60696c"
               outlined
               @click="validateOwnerLoginDetails"
-              >Continue</v-btn
             >
+              Continue
+            </v-btn>
           </v-stepper-content>
 
-          <v-stepper-step color="#60696c" :complete="step > 2" step="2"
-            >Company Information</v-stepper-step
-          >
+          <v-stepper-step color="#60696c" :complete="step > 2" step="2">
+            Company Information
+          </v-stepper-step>
           <v-stepper-content step="2">
             <v-form ref="ownerCompanyDetails">
               <v-text-field
@@ -142,7 +97,16 @@
                 label="Company Name"
                 required
                 prepend-icon="mdi-card-account-details"
-              ></v-text-field>
+              />
+
+              <!-- @todo Use the user's email as the default email here, but do not share the v-model -->
+              <v-text-field
+                v-model="companyEmail"
+                :rules="emailRules"
+                label="Email"
+                prepend-icon="mdi-email"
+                required
+              />
 
               <v-text-field
                 v-model="companyPhoneNumber"
@@ -150,21 +114,13 @@
                 label="Telephone Number"
                 prepend-icon="mdi-phone"
                 required
-              ></v-text-field>
-
-              <v-text-field
-                v-model="companyEmail"
-                :rules="emailRules"
-                label="Email"
-                prepend-icon="mdi-email"
-                required
-              ></v-text-field>
+              />
 
               <v-text-field
                 v-model="companyWebsite"
-                label="Website"
+                label="Website (Optional, Must be https)"
                 prepend-icon="mdi-web"
-              ></v-text-field>
+              />
 
               <v-text-field
                 v-model="addressLine1"
@@ -172,30 +128,45 @@
                 :rules="nameRules"
                 prepend-icon="mdi-map-marker"
                 required
-              ></v-text-field>
+              />
 
               <v-text-field
                 v-model="addressLine2"
                 label="Address Line 2 (optional)"
-                prepend-icon=" "
-              ></v-text-field>
+                prepend-icon="mdi-map-marker"
+              />
 
               <v-text-field
                 v-model="unitNumber"
                 :rules="nameRules"
                 label="Unit No."
                 hint="e.g. 01-02"
-                prepend-icon=" "
+                prepend-icon="mdi-map-marker"
                 required
-              ></v-text-field>
+              />
 
               <v-text-field
                 v-model="postalCode"
                 label="Postal Code"
                 :rules="postalRules"
-                prepend-icon=" "
+                prepend-icon="mdi-map-marker"
                 required
-              ></v-text-field>
+              />
+
+              <br />
+
+              <v-textarea
+                v-autofocus
+                type="text"
+                v-model="companyDescription"
+                rows="4"
+                :rules="nameRules"
+                outlined
+                placeholder="Describe your business"
+                no-resize
+                color="#60696c"
+                required
+              />
 
               <v-combobox
                 v-model="partnerTags"
@@ -204,7 +175,7 @@
                 chips
                 color="#60696c"
                 clearable
-                label="Select Your Class Categories"
+                label="Select tags/categories that describe your business"
                 multiple
                 single-line
               >
@@ -221,169 +192,35 @@
                   </v-chip>
                 </template>
               </v-combobox>
-
-              <v-textarea
-                v-autofocus
-                type="text"
-                v-model="companyDescription"
-                rows="4"
-                :rules="nameRules"
-                outlined
-                placeholder="Enter Your Class Description"
-                no-resize
-                color="#60696c"
-                required
-              />
             </v-form>
 
+            <v-btn
+              color="#60696c"
+              outlined
+              width="20em"
+              text
+              @click="step -= 1"
+            >
+              Back
+            </v-btn>
             <v-btn
               outlined
               color="#60696c"
               width="20em"
               @click="validateOwnerCompanyDetails"
-              >Continue</v-btn
             >
-            <v-btn color="#60696c" outlined width="20em" text @click="step -= 1"
-              >Back</v-btn
-            >
+              Continue
+            </v-btn>
           </v-stepper-content>
 
           <v-stepper-step :complete="step > 3" step="3">Finish</v-stepper-step>
           <v-stepper-content step="3">
-            <h2>You're Set to Go!</h2>
-            <p>Please check your inbox and verify your email</p>
-            <v-btn width="20em" color="#60696c" outlined @click="partnerSignUp"
-              >Finish</v-btn
-            >
+            <h2>You are Set to Go!</h2>
+            <v-btn width="20em" color="green" outlined @click="createPartner">
+              register business now!
+            </v-btn>
           </v-stepper-content>
         </v-stepper>
-
-        <br />
-
-        <v-btn
-          color="#60696c"
-          outlined
-          v-if="owner"
-          width="20em"
-          @click="(owner = false), (employee = false)"
-          >Back</v-btn
-        >
-        <!-- end of stepper for owner -->
-
-        <!-- stepper for employee -->
-        <v-col cols="15" sm="5">
-          <v-stepper v-if="employee" v-model="step" vertical>
-            <v-overlay v-if="employee" :opacity="opacity" :absolute="absolute">
-              <p>This feature is coming soon!</p>
-            </v-overlay>
-
-            <v-stepper-step :complete="step > 1" step="1"
-              >Login Details
-            </v-stepper-step>
-            <v-stepper-content step="1">
-              <v-form ref="employeeLoginDetails">
-                <v-text-field
-                  label="First Name"
-                  :rules="nameRules"
-                  prepend-icon="mdi-account"
-                ></v-text-field>
-
-                <v-text-field
-                  label="Last Name"
-                  :rules="nameRules"
-                  prepend-icon=" "
-                ></v-text-field>
-
-                <v-text-field
-                  :rules="emailRules"
-                  label="Email"
-                  prepend-icon="mdi-email"
-                  required
-                ></v-text-field>
-
-                <v-text-field
-                  :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                  :rules="[rules.required]"
-                  :type="show1 ? 'text' : 'password'"
-                  name="input-10-1"
-                  label="Password"
-                  prepend-icon="mdi-lock"
-                  hint="At least 8 characters"
-                  counter
-                  @click:append="show1 = !show1"
-                ></v-text-field>
-              </v-form>
-
-              <v-btn
-                width="20em"
-                color="#60696c"
-                outlined
-                @click="validateEmployeeLoginDetails"
-                >Continue
-              </v-btn>
-            </v-stepper-content>
-
-            <v-stepper-step :complete="step > 2" step="2"
-              >Your Company</v-stepper-step
-            >
-            <v-stepper-content step="2">
-              <v-form ref="employeeCompanyDetails">
-                <v-autocomplete
-                  :items="company"
-                  :filter="customFilter"
-                  :rules="[(v) => !!v || 'Selection is required']"
-                  color="white"
-                  item-text="name"
-                  prepend-icon="mdi-card-account-details"
-                  label="Select your company"
-                ></v-autocomplete>
-              </v-form>
-
-              <v-btn
-                width="20em"
-                color="#60696c"
-                outlined
-                @click="validateEmployeeCompanyDetails"
-                >Continue
-              </v-btn>
-              <v-btn
-                width="20em"
-                color="#60696c"
-                outlined
-                text
-                @click="step -= 1"
-                >Back</v-btn
-              >
-            </v-stepper-content>
-
-            <v-stepper-step :complete="step > 3" step="3"
-              >Finish</v-stepper-step
-            >
-            <v-stepper-content step="3">
-              <h2>You're Set to Go!</h2>
-              <p>Please check your inbox and verify your email</p>
-              <v-btn
-                width="20em"
-                color="#60696c"
-                outlined
-                @click="$router.push({ name: 'login' })"
-                >Finish</v-btn
-              >
-            </v-stepper-content>
-          </v-stepper>
-
-          <br />
-
-          <v-btn
-            width="20em"
-            color="#60696c"
-            outlined
-            v-if="employee"
-            @click="(owner = false), (employee = false)"
-            >Back</v-btn
-          >
-        </v-col>
-        <!-- end of stepper fot employee -->
       </v-col>
     </v-row>
   </div>
@@ -391,26 +228,9 @@
 
 <script>
 /**
- * @Todo - Add in browser's "required" attribute checker for input.
+ * @todo - Add in browser's "required" attribute checker for input.
  */
-
-import firebase from "firebase/app";
-import "firebase/auth";
 import api from "../store/utils/fetch";
-
-// Function to map and return a given err.code to a user friendly message
-function error_msg(err) {
-  switch (err.code) {
-    case "auth/wrong-password":
-      return "Invalid password or email.";
-    case "auth/email-already-in-use":
-      return "Email already in use, please log in instead. Reset password if you have forgotten it.";
-    case "auth/network-request-failed":
-      return "Oops, please check your internet connection!";
-    default:
-      return "Ugh, something went wrong! Try again please?";
-  }
-}
 
 export default {
   name: "CreateBusiness",
@@ -418,13 +238,11 @@ export default {
     return {
       verifyEmailDialog: false,
 
+      // @todo To replace with API call
       partnerTagsList: ["tech", "cooking", "lifestyle", "music", "art"],
-      owner: false,
-      employee: false,
-      firstName: "",
-      lastName: "",
+
+      name: "",
       email: "",
-      password: "",
       phoneNumber: "",
       companyName: "",
       companyEmail: "",
@@ -436,16 +254,9 @@ export default {
       postalCode: "",
       companyDescription: "",
       partnerTags: "", // @todo Shouldnt this be an array?
-      step: 1,
-      absolute: true,
-      opacity: 0.8,
 
-      // @todo Use a better name
-      show1: false,
-      rules: {
-        required: (value) => !!value || "Required.",
-        // min: (v) => v.length >= 8 || "Min 8 characters",
-      },
+      step: 1,
+
       nameRules: [(v) => !!v || "Required"],
       emailRules: [
         (v) => !!v || "E-mail is required",
@@ -476,33 +287,15 @@ export default {
     };
   },
   methods: {
-    back() {
-      this.$router.push({ name: "welcome" });
-    },
     validateOwnerLoginDetails() {
       if (this.$refs.ownerLoginDetails.validate()) this.step++;
     },
     validateOwnerCompanyDetails() {
       if (this.$refs.ownerCompanyDetails.validate()) this.step++;
     },
-    validateEmployeeLoginDetails() {
-      if (this.$refs.employeeLoginDetails.validate()) this.step++;
-    },
-    validateEmployeeCompanyDetails() {
-      if (this.$refs.employeeCompanyDetails.validate()) this.step++;
-    },
-    customFilter(item, queryText, itemText) {
-      const textOne = item.name.toLowerCase();
-      const textTwo = item.abbr.toLowerCase();
-      const searchText = queryText.toLowerCase();
-
-      return (
-        textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
-      );
-    },
 
     // Signups for employee / admin share the same flow, thus signup abstracts the common logic out and wraps calls to the specific signup flows.
-    async signup() {
+    async createPartner() {
       // Show loading screen before signUp logic executes
       const loaderRequestID = this.$loader.new();
 
@@ -511,77 +304,52 @@ export default {
         // tl;dr Firebase auth like google ignores the email RFC and forces email case-insensitivity
         this.email = this.email.toLowerCase();
 
-        // Create new user and send them a email verification email
-        await firebase
-          .auth()
-          .createUserWithEmailAndPassword(this.email, this.password);
-        // Send user email verification email right await after account creation
-        firebase.auth().currentUser.sendEmailVerification();
-
         /*
           Execute the specific signup logic based on the type of user
           This needs to be done before signout as the API calls in these signup flows need the auth token
           await to prevent signout from executing before API completes which might delete JWT before the API call is made due to nature of async call
-          @todo Change this to be just create partner, instead of account creation
+          
+          when an admin register his/her account along with the business profile
+          partner needs to be created first, since SQL schema depends on partner to exists before a new partnerAccount can be created
         */
-        if (this.owner) await this.partnerSignUp();
-        else if (this.employee) await this.employeeSignUp();
-        else throw new Error("Signup triggered with unspecified user type");
+        const resPartner = await api.post("/partner/new", {
+          partner: {
+            name: this.companyName,
+            phoneNumber: this.companyPhoneNumber,
+            email: this.companyEmail,
+            location_address:
+              this.addressLine1 +
+              " " +
+              this.addressLine2 +
+              " " +
+              this.unitNumber,
+            location_postalCode: this.postalCode,
+            location_coordinates: "123.1234454, 23.234512",
+            description: this.companyDescription,
+            website: this.companyWebsite,
+          },
+        });
 
-        // Sign user out first as users need to verify email and wait for approval first before they can login and use app
-        await firebase.auth().signOut();
+        // Check for success with resPartner and throw for signup logic to catch
+        if (!resPartner.success) throw new Error(resPartner.error);
+        //
+        //
+        //
 
         // Show dialog to inform user to verify email and allow them to redirect to login view
         this.verifyEmailDialog = true;
       } catch (error) {
-        // In case user is not signed out when an error is thrown, this makes sure we sign the user out with firebase auth
-        if (firebase.auth().currentUser) firebase.auth().signOut();
-
-        const userError = this.$error.createError(
-          this.$error.ERROR.level.RETRY,
-          this.$error.ERROR.custom("Signup Failed", error_msg(error))
+        this.$error.new(
+          this.$error.createError(
+            this.$error.ERROR.level.RETRY,
+            this.$error.ERROR.custom("Business Registration failed")
+          )
         );
-        this.$error.new(userError);
       } finally {
         // Remove loader after login logic completes regardless of whether signup failed or succeeded
         // Inside finally to ensure execution even if catch block was ran
         this.$loader.clear(loaderRequestID);
       }
-    },
-
-    // when an admin register his/her account along with the business profile
-    // partner needs to be created first, since SQL schema depends on partner to exists before a new partnerAccount can be created
-    async partnerSignUp() {
-      const resPartner = await api.post("/partner/new", {
-        partner: {
-          name: this.companyName,
-          phoneNumber: this.companyPhoneNumber,
-          email: this.companyEmail,
-          location_address:
-            this.addressLine1 + " " + this.addressLine2 + " " + this.unitNumber,
-          location_postalCode: this.postalCode,
-          location_coordinates: "123.1234454, 23.234512",
-          description: this.companyDescription,
-          website: this.companyWebsite,
-        },
-      });
-      // @todo Keep partner create here, and remove partnerAccount
-
-      // Check for success with resPartner and throw for signup logic to catch
-      if (!resPartner.success) throw new Error(resPartner.error);
-
-      const resEmployee = await api.post("/employees/new", {
-        employee: {
-          partnerID: resPartner.partnerID, // Use partnerID that is returned from partner creation call
-          name: this.firstName + " " + this.lastName,
-          phoneNumber: this.phoneNumber,
-          email: this.email,
-          admin: true, // First user defaults to becoming an admin
-        },
-      });
-
-      // Check for success with resEmployee and throw for signup logic to catch
-      if (!resEmployee.success) throw new Error(resEmployee.error);
     },
 
     remove(item) {
@@ -591,29 +359,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-img {
-  background-size: cover;
-}
-
-input {
-  margin: 1em 0;
-  padding: 1em;
-
-  width: 70%;
-  max-width: 20em;
-
-  border-radius: 1em;
-}
-
-.error {
-  margin-top: 1em;
-}
-
-#back-btn {
-  border-style: solid;
-  border-width: thin;
-  border-radius: 4em;
-}
-</style>
