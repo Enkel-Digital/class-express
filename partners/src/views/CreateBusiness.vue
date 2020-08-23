@@ -53,7 +53,7 @@
               <v-text-field
                 v-model="name"
                 label="Name"
-                :rules="nameRules"
+                :rules="simpleRequiredRule"
                 prepend-icon="mdi-account"
               />
 
@@ -93,7 +93,7 @@
             <v-form ref="ownerCompanyDetails">
               <v-text-field
                 v-model="companyName"
-                :rules="nameRules"
+                :rules="simpleRequiredRule"
                 label="Company Name"
                 required
                 prepend-icon="mdi-card-account-details"
@@ -125,7 +125,7 @@
               <v-text-field
                 v-model="addressLine1"
                 label="Address Line 1"
-                :rules="nameRules"
+                :rules="simpleRequiredRule"
                 prepend-icon="mdi-map-marker"
                 required
               />
@@ -138,7 +138,7 @@
 
               <v-text-field
                 v-model="unitNumber"
-                :rules="nameRules"
+                :rules="simpleRequiredRule"
                 label="Unit No."
                 hint="e.g. 01-02"
                 prepend-icon="mdi-map-marker"
@@ -160,7 +160,7 @@
                 type="text"
                 v-model="companyDescription"
                 rows="4"
-                :rules="nameRules"
+                :rules="simpleRequiredRule"
                 outlined
                 placeholder="Describe your business"
                 no-resize
@@ -253,11 +253,11 @@ export default {
       unitNumber: "",
       postalCode: "",
       companyDescription: "",
-      partnerTags: "", // @todo Shouldnt this be an array?
+      partnerTags: [], // @todo Shouldnt this be an array?
 
       step: 1,
 
-      nameRules: [(v) => !!v || "Required"],
+      simpleRequiredRule: [(v) => !!v || "Required"],
       emailRules: [
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
@@ -267,23 +267,6 @@ export default {
         (v) => (v && v.length <= 8) || "Number is invalid",
       ],
       postalRules: [(v) => (v && v.length <= 6) || "Postal code is invalid"],
-      businessTypes: [
-        { name: "Sports", abbr: "", id: 1 },
-        { name: "Tuition", abbr: "", id: 2 },
-        { name: "IT", abbr: "", id: 3 },
-        { name: "Music", abbr: "", id: 4 },
-        { name: "Lifestyle", abbr: "", id: 5 },
-      ],
-      hasSaved: false,
-      isEditing: null,
-      model: null,
-      company: [
-        { name: "Florida", abbr: "FL", id: 1 },
-        { name: "Georgia", abbr: "GA", id: 2 },
-        { name: "Nebraska", abbr: "NE", id: 3 },
-        { name: "California", abbr: "CA", id: 4 },
-        { name: "New York", abbr: "NY", id: 5 },
-      ],
     };
   },
   methods: {
@@ -305,18 +288,23 @@ export default {
         this.email = this.email.toLowerCase();
 
         /*
-          Execute the specific signup logic based on the type of user
-          This needs to be done before signout as the API calls in these signup flows need the auth token
           await to prevent signout from executing before API completes which might delete JWT before the API call is made due to nature of async call
           
           when an admin register his/her account along with the business profile
           partner needs to be created first, since SQL schema depends on partner to exists before a new partnerAccount can be created
+          
+          @todo workaround is to set it directly into partners DB, but then set to deleted
         */
         const resPartner = await api.post("/partner/new", {
+          accountCreationRequest: {
+            //
+          },
           partner: {
             name: this.companyName,
-            phoneNumber: this.companyPhoneNumber,
             email: this.companyEmail,
+            phoneNumber: this.companyPhoneNumber,
+            description: this.companyDescription,
+            website: this.companyWebsite,
             location_address:
               this.addressLine1 +
               " " +
@@ -324,17 +312,13 @@ export default {
               " " +
               this.unitNumber,
             location_postalCode: this.postalCode,
+            // @todo Remove use of coordinates
             location_coordinates: "123.1234454, 23.234512",
-            description: this.companyDescription,
-            website: this.companyWebsite,
           },
         });
 
         // Check for success with resPartner and throw for signup logic to catch
         if (!resPartner.success) throw new Error(resPartner.error);
-        //
-        //
-        //
 
         // Show dialog to inform user to verify email and allow them to redirect to login view
         this.verifyEmailDialog = true;
@@ -342,11 +326,12 @@ export default {
         this.$error.new(
           this.$error.createError(
             this.$error.ERROR.level.RETRY,
-            this.$error.ERROR.custom("Business Registration failed")
+            this.$error.ERROR.custom("Business Registration failed"),
+            error.message
           )
         );
       } finally {
-        // Remove loader after login logic completes regardless of whether signup failed or succeeded
+        // Remove loader after signup logic completes regardless if it failed or succeeded
         // Inside finally to ensure execution even if catch block was ran
         this.$loader.clear(loaderRequestID);
       }

@@ -30,8 +30,8 @@
       <br />
       <h4 class="font-weight-light">
         Don't have an account?
-        <router-link :to="{ name: 'signup' }">
-          Sign up here!
+        <router-link :to="{ name: 'CreateBusiness' }">
+          Register as a Partner with us now!
         </router-link>
       </h4>
 
@@ -91,6 +91,7 @@ export default {
         // Create new user error and show with ErrorDialog
         const userError = this.$error.createError(
           this.$error.ERROR.level.RETRY,
+          // @todo Change this to use the AUTH error type then
           this.$error.ERROR.custom(
             "Authentication Failed",
             getErrorMessage(error) || error.message
