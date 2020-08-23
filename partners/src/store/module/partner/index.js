@@ -17,15 +17,19 @@ export default {
   },
   getters: {},
   actions: {
-    async getPartnerDetails({ state, commit, dispatch }, partnerID) {
-      const response = await apiWithLoader.get(`/partner/${partnerID}`);
+    async getPartnerDetails({ rootState, commit, dispatch }) {
+      const response = await apiWithLoader.get(
+        `/partner/${rootState.user.partnerID}`
+      );
       if (!response.success)
         return apiError(response, () => dispatch("getPartnerDetails"));
 
       commit("setter", ["partner", response.partner]);
     },
-    async getPartnerTags({ state, commit, dispatch }, partnerID) {
-      const response = await apiWithLoader.get(`/tags/partner/${partnerID}`);
+    async getPartnerTags({ rootState, commit, dispatch }) {
+      const response = await apiWithLoader.get(
+        `/tags/partner/${rootState.user.partnerID}`
+      );
       if (!response.success)
         return apiError(response, () => dispatch("getPartnerTags"));
 

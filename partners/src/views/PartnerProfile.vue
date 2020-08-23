@@ -1,17 +1,17 @@
 <template>
   <v-main id="PartnerProfile">
     <v-row>
-      <v-col cols="12" sm="3">
+      <v-col cols="8" sm="2">
         <v-card outlined ref="form">
           <br />
           <br />
 
-          <v-avatar size="140">
-            <img
-              src="http://mimgnews1.naver.net/image/433/2018/06/21/0000046075_001_20180621082632801.jpg"
-              alt="John"
-            />
-          </v-avatar>
+          <!-- @todo Load the partner pic instead -->
+          <!-- @todo Allow partner admin to modify the partner images -->
+          <img
+            src="http://mimgnews1.naver.net/image/433/2018/06/21/0000046075_001_20180621082632801.jpg"
+            alt="Partner Main Image"
+          />
 
           <br />
           <br />
@@ -19,14 +19,14 @@
           <v-list-item two-line>
             <v-list-item-content>
               <v-list-item-title>{{ partner.name }}</v-list-item-title>
-              <v-list-item-subtitle
-                >Number of employees:
-                {{ numberOfEmployees }}</v-list-item-subtitle
-              >
-              <v-list-item-subtitle
-                >Number of Classes:
-                {{ numberOfClass.length }}</v-list-item-subtitle
-              >
+              <v-list-item-subtitle>
+                Number of employees:
+                {{ numberOfEmployees }}
+              </v-list-item-subtitle>
+              <v-list-item-subtitle>
+                Number of Classes:
+                {{ numberOfClass.length }}
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-card>
@@ -176,8 +176,7 @@
 </template>
 
 <script>
-import MapImage from "@/components/MapImage";
-import api from "../store/utils/fetch";
+// import MapImage from "@/components/MapImage";
 import { mapState } from "vuex";
 
 export default {
@@ -185,16 +184,16 @@ export default {
   components: {
     // MapImage,
   },
-  props: {
-    partnerID: {
-      default: 1,
-      type: Number,
-    },
+
+  created() {
+    // @todo All these actions should be cacheable as they should not be re-called over and over again which will overload the API
+    this.$store.dispatch("partner/getPartnerDetails");
+    this.$store.dispatch("partner/getPartnerTags");
+    this.$store.dispatch("employees/getEmployees");
   },
+
   data() {
     return {
-      numberOfEmployees: undefined,
-      numberOfClass: {},
       partnerTagsList: ["tech", "cooking", "lifestyle", "music", "art"],
 
       nameRules: [
@@ -204,18 +203,22 @@ export default {
       addressRules: [(v) => !!v || "Please fill is the required space"],
     };
   },
-  created() {
-    this.$store.dispatch("partner/getPartnerDetails", this.partnerID);
-    this.$store.dispatch("partner/getPartnerTags", this.partnerID);
+
+  computed: {
+    ...mapState("partner", ["partner", "partnerTags"]),
+    numberOfEmployees() {
+      return Object.keys(this.$store.state.employees.employees).length;
+    },
+    numberOfClass() {
+      return Object.keys(this.$store.state.classes.classes).length;
+    },
   },
+
   methods: {
     remove(item) {
       this.partnerTags.splice(this.partnerTags.indexOf(item), 1);
       this.partnerTags = [...this.partnerTags];
     },
-  },
-  computed: {
-    ...mapState("partner", ["partner", "partnerTags"]),
   },
 };
 </script>
@@ -224,16 +227,5 @@ export default {
 #PartnerProfile {
   margin: 1em;
   margin-top: 1em;
-  /* margin-left: 2em; */
-  /* text-align: left; */
-}
-.v-text-field input {
-  font-size: 1.5em;
-}
-.v-label input {
-  font-size: 1.5em;
-}
-.text {
-  font-size: 1.5em;
 }
 </style>
