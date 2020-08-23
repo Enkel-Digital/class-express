@@ -72,9 +72,17 @@ router.post("/new", express.json(), async (req, res) => {
     // tl;dr Firebase auth like google ignores the email RFC and forces email case-insensitivity
     accountCreationRequest.email = accountCreationRequest.email.toLowerCase();
 
+    // @todo Add email validation
+
     // @todo Check if the account is already created
 
-    await SQLdb("new_partnerAccounts").insert(accountCreationRequest);
+    // Only insert the allowed values
+    await SQLdb("new_partnerAccounts").insert({
+      partnerID: accountCreationRequest.partnerID,
+      email: accountCreationRequest.email,
+      token: accountCreationRequest.token,
+      admin: accountCreationRequest.admin,
+    });
 
     // Generate link for user to click
     // Encode the data object to base64 to pass it along safely via the URL
