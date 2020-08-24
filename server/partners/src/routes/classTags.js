@@ -10,6 +10,7 @@
 const express = require("express");
 const router = express.Router();
 const SQLdb = require("@enkeldigital/ce-sql");
+const getClassTags = require("../db/getClassTags");
 const auth = require("../middleware/auth");
 const onlyOwnResource = require("../middleware/onlyOwnResource");
 
@@ -28,10 +29,7 @@ router.get("/:classID", async (req, res) => {
 
     res.json({
       success: true,
-      // Map it out to only contain the tag itself.
-      tags: (await SQLdb("classTags").where({ classID }).select("tag")).map(
-        (tagObject) => tagObject.tag
-      ),
+      tags: await getClassTags(classID),
     });
   } catch (error) {
     logger.error(error);

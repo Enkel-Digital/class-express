@@ -8,6 +8,7 @@
 const express = require("express");
 const router = express.Router();
 const SQLdb = require("@enkeldigital/ce-sql");
+const getClassTags = require("../../db/getClassTags");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:class");
@@ -26,8 +27,14 @@ router.get("/details/:classID", async (req, res) => {
       .where("deleted", false)
       .first();
 
-    if (classObject) res.json({ success: true, class: classObject });
-    else res.status(404).json({ success: false, error: "No such Class" });
+    if (!classObject)
+      return res.status(404).json({ success: false, error: "No such Class" });
+
+    // @todo Can we achieve this using a SQL JOIN?
+    // Inject classTags in as an array
+    classObject.tags = await getClassTags(classID);
+
+    res.json({ success: true, class: classObject });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });
