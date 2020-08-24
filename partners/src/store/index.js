@@ -48,10 +48,11 @@ export default new Vuex.Store({
      * Main init function of store that calls all the other init actions from all the modules
      * @function init
      */
-    async init({ dispatch }) {
+    async init({ dispatch, state }) {
       console.log("Initializing vuex store and its modules...");
 
-      await dispatch("points/init");
+      dispatch("points/init");
+      dispatch("partner/getPartnerDetails");
     },
     /**
      * Function to get all the user's details

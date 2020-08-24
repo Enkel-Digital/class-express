@@ -5,6 +5,6 @@
 export default function initialState() {
   return {
     classes: {},
-    partners: {},
+    review: {},
   };
 }
