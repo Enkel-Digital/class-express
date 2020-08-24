@@ -18,7 +18,7 @@ export default {
       return this.$store.state.classes.classes[this.classID];
     },
     partner() {
-      return this.$store.state.classes.partners[this.partnerID];
+      return this.$store.state.partner.partner;
     },
     coordinates() {
       // If image src is specified, ignore coordinates calculation
@@ -28,9 +28,7 @@ export default {
       // null coalescing to protect against undefined if clas or partner object is not loaded yet.
       if (this.clas)
         return (
-          this.clas?.location_coordinates ||
-          this.$store.state.classes.partners[this.clas.partnerID]
-            ?.location_coordinates
+          this.clas?.location_coordinates || this.partner?.location_coordinates
         );
       else if (this.partner) return this.partner?.location_coordinates;
       else return undefined; // If neither clas nor partner is loaded yet, return nothing first

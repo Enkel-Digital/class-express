@@ -12,7 +12,7 @@
           </v-card>
 
           <v-card max width="450">
-            @todo Implement carousel to show all class images
+            <!-- @todo Implement carousel to show all class images -->
             <!-- <v-carousel height="400">
               <v-carousel-item
                 v-for="(pictureSrc, i) in classDetails.pictureSources"
@@ -37,7 +37,7 @@
 
             <v-divider />
 
-            <v-responsive id="reviews-card" class="mx-auto">
+            <v-responsive v-if="review" id="reviews-card" class="mx-auto">
               <v-list-item>
                 <v-list-item-content>
                   <p class="overline">
@@ -57,8 +57,6 @@
                     {{ review.ratings }} / 5 based on
                     {{ review.numberOfReviews }} reviews
                   </v-list-item-subtitle>
-
-                  <v-list-item-subtitle v-else>Loading...</v-list-item-subtitle>
                 </v-list-item-content>
 
                 <v-btn
@@ -134,9 +132,14 @@
 import MapImage from "@/components/MapImage";
 import api from "../store/utils/fetch";
 import unixseconds from "unixseconds";
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 
-import getClassAndPartnerMixin from "../utils/getClassAndPartnerMixin";
+import getClassMixin from "../utils/getClassMixin";
+
+/*
+  @todo SHOULD THIS be an iframe instead?
+  @todo Iframe with supporting controls/edit buttons at the side?
+*/
 
 export default {
   name: "ClassDetails",
@@ -144,22 +147,22 @@ export default {
   components: {
     MapImage,
   },
-  mixins: [getClassAndPartnerMixin],
+
+  mixins: [getClassMixin],
 
   created() {
-    // this.getClassDetails();
-    // this.getClassReviews();
     this.$store.dispatch("classes/getReview", this.classID);
   },
+
   props: ["classID", "selectedTime"],
+
   methods: {
-    // ...mapActions("classes", [
-    //   "toggleFavouriteClass",
-    //   "reserveClass",
-    //   "cancelClass",
-    // ]),
+    ...mapActions("classes", ["cancelClass"]),
   },
+
   computed: {
+    ...mapState("partner", ["partner"]),
+    ...mapState("classes", ["review"]),
     dateObject() {
       return this.selectedTime
         ? this.moment.unix(parseInt(this.selectedTime))
@@ -167,16 +170,6 @@ export default {
     },
     clas() {
       return this.$store.state.classes.classes[this.classID];
-    },
-    partnerID() {
-      // Null coalescing to prevent failure when clas is still being loaded and is undefined
-      return this.clas?.partnerID;
-    },
-    partner() {
-      return this.$store.state.classes.partners[this.partnerID];
-    },
-    review() {
-      return this.$store.state.classes.review;
     },
   },
 };

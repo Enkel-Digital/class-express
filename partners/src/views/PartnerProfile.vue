@@ -183,6 +183,7 @@ export default {
 
   created() {
     // @todo All these actions should be cacheable as they should not be re-called over and over again which will overload the API
+    // Either remove get partner detial here or implement a cache in the API plus action.
     this.$store.dispatch("partner/getPartnerDetails");
     this.$store.dispatch("partner/getPartnerTags");
     this.$store.dispatch("employees/getEmployees");
