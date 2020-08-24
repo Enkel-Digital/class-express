@@ -10,6 +10,7 @@
 const express = require("express");
 const router = express.Router();
 const SQLdb = require("@enkeldigital/ce-sql");
+const getPartnerTags = require("../db/getPartnerTags");
 const auth = require("../middleware/auth");
 const onlyOwnResource = require("../middleware/onlyOwnResource");
 
@@ -18,6 +19,7 @@ const logger = createLogger("routes:users");
 
 /**
  * Get all tags of a partner
+ * NOTICE This should normally not be used, as GET partner details will include the tags
  * @name GET /tags/partner/:partnerID
  * @function
  * @param {String} partnerID
@@ -29,10 +31,7 @@ router.get("/:partnerID", async (req, res) => {
 
     res.json({
       success: true,
-      // Map it out to only contain the tag itself.
-      tags: (await SQLdb("partnerTags").where({ partnerID }).select("tag")).map(
-        (tagObject) => tagObject.tag
-      ),
+      tags: await getPartnerTags(partnerID),
     });
   } catch (error) {
     logger.error(error);
@@ -55,6 +54,7 @@ router.post("/new", auth, onlyOwnResource, express.json(), async (req, res) => {
     // @todo (Jess to implement) Prevent duplicate tags insertion
 
     // Insert the tags 1 by 1 and wait for all of them to complete.
+    // @todo Can knex take in an array directly?
     await Promise.all(
       tags.map((tag) => SQLdb("partnerTags").insert({ partnerID, tag }))
     );
@@ -83,9 +83,10 @@ router.delete(
     try {
       const { partnerID, tags } = req.body;
 
+      // @todo Can knex take in an array directly?
       await Promise.all(
         tags.map((tag) =>
-          SQLdb("partnerTags").where({ partnerID, tag: tag }).delete()
+          SQLdb("partnerTags").where({ partnerID, tag }).delete()
         )
       );
 
