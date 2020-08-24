@@ -105,7 +105,6 @@
           </v-col>
 
           <v-col cols="12" sm="6">
-            <p class="error">{{ errorMessage }}</p>
             <v-btn
               class="ma-2"
               @click="addNewStartTime"

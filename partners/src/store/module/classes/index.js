@@ -8,10 +8,13 @@ import setter from "../../utils/setter";
 import apiError from "@/store/utils/apiError";
 import apiWithLoader from "@/store/utils/apiWithLoader";
 
-// @todo Remove mock data
-import mock from "../../mockData";
 import { getClass, addClass } from "./getClass";
-import { getPartner, addPartner } from "./getPartner";
+
+// import { getClassSchedule, addClassSchedule } from "./getClassSchedule";
+// import { getPartnerSchedule, addPartnerSchedule } from "./getPartnerSchedule";
+
+import moment from "moment";
+// import unixseconds from "unixseconds";
 
 export default {
   namespaced: true,
@@ -22,33 +25,52 @@ export default {
       // Clear reviews to prevent caching in memory
       Vue.delete(state.review, "userReviews");
     },
-    class(state, { classObject, add, remove }) {
-      if (add) Vue.set(state.classes, classObject.id, classObject);
-      else if (remove) Vue.delete(state.classes, classObject.id);
-      else throw new Error("Invalid action used on updateClassesToFetch");
-    },
     addClass,
-    addPartner,
-  },
-  getters: {
-    /**
-     * @todo Update this to show cancelled past classes
-     */
-    pastClasses(state) {
-      return;
-    },
   },
   actions: {
     getClass,
-    getPartner,
-    async getAllClasses({ commit }) {
-      // @todo Replace with API call
+    /**
+     * Gets all the class of this partner
+     */
+    async getAllClasses({ rootState, dispatch }) {
+      const response = await apiWithLoader.get(
+        `/class/of/${rootState.user.partnerID}`
+      );
 
-      commit("setter", ["classes", mock.classes]);
+      if (!response.success)
+        return apiError(response, () => dispatch("getAllClasses"));
+
+      console.log("response", response);
+
+      dispatch("getClass", response.classIDs);
+    },
+    /**
+     * Get Schedules of a given class and date
+     * @function getClassSchedule
+     * @param {number} [dateCursor=today] unix timestamp of the start of the day in utc
+     */
+    async getClassSchedule(
+      { rootState, commit },
+      { classID, dateCursor = "" }
+    ) {
+      // @todo
+    },
+    async cancelClass({ rootState, commit }, classID) {
+      // @todo
     },
     // @todo Update to get only the basic review data instead of using the whole reviews object
     // API should return result without userReview
     async getReview({ state, commit, dispatch }, classID) {
+      // If review is already in state, ignore request
+      if (state.review && classID === state.review[classID]) return;
+
+      const response = await apiWithLoader.get(`/reviews/class/${classID}`);
+      if (!response.success)
+        return apiError(response, () => dispatch("getReview"));
+
+      commit("setter", ["review", response.reviews]);
+    },
+    async getUserReview({ state, commit, dispatch }, classID) {
       // If review is already in state, ignore request
       if (state.review && classID === state.review[classID]) return;
 
