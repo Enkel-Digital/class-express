@@ -1,6 +1,7 @@
 <template>
   <v-main id="PartnerProfile">
     <v-row>
+      <!-- @todo make the outline resizable -->
       <v-card
         outlined
         class="mx-auto bottom-margin"
@@ -9,12 +10,7 @@
       >
         <!-- @todo Load the partner pic instead -->
         <!-- @todo Allow partner admin to modify the partner images -->
-        <v-img
-          src="http://mimgnews1.naver.net/image/433/2018/06/21/0000046075_001_20180621082632801.jpg"
-          alt="Partner Main Image"
-          max-width="20em"
-          max-height="20em"
-        />
+        <v-img :src="partner.pictureSources" alt="Partner Main Image" />
 
         <v-list-item two-line>
           <v-list-item-content>
@@ -74,8 +70,8 @@
 
           <!-- @todo Integrate with API to show suggestions -->
           <v-combobox
-            v-model="partnerTags"
-            :items="partnerTagsList"
+            v-model="partner.tags"
+            :items="partnerTagsListAutocompleteItems"
             chips
             color="#60696c"
             clearable
@@ -174,6 +170,8 @@
 </template>
 
 <script>
+// @todo Add icons to show verification status and buttons for partners to request for verification
+
 // import MapImage from "@/components/MapImage";
 import { mapState } from "vuex";
 
@@ -192,7 +190,14 @@ export default {
 
   data() {
     return {
-      partnerTagsList: ["tech", "cooking", "lifestyle", "music", "art"],
+      // @todo Integrate this with API for a list of popular/recommended tags
+      partnerTagsListAutocompleteItems: [
+        "tech",
+        "cooking",
+        "lifestyle",
+        "music",
+        "art",
+      ],
 
       nameRules: [
         (v) => !!v || "Name is required",
@@ -203,7 +208,7 @@ export default {
   },
 
   computed: {
-    ...mapState("partner", ["partner", "partnerTags"]),
+    ...mapState("partner", ["partner"]),
     numberOfEmployees() {
       return Object.keys(this.$store.state.employees.employees).length;
     },
@@ -212,7 +217,9 @@ export default {
     },
   },
 
+  // @todo Implement the sync changes method, similiar to settings view of App.
   methods: {
+    // @todo Fix this method.
     remove(item) {
       this.partnerTags.splice(this.partnerTags.indexOf(item), 1);
       this.partnerTags = [...this.partnerTags];
