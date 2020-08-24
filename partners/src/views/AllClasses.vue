@@ -30,34 +30,17 @@
 </template>
 
 <script>
-import api from "../store/utils/fetch";
+import { mapState } from "vuex";
 
 export default {
   name: "AllClasses",
-  data() {
-    return {
-      classes: [],
-    };
-  },
   directives: {
     ResizeText: () => import("vue-resize-text"),
   },
-  props: {
-    partnerID: {
-      default: 1,
-      type: Number,
-    },
-  },
   created() {
-    this.getAllClasses();
+    this.$store.dispatch("classes/getAllClasses");
   },
-  methods: {
-    async getAllClasses() {
-      this.classes = (
-        await api.get(`/class/details/of/${this.partnerID}`)
-      ).class;
-    },
-  },
+  computed: mapState("classes", ["classes"]),
 };
 </script>
 
