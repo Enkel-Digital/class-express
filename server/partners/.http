@@ -83,7 +83,7 @@ content-type: application/json
 # GET /class/details/:classID
 GET {{host}}/class/details/1
 
-### Get class of partner
+### Get all the IDs of a partner's classes
 # GET /class/of/:partnerID
 GET {{host}}/class/of/1
 {{authHeader}}
@@ -99,12 +99,6 @@ content-type: application/json
         "description": "New description for class"
     }
 }
-
-# @todo to remove this and replace with just return the classID only then the getClass will handle it in the background
-### Get all classes of a partner
-# GET /class/details/of/:partnerID
-GET {{host}}/class/details/of/1
-{{authHeader}}
 
 ### Favourite count of class
 # GET /favourites/class/:classID

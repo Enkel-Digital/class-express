@@ -35,6 +35,8 @@ router.get("/details/:classID", async (req, res) => {
       .where("deleted", false)
       .first();
 
+    // @todo the favourites should be returned together in this API
+
     if (classObject) res.json({ success: true, class: classObject });
     else res.status(404).json({ success: false, error: "No such Class" });
   } catch (error) {
@@ -44,31 +46,12 @@ router.get("/details/:classID", async (req, res) => {
 });
 
 /**
- * Get class details of a partner
+ * Get all the IDs of a partner's classes
+ * @todo Only allow partnerAccounts of this partner access
  * @name GET /class/details/of/:partnerID
  * @returns {object} Class object
  */
-router.get("/details/of/:partnerID", async (req, res) => {
-  try {
-    const { partnerID } = req.params;
-
-    const classObject = await SQLdb("classes")
-      .where({ partnerID: partnerID })
-      .where("deleted", false);
-    if (classObject) res.json({ success: true, class: classObject });
-    else res.status(404).json({ success: false, error: "No such Class" });
-  } catch (error) {
-    logger.error(error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-/**
- * Get classes of partner
- * @name GET /class/of/:partnerID
- * @returns {object} Array of classIDs
- */
-router.get("/of/:partnerID", auth, onlyOwnResource, async (req, res) => {
+router.get("/of/:partnerID", async (req, res) => {
   try {
     const { partnerID } = req.params;
 
@@ -78,14 +61,13 @@ router.get("/of/:partnerID", auth, onlyOwnResource, async (req, res) => {
         .where({ partnerID })
         .where("deleted", false)
         .select("id")
-    ).map((classObject) => classObject.id);
+    ).map((clas) => clas.id); // @todo Optimize this todo
 
-    if (arrayOfClassIDs.length) res.json({ success: true, arrayOfClassIDs });
-    else
-      res.status(404).json({
-        success: false,
-        error: `Partner ${partnerID} does not have any classes`,
-      });
+    res.json({
+      success: true,
+      numberOfClasses: arrayOfClassIDs.length,
+      classIDs: arrayOfClassIDs,
+    });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ success: false, error: error.message });
