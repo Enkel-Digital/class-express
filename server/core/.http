@@ -3,8 +3,7 @@
 @port = 3000
 @host = {{hostname}}:{{port}}
 @firebaseAuthApiKey = AIzaSyAXQkdXjxHpZbEYNTXoyfyBXfWVEbm-tCA
-@authToken = Bearer {{getAuth.response.body.idToken}}
-@authHeader = Authorization: {{authToken}}
+@authHeader = Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Create api_tester account if none
 # @name signUp

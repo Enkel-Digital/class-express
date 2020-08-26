@@ -2,10 +2,8 @@
 @hostname = http://localhost
 @port = 3001
 @host = {{hostname}}:{{port}}
-# This should be the apiKey for the partners' firebase project
 @firebaseAuthApiKey = AIzaSyA6WspXWorAK_1HiwLAVht7-ujoUDdWsAs
-@authToken = Bearer {{getAuth.response.body.idToken}}
-@authHeader = Authorization: {{authToken}}
+@authHeader = Authorization: Bearer {{getAuth.response.body.idToken}}
 
 ### Create api_tester account if none
 # @name signUp
