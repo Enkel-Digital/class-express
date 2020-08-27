@@ -150,9 +150,12 @@ export default {
           );
 
         // Parse the encoded accountCreationRequest object from base64 ONLY AFTER validating with the API
-        const { email, admin } = JSON.parse(atob(this.accountCreationRequest));
+        const { name, email, admin } = JSON.parse(
+          atob(this.accountCreationRequest)
+        );
 
         // Attached the values parsed out, onto the component to show on the UI
+        this.name = name;
         this.parsed_email = email;
         this.parsed_admin = admin;
       } catch (error) {
