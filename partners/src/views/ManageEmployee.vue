@@ -185,10 +185,10 @@ export default {
           partnerID: this.$store.state.user.partnerID,
         },
         // Set the redirectUrl according to the build environment to allow for local testing
+        // @todo Update the domain once it is confirmed
         redirectUrl:
           process.env.NODE_ENV.toLowerCase() === "production"
-            ? // @todo Update the URL once it is confirmed
-              "https://partners.enkeldigital.com/#/signup"
+            ? "https://partners.enkeldigital.com/#/signup"
             : "http://localhost:8081/#/signup",
       });
 
@@ -205,9 +205,11 @@ export default {
       };
     },
 
-    // @todo
-    async deleteEmployee() {
-      // @todo Add a confirmation check
+    async deleteEmployee(employeeID) {
+      // @todo Add a confirmation check, either using alert or a in app dialog
+
+      const response = await apiWithLoader.delete(`/user/${employeeID}`);
+      if (!response.success) return apiError(response, this.deleteEmployee);
 
       // Close the employee details dialog once delete completes
       this.employeeDetailDialog = false;
