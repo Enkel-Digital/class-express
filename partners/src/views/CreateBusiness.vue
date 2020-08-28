@@ -80,7 +80,7 @@
               width="20em"
               color="#60696c"
               outlined
-              @click="validateOwnerLoginDetails"
+              @click="validateOwnerAndNext"
             >
               Continue
             </v-btn>
@@ -99,7 +99,6 @@
                 prepend-icon="mdi-card-account-details"
               />
 
-              <!-- @todo Use the user's email as the default email here, but do not share the v-model -->
               <v-text-field
                 v-model="companyEmail"
                 :rules="emailRules"
@@ -168,6 +167,7 @@
                 required
               />
 
+              <!-- @todo Change to use auto complete instead of combo box, to not show the selection in the "items" list -->
               <v-combobox
                 v-model="partnerTags"
                 :items="partnerTagsList"
@@ -207,7 +207,7 @@
               outlined
               color="#60696c"
               width="20em"
-              @click="validateOwnerCompanyDetails"
+              @click="validateCompanyDetails"
             >
               Continue
             </v-btn>
@@ -236,10 +236,10 @@ export default {
   name: "CreateBusiness",
   data() {
     return {
-      verifyEmailDialog: false,
+      // Value used to control the stepper component.
+      step: 1,
 
-      // @todo To replace with API call
-      partnerTagsList: ["tech", "cooking", "lifestyle", "music", "art"],
+      verifyEmailDialog: false,
 
       name: "",
       email: "",
@@ -253,9 +253,7 @@ export default {
       unitNumber: "",
       postalCode: "",
       companyDescription: "",
-      partnerTags: [], // @todo Shouldnt this be an array?
-
-      step: 1,
+      partnerTags: [],
 
       simpleRequiredRule: [(v) => !!v || "Required"],
       emailRules: [
@@ -269,15 +267,25 @@ export default {
       postalRules: [(v) => (v && v.length <= 6) || "Postal code is invalid"],
     };
   },
-  methods: {
-    validateOwnerLoginDetails() {
-      if (this.$refs.ownerLoginDetails.validate()) this.step++;
+
+  computed: {
+    partnerTagsList() {
+      // @todo To replace with API call to get the most popular tags
+      return ["tech", "cooking", "lifestyle", "music", "art"];
     },
-    validateOwnerCompanyDetails() {
+  },
+
+  methods: {
+    validateOwnerAndNext() {
+      if (this.$refs.ownerLoginDetails.validate()) this.step++;
+
+      // Set companyEmail to the owner's email by default
+      this.companyEmail = this.email;
+    },
+    validateCompanyDetails() {
       if (this.$refs.ownerCompanyDetails.validate()) this.step++;
     },
 
-    // Signups for employee / admin share the same flow, thus signup abstracts the common logic out and wraps calls to the specific signup flows.
     async createPartner() {
       // Show loading screen before signUp logic executes
       const loaderRequestID = this.$loader.new();
@@ -286,6 +294,7 @@ export default {
         // Make lowercase, refer to notes & faq on why this is lowercase.
         // tl;dr Firebase auth like google ignores the email RFC and forces email case-insensitivity
         this.email = this.email.toLowerCase();
+        this.companyEmail = this.companyEmail.toLowerCase();
 
         /*
           await to prevent signout from executing before API completes which might delete JWT before the API call is made due to nature of async call
@@ -295,9 +304,12 @@ export default {
           
           @todo workaround is to set it directly into partners DB, but then set to deleted
         */
-        const resPartner = await api.post("/partner/new", {
+        const response = await api.post("/partner/new", {
           accountCreationRequest: {
-            //
+            // Always defaults to true, as the person that creates the partner, is always the first admin account.
+            admin: true,
+            name: this.name,
+            email: this.email,
           },
           partner: {
             name: this.companyName,
@@ -317,8 +329,8 @@ export default {
           },
         });
 
-        // Check for success with resPartner and throw for signup logic to catch
-        if (!resPartner.success) throw new Error(resPartner.error);
+        // Check for success with response and throw for signup logic to catch
+        if (!response.success) throw new Error(response.error);
 
         // Show dialog to inform user to verify email and allow them to redirect to login view
         this.verifyEmailDialog = true;
