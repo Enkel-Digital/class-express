@@ -90,6 +90,7 @@ router.post("/new", express.json(), async (req, res) => {
     // Parse and get back the data object on the frontend using -> JSON.parse(atob(accountCreationRequest))
     // @todo We might want to sign this to prevent tampering
     const link = `${redirectUrl}?accountCreationRequest=${getBase64({
+      name: accountCreationRequest.name,
       partnerID: accountCreationRequest.partnerID,
       email: accountCreationRequest.email,
       admin: accountCreationRequest.admin,
@@ -99,12 +100,13 @@ router.post("/new", express.json(), async (req, res) => {
     // Send user email verification link only after successful DB insert
     // await to ensure only respond with success only after the mail has been sent
     // @todo To use sendgrid template instead of this in code mail template
+    // @todo Change the email domain once confirmed
     await sendMail({
       to: accountCreationRequest.email,
       from: "Accounts@classexpress.com",
       subject: `New ClassExpress partner "${
         accountCreationRequest.admin ? "admin" : "employee"
-      }" account created`,
+      }" account created for ${accountCreationRequest.name}`,
       html:
         `A ClassExpress partner account has been created for this email.<br />` +
         "Click the link to complete account creation now or safely ignore this email if you did not request for this.<br />" +
