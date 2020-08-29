@@ -57,6 +57,33 @@ Table partners {
   deleted boolean [default: false]
 }
 
+// Table used to temporarily store new partners creation requests and will be removed once verified by CE admins
+// This will also be used later for owner identify verification via a signup link sent to the owner's email
+Table new_partners {
+  id int [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+
+  // The name and email of the admin that created this partner, used once partner is verified for the partnerAccount's "accountCreationRequest"
+  createdByName varchar [not null]
+  createdByEmail varchar [not null, unique] // Unique constraint to prevent spams
+
+  // These fields are the same as those in partners table, upon verification, these data will be inserted to partners table
+  name varchar [not null]
+  description varchar [not null]
+  email varchar [not null, unique] // Company email
+  // @todo might not need country code here? we should include country code somewhere else? or base64 encode this...
+  phoneNumber varchar [not null, unique] // Includes area code
+  location_address varchar [not null]
+  location_coordinates varchar [not null] // @todo shouldnt this be generated instead??
+  location_postalCode varchar [null]
+  website varchar [null, unique]
+  pictureSources varchar [null] // Perhaps use an array?
+  
+  // Tags column to store all the tags as a single comma seperated string first.
+  // After partner verification, split the string into an array and insert into partnerTags table
+  tags varchar [null]
+}
+
 // Tags describing the Partners / Business organisations.
 Table partnerTags {
   id bigint [pk, increment, not null, unique]
