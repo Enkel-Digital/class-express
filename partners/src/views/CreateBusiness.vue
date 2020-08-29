@@ -305,9 +305,8 @@ export default {
           @todo workaround is to set it directly into partners DB, but then set to deleted
         */
         const response = await api.post("/partner/new", {
+          // The person that creates the partner, will always have the first admin account.
           accountCreationRequest: {
-            // Always defaults to true, as the person that creates the partner, is always the first admin account.
-            admin: true,
             name: this.name,
             email: this.email,
           },
@@ -326,6 +325,7 @@ export default {
             location_postalCode: this.postalCode,
             // @todo Remove use of coordinates
             location_coordinates: "123.1234454, 23.234512",
+            tags: this.partnerTags,
           },
         });
 
