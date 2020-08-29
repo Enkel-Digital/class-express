@@ -107,8 +107,14 @@ router.post("/new", express.json(), async (req, res) => {
     if (!validateURL(partner.website))
       throw new Error("Website URL should be HTTPS only");
 
+    // Tags is stored together with new partner creation request because of the schema constraint
+    // we cannot store in the partnerTags table before partner is created.
+    // Join the tags with commas so that we can store it in a single column of new_partners table.
+    partner.tags = partner.tags.join();
+
     // Insert partner details alongside data from accountCreationRequest into temporary DB, for CE admins to verify
     await SQLdb("new_partners").insert({
+      // @todo Enfore a write schema to prevent extra values from breaking the insert process
       ...partner,
       createdByName: accountCreationRequest.name,
       createdByEmail: accountCreationRequest.email,
