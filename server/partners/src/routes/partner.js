@@ -141,15 +141,14 @@ router.post("/new", express.json(), async (req, res) => {
 
     // Send email to the company email address to let them know that verification is in progress
     await sendMail({
-      to: partner.companyEmail,
+      to: partner.email,
       from: "Accounts@classexpress.com",
       subject: `ClassExpress partner registration for ${partner.name}`,
       // @todo Use a sendgrid template instead
       html:
-        `A new ClassExpress partner has been registered and is now waiting for verification.<br />` +
-        "Here are the details.<br />" +
-        "<br />" +
-        htmlDetails,
+        `Hey there, this email has been registered as the main Company Email for ${partner.name}.<br />` +
+        `Any important notifications will all be sent here.<br />` +
+        `You will be notified via this email once this business has been verified.<br />`,
     });
 
     // Notify the business owner that their business is awaiting verification, and they will get another email for signup once verified
