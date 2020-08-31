@@ -1,8 +1,7 @@
 /**
- * Express Router for employees related routes.
- * Mounted on /employees
- * @author Jessica
- * @module Employees routes
+ * Business logic for creating a new pending partner account
+ * @author JJ
+ * @module newPartnerAccount
  */
 
 const SQLdb = require("@enkeldigital/ce-sql");

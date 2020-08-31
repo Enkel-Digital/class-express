@@ -169,8 +169,94 @@ router.post("/new", express.json(), async (req, res) => {
         "Once your business is verified, we will send this email a link to create an admin account for the business.<br />" +
         "<br />" +
         // @todo Replace the domain once it has been set
-        "Thank you so much for choosing us! If you need any further assistance, please contact us <a href='mailto:admin@enkeldigital.com'>here</a>.<br />",
+        "Thank you so much for choosing us! If you need any further assistance, please contact us <a href='mailto:classexpress@enkeldigital.com'>here</a>.<br />",
     });
+
+    // @todo Instead of 201 for created, maybe 200 as it is processing? or a better code?
+    res.status(201).json({ success: true });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * CE Admin approves a new partner
+ * @todo Only allow CE admins to call this API, thus perhaps this should be moved to the admin API service
+ * @name POST /partner/new/approve/
+ * @param {Object} pendingPartnerID
+ * @returns {object} success indicator
+ */
+router.post("/new/approve", express.json(), async (req, res) => {
+  try {
+    const { pendingPartnerID } = req.body;
+
+    // Verify pendingPartnerID by getting the partner creation request. Will be undefined if invalid.
+    const partner = await SQLdb("new_partners").where({ id: pendingPartnerID });
+    if (!partner) throw new Error("Invalid pending partner ID");
+
+    // Insert partner data from the partner creation request into partners table
+    // Inserting values 1 by 1 instead of spreading in to ensure only values of, matching
+    // columns are inserted, as new_partners have more columns then partners table
+    // Get back partnerID of the newly inserted row
+    const partnerID = await SQLdb("partners")
+      .insert({
+        createdBy: partner.createdBy,
+        approvedBy: partner.approvedBy,
+        name: partner.name,
+        description: partner.description,
+        email: partner.email,
+        phoneNumber: partner.phoneNumber,
+        location_address: partner.location_address,
+        location_coordinates: partner.location_coordinates,
+        location_postalCode: partner.location_postalCode,
+        website: partner.website,
+        pictureSources: partner.pictureSources,
+      })
+      .returning("id");
+
+    // Generate array of partner tag objects like this --> [{ partnerID: 1, tag: "tag_name" },] before inserting as seperate rows
+    await SQLdb("partnerTags").insert(
+      partner.tags.split(",").map((tag) => ({ tag, partnerID }))
+    );
+
+    // Send email to company email to let them know that verification has been complete
+    await sendMail({
+      to: partner.email,
+      from: "Accounts@classexpress.com",
+      subject: `${partner.name}'s ClassExpress partner registration`,
+      // @todo Use a sendgrid template instead
+      html:
+        `Hey there, great news! ${partner.name} is now verified for Class Express!<br />` +
+        `The business owner needs to check their email inbox for a link to complete their account creation process.<br />`,
+    });
+
+    // Notify the business owner that their business is now verified, and they will get another email right after this
+    await sendMail({
+      to: partner.createdByEmail,
+      from: "Accounts@classexpress.com",
+      subject: `Hi ${partner.createdByName}, ${partner.name}'s ClassExpress partner has just been verified and approved`,
+      // @todo Use a sendgrid template instead
+      html:
+        `Hey there, great news! ${partner.name} is now verified for Class Express!<br />` +
+        "You will receive another email right after this with a link to complete your account creation process.<br />",
+    });
+
+    // send first admin the signup link
+    // @todo Might want to set this to no expiry date
+    await newPartnerAccount(
+      {
+        admin: true,
+        partnerID: partner.id,
+        email: partner.createdByEmail,
+        name: partner.createdByName,
+      },
+      // redirectUrl,
+      // ""
+    );
+
+    // @todo Update search service to push partner into algolia
+    // This is done right after business is verified even if first admin partner account is not created yet
 
     res.status(201).json({ success: true });
   } catch (error) {
@@ -178,5 +264,7 @@ router.post("/new", express.json(), async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
+
+// @todo create 1 more API for admin to unapprove partner creation
 
 module.exports = router;
