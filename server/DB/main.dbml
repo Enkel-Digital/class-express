@@ -11,6 +11,7 @@ Project ClassExpress {
 }
 
 // FS
+// NOTE: There is no verified_email field as the app signup flow built explicitly requires email verification before user is allowed to login
 Table userAccounts {
   id int [pk, increment, not null, unique]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
@@ -23,7 +24,6 @@ Table userAccounts {
   timezone varchar [not null]
   profilePictureURL varchar [null]
   currency varchar [not null]
-  verified_email boolean [default: false]
   verified_phone boolean [default: false]
   deleted boolean [default: false]
 }
@@ -34,10 +34,15 @@ Table userSettings {
   notification_email boolean [null]
   notification_mobile boolean [null]
   // @todo Add a updatedAt timestamp
+
+  // @todo
+  // Instead of fixed columns, maybe should just have a settings varchar column where frontend reads and parses it themselves
+  // so in effect using that column as kind of a key value store...  Using SQL instead of document store to keep data together in the same DB and service
 }
 
 // FS
 // Partners / Business organisations.
+// NOTE: There is no verified_email field as the signup flow explicitly requires email verification before firebase auth account is even created
 Table partners {
   id int [pk, increment, not null, unique]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
@@ -45,13 +50,12 @@ Table partners {
   description varchar [not null]
   email varchar [not null, unique] // Company email
   // @todo might not need country code here? we should include country code somewhere else? or base64 encode this...
-  phoneNumber varchar [not null] // Includes area code
+  phoneNumber varchar [not null, unique] // Includes area code
   location_address varchar [not null]
   location_coordinates varchar [not null] // @todo shouldnt this be generated instead??
   location_postalCode varchar [null]
-  website varchar [null]
+  website varchar [null, unique]
   pictureSources varchar [null] // Perhaps use an array?
-  verified_email boolean [default: false]
   verified_phone boolean [default: false]
   verified boolean [default: false] // Is the business verified by us (Class Express)?
   deleted boolean [default: false]
@@ -103,6 +107,7 @@ Table partnerAccounts {
   permissions varchar // Perhaps use an array?
   email varchar [not null, unique]
   phoneNumber varchar [null] // Includes area code
+  profilePictureURL varchar [null] // @todo Might not be stored here
   verified_email boolean [default: false]
   verified_phone boolean [default: false]
   deleted boolean [default: false]
@@ -217,10 +222,9 @@ Table classTags {
 Table classSchedule {
   id bigint [pk, increment, not null]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
-  // @todo Technically, if storing the whole rruleset, each class should only have a single row.
-  // classID int [ref: - classes.id, not null]
-  classID int [ref: > classes.id, not null]
   // @todo Add updatedAt to track when this is updated for analytics purposes
+  // Allow multiple rrules per class
+  classID int [ref: > classes.id, not null]
   rruleSetString varchar [not null]
 }
 
