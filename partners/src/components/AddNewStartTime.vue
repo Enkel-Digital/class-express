@@ -1,7 +1,4 @@
 <template>
-  <!-- <v-main id="AddNewStartTime"> -->
-  <!-- Select start times in the week -->
-  <!-- <v-main id="AddNewStartTime"> -->
   <v-responsive>
     <v-card outlined ref="form">
       <v-card-text>
@@ -10,7 +7,6 @@
         </h2>
         <br />
 
-        <!-- <br /> -->
         <v-row>
           <v-col cols="12" sm="4">
             <v-select
@@ -31,9 +27,6 @@
             />
           </v-col>
 
-          <!-- <h3 style="color: #455a64;" class="text-left font-weight-light">
-          START TIME
-        </h3> -->
           <v-col cols="12" sm="8">
             <v-menu
               ref="menu"
@@ -56,7 +49,7 @@
                   height="1.1em"
                   v-bind="attrs"
                   v-on="on"
-                ></v-text-field>
+                />
               </template>
               <v-time-picker
                 v-if="menu2"
@@ -81,12 +74,12 @@
               <v-card max-width="8em" dense outlined>
                 <v-list-item one-line>
                   <v-list-item-content>
-                    <v-list-item-subtitle>{{
-                      getDay(dateTime.day)
-                    }}</v-list-item-subtitle>
                     <v-list-item-subtitle>
-                      {{ getTime(dateTime.time) }}</v-list-item-subtitle
-                    >
+                      {{ getDay[dateTime.day] }}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle>
+                      {{ getTime(dateTime.time) }}
+                    </v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
 
@@ -113,8 +106,8 @@
               width="15em"
               color="#546E7A"
             >
-              Add new start time</v-btn
-            >
+              Add new start time
+            </v-btn>
 
             <v-btn
               class="ma-2"
@@ -124,15 +117,13 @@
               outlined
               color="#546E7A"
             >
-              Reset all timings</v-btn
-            >
+              Reset all timings
+            </v-btn>
           </v-col>
         </v-row>
       </v-card-text>
     </v-card>
   </v-responsive>
-
-  <!-- </v-main> -->
 </template>
 
 <script>
@@ -143,16 +134,15 @@ export default {
   props: ["classLengthInMinutes"],
   data() {
     return {
+      // @todo Better naming
       menu2: false,
       selectedDay: 1,
       selectedTime: "09:00",
       // @todo Sort the array to order by day and time in asc order
       selectedDateTime: [],
-    };
-  },
-  methods: {
-    getDay(dayValue) {
-      return {
+
+      // Simple object to map a int to week day
+      getDay: {
         1: "Monday",
         2: "Tuesday",
         3: "Wednesday",
@@ -160,8 +150,10 @@ export default {
         5: "Friday",
         6: "Saturday",
         7: "Sunday",
-      }[dayValue];
-    },
+      },
+    };
+  },
+  methods: {
     getTime(timeValue) {
       timeValue = timeValue.split(":");
 
@@ -204,21 +196,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.text {
-  font-size: 1.1em;
-}
-.v-text-field input {
-  font-size: 1.1em;
-}
-.v-label input {
-  font-size: 1.1em;
-}
-.class-card {
-  display: inline-block;
-  margin-bottom: 0.5em;
-  font-size: 1.1em;
-
-  margin-top: 0.5em;
-}
-</style>

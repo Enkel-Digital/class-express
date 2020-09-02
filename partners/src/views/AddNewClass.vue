@@ -10,10 +10,11 @@
             <br />
 
             <v-text-field
+              v-autofocus
               v-model="clas.name"
               :rules="nameRules"
-              label="Class Name"
-              placeholder="Basic Guitar"
+              label="Name"
+              placeholder="E.g. Basic Guitar"
               color="#60696c"
               required
             />
@@ -28,6 +29,7 @@
               required
             />
 
+            <!-- @todo Change the v-model -->
             <v-file-input
               v-model="clas.pictures"
               color="#60696c"
@@ -37,7 +39,7 @@
               label="Class Images"
               placeholder="Select Pictures for Your Class"
               :show-size="1000"
-            ></v-file-input>
+            />
 
             <v-combobox
               v-model="clas.classCategory"
@@ -72,28 +74,28 @@
               color="#60696c"
               required
             />
-            <span>
+            <div style="margin-bottom: 2em;">
               length: {{ Math.trunc(clas.length / 60) }} hr
               {{ clas.length % 60 }} mins
-            </span>
-
-            <p class="text-left">
-              You are allowed to use most valid HTML to format your description.
-              Script tags and others are not allowed.
-            </p>
+            </div>
 
             <v-textarea
-              v-autofocus
+              label="Description"
               type="text"
               @change="sanitized = false"
               v-model="clas.description"
               rows="4"
               outlined
-              placeholder="Enter Your Class Description"
+              placeholder="Give your class a Description"
               no-resize
               color="#60696c"
               required
             />
+
+            <p class="text-left">
+              You are allowed to use most valid HTML to format your description.
+              Script tags and others are not allowed.
+            </p>
 
             <p>
               Below is the how your text will look like, click the confirm
@@ -136,7 +138,7 @@
 
             <v-switch
               v-model="addLocationCheckbox"
-              label="Use Non-default External Location"
+              label="Use different location other then your registered business location"
               color="#60696c"
             ></v-switch>
           </v-card-text>
@@ -156,7 +158,7 @@
                   label="Address Line 2"
                   placeholder=""
                   color="#60696c"
-                ></v-text-field>
+                />
 
                 <v-text-field
                   :rules="addressRules"
@@ -164,7 +166,7 @@
                   color="#60696c"
                   placeholder="12-02"
                   required
-                ></v-text-field>
+                />
 
                 <v-text-field
                   :rules="addressRules"
@@ -172,15 +174,16 @@
                   required
                   placeholder="111222"
                   color="#60696c"
-                ></v-text-field>
+                />
 
+                <!-- @todo Change this to show singapore by default, and only allow fixed countries where user is not allowed to enter arbitrary strings -->
                 <v-text-field
                   :rules="addressRules"
                   label="Country"
                   required
                   color="#60696c"
                   placeholder="Singapore"
-                ></v-text-field>
+                />
               </v-col>
             </div>
           </v-expand-transition>
@@ -190,9 +193,6 @@
       <v-col cols="12" sm="4">
         <v-card outlined ref="form" v-model="valid">
           <v-card-text>
-            <!-- <h2 style="color: #455a64;" class="text-left font-weight-light">
-              CLASS START DATE
-            </h2> -->
             <v-menu
               v-model="startDateMenu"
               :close-on-content-click="false"
@@ -204,13 +204,13 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="clas.dateStart"
-                  label="Select Class Start Date"
+                  label="Class Start Date"
                   prepend-icon="mdi-calendar-month"
                   color="#60696c"
                   readonly
                   v-bind="attrs"
                   v-on="on"
-                ></v-text-field>
+                />
               </template>
               <v-date-picker
                 v-model="clas.dateStart"
@@ -218,12 +218,9 @@
                 header-color="#60696c"
                 event-color="#60696c"
                 @input="startDateMenu = false"
-              ></v-date-picker>
+              />
             </v-menu>
 
-            <!-- <h2 style="color: #455a64;" class="text-left font-weight-light">
-              CLASS END DATE
-            </h2> -->
             <v-menu
               v-model="endDateMenu"
               :close-on-content-click="false"
@@ -235,13 +232,13 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="clas.dateEnd"
-                  label="Select Class End Date"
+                  label="End Date (optional)"
                   prepend-icon="mdi-calendar-month"
                   color="#60696c"
                   readonly
                   v-bind="attrs"
                   v-on="on"
-                ></v-text-field>
+                />
               </template>
               <v-date-picker
                 v-model="clas.dateEnd"
@@ -351,6 +348,7 @@ export default {
       changeLocation: true,
       addLocationCheckbox: false,
       allowWalkinCheckbox: false,
+      // @todo What is this used for?
       valid: null,
       nameRules: [
         (v) => !!v || "Name is required",
@@ -433,24 +431,6 @@ export default {
 #AddClasses {
   margin: 4em;
   margin-top: 1em;
-  /* margin-left: 2em; */
   text-align: left;
-}
-.v-text-field input {
-  font-size: 1.1em;
-}
-.v-label input {
-  font-size: 1.1em;
-}
-
-.class-card {
-  display: inline-block;
-  margin-bottom: 0.5em;
-  font-size: 1.1em;
-
-  margin-top: 0.5em;
-}
-.text {
-  font-size: 1.1em;
 }
 </style>
