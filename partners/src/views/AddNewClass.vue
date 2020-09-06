@@ -9,6 +9,8 @@
             </h2>
             <br />
 
+            <!-- @todo Show the SGT somewhere on this page -->
+
             <v-text-field
               v-autofocus
               v-model="clas.name"

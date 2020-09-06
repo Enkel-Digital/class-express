@@ -8,7 +8,7 @@
         <br />
 
         <v-row>
-          <v-col cols="12" sm="4">
+          <v-col cols="4">
             <v-select
               :items="[
                 { text: 'mon', value: 1 },
@@ -22,12 +22,11 @@
               label="Day of the week"
               item-color="#60696c"
               color="#60696c"
-              height="1.1em"
               v-model="selectedDay"
             />
           </v-col>
 
-          <v-col cols="12" sm="8">
+          <!-- <v-col cols="12">
             <v-menu
               ref="menu"
               v-model="menu2"
@@ -42,11 +41,9 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="selectedTime"
-                  label="Select Class Start Time"
-                  prepend-icon="mdi-clock-outline"
+                  label="Start Time"
                   readonly
                   color="#60696c"
-                  height="1.1em"
                   v-bind="attrs"
                   v-on="on"
                 />
@@ -57,13 +54,58 @@
                 color="#60696c"
                 full-width
                 @click:minute="$refs.menu.save(selectedTime)"
-              ></v-time-picker>
+              />
             </v-menu>
+          </v-col> -->
+
+          <!-- 2 seperate textfields and columns for entering hour and minute -->
+          <!-- @todo Trim these inputs to ensure no space -->
+          <v-col cols="2">
+            <v-text-field
+              v-model="selectedHour"
+              :rules="rules.selectedHour"
+              label="Hour"
+              color="#60696c"
+              required
+            />
+          </v-col>
+          <v-col cols="2">
+            <v-text-field
+              v-model="selectedMinute"
+              :rules="rules.selectedMinute"
+              label="Minute"
+              color="#60696c"
+              required
+            />
+          </v-col>
+          <v-col cols="4">
+            <v-switch
+              v-model="selectedAmPeriod"
+              :label="selectedAmPeriod ? 'AM' : 'PM'"
+              color="#60696c"
+            />
           </v-col>
         </v-row>
 
         <v-row>
-          <v-col cols="12" sm="6">
+          <v-col cols="8">
+            <v-btn @click="reset" rounded outlined color="red">
+              Reset all timings
+            </v-btn>
+          </v-col>
+
+          <v-col cols="4">
+            <v-btn @click="addNewStartTime" outlined rounded color="green">
+              Add new start time
+            </v-btn>
+          </v-col>
+        </v-row>
+
+        <br />
+
+        <!-- @todo Perhaps show a calendar instead of individual time slots -->
+        <v-row>
+          <v-col cols="12">
             <h3 style="color: #455a64;" class="text-left font-weight-light">
               LIST OF CLASS TIMINGS
             </h3>
@@ -78,7 +120,7 @@
                       {{ getDay[dateTime.day] }}
                     </v-list-item-subtitle>
                     <v-list-item-subtitle>
-                      {{ getTime(dateTime.time) }}
+                      {{ getTime(dateTime) }}
                     </v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
@@ -96,30 +138,6 @@
               </v-card>
             </span>
           </v-col>
-
-          <v-col cols="12" sm="6">
-            <v-btn
-              class="ma-2"
-              @click="addNewStartTime"
-              outlined
-              rounded
-              width="15em"
-              color="#546E7A"
-            >
-              Add new start time
-            </v-btn>
-
-            <v-btn
-              class="ma-2"
-              @click="reset"
-              width="15em"
-              rounded
-              outlined
-              color="#546E7A"
-            >
-              Reset all timings
-            </v-btn>
-          </v-col>
         </v-row>
       </v-card-text>
     </v-card>
@@ -127,6 +145,8 @@
 </template>
 
 <script>
+// @todo Rename this to SetClassTiming component, then move start and end date from add new class into here
+
 import moment from "moment";
 
 export default {
@@ -136,10 +156,33 @@ export default {
     return {
       // @todo Better naming
       menu2: false,
+
+      // Pre computed values from classLengthInMinutes to use for calculating end time
+      classHour: Math.trunc(this.classLengthInMinutes / 60),
+      classMinutes: this.classLengthInMinutes % 60,
+
+      // Default selected week day to monday
       selectedDay: 1,
-      selectedTime: "09:00",
+
+      selectedHour: "",
+      selectedMinute: "",
+      selectedAmPeriod: false,
+
       // @todo Sort the array to order by day and time in asc order
       selectedDateTime: [],
+
+      rules: {
+        selectedHour: [
+          (hour) =>
+            (hour && hour > 0 && hour < 13) ||
+            "Invalid, enter a number between 1 and 12",
+        ],
+        selectedMinute: [
+          (min) =>
+            (min && min >= 0 && min < 60) ||
+            "Invalid, enter a number between 0 and 59",
+        ],
+      },
 
       // Simple object to map a int to week day
       getDay: {
@@ -154,35 +197,36 @@ export default {
     };
   },
   methods: {
-    getTime(timeValue) {
-      timeValue = timeValue.split(":");
+    // @todo change all these to use moments
+    getTime(selectedDateTime) {
+      const startTime = `${selectedDateTime.hour}:${
+        selectedDateTime.minute < 10
+          ? "0" + selectedDateTime.minute
+          : selectedDateTime.minute
+      } 
+      ${selectedDateTime.amPeriod ? "AM" : "PM"}`;
 
-      // Convert the timeValue to 12 hour format with am/pm attached
-      if (timeValue[0] >= 12) {
-        if (timeValue[0] > 12) timeValue[0] -= 12;
-        return timeValue.join(":") + " PM";
-      } else {
-        if (timeValue[0] === 0) timeValue[0] = 12;
-        return timeValue.join(":") + " AM";
-      }
+      const endTime = ``;
 
-      // @todo Show the end timing of the class too instead of just start time
-      // this.classLengthInMinutes
+      return `${startTime} - ${endTime}`;
     },
     addNewStartTime() {
       // Check if this value is repeated
-      for (const dateTime of this.selectedDateTime) {
-        // If any of them matches/repeats, return to end method.
-        if (
-          dateTime.day === this.selectedDay &&
-          dateTime.time === this.selectedTime
-        )
-          return;
-      }
+      // @todo Actually no, should allow multi classes at the same time
+      // for (const dateTime of this.selectedDateTime) {
+      //   // If any of them matches/repeats, return to end method.
+      //   if (
+      //     dateTime.day === this.selectedDay &&
+      //     dateTime.time === this.selectedTime
+      //   )
+      //     return;
+      // }
 
       this.selectedDateTime.push({
         day: this.selectedDay,
-        time: this.selectedTime,
+        hour: this.selectedHour,
+        minute: this.selectedMinute,
+        amPeriod: this.selectedAmPeriod,
       });
     },
     removeSelectedDateTime(index) {
