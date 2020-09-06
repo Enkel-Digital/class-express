@@ -21,14 +21,15 @@
         class="elevation-1"
         :sort-desc="[false, true]"
       >
+        <!-- @todo Fix this error -->
         <template #item.classID="{ item }">
           <router-link
             :to="{ name: 'ClassDetails', params: { classID: item.classID } }"
           >
             Click to View
           </router-link>
-        </template></v-data-table
-      >
+        </template>
+      </v-data-table>
     </v-card>
   </v-main>
 </template>

@@ -12,7 +12,7 @@
             item-text="text"
             return-object="true"
             v-model="selectedCurrency"
-          ></v-select>
+          />
         </v-col>
       </v-row>
       <div class="display-2 font-weight-light text-start mx-4">

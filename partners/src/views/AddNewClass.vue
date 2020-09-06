@@ -31,18 +31,19 @@
               required
             />
 
-            <!-- @todo Change the v-model -->
+            <!-- @todo Implement multi picture uploads? -->
+            <!-- @todo Add a section to preview the images first, and allow user to sort them in order before uploading -->
             <v-file-input
               v-model="clas.pictures"
               color="#60696c"
               counter
               multiple
-              height="1.1em"
               label="Class Images"
               placeholder="Select Pictures for Your Class"
               :show-size="1000"
             />
 
+            <!-- @todo Why single-line attr.? -->
             <v-combobox
               v-model="clas.classCategory"
               :items="classCategoryList"
@@ -133,20 +134,20 @@
         <v-card outlined ref="form" v-model="valid">
           <v-card-text>
             <v-switch
-              v-model="allowWalkinCheckbox"
+              v-model="clas.allowWalkin"
               label="Allow Walk-in Registrations"
               color="#60696c"
-            ></v-switch>
+            />
 
             <v-switch
               v-model="addLocationCheckbox"
               label="Use different location other then your registered business location"
               color="#60696c"
-            ></v-switch>
+            />
           </v-card-text>
           <v-expand-transition>
             <div v-show="addLocationCheckbox">
-              <v-divider></v-divider>
+              <v-divider />
               <v-col cols="12" sm="12">
                 <v-text-field
                   :rules="addressRules"
@@ -156,17 +157,13 @@
                   required
                 />
 
-                <v-text-field
-                  label="Address Line 2"
-                  placeholder=""
-                  color="#60696c"
-                />
+                <v-text-field label="Address Line 2" color="#60696c" />
 
                 <v-text-field
                   :rules="addressRules"
                   label="Unit No."
                   color="#60696c"
-                  placeholder="12-02"
+                  placeholder="E.g. #12-02"
                   required
                 />
 
@@ -174,7 +171,7 @@
                   :rules="addressRules"
                   label="Postal Code"
                   required
-                  placeholder="111222"
+                  placeholder="E.g. 111222"
                   color="#60696c"
                 />
 
@@ -196,7 +193,7 @@
         <v-card outlined ref="form" v-model="valid">
           <v-card-text>
             <v-menu
-              v-model="startDateMenu"
+              v-model="showStartDateMenu"
               :close-on-content-click="false"
               :nudge-right="40"
               transition="scale-transition"
@@ -219,12 +216,12 @@
                 color="#60696c"
                 header-color="#60696c"
                 event-color="#60696c"
-                @input="startDateMenu = false"
+                @input="showStartDateMenu = false"
               />
             </v-menu>
 
             <v-menu
-              v-model="endDateMenu"
+              v-model="showEndDateMenu"
               :close-on-content-click="false"
               :nudge-right="40"
               transition="scale-transition"
@@ -247,8 +244,8 @@
                 header-color="#60696c"
                 color="#60696c"
                 event-color="#60696c"
-                @input="endDateMenu = false"
-              ></v-date-picker>
+                @input="showEndDateMenu = false"
+              />
             </v-menu>
           </v-card-text>
         </v-card>
@@ -279,7 +276,7 @@
               :landscape="$vuetify.breakpoint.smAndUp"
               class="mt-4"
               color="#455A64"
-            ></v-date-picker>
+            />
           </v-col>
         </v-row> -->
 
@@ -333,10 +330,14 @@ export default {
   },
   data() {
     return {
+      // @todo Jess: what is this for?
       sanitized: false,
-      startDateMenu: false,
-      endDateMenu: false,
+      showStartDateMenu: false,
+      showEndDateMenu: false,
+
+      // @todo Update this to be populated by an API instead
       classCategoryList: ["tech", "cooking", "lifestyle", "music", "art"],
+
       clas: {
         name: null,
         pictures: null,
@@ -346,25 +347,33 @@ export default {
         dateEnd: null,
         maxParticipant: null,
         classCategory: [],
+        allowWalkin: false,
+
+        // @todo Perhaps allow the new external location to be stored directly in this object too
       },
-      changeLocation: true,
+
+      // @todo Better naming
       addLocationCheckbox: false,
-      allowWalkinCheckbox: false,
-      // @todo What is this used for?
+
+      // @todo Jess: What is this used for?
       valid: null,
+
       nameRules: [
         (v) => !!v || "Name is required",
         (v) => (v && v.length <= 20) || "Please fill is the required space",
       ],
       classLengthRules: [
+        // @todo Might allow for empty or 0 mins duration to signify undefined
         (length) => !!length || "Please enter a duration",
         (length) => length > 0 || "Cannot have a class of 0 mins or less",
       ],
       maxParticipantRules: [
+        // @todo Might allow partner to skip this, and have "unlimited" participants? Perhaps add a default if none specified
         (length) => !!length || "Max participant is required",
         (length) => length > 0 || "Cannot have a class of 0 mins or less",
       ],
       rules: [
+        // @todo To research what is the average size
         (value) =>
           !value ||
           value.size < 2000000 ||

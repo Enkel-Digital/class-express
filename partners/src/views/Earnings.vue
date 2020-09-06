@@ -84,7 +84,7 @@
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-        <v-spacer></v-spacer>
+        <v-spacer />
       </v-card>
     </v-container> -->
   </v-main>

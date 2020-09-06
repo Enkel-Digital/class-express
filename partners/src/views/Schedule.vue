@@ -14,7 +14,9 @@
               <v-icon small>mdi-chevron-right</v-icon>
             </v-btn>
             <v-toolbar-title>{{ title }}</v-toolbar-title>
-            <v-spacer></v-spacer>
+
+            <v-spacer />
+
             <v-menu bottom right>
               <template v-slot:activator="{ on }">
                 <v-btn outlined color="grey darken-2" v-on="on">
@@ -47,7 +49,7 @@
             @click:more="viewDay"
             @click:date="viewDay"
             @change="updateRange"
-          ></v-calendar>
+          />
         </v-sheet>
       </v-col>
     </v-row>

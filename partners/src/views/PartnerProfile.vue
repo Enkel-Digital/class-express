@@ -127,18 +127,14 @@
             required
           />
 
-          <v-text-field
-            label="Address Line 2"
-            placeholder=""
-            color="#60696c"
-          ></v-text-field>
+          <v-text-field label="Address Line 2" color="#60696c" />
 
           <v-text-field
             label="Unit No."
             color="#60696c"
             placeholder="12-02"
             required
-          ></v-text-field>
+          />
 
           <v-text-field
             :rules="nameRules"
@@ -146,7 +142,7 @@
             required
             placeholder="111222"
             color="#60696c"
-          ></v-text-field>
+          />
 
           <v-text-field
             :rules="nameRules"
@@ -154,7 +150,7 @@
             required
             color="#60696c"
             placeholder="Singapore"
-          ></v-text-field>
+          />
         </v-card-text>
       </v-card>
     </v-row>

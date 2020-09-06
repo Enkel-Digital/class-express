@@ -29,7 +29,7 @@
             <v-responsive style="text-align: left;" class="mx-4 pa-0">
               <v-row>
                 <v-col>
-                  <h3 class="headline" v-text="clas.name"></h3>
+                  <h3 class="headline" v-text="clas.name" />
                   <p>{{ clas.location_address }}</p>
                 </v-col>
               </v-row>
