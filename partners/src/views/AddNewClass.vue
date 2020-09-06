@@ -357,7 +357,7 @@ export default {
         (v) => (v && v.length <= 20) || "Please fill is the required space",
       ],
       classLengthRules: [
-        (length) => !!length || "Length is required",
+        (length) => !!length || "Please enter a duration",
         (length) => length > 0 || "Cannot have a class of 0 mins or less",
       ],
       maxParticipantRules: [

@@ -113,12 +113,9 @@
               *note that this is a weekly recurring schedule
             </p>
             <span v-for="(dateTime, i) in selectedDateTime" :key="i">
-              <v-card max-width="8em" dense outlined>
+              <v-card class="mx-auto" dense outlined>
                 <v-list-item one-line>
                   <v-list-item-content>
-                    <v-list-item-subtitle>
-                      {{ getDay[dateTime.day] }}
-                    </v-list-item-subtitle>
                     <v-list-item-subtitle>
                       {{ getTime(dateTime) }}
                     </v-list-item-subtitle>
@@ -157,10 +154,6 @@ export default {
       // @todo Better naming
       menu2: false,
 
-      // Pre computed values from classLengthInMinutes to use for calculating end time
-      classHour: Math.trunc(this.classLengthInMinutes / 60),
-      classMinutes: this.classLengthInMinutes % 60,
-
       // Default selected week day to monday
       selectedDay: 1,
 
@@ -183,32 +176,23 @@ export default {
             "Invalid, enter a number between 0 and 59",
         ],
       },
-
-      // Simple object to map a int to week day
-      getDay: {
-        1: "Monday",
-        2: "Tuesday",
-        3: "Wednesday",
-        4: "Thursday",
-        5: "Friday",
-        6: "Saturday",
-        7: "Sunday",
-      },
     };
   },
   methods: {
-    // @todo change all these to use moments
+    // Method to convert the selectedDateTime into a string of start and end time to display on the UI
     getTime(selectedDateTime) {
-      const startTime = `${selectedDateTime.hour}:${
-        selectedDateTime.minute < 10
-          ? "0" + selectedDateTime.minute
-          : selectedDateTime.minute
-      } 
-      ${selectedDateTime.amPeriod ? "AM" : "PM"}`;
+      // We do not care about the year/month/date, since we are just using moment library for time calculations
+      const start = moment().set({
+        // Using iso weekday to prevent moment from following locale time settings. And always uses 1 for monday and 7 for sunday
+        isoWeekday: selectedDateTime.day,
+        hours: selectedDateTime.hour,
+        minute: selectedDateTime.min,
+      });
 
-      const endTime = ``;
+      // IMP to clone it before adding the minutes
+      const end = start.clone().add("minutes", this.classLengthInMinutes);
 
-      return `${startTime} - ${endTime}`;
+      return start.format("ddd hh:mm A") + " - " + end.format("ddd hh:mm A");
     },
     addNewStartTime() {
       // Check if this value is repeated
@@ -222,12 +206,21 @@ export default {
       //     return;
       // }
 
+      // @todo Call validation function, return if validation failed
+
       this.selectedDateTime.push({
         day: this.selectedDay,
-        hour: this.selectedHour,
-        minute: this.selectedMinute,
-        amPeriod: this.selectedAmPeriod,
+        // Convert and store the time in 24 hour time format
+        hour: this.selectedAmPeriod
+          ? parseInt(this.selectedHour)
+          : 12 + parseInt(this.selectedHour),
+        min: this.selectedMinute,
       });
+
+      // Reset the time input values
+      // @todo Fix bug: When reset, it will cause the rules to run, and set off error message
+      this.selectedHour = "";
+      this.selectedMinute = "";
     },
     removeSelectedDateTime(index) {
       console.log("index", index);
