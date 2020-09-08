@@ -48,6 +48,8 @@ export default function errorControllerFF(Vue, router, postToErrorService) {
      * this.$error.new(error); // From component
      * Vue.$error.new(error); // Using global Vue module
      * @todo Detect if error is undefined or {} or ! created using createError, and create a new UNKNOWN error with createError
+     *
+     * @returns An error ID
      */
     async new(error) {
       try {
@@ -82,14 +84,15 @@ export default function errorControllerFF(Vue, router, postToErrorService) {
         // After error object is created, push it into state
         Vue.set(state.errors, error.errorID, error);
 
-        // Try reporting error to API if possible using the custom API caller instead. Refer to function's for doc on why.
+        // Only try to report error to API using the custom API caller in production. Refer to function's for doc on why.
+        // If dev or staging mode, just ignore and return error ID.
+        if (process.env.NODE_ENV !== "production") return error.errorID;
+
         const response = await postToErrorService(
           formatErrorForPost(error, router)
         );
 
-        if (response.success) {
-          if (process.env.NODE_ENV !== "production") console.log(response);
-        } else
+        if (!response.success)
           throw new Error(
             "Attempt to report Previous error to developers failed."
           );
@@ -130,6 +133,8 @@ export default function errorControllerFF(Vue, router, postToErrorService) {
         displayError.errorID = Math.random().toString(36).substring(2);
 
         Vue.set(state.errors, displayError.errorID, displayError);
+
+        return displayError.errorID;
       }
     },
     /**

@@ -1,6 +1,6 @@
 {
   "name": "vue-error-controller",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Vue plugin for a global error controller",
   "main": "./src/index.js",
   "files": [
@@ -33,9 +33,9 @@
   },
   "homepage": "https://github.com/Enkel-Digital/vue-error-controller#readme",
   "devDependencies": {
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.11",
-    "prettier": "^2.0.5"
+    "husky": "^4.3.0",
+    "lint-staged": "^10.3.0",
+    "prettier": "^2.1.1"
   },
   "husky": {
     "hooks": {
