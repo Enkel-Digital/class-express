@@ -3,7 +3,7 @@
     <v-app-bar app flat color="white">
       <BackBtn />
 
-      <v-toolbar-title style="font-weight: bold;">
+      <v-toolbar-title style="font-weight: bold">
         Create New Payment Method
       </v-toolbar-title>
     </v-app-bar>
@@ -11,12 +11,10 @@
     <v-card
       class="mx-auto"
       max-width="calc(100% - 3em)"
-      style="padding: 1em; border: 1px solid #e6e5e5;"
+      style="padding: 1em; border: 1px solid #e6e5e5"
     >
       <ul>
-        <li>
-          You do not have a valid payment method currently.
-        </li>
+        <li>You do not have a valid payment method currently.</li>
 
         <li>
           Please create a new payment method before any purchases can be made.
@@ -35,12 +33,10 @@
     <v-card
       class="mx-auto"
       max-width="calc(100% - 3em)"
-      style="padding: 1em; border: 1px solid #e6e5e5;"
+      style="padding: 1em; border: 1px solid #e6e5e5"
     >
       <v-card-text>
-        <h2>
-          New Payment Method
-        </h2>
+        <h2>New Payment Method</h2>
         <br />
 
         <div class="error red center-align white-text">

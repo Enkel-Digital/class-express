@@ -1,7 +1,7 @@
 <template>
   <v-main class="upcoming">
     <v-app-bar app flat color="white">
-      <v-toolbar-title style="font-weight: bold;">
+      <v-toolbar-title style="font-weight: bold">
         Past Classes
       </v-toolbar-title>
     </v-app-bar>
@@ -21,14 +21,14 @@
           "
         >
           <v-list-item>
-            <div style="text-align: left;">
+            <div style="text-align: left">
               <v-card-title class="headline pl-0">
                 {{ clas.name }}
               </v-card-title>
               <!-- @todo Add a points box beside the class name -->
               <!-- <p>7 points</p> -->
 
-              <v-list-item-subtitle style="font-weight: bold;">
+              <v-list-item-subtitle style="font-weight: bold">
                 {{ moment(clas.time).format("MMMM Do, h:mm") }} to
                 {{
                   moment(clas.time + Date.parse(clas.length)).format(

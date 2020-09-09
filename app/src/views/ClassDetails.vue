@@ -24,11 +24,11 @@
       <v-img id="class-image" :src="clas.pictureSources" />
     </v-responsive>
 
-    <v-responsive style="margin: 1em;">
+    <v-responsive style="margin: 1em">
       <h3 class="headline" v-text="clas.name" />
 
       <v-row v-if="selectedTime">
-        <v-col class="col-auto" style="font-weight: bold;">
+        <v-col class="col-auto" style="font-weight: bold">
           <!-- date of class -->
           <v-list-item-subtitle>
             <!-- Show year only if class is next year. -->
@@ -69,7 +69,7 @@
       :to="{ name: 'partner', params: { partnerID: clas.partnerID } }"
     >
       <v-list-item-content>
-        <p class="ma-0 mb-2 pa-0" style="font-weight: bold;">
+        <p class="ma-0 mb-2 pa-0" style="font-weight: bold">
           {{ partner.name }}
         </p>
         <p class="ma-0 pa-0">
@@ -93,9 +93,7 @@
             {{ review.numberOfReviews }} reviews
           </v-list-item-subtitle>
 
-          <v-list-item-subtitle v-else>
-            Loading...
-          </v-list-item-subtitle>
+          <v-list-item-subtitle v-else> Loading... </v-list-item-subtitle>
         </v-list-item-content>
 
         <v-btn
@@ -139,19 +137,17 @@
       </v-list-item>
     </v-responsive>
 
-    <h2 style="color: rgba(0, 0, 0, 0.65);" class="ma-2 mb-0">
-      Getting here
-    </h2>
+    <h2 style="color: rgba(0, 0, 0, 0.65)" class="ma-2 mb-0">Getting here</h2>
     <MapImage :classID="clas.id" />
     <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
 
     <v-divider />
 
     <!-- @todo Change this into a bottom toolbar and make it sticky -->
-    <v-container v-if="selectedTime" style="text-align: center;">
+    <v-container v-if="selectedTime" style="text-align: center">
       <v-row>
         <v-col>
-          <h2 style="color: grey;">{{ clas.points }} points</h2>
+          <h2 style="color: grey">{{ clas.points }} points</h2>
         </v-col>
 
         <v-col>
@@ -165,7 +161,7 @@
       </v-row>
     </v-container>
 
-    <v-container v-else style="text-align: center;">
+    <v-container v-else style="text-align: center">
       <v-btn
         :to="{ name: 'schedule-class', params: { classID: clas.id } }"
         color="primary"

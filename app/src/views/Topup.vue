@@ -5,10 +5,10 @@
       <v-toolbar-title>Topup</v-toolbar-title>
     </v-app-bar>
 
-    <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ma-5 mb-0">
+    <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left" class="ma-5 mb-0">
       Your plan and points
     </h3>
-    <p style="color: rgba(0, 0, 0, 0.6); text-align: left;" class="ml-5">
+    <p style="color: rgba(0, 0, 0, 0.6); text-align: left" class="ml-5">
       Need more points? Topup anytime at flat rates!
     </p>
 
@@ -20,7 +20,7 @@
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
-      style="text-align: left;"
+      style="text-align: left"
       :to="{ name: 'subscription' }"
       replace
     >
@@ -35,7 +35,7 @@
       </v-list-item>
     </v-card>
 
-    <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ml-5">
+    <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left" class="ml-5">
       Topup
     </h3>
 
@@ -47,7 +47,7 @@
       max-width="calc(100% - 3em)"
       outlined
       @click="buyPoints(topupOption.id)"
-      style="text-align: left;"
+      style="text-align: left"
     >
       <v-list-item>
         <v-list-item-content>
@@ -61,14 +61,14 @@
             {{ topupOption.price }}
           </v-list-item-title>
 
-          <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;" class="mb-0">
+          <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em" class="mb-0">
             <span v-html="topupOption.copywriting" />
           </p>
         </v-list-item-content>
       </v-list-item>
     </v-card>
 
-    <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ml-5">
+    <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left" class="ml-5">
       Subscription Plans
     </h3>
 
@@ -76,7 +76,7 @@
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
-      style="text-align: left;"
+      style="text-align: left"
       :to="{ name: 'subscription' }"
       replace
     >
@@ -88,7 +88,7 @@
             Monthly plans available
           </v-list-item-title>
 
-          <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;" class="mb-0">
+          <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em" class="mb-0">
             Checkout our monthly plans for more discount.
           </p>
         </v-list-item-content>
@@ -99,7 +99,7 @@
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
-      style="text-align: left;"
+      style="text-align: left"
       :to="{ name: 'faq' }"
       replace
     >

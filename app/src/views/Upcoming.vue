@@ -2,7 +2,7 @@
   <v-main class="upcoming">
     <!-- <v-app-bar app color="orange lighten-1" flat dark> -->
     <v-app-bar app flat color="white">
-      <v-toolbar-title style="font-weight: bold;">
+      <v-toolbar-title style="font-weight: bold">
         Upcoming Classes
       </v-toolbar-title>
 
@@ -19,9 +19,7 @@
     </v-responsive>
 
     <!-- @todo Add copywriting for users to join classes if they have no upcoming classes -->
-    <v-responsive v-else>
-      No Upcoming Classes.
-    </v-responsive>
+    <v-responsive v-else> No Upcoming Classes. </v-responsive>
   </v-main>
 </template>
 

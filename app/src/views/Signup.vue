@@ -82,7 +82,7 @@
     <br />
     <br />
 
-    <div style="text-align: left; margin-left: 3em; opacity: 0.8;">
+    <div style="text-align: left; margin-left: 3em; opacity: 0.8">
       Already have an account?
     </div>
     <v-btn

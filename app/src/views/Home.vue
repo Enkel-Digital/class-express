@@ -22,7 +22,7 @@
         >
           <!-- @click="viewBanner(item.link)"
               try wrapping item in empty div and assign this instead of on the carousel item -->
-          <h1 style="position: absolute; bottom: 1em;">
+          <h1 style="position: absolute; bottom: 1em">
             {{ item.text }}
           </h1>
         </v-carousel-item>

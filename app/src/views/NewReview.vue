@@ -15,9 +15,9 @@
       <v-img id="class-image" :src="clas.pictureSources[0]" />
     </v-avatar>
 
-    <hr style="height: 15pt; visibility: hidden;" />
-    <h2 style="color: #403d3d;">{{ clas.name }}</h2>
-    <p style="font-size: 75%; color: #625b5a;">How do you like the class?</p>
+    <hr style="height: 15pt; visibility: hidden" />
+    <h2 style="color: #403d3d">{{ clas.name }}</h2>
+    <p style="font-size: 75%; color: #625b5a">How do you like the class?</p>
 
     <v-rating
       v-model="ratings"
