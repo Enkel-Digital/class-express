@@ -50,7 +50,7 @@
 
         <div class="card-element">
           <form id="setup-form" data-secret="client_secret">
-            <div id="card-element"></div>
+            <div id="card-element" />
           </form>
         </div>
       </v-card-text>

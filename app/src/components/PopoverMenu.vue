@@ -76,7 +76,7 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
 
           <v-btn text @click="menu = false">Cancel</v-btn>
           <v-btn color="primary" text @click="menu = false">Save</v-btn>
@@ -86,14 +86,14 @@
       <!-- <v-list>
         <v-list-item>
           <v-list-item-action>
-            <v-switch v-model="message" color="purple"></v-switch>
+            <v-switch v-model="message" color="purple" />
           </v-list-item-action>
           <v-list-item-title>messages</v-list-item-title>
         </v-list-item>
 
         <v-list-item>
           <v-list-item-action>
-            <v-switch v-model="hints" color="purple"></v-switch>
+            <v-switch v-model="hints" color="purple" />
           </v-list-item-action>
           <v-list-item-title>hints</v-list-item-title>
         </v-list-item>
