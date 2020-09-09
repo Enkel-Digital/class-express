@@ -134,6 +134,7 @@ export default {
         // Create new user error and show with ErrorDialog
         const userError = this.$error.createError(
           this.$error.ERROR.level.RETRY,
+          // @todo Update this to use the AUTH error type, perhaps combine with error.new? Why create this var?
           this.$error.ERROR.custom("Authentication Failed", error_msg(error))
         );
         this.$error.new(userError);

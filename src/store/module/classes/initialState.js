@@ -13,5 +13,6 @@ export default function initialState() {
       class: {},
       partner: {},
     },
+    review: {},
   };
 }

@@ -1,7 +1,7 @@
 <template>
   <div v-if="state">
     <div v-for="hit in state.hits" :key="hit.objectID">
-      <slot name="item" :item="hit"></slot>
+      <slot name="item" :item="hit" />
     </div>
     <div class="sentinel" v-observe-visibility="visibilityChanged" />
   </div>

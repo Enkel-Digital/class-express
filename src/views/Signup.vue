@@ -174,6 +174,7 @@ export default {
         // This needs to be before signout, as we need the token to create a new user.
         // await to prevent signout from executing before post which will delete the JWT and make this call rejected with a 401
         const res = await api.post("/user/new", newUser);
+        // @todo add api Error here?
 
         // Sign user out
         firebase.auth().signOut();

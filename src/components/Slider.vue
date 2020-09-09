@@ -2,11 +2,11 @@
   <v-card flat color="transparent">
     <v-subheader>Distance</v-subheader>
     <v-card-text>
-      <v-slider v-model="slider" thumb-label="always"
-        ><template v-slot:thumb-label="{ value }">
+      <v-slider v-model="slider" thumb-label="always">
+        <template v-slot:thumb-label="{ value }">
           {{ value + "km" }}
-        </template></v-slider
-      >
+        </template>
+      </v-slider>
     </v-card-text>
   </v-card>
 </template>

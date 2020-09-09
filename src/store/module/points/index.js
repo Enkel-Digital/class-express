@@ -86,6 +86,10 @@ export default {
           return apiError(response, () => dispatch("updatePlan", topupID));
 
         commit("topupPoints", points);
+
+        // @todo Maybe should get back points topped up from API, and/or get back the total points
+        // To ensure the front end view is consistent with the data stored.
+        // commit("topupPoints", response.points);
       }
     },
   },
