@@ -19,8 +19,9 @@
         </v-avatar>
       </v-app-bar-nav-icon>
 
-      <span style="width: 250px;"> </span>
+      <v-spacer />
 
+      <!-- @todo Replace with the search component
       <v-text-field
         flat
         solo-inverted
@@ -29,7 +30,7 @@
         prepend-inner-icon="mdi-magnify"
         color="#CFD8DC"
         label="Search"
-      />
+      /> -->
 
       <v-spacer />
 
@@ -80,25 +81,5 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-}
-.my-menu {
-  margin-top: 40px;
-  contain: initial;
-  overflow: visible;
-}
-.my-menu::before {
-  position: absolute;
-  content: "";
-  top: 0;
-  right: 10px;
-  transform: translateY(-100%);
-  width: 10px;
-  height: 13px;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 13px solid #fff;
-}
-span {
-  width: 20px;
 }
 </style>

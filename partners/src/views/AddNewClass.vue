@@ -108,8 +108,9 @@
             <span
               v-if="!sanitized && clas.description != null"
               v-html="sanitizeMessage"
-              >Above</span
             >
+              Above
+            </span>
 
             <br v-if="!sanitized && clas.description != null" />
             <br v-if="!sanitized && clas.description != null" />
@@ -120,8 +121,9 @@
               @click="replaceMessage"
               color="#60696c"
               block
-              >confirm html</v-btn
             >
+              confirm html
+            </v-btn>
           </v-card-text>
         </v-card>
       </v-col>
@@ -252,13 +254,11 @@
       </v-col>
     </v-row>
 
-    <!-- Time related components -->
-
-    <!-- Length of the class -->
-
-    <!-- Select start times in the week -->
-
-    <!-- Date start and End date -->
+    <!-- Group Time related components together:
+        - Length of the class
+        - Select start times in the week
+        - Date start and End date
+     -->
 
     <!--
           @todo Implement start time from the weekly calendar view
@@ -282,7 +282,7 @@
 
     <br />
     <v-row class="text-center">
-      <v-col cols="12" sm="6">
+      <v-col cols="6">
         <v-btn
           color="#60696c"
           rounded
@@ -296,7 +296,7 @@
         </v-btn>
       </v-col>
 
-      <v-col cols="12" sm="6">
+      <v-col cols="6">
         <v-btn
           color="#60696c"
           class="white--text text-right"
