@@ -1,7 +1,7 @@
 <template>
   <v-main id="profile">
     <v-app-bar app flat color="white">
-      <v-toolbar-title style="font-weight: bold; color: orange;">
+      <v-toolbar-title style="font-weight: bold; color: orange">
         <!-- <v-toolbar-title style="font-weight: bold; color: grey;"> -->
         Profile
       </v-toolbar-title>
@@ -51,29 +51,21 @@
     <v-divider />
     <v-responsive class="mx-auto">
       <v-card :to="{ name: 'settings' }" ripple tile>
-        <v-list-item>
-          Settings
-        </v-list-item>
+        <v-list-item> Settings </v-list-item>
       </v-card>
 
       <v-card :to="{ name: 'subscription' }" ripple tile>
-        <v-list-item>
-          Subscription Plan
-        </v-list-item>
+        <v-list-item> Subscription Plan </v-list-item>
       </v-card>
 
       <v-card :to="{ name: 'favourites' }" ripple tile>
-        <v-list-item>
-          Favourites
-        </v-list-item>
+        <v-list-item> Favourites </v-list-item>
       </v-card>
 
       <!-- @todo Complete pastClasses view -->
       <!-- <v-card :to="{ name: 'PastClasses' }" ripple tile> -->
       <v-card @click="workInProgressAlert" ripple tile>
-        <v-list-item>
-          Past classes
-        </v-list-item>
+        <v-list-item> Past classes </v-list-item>
       </v-card>
 
       <!-- @todo Add link once faq is completed -->
@@ -92,14 +84,12 @@
 
       <v-card :to="{ name: 'about' }" ripple tile>
         <v-list-item>
-          <v-list-item-subtitle>
-            About us
-          </v-list-item-subtitle>
+          <v-list-item-subtitle> About us </v-list-item-subtitle>
         </v-list-item>
       </v-card>
 
       <v-card ripple tile>
-        <v-list-item @click="logout" style="background-color: #ededed;">
+        <v-list-item @click="logout" style="background-color: #ededed">
           Logout
         </v-list-item>
       </v-card>

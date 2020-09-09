@@ -5,7 +5,7 @@
       <v-toolbar-title>Cancel Subscription</v-toolbar-title>
     </v-app-bar>
 
-    <h3 style="color: rgba(0, 0, 0, 0.65);" class="ma-5 mb-0">
+    <h3 style="color: rgba(0, 0, 0, 0.65)" class="ma-5 mb-0">
       We are sad to see you go.
     </h3>
 
@@ -13,7 +13,7 @@
     <v-responsive>
       <v-list-item class="mb-0 pb-0 mt-0 pt-0">
         <v-list-item>
-          <v-list-item-content style="color: rgba(0, 0, 0, 0.8);">
+          <v-list-item-content style="color: rgba(0, 0, 0, 0.8)">
             Our Monthly subscription plans give you points for less!
           </v-list-item-content>
         </v-list-item>
@@ -23,17 +23,15 @@
     <PointsCard />
 
     <br />
-    <h3 style="color: rgba(0, 0, 0, 0.65);" class="ml-5">
-      Subscription Plan
-    </h3>
-    <p style="color: rgba(0, 0, 0, 0.6);" class="ml-5 mb-0">
+    <h3 style="color: rgba(0, 0, 0, 0.65)" class="ml-5">Subscription Plan</h3>
+    <p style="color: rgba(0, 0, 0, 0.6)" class="ml-5 mb-0">
       Your current plan is ... and will end on
-      <span style="font-weight: bold;">
+      <span style="font-weight: bold">
         will end on {{ moment.unix(periodEndDate).format("DD/MM/YYYY") }}
       </span>
     </p>
 
-    <h3 style="color: rgba(0, 0, 0, 0.65);" class="ma-5 mb-0">
+    <h3 style="color: rgba(0, 0, 0, 0.65)" class="ma-5 mb-0">
       May we know why you are leaving?
     </h3>
     <v-container fluid>
@@ -43,7 +41,7 @@
         :key="reason.id"
         :label="reason.reason"
         v-model="reason.selected"
-        style="margin: 0; padding: 0;"
+        style="margin: 0; padding: 0"
       />
 
       Anything else to add?
@@ -61,7 +59,7 @@
       <v-checkbox
         v-model="noContact"
         label="If you do not want us to contact you"
-        style="margin: 0; padding: 0;"
+        style="margin: 0; padding: 0"
       />
     </v-container>
 

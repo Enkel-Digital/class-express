@@ -29,14 +29,14 @@
               small
               dense
               color="orange"
-              style="opacity: 0.7;"
+              style="opacity: 0.7"
               class="ma-0 pa-0"
             />
           </v-list-item>
         </v-list-item-content>
 
         <v-list-item-content>
-          <v-list-item style="min-height: 0;" class="ma-0 pa-0">
+          <v-list-item style="min-height: 0" class="ma-0 pa-0">
             <span v-text="`${review.ratings} / 5`" class="caption ma-0 pa-0" />
             <v-rating
               v-model="review.ratings"
@@ -46,7 +46,7 @@
               small
               dense
               color="orange"
-              style="opacity: 0.7;"
+              style="opacity: 0.7"
             />
           </v-list-item>
 
@@ -58,7 +58,7 @@
     </v-responsive>
 
     <br />
-    <div style="color: rgba(0, 0, 0, 0.6); text-align: left;">
+    <div style="color: rgba(0, 0, 0, 0.6); text-align: left">
       <!--
         Let user know how are the reviews sorted
         Members reviews can be sorted by
@@ -85,7 +85,7 @@
           small
           dense
           color="orange"
-          style="opacity: 0.7;"
+          style="opacity: 0.7"
         />
         <v-list-item>{{ review.description }}</v-list-item>
       </v-card>

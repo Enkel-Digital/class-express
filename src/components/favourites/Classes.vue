@@ -1,5 +1,5 @@
 <template>
-  <v-main style="padding: 0;">
+  <v-main style="padding: 0">
     <v-responsive v-if="favouriteClasses.length">
       <v-card
         v-for="clas in favouriteClasses"
@@ -22,7 +22,7 @@
           <v-img id="class-image" :src="clas.pictureSources" />
 
           <v-list-item>
-            <div style="text-align: left;">
+            <div style="text-align: left">
               <v-card-title class="headline pl-0">
                 {{ clas.name }}
               </v-card-title>
@@ -37,7 +37,7 @@
                 v-if="partners[clas.partnerID]"
                 :set="(partner = partners[clas.partnerID])"
               >
-                <div style="font-weight: bold;">
+                <div style="font-weight: bold">
                   {{ partner.name }}
                 </div>
                 <div>
@@ -66,9 +66,7 @@
     </v-responsive>
 
     <!-- @todo Add copywriting for users to add classes if they have no favourite classes -->
-    <v-responsive v-else>
-      Add classes to your favourites now!
-    </v-responsive>
+    <v-responsive v-else> Add classes to your favourites now! </v-responsive>
   </v-main>
 </template>
 

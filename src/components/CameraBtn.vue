@@ -5,7 +5,7 @@
       id="img"
       accept="image/x-png,image/jpeg"
       capture="camera"
-      style="display: none;"
+      style="display: none"
     />
     <!-- <label for="img">Click me to upload image</label> -->
     <label for="img">

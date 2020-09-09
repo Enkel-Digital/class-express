@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <v-app-bar app flat color="white">
-      <v-toolbar-title style="font-weight: bold;">
+      <v-toolbar-title style="font-weight: bold">
         Page Not Found
       </v-toolbar-title>
     </v-app-bar>
@@ -16,9 +16,7 @@
         <v-btn :to="{ name: 'home' }">home</v-btn>
       </v-col>
       <v-col>
-        <v-btn id="button" @click="$router.back()">
-          back
-        </v-btn>
+        <v-btn id="button" @click="$router.back()"> back </v-btn>
       </v-col>
     </v-row>
   </v-main>

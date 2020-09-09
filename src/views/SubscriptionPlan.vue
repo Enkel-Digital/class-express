@@ -5,9 +5,7 @@
       <v-toolbar-title>Subscription</v-toolbar-title>
     </v-app-bar>
 
-    <h3 class="opacity7 ma-5 mb-0">
-      Get more for less!
-    </h3>
+    <h3 class="opacity7 ma-5 mb-0">Get more for less!</h3>
 
     <!-- Update below to show one of the cards what is your current plan -->
     <v-responsive>
@@ -27,21 +25,17 @@
     <PointsCard />
 
     <br />
-    <h3 class="opacity7 ml-5">
-      Subscription Plans
-    </h3>
+    <h3 class="opacity7 ml-5">Subscription Plans</h3>
 
     <p v-if="current" class="opacity6 ml-5 mb-0">
-      <span v-if="periodEndDate !== null" style="font-weight: bold;">
+      <span v-if="periodEndDate !== null" style="font-weight: bold">
         Your current plan ends on
         {{ moment.unix(periodEndDate).format("DD/MM/YYYY") }}
         <br />
       </span>
       Click to change next month's plan
     </p>
-    <p v-else class="opacity6 ml-5 mb-0">
-      Select a plan to buy it now!
-    </p>
+    <p v-else class="opacity6 ml-5 mb-0">Select a plan to buy it now!</p>
 
     <v-radio-group v-model="selectedPlanID">
       <v-card
@@ -61,7 +55,7 @@
               <!-- Ensure next/current plans are loaded before checking for equality -->
               <span
                 v-if="next && current && next.planID !== current.planID"
-                style="color: black; font-weight: bold;"
+                style="color: black; font-weight: bold"
               >
                 <span v-if="plan.id === current.planID">(Current)</span>
                 <span v-if="plan.id === next.planID">(Next)</span>
@@ -88,7 +82,7 @@
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
-      style="text-align: left;"
+      style="text-align: left"
       :to="{ name: 'topup' }"
       replace
     >
@@ -113,7 +107,7 @@
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
-      style="text-align: left;"
+      style="text-align: left"
       @click="pauseSubscriptionPlan"
     >
       <v-list-item>
@@ -132,7 +126,7 @@
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
-      style="text-align: left;"
+      style="text-align: left"
       :to="{ name: 'cancel-subscription' }"
       replace
     >
@@ -152,7 +146,7 @@
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
-      style="text-align: left;"
+      style="text-align: left"
       href="mailto:contact@enkeldigital.com"
     >
       <v-list-item>
@@ -170,7 +164,7 @@
       class="mx-auto mb-4"
       max-width="calc(100% - 3em)"
       outlined
-      style="text-align: left;"
+      style="text-align: left"
       :to="{ name: 'faq' }"
       replace
     >

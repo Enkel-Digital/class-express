@@ -20,12 +20,12 @@
       "
     >
       <v-list-item>
-        <div style="text-align: left;">
+        <div style="text-align: left">
           <v-card-title class="headline pl-0">
             {{ clas.name }}
           </v-card-title>
           <!-- Only bold the time to make it more readable -->
-          <v-list-item-subtitle style="font-weight: bold;">
+          <v-list-item-subtitle style="font-weight: bold">
             <!--
             A few formats are used for showing the datetime of the class
             1) Today/Tomorrow + date + time
@@ -38,9 +38,7 @@
             -->
 
             <!-- If class is today -->
-            <span v-if="moment().isSame(dateObject, 'day')">
-              Today,
-            </span>
+            <span v-if="moment().isSame(dateObject, 'day')"> Today, </span>
             <!-- Else if class is tomorrow -->
             <span
               v-else-if="
@@ -81,7 +79,7 @@
           <br />
 
           <v-list-item-subtitle v-if="partner">
-            <div style="font-weight: bold;">
+            <div style="font-weight: bold">
               {{ partner.name }}
             </div>
             <div>
@@ -102,9 +100,7 @@
       <v-spacer />
 
       <v-btn icon @click="toggleFavouriteClass(clas.id)">
-        <v-icon v-if="isFavourited" color="red">
-          mdi-heart
-        </v-icon>
+        <v-icon v-if="isFavourited" color="red"> mdi-heart </v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
 

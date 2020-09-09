@@ -23,7 +23,7 @@
       <v-img id="class-image" :src="partner.pictureSources" />
     </v-responsive>
 
-    <v-responsive style="margin: 1em;">
+    <v-responsive style="margin: 1em">
       <h3 class="headline" v-text="partner.name" />
       <p class="ma-0 pa-0">{{ partner.location_address }}</p>
     </v-responsive>
@@ -41,9 +41,7 @@
             {{ review.numberOfReviews }} reviews
           </v-list-item-subtitle>
 
-          <v-list-item-subtitle v-else>
-            Loading...
-          </v-list-item-subtitle>
+          <v-list-item-subtitle v-else> Loading... </v-list-item-subtitle>
         </v-list-item-content>
 
         <!-- @todo Temporarily hidden till implemented -->
@@ -74,9 +72,7 @@
       </v-list-item>
     </v-responsive>
 
-    <h2 style="color: rgba(0, 0, 0, 0.65);" class="ma-2 mb-0">
-      Getting here
-    </h2>
+    <h2 style="color: rgba(0, 0, 0, 0.65)" class="ma-2 mb-0">Getting here</h2>
     <MapImage :partnerID="partner.id" />
     <!-- @todo put how to get there right below Embedded maps, in the same block -> Descriptions provided by the partner -->
 

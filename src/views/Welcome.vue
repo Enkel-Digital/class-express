@@ -6,7 +6,7 @@
       src="../assets/logo.png"
       max-height="calc(100% - 1em)"
       max-width="calc(100% - 1em)"
-      style="margin-top: calc(20%);"
+      style="margin-top: calc(20%)"
     />
 
     <v-btn

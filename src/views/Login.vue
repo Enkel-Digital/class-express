@@ -38,7 +38,7 @@
     <br />
     <br />
 
-    <div style="text-align: left; margin-left: 3em; opacity: 0.8;">
+    <div style="text-align: left; margin-left: 3em; opacity: 0.8">
       Dont have an account?
     </div>
     <v-btn

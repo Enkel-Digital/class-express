@@ -10,12 +10,8 @@
       <v-card-actions>
         <v-spacer />
         <!-- Update their on clicks -->
-        <v-btn color="red darken-1" text @click="disagree">
-          Disagree
-        </v-btn>
-        <v-btn color="green darken-1" text @click="agree">
-          Agree
-        </v-btn>
+        <v-btn color="red darken-1" text @click="disagree"> Disagree </v-btn>
+        <v-btn color="green darken-1" text @click="agree"> Agree </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
