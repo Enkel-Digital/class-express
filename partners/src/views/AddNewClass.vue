@@ -4,7 +4,7 @@
       <v-col cols="12" sm="4">
         <v-card outlined ref="form" v-model="valid">
           <v-card-text>
-            <h2 style="color: #455a64;" class="text-left font-weight-light">
+            <h2 style="color: #455a64" class="text-left font-weight-light">
               CLASS DETAILS
             </h2>
             <br />
@@ -77,7 +77,7 @@
               color="#60696c"
               required
             />
-            <div style="margin-bottom: 2em;">
+            <div style="margin-bottom: 2em">
               length: {{ Math.trunc(clas.length / 60) }} hr
               {{ clas.length % 60 }} mins
             </div>

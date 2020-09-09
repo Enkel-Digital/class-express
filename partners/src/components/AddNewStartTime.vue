@@ -2,7 +2,7 @@
   <v-responsive>
     <v-card outlined ref="form">
       <v-card-text>
-        <h2 style="color: #455a64;" class="text-left font-weight-light">
+        <h2 style="color: #455a64" class="text-left font-weight-light">
           CLASS TIMINGS
         </h2>
         <br />
@@ -106,12 +106,10 @@
         <!-- @todo Perhaps show a calendar instead of individual time slots -->
         <v-row>
           <v-col cols="12">
-            <h3 style="color: #455a64;" class="text-left font-weight-light">
+            <h3 style="color: #455a64" class="text-left font-weight-light">
               LIST OF CLASS TIMINGS
             </h3>
-            <p>
-              *note that this is a weekly recurring schedule
-            </p>
+            <p>*note that this is a weekly recurring schedule</p>
             <span v-for="(dateTime, i) in selectedDateTime" :key="i">
               <v-card class="mx-auto" dense outlined>
                 <v-list-item one-line>

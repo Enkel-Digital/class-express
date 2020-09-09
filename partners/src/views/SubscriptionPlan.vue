@@ -5,7 +5,7 @@
       <v-toolbar-title>Subscription</v-toolbar-title>
     </v-app-bar>
 
-    <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ma-5 mb-0">
+    <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left" class="ma-5 mb-0">
       Get more for less!
     </h3>
 
@@ -14,7 +14,7 @@
       <v-list-item id="user-details-card" class="mb-0 pb-0 mt-0 pt-0">
         <v-list-item>
           <v-list-item-content>
-            <p style="color: rgba(0, 0, 0, 0.8);">
+            <p style="color: rgba(0, 0, 0, 0.8)">
               We offer Monthly subscription plans to give you points for less!
             </p>
           </v-list-item-content>
@@ -25,12 +25,12 @@
     <PointsCard />
 
     <br />
-    <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left;" class="ml-5">
+    <h3 style="color: rgba(0, 0, 0, 0.65); text-align: left" class="ml-5">
       Subscription Plans
     </h3>
-    <p style="color: rgba(0, 0, 0, 0.6); text-align: left;" class="ml-5 mb-0">
+    <p style="color: rgba(0, 0, 0, 0.6); text-align: left" class="ml-5 mb-0">
       Your current plan ends on
-      <span style="font-weight: bold;">{{ periodEndDate }}</span>
+      <span style="font-weight: bold">{{ periodEndDate }}</span>
       <br />Click to change next month's plan
     </p>
 
@@ -51,7 +51,7 @@
             <v-list-item-subtitle>
               <span
                 v-if="nextPlanID !== currentPlanID"
-                style="color: black; font-weight: bold;"
+                style="color: black; font-weight: bold"
               >
                 <span v-if="plan.id === currentPlanID">(Current)</span>
                 <span v-if="plan.id === nextPlanID">(Next)</span>
@@ -65,10 +65,7 @@
               {{ plan.price.value }}
             </v-list-item-title>
 
-            <p
-              style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;"
-              class="mb-0"
-            >
+            <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em" class="mb-0">
               <span v-html="plan.copywriting" />
             </p>
           </v-list-item-content>
@@ -80,7 +77,7 @@
       class="mx-auto mb-4"
       max-width="344"
       outlined
-      style="text-align: left;"
+      style="text-align: left"
       :to="{ name: 'topup' }"
     >
       <v-list-item>
@@ -91,7 +88,7 @@
             Buy points whenever
           </v-list-item-title>
 
-          <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em;" class="mb-0">
+          <p style="color: rgba(0, 0, 0, 0.7); font-size: 0.8em" class="mb-0">
             Want a Custom plan? We got you covered!<br />Flexibility to
             experiment so you can do you!
           </p>
@@ -103,7 +100,7 @@
       class="mx-auto mb-4"
       max-width="344"
       outlined
-      style="text-align: left;"
+      style="text-align: left"
       :to="{ name: 'faq' }"
     >
       <v-list-item>

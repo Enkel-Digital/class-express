@@ -35,9 +35,7 @@
 
         <h4 class="font-weight-light">
           Already have an account?
-          <router-link :to="{ name: 'login' }">
-            Login here!
-          </router-link>
+          <router-link :to="{ name: 'login' }"> Login here! </router-link>
         </h4>
       </v-col>
 

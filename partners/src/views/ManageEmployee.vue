@@ -69,7 +69,7 @@
             </v-btn>
           </v-card-actions>
 
-          <h2 style="color: #455a64;" class="font-weight-light">
+          <h2 style="color: #455a64" class="font-weight-light">
             ADD NEW EMPLOYEE
           </h2>
 

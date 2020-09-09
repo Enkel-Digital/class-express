@@ -9,30 +9,30 @@
     -->
   <v-dialog v-if="error" v-model="alwaysShow" persistent max-width="40%">
     <v-card>
-      <p class="overline ma-4 pa-4 mb-0 pb-0" style="color: red;">
+      <p class="overline ma-4 pa-4 mb-0 pb-0" style="color: red">
         sadly, there is ({{ errorCount }}) error(s)
       </p>
       <v-card-title
         v-html="error.name"
         class="headline mt-0 pt-0"
-        style="text-align: left; word-break: keep-all;"
+        style="text-align: left; word-break: keep-all"
       />
 
       <!-- Default error description for the specific Error type -->
-      <v-card-text v-html="error.description" style="text-align: left;" />
+      <v-card-text v-html="error.description" style="text-align: left" />
 
       <!-- Custom extra error description developers can add for a specific Error instance -->
       <v-card-text
         v-if="error.more && error.more.description"
         v-html="error.more.description"
-        style="text-align: left;"
+        style="text-align: left"
       />
 
       <!-- Allow debug directly from error dialog component using a "dropdown" view -->
-      <v-card-text v-if="error.more" style="text-align: left;">
+      <v-card-text v-if="error.more" style="text-align: left">
         <details>
           <summary>
-            <h3 style="display: inline; text-decoration: none;">
+            <h3 style="display: inline; text-decoration: none">
               <b><i>More debug info</i></b>
             </h3>
           </summary>
@@ -42,7 +42,7 @@
         </details>
       </v-card-text>
 
-      <v-card-text style="text-align: left;">
+      <v-card-text style="text-align: left">
         Issue reported to the developer 🙏🏻
         <br />
         Working on it now 💪🏻😁
@@ -76,9 +76,7 @@
           @notice Calling dismiss directly instead of passing function to be executed, to ensure click event object is not
           passed in as the first function arguement to match the usage of dismiss(action) when an action function is available
         -->
-        <v-btn color="red darken-1" text @click="dismiss()">
-          dismiss
-        </v-btn>
+        <v-btn color="red darken-1" text @click="dismiss()"> dismiss </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

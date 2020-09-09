@@ -5,7 +5,7 @@
         <img alt="Logo" src="../assets/logo.png" width="360" height="360" />
 
         <p>
-          <span style="color: #2457ff;">
+          <span style="color: #2457ff">
             {{ parsed_admin ? "Admin" : "Employee" }}
           </span>
           account creation link
@@ -63,7 +63,7 @@
         <br />
         <br />
 
-        <div style="text-align: left; margin-left: 1em; opacity: 0.8;">
+        <div style="text-align: left; margin-left: 1em; opacity: 0.8">
           Already have an account?
         </div>
         <v-btn

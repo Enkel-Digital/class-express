@@ -8,9 +8,9 @@
         <v-responsive id="reviews-card">
           <v-list-item>
             <v-list-item-content>
-              <p style="font-size: 20px;">Overall Reviews</p>
+              <p style="font-size: 20px">Overall Reviews</p>
               <v-list-item-content class="pa-0">
-                <v-list-item style="min-height: 0;" class="pa-0">
+                <v-list-item style="min-height: 0" class="pa-0">
                   <v-rating
                     v-model="review.ratings"
                     half-increments
@@ -18,7 +18,7 @@
                     small
                     dense
                     color="amber"
-                    style="opacity: 0.7;"
+                    style="opacity: 0.7"
                   />
                   <span v-text="`${review.ratings} out of 5`" class="caption" />
                 </v-list-item>
@@ -40,7 +40,7 @@
                   medium
                   dense
                   color="amber"
-                  style="opacity: 0.7;"
+                  style="opacity: 0.7"
                   class="ma-0 pa-0"
                 />
               </v-list-item>
@@ -57,7 +57,7 @@
         <!-- Show total / overall review -->
 
         <br />
-        <div style="color: rgba(0, 0, 0, 0.6); text-align: left;">
+        <div style="color: rgba(0, 0, 0, 0.6); text-align: left">
           <!--
         Let user know how are the reviews sorted
         Members reviews can be sorted by
@@ -85,7 +85,7 @@
               small
               dense
               color="amber"
-              style="opacity: 0.7;"
+              style="opacity: 0.7"
             />
             <v-list-item>{{ review.description }}</v-list-item>
           </v-card>

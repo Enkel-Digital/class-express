@@ -29,7 +29,7 @@
 
       <v-card outlined class="mx-auto bottom-margin" width="40em">
         <v-card-text>
-          <h2 style="color: #455a64;" class="text-left font-weight-light">
+          <h2 style="color: #455a64" class="text-left font-weight-light">
             DETAILS
           </h2>
           <br />
@@ -113,7 +113,7 @@
 
       <v-card outlined ref="form" class="mx-auto bottom-margin" width="30em">
         <v-card-text>
-          <h2 style="color: #455a64;" class="text-left font-weight-light">
+          <h2 style="color: #455a64" class="text-left font-weight-light">
             ADDRESS
           </h2>
           <br />

@@ -14,9 +14,7 @@
     </v-app-bar>
 
     <v-list>
-      <v-subheader>
-        Account Details
-      </v-subheader>
+      <v-subheader>Account Details</v-subheader>
 
       <v-list-item ripple>
         Update your email
@@ -40,9 +38,7 @@
     <v-divider></v-divider>
 
     <v-list>
-      <v-subheader colors="orange">
-        Notifications:
-      </v-subheader>
+      <v-subheader colors="orange">Notifications:</v-subheader>
 
       <div
         v-ripple
@@ -78,9 +74,7 @@
     <v-divider></v-divider>
 
     <v-list>
-      <v-subheader>
-        Billing:
-      </v-subheader>
+      <v-subheader>Billing:</v-subheader>
 
       <v-list-item ripple>
         See Billing info
@@ -98,9 +92,7 @@
     <v-divider></v-divider>
 
     <v-list>
-      <v-subheader>
-        Support
-      </v-subheader>
+      <v-subheader>Support</v-subheader>
 
       <v-list-item ripple>
         Visit our F.A.Q page
@@ -124,7 +116,7 @@
       <!-- Direct to website with this content -->
       <v-list-item ripple>
         <span
-          style="text-align: left; color: rgba(0, 0, 0, 0.6);"
+          style="text-align: left; color: rgba(0, 0, 0, 0.6)"
           v-html="
             `Terms & Conditions
             <br />
@@ -137,14 +129,14 @@
 
       <!-- Direct to website with this content -->
       <v-list-item ripple>
-        <span style="color: rgba(0, 0, 0, 0.6);">Privacy Policy</span>
+        <span style="color: rgba(0, 0, 0, 0.6)">Privacy Policy</span>
         <v-spacer />
         <v-icon>mdi-chevron-right</v-icon>
       </v-list-item>
     </v-list>
 
     <v-list>
-      <v-list-item @click="logout" ripple style="background-color: #ededed;">
+      <v-list-item @click="logout" ripple style="background-color: #ededed">
         Logout
       </v-list-item>
     </v-list>

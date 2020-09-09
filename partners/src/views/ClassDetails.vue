@@ -26,7 +26,7 @@
           </v-card>
 
           <v-card max width="450" class="my-2">
-            <v-responsive style="text-align: left;" class="mx-4 pa-0">
+            <v-responsive style="text-align: left" class="mx-4 pa-0">
               <v-row>
                 <v-col>
                   <h3 class="headline" v-text="clas.name" />
@@ -89,7 +89,7 @@
 
           <v-card width="450">
             <h2
-              style="color: rgba(0, 0, 0, 0.65); text-align: left;"
+              style="color: rgba(0, 0, 0, 0.65); text-align: left"
               class="ma-2 mb-0"
             >
               Getting here
