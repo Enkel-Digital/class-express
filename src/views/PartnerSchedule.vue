@@ -22,9 +22,25 @@
       </v-tab>
 
       <v-tab-item v-for="i in tabs" :key="i">
+        <!-- {{ i }} -->
+        <!-- Use utc to deal with everything? Or local time depending on the location/timezone of the user? -->
+        <!-- Use this as the ID for everything. -->
+        <!-- {{ daysFromToday(i).unix() }} -->
+        <!--{{
+              daysFromToday(i).format("ddd") +
+              " " +
+              daysFromToday(i).format("D")
+            }} -->
+        <!-- Perhaps the elements of tabs should be timestamp alr, so we can use it directly -->
+        <!-- {{ schedule[dateCursor(i)] }} -->
+        <!-- 
+          generate the dates on the frontend since always the same
+          then use the ts to ping server for the schedule.
+        -->
+
         <v-divider />
 
-        <span v-for="timestamp in sortedScheduleTimestamps" :key="timestamp">
+        <span v-for="timestamp in scheduleOfSelectedDate" :key="timestamp">
           <v-card
             v-for="(classID, i) in scheduleOfSelectedDate[timestamp]"
             :key="i"
@@ -62,7 +78,7 @@
                 <v-list-item-subtitle>
                   <!-- class instructor if any -->
                   {{ clas.name }}
-                  <span style="font-weight: bold;">{{ clas.points }}</span>
+                  <span style="font-weight: bold">{{ clas.points }}</span>
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
@@ -90,14 +106,13 @@ import { mapState } from "vuex";
 import BackBtn from "@/components/BackBtn";
 
 export default {
-  name: "schedule",
+  name: "PartnerSchedule",
   components: {
     BackBtn,
   },
-  props: ["classID", "partnerID"],
+  props: ["partnerID"],
   created() {
-    if (this.classID === undefined && this.partnerID === undefined)
-      throw new Error("Missing Schedule view props");
+    if (!this.partnerID) throw new Error("Missing Schedule view props");
 
     // Call action to fetch schedules and load them into vuex before they are read/passed in to this component as computed properties
     if (this.classID)
@@ -108,6 +123,13 @@ export default {
       this.$store.dispatch("classes/getPartnerSchedule", {
         partnerID: this.partnerID,
       });
+
+    // need to add this to all as without utc it is localtime
+    // console.log(this.moment.utc().startOf("day").add(1, "days").unix());
+
+    // console.log("utc today", this.moment.utc().startOf("day").unix());
+    // console.log("tz  today", this.moment().startOf("day").unix());
+    // tz today is SGT 12 am, which means it is UTC previous day 4pm because 8 hour ahead of utc
   },
   data() {
     // Allow users to view classes up to 1 month from today, with 1 day as 1 tab
@@ -137,14 +159,18 @@ export default {
         return this.$store.state.classes.schedule.partner[this.partnerID];
       else return undefined; // Return undefined if neither values are present
     },
+    // // Schedule of class or partner following the dateCursor
+    // scheduleOfSelectedDate() {
+    //   return this.schedule[this.dateCursor];
+    // },
+    // // This one sorts the timestamp of a SINGLE DAY
+    // sortedScheduleTimestamps() {
+    //   // Create a new sorted array from earliest to latest timestamp
+    //   return Object.keys(this.scheduleOfSelectedDate).sort((a, b) => a - b);
+    // },
     // Schedule of class or partner following the dateCursor
     scheduleOfSelectedDate() {
       return this.schedule[this.dateCursor];
-    },
-    // This one sorts the timestamp of a SINGLE DAY
-    sortedScheduleTimestamps() {
-      // Create a new sorted array from earliest to latest timestamp
-      return Object.keys(this.scheduleOfSelectedDate).sort((a, b) => a - b);
     },
   },
   methods: {

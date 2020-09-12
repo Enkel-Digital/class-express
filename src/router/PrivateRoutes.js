@@ -77,14 +77,14 @@ const routes = [
   {
     path: "/schedule/class/:classID",
     name: "schedule-class",
-    component: () => import("@/views/Schedule.vue"),
+    component: () => import("@/views/ClassSchedule.vue"),
     meta: { Auth_requirements: AuthType.private },
     props: true,
   },
   {
     path: "/schedule/partner/:partnerID",
     name: "schedule-partner",
-    component: () => import("@/views/Schedule.vue"),
+    component: () => import("@/views/PartnerSchedule.vue"),
     meta: { Auth_requirements: AuthType.private },
     props: true,
   },
