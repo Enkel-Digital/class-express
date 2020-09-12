@@ -53,14 +53,13 @@ export default {
     },
     addClass,
     addPartner,
-    addClassSchedule(state, schedule) {
-      Vue.set(state.schedule.class, schedule.classID, schedule);
-    },
+    addClassSchedule,
     addPartnerSchedule(state, schedule) {
       Vue.set(state.schedule.partner, schedule.partnerID, schedule);
     },
   },
   getters: {
+    // @todo Change this to be like class details and upcoming class, use the view template to map classID to class object
     favouriteClasses(state) {
       return Object.keys(state.favouriteClasses)
         .sort(
@@ -167,6 +166,95 @@ export default {
         commit("toggleFavouritePartner", partnerID);
         return apiError(response, () => dispatch("toggleFavouritePartner"));
       }
+    },
+    /**
+     * Get Schedules of a given class and date
+     * @function getClassSchedule
+     * @param {number} [dateCursor=today] unix timestamp of the start of the day in utc.
+     * @todo Wait what,  why start of the day in utc?... er.... i confused
+     */
+    async getClassSchedule(
+      { state, dispatch, commit },
+      { classID, dateCursor = "" }
+    ) {
+      // return getClassSchedule({ state, commit }, { classID, date: dateCursor });
+
+      /*  schedule state object
+      const schedule = {
+        classes: {
+          ["classID"]: {
+            date1: [
+              time1,
+              time2,
+            ],
+            date2: [
+              time1,
+              time2,
+            ],
+          },
+        },
+        
+        partners should not have another schedule object.
+        when we view partner schedule, we should just get all class IDs of the partner
+        then we load the individual class schedules
+      };
+      */
+
+      // eslint-disable-next-line no-unreachable
+      const today = () => moment().startOf("day");
+
+      /*
+        console.log(
+          "te agn",
+          today().add(1, "hours").unix(),
+          moment(today().add(1, "hours").unix())
+        );
+        
+        above console logs shows the issues
+        moment().unix() returns UNIX time in seconds
+        whereas, Date.now() returns unix time in milliseconds,
+        and moment(UNIX TIME) expects MILISECONDS as the input param
+        
+        SO SOLUTIONS
+        always keep everything in seconds, NO MILISECONDS.
+        to get seconds:
+        - unixseconds()
+        - moment().unix()
+        
+        To get moment object from unix seconds
+        - moment.unix(unix seconds)
+        
+        Also note that <https://momentjs.com/docs/#/parsing/unix-timestamp/> shows that moment.unix(seconds) returns
+        a moment object of local time, so you need to chain a .utc() if you want utc time.
+        
+        
+        Note:
+        Sometimes whats passed in is a string and not a int,
+        so before creating the object, might be wise to do a parseInt before that
+      */
+
+      commit("addClassSchedule", {
+        classID: 1,
+        date: today().unix(),
+        schedule: [
+          today().add(1, "hours").unix(),
+          today().add(2, "hours").unix(),
+          today().add(3, "hours").unix(),
+          today().add(7, "hours").unix(),
+          today().add(10, "hours").unix(),
+          today().add(15, "hours").unix(),
+        ],
+      });
+
+      commit("addClassSchedule", {
+        classID: 1,
+        date: today().add(1, "days").unix(),
+        schedule: [
+          today().add(1, "days").add(1, "hours").unix(),
+          today().add(1, "days").add(2, "hours").unix(),
+          today().add(1, "days").add(10, "hours").unix(),
+        ],
+      });
     },
     async reserveClass({ state, rootState, commit }, classID) {
       const { points: classPoints } = state.classes[classID];
