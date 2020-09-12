@@ -1,6 +1,9 @@
 /**
  * Config options module to be imported by the other modules to use for consistency.
  * @references https://paulund.co.uk/create-config-files-for-vuejs
+ *
+ * @todo Update to call an API to get all the config values instead of hardcoding them.
+ * Hardcoded values should only be the default overrideable values
  */
 
 // Where NODE_ENV is auto injected by vue CLI depending on whether npm run serve or npm run build is used.
