@@ -34,7 +34,7 @@ async function _getClassSchedule(
   schedule,
   commit,
   classID,
-  date = moment.utc().startOf("day")
+  date = moment.utc().startOf("day").unix()
 ) {
   if (!classID) return; // End if classID is undefined
 
@@ -52,7 +52,8 @@ async function _getClassSchedule(
   // Set classID into "Queue" to prevent getClassSchedule from being called again with same ID before this class is fetched
   schedulesToFetch[classID][date] = true;
 
-  const response = await api.get(`/schedule/class/${classID}/${date}`);
+  // Date value defaults to empty string in case it is undefined, which will be interpolated to "undefined"
+  const response = await api.get(`/schedule/class/${classID}/${date || ""}`);
 
   // Clear from queue immediately after API resolves to prevent this from being uncleared if retries if API failed
   delete schedulesToFetch[classID][date];
@@ -89,7 +90,7 @@ async function getClassSchedule({ state, commit }, schedule) {
         state.classSchedules,
         commit,
         scheduleObject.classID,
-        scheduleObject.date
+        scheduleObject.dateCursor
       )
     );
   else
@@ -97,7 +98,7 @@ async function getClassSchedule({ state, commit }, schedule) {
       state.classSchedules,
       commit,
       schedule.classID,
-      schedule.date
+      schedule.dateCursor
     );
 }
 
