@@ -110,7 +110,7 @@ export default {
     /**
      * Dismiss error and execute action if available with VueComponent object passed in.
      * @function dismiss
-     * @params actions
+     * @param actions
      */
     dismiss(action) {
       this.$error.clear(this.error.errorID);
