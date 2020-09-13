@@ -13,7 +13,7 @@ import apiWithLoader from "@/store/utils/apiWithLoader";
 import { getClass, addClass } from "./getClass";
 import { getPartner, addPartner } from "./getPartner";
 
-// import getClassSchedule from "./getClassSchedule";
+import { getClassSchedule, addClassSchedule } from "./getClassSchedule";
 // import getPartnerSchedule from "./getPartnerSchedule";
 
 import unixseconds from "unixseconds";
@@ -167,19 +167,9 @@ export default {
         return apiError(response, () => dispatch("toggleFavouritePartner"));
       }
     },
-    /**
-     * Get Schedules of a given class and date
-     * @function getClassSchedule
-     * @param {number} [dateCursor=today] unix timestamp of the start of the day in utc.
-     * @todo Wait what,  why start of the day in utc?... er.... i confused
-     */
-    async getClassSchedule(
-      { state, dispatch, commit },
-      { classID, dateCursor = "" }
-    ) {
-      // return getClassSchedule({ state, commit }, { classID, date: dateCursor });
-
-      /*  schedule state object
+    // Get Schedules of a given class and date
+    getClassSchedule,
+    /*  schedule state object
       const schedule = {
         classes: {
           ["classID"]: {
@@ -200,10 +190,7 @@ export default {
       };
       */
 
-      // eslint-disable-next-line no-unreachable
-      const today = () => moment().startOf("day");
-
-      /*
+    /*
         console.log(
           "te agn",
           today().add(1, "hours").unix(),
@@ -233,29 +220,30 @@ export default {
         so before creating the object, might be wise to do a parseInt before that
       */
 
-      commit("addClassSchedule", {
-        classID: 1,
-        date: today().unix(),
-        schedule: [
-          today().add(1, "hours").unix(),
-          today().add(2, "hours").unix(),
-          today().add(3, "hours").unix(),
-          today().add(7, "hours").unix(),
-          today().add(10, "hours").unix(),
-          today().add(15, "hours").unix(),
-        ],
-      });
+    // Mock data testing code
+    //  const today = () => moment().startOf("day");
+    //   commit("addClassSchedule", {
+    //     classID: 1,
+    //     date: today().unix(),
+    //     schedule: [
+    //       today().add(1, "hours").unix(),
+    //       today().add(2, "hours").unix(),
+    //       today().add(3, "hours").unix(),
+    //       today().add(7, "hours").unix(),
+    //       today().add(10, "hours").unix(),
+    //       today().add(15, "hours").unix(),
+    //     ],
+    //   });
 
-      commit("addClassSchedule", {
-        classID: 1,
-        date: today().add(1, "days").unix(),
-        schedule: [
-          today().add(1, "days").add(1, "hours").unix(),
-          today().add(1, "days").add(2, "hours").unix(),
-          today().add(1, "days").add(10, "hours").unix(),
-        ],
-      });
-    },
+    //   commit("addClassSchedule", {
+    //     classID: 1,
+    //     date: today().add(1, "days").unix(),
+    //     schedule: [
+    //       today().add(1, "days").add(1, "hours").unix(),
+    //       today().add(1, "days").add(2, "hours").unix(),
+    //       today().add(1, "days").add(10, "hours").unix(),
+    //     ],
+    //   });
     async reserveClass({ state, rootState, commit }, classID) {
       const { points: classPoints } = state.classes[classID];
       const userPoints = rootState.points.points;
