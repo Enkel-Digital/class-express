@@ -111,13 +111,18 @@ export default {
   created() {
     if (!this.classID) throw new Error("Missing Schedule view props");
 
-    // Call action to fetch schedules and load them into vuex before they are read/passed in to this component as computed properties
+    // Call action to fetch schedule of the current day first and into vuex before they are passed to this component as computed properties
     this.$store.dispatch("classes/getClassSchedule", {
       classID: this.classID,
     });
   },
   data() {
-    /** @notice Compute only once but use startOfDay method to clone it as moments are mutable */
+    /**
+     * @notice Compute only once but use startOfDay method to clone it as moments are mutable
+     * This value will be 12am of whatever timezone you are in, so say SG, it will be 12am SGT,
+     * And after passing it to the backend which computes everything in utc unix seconds,
+     * it will be 4pm UTC of the previous day if you pass in a SGT (+8) time
+     */
     const origStartOfDay = this.moment().startOf("day");
 
     return {

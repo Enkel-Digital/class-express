@@ -169,27 +169,6 @@ export default {
     },
     // Get Schedules of a given class and date
     getClassSchedule,
-    /*  schedule state object
-      const schedule = {
-        classes: {
-          ["classID"]: {
-            date1: [
-              time1,
-              time2,
-            ],
-            date2: [
-              time1,
-              time2,
-            ],
-          },
-        },
-        
-        partners should not have another schedule object.
-        when we view partner schedule, we should just get all class IDs of the partner
-        then we load the individual class schedules
-      };
-      */
-
     /*
         console.log(
           "te agn",
@@ -219,31 +198,6 @@ export default {
         Sometimes whats passed in is a string and not a int,
         so before creating the object, might be wise to do a parseInt before that
       */
-
-    // Mock data testing code
-    //  const today = () => moment().startOf("day");
-    //   commit("addClassSchedule", {
-    //     classID: 1,
-    //     date: today().unix(),
-    //     schedule: [
-    //       today().add(1, "hours").unix(),
-    //       today().add(2, "hours").unix(),
-    //       today().add(3, "hours").unix(),
-    //       today().add(7, "hours").unix(),
-    //       today().add(10, "hours").unix(),
-    //       today().add(15, "hours").unix(),
-    //     ],
-    //   });
-
-    //   commit("addClassSchedule", {
-    //     classID: 1,
-    //     date: today().add(1, "days").unix(),
-    //     schedule: [
-    //       today().add(1, "days").add(1, "hours").unix(),
-    //       today().add(1, "days").add(2, "hours").unix(),
-    //       today().add(1, "days").add(10, "hours").unix(),
-    //     ],
-    //   });
     async reserveClass({ state, rootState, commit }, classID) {
       const { points: classPoints } = state.classes[classID];
       const userPoints = rootState.points.points;
