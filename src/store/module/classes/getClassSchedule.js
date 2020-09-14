@@ -23,26 +23,34 @@ import apiError from "@/store/utils/apiError";
 const schedulesToFetch = {};
 
 /**
- * Inner function to request for a class with "classID" to fetch from server if not available locally.
- * Will populate the class into state once server responds.
- * Alternatively caller can also await this to get back the class object
+ * Inner function to request for a class's schedule with "classID" from server if not available locally.
+ * Will commit the schedule into vuex state once server responds for components to use via reactive computed properties.
+ * Alternatively caller can also await this to get back the schedule array directly
  *
- * @param {Number} classID
- * @param {Number} [date=moment().startOf("day").unix()]   assume it is today (default day)
+ * @param {object} schedule Class Schedule object on vuex state passed in from the action
+ * @param {Function} commit Vuex commit function of classes module passed in from the action
+ * @param {Number} classID Class ID for the class to get the schedule of.
+ * @param {Number} [date=moment().startOf("day").unix()] Defaults to unix seconds of the start of today in local timezone
+ * @return {Array<String>} Array of ISO 8061 time strings
  */
 async function _getClassSchedule(
   schedule,
   commit,
   classID,
-  date = moment.utc().startOf("day").unix()
+  date = moment().startOf("day").unix()
 ) {
   if (!classID) return; // End if classID is undefined
 
   // If schedule object for class not available, create an empty schedule object
   if (schedule[classID]) {
     // Skip and return schedule object for the classID and given date if it is already downloaded and cached locally
+    // Will skip even if it is an empty array for that date, meaning no schedule for that day
     if (schedule[classID][date]) return schedule[classID][date];
-  } else schedule[classID] = {};
+  }
+  // Using commit to mutate state to place an empty object on it instead of direct assignment,
+  // As the mutation method uses Vue.set which will allow for reactive property watching.
+  // If set directly instead of using Vue.set, the computed properties of component wont be able to detect the change
+  else commit("addClassSchedule", { classID });
 
   // Skip if schedule of classID is already requested for but not fulfilled yet
   if (schedulesToFetch[classID]) {
@@ -82,6 +90,8 @@ async function _getClassSchedule(
  * Will populate the class into state once server responds.
  * Returns the requested classObject if value does not exist in state and not previously requested for.
  * However do not rely on the return value as if it is already in state or previously requested for it will return undefined
+ * @param {(object|object[])} schedule A schedule or an array of schedule objects with "classID" and a "dateCursor" in them
+ * @returns {(undefined | Promise<Array> | Array<Promise<Array>>)} A promise or an array of promise that resolves to class schedule arrays
  */
 async function getClassSchedule({ state, commit }, schedule) {
   if (Array.isArray(schedule))
