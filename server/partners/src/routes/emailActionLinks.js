@@ -16,7 +16,7 @@ const logger = createLogger("routes:emailActionLinks");
 /**
  * Request for a new verification email to verify email address
  * @name POST /emailActionLinks/resendVerificationEmail
- * @params {string} email Email address
+ * @param {string} email Email address
  * @returns {object} User object
  *
  * @notice This API is rate limited by firebase API

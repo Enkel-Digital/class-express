@@ -184,12 +184,12 @@ router.post("/new", express.json(), async (req, res) => {
  * CE Admin approves a new partner
  * @todo Only allow CE admins to call this API, thus perhaps this should be moved to the admin API service
  * @name POST /partner/new/approve/
- * @param {Object} pendingPartnerID
+ * @param {Number} pendingPartnerID
  * @returns {object} success indicator
  */
-router.post("/new/approve", express.json(), async (req, res) => {
+router.post("/new/approve/:pendingPartnerID", async (req, res) => {
   try {
-    const { pendingPartnerID } = req.body;
+    const { pendingPartnerID } = req.params;
 
     // Verify pendingPartnerID by getting the partner creation request. Will be undefined if invalid.
     const partner = await SQLdb("new_partners").where({ id: pendingPartnerID });
@@ -250,7 +250,7 @@ router.post("/new/approve", express.json(), async (req, res) => {
         partnerID: partner.id,
         email: partner.createdByEmail,
         name: partner.createdByName,
-      },
+      }
       // redirectUrl,
       // ""
     );

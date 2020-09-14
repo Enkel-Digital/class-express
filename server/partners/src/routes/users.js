@@ -17,7 +17,7 @@ const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:users");
 
 /**
- * Get user details object
+ * Get user (partner account / employee) details object
  * @todo Can be get by both the employee themselves and admin accounts
  * @name GET /user/:userEmail
  * @returns {object} User object
@@ -40,35 +40,9 @@ router.get("/:userEmail", onlyOwnResource, async (req, res) => {
 });
 
 /**
- * Create new user details object
- * @name POST /user/new/
- * @param {String} userID
- * @param {Object} user
- * @returns {object} success indicator
- *
- * @todo Should support like a hook system.
- * All the things that should be ran when a new user is created should be posted here as a hook
- * then on user creation, either call all the hooks, or publish a event for all the listeners to use.
- */
-router.post("/new", express.json(), async (req, res) => {
-  try {
-    // Refer to notes for why we are enforcing this lowercase usage.
-    req.body.user.email = req.body.user.email.toLowerCase();
-    const user = req.body.user;
-
-    await SQLdb("partnerAccounts").insert(user);
-
-    res.status(201).json({ success: true });
-  } catch (error) {
-    logger.error(error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-/**
- * Update employee details
+ * Update partner account details
  * @todo Allow both the user themselves and the admin accounts to do this
- * @name PATCH /employees/:employeeID
+ * @name PATCH /user/:employeeID
  * @function
  * @param {object} employee
  * @returns {object} Success indicator
@@ -91,7 +65,7 @@ router.patch("/:employeeID", express.json(), async (req, res) => {
  * Delete employee account
  * @todo Allow themselves and the admin accounts
  * @todo change to use email instead? or ID, but use as query instead of URL params
- * @name DELETE /employees/:employeeID
+ * @name DELETE /user/:employeeID
  * @function
  * @param {object} employee
  * @returns {object} Success indicator

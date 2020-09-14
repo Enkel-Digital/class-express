@@ -32,10 +32,11 @@ function onThisDay(rruleSet, dateToCheck) {
  * Get the schedule of a single class
  * @function getScheduleOfClass
  * @param {*} classID
- * @param {Number} [date=moment.utc()] Date as unix seconds in UTC to check schedule for. Defaults to unix time of execution
+ * @param {Number} [date=moment.utc()] Date as unix seconds in UTC to check schedule for. Defaults to unix seconds in utc of execution
  * @returns {Array<Date>} An array of date objects representing all the time's this class is scheduled for on the selected Date.
  */
 async function getScheduleOfClass(classID, date) {
+  // @todo Instead of date, it should be better named as timestamp or smth
   const currentTime = date ? moment.unix(date) : moment.utc();
 
   // Read rruleSetString from DB
@@ -63,16 +64,18 @@ async function getScheduleOfClass(classID, date) {
 
 /**
  * Compute schedule of a class with given classID on the given date
- * @name GET /schedule/class/:classID/:date
+ * @name GET /schedule/class/:classID/:date?
+ * @param {String} classID
+ * @param {Number} [date] Date in unix seconds only
  * @returns {object} Array of available timings for the selected class and date
  */
 router.get("/class/:classID/:date?", async (req, res) => {
   try {
-    const { classID } = req.params;
+    const { classID, date } = req.params;
 
     res.status(200).json({
       success: true,
-      schedule: await getScheduleOfClass(classID, req.params.date),
+      schedule: await getScheduleOfClass(classID, date),
     });
   } catch (error) {
     logger.error(error);
@@ -82,6 +85,7 @@ router.get("/class/:classID/:date?", async (req, res) => {
 
 /**
  * Compute schedule of a partner with given partnerID on the given date
+ * @todo Move this to partner API instead
  * @name GET /schedule/partner/:partnerID/:date?
  * @returns {object} Array of available timings for classes of the selected partner and date
  */

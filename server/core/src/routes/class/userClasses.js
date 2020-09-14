@@ -26,6 +26,7 @@ router.get("/user/:userID", auth, express.json(), async (req, res) => {
     const { userID } = req.params;
     const { date } = req.query; // date === usersTodayTsInTheirTimeZone
 
+    // @todo Why is this split up?
     const userClasses = () =>
       SQLdb("userBookingTransactions")
         .where({ userID })

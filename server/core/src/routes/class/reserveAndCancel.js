@@ -25,6 +25,8 @@ const logger = createLogger("routes:class");
  * @param {String} classID
  * @param {Object} selectedTime
  * @returns {object} success indicator
+ *
+ * @todo Optimize by running some checks like the points and maxParticipants together in the background asynchronously and await Promise.all() on them
  */
 router.post("/reserve", auth, express.json(), async (req, res) => {
   try {
@@ -38,7 +40,7 @@ router.post("/reserve", auth, express.json(), async (req, res) => {
         .status(404)
         .json({ success: false, error: "Class is deleted" });
 
-    // check the rrule in classes Schedule to see if the class is running in that selected time
+    // @todo check the rrule in classes Schedule to see if the selected time is valid
 
     // Check if user have enough points for the class they are booking
     const { points: classPoints } = await SQLdb("classes")
@@ -52,6 +54,8 @@ router.post("/reserve", auth, express.json(), async (req, res) => {
       return res
         .status(400)
         .json({ success: false, error: "Not enough points" });
+
+    // @todo Do the max participants check first before userPoints as this more likely
 
     // Check if class is fully booked
     // get maximum num of participants
@@ -76,7 +80,7 @@ router.post("/reserve", auth, express.json(), async (req, res) => {
     // If class is fully booked, end the transaction
     if (currentNumOfParticipants >= maxParticipants)
       return res
-        .status(429) // @todo
+        .status(429) // @todo WRONG ERROR CODE
         .json({ success: false, error: "Class is fully booked" });
 
     // If all is ok, insert into DB
