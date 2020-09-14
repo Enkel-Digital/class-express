@@ -109,14 +109,13 @@ exports.seed = async function (knex) {
       description:
         "Located in the Heartlands of Tampines, we offer a wide variety of classes for our residents.",
       email: "tampinesCC@gmail.com",
-      phoneNumber: "+65 98765432",
+      phoneNumber: "+65 98765431",
       location_address: "5 Tampines Ave 3",
       location_coordinates: "1.348979, 103.935787",
       website:
         "https://www.onepa.sg/cc/tampines-central-cc?AspxAutoDetectCookieSupport=1",
       pictureSources:
         "https://www.pa.gov.sg/images/default-source/module/community-clubs/tampines-west-community-club",
-      verified_email: true,
       verified_phone: true,
       verified: true,
     },
@@ -131,7 +130,6 @@ exports.seed = async function (knex) {
       website: "https://alternatetone.com/",
       pictureSources:
         "https://media.timeout.com/images/105537588/630/472/image.jpg",
-      verified_email: true,
       verified_phone: true,
       verified: true,
     },
@@ -139,13 +137,12 @@ exports.seed = async function (knex) {
       name: "Music Classes by Jen",
       description: "Get started on your Guitar journey with us!",
       email: "JenMusicClasses@gmail.com",
-      phoneNumber: "+65 98765432",
+      phoneNumber: "+65 98765433",
       location_address: "249B Victoria St, Bugis Village",
       location_coordinates: "1.300649, 103.855453",
       website: "https://www.musictogetherbymissjen.com/",
       pictureSources:
         "https://rezaglobalpro.com/wp-content/uploads/Reza-Global-Productions-Music-Studio-3.2-1.jpg",
-      verified_email: true,
       verified_phone: true,
       verified: true,
     },
@@ -557,13 +554,11 @@ exports.seed = async function (knex) {
       name: "Jessica Jacelyn",
       admin: true,
       email: "jessicajacelyn@gmail.com",
-      verified_email: true,
     },
     {
       partnerID: 1,
       name: "JJ Lee",
       email: "jj@enkeldigital.com",
-      verified_email: true,
     },
   ]);
 };

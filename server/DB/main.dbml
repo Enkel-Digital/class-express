@@ -108,7 +108,6 @@ Table partnerAccounts {
   email varchar [not null, unique]
   phoneNumber varchar [null] // Includes area code
   profilePictureURL varchar [null] // @todo Might not be stored here
-  verified_email boolean [default: false]
   verified_phone boolean [default: false]
   deleted boolean [default: false]
 }
@@ -136,7 +135,7 @@ Table partnerSettings {
 // Trimmable + PG
 // Since planID is fixed overtime, it is used to get cost of plan and currency, instead of storing a copy of it in this table
 Table userPlans {
-  id bigint [pk, increment, not null]
+  id bigint [pk, increment, not null, unique]
   // @todo Add updatedAt to track when this is updated for analytics purposes?
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   userID int [ref: > userAccounts.id, not null] // Many rows with each row being 1 plan in users history
@@ -150,7 +149,7 @@ Table userPlans {
 // Since topupID is fixed overtime, it is used to get cost of plan and currency, instead of storing a copy of it in this table
 // Each topup is only valid in same period it is purchased. Determined by checking if purchaseTime is between start and end of current period
 Table userTopups {
-  id bigint [pk, increment, not null]
+  id bigint [pk, increment, not null, unique]
   // @todo Add updatedAt to track when this is updated for analytics purposes?
   purchaseTime bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   userID int [ref: > userAccounts.id, not null] // Many rows with each row being 1 topup in users history
@@ -164,7 +163,7 @@ Table userTopups {
 // Bascially records of user bookings and cancellation events and more
 // Classes that the users have booked and did not cancel
 Table userBookingTransactions {
-  id bigint [pk, increment, not null]
+  id bigint [pk, increment, not null, unique]
   actionTime bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] // TS should be provided by client, but defaults to server timestamp if none
   userID int [ref: > userAccounts.id, not null]
   classID int [ref: > classes.id, not null]
@@ -182,7 +181,7 @@ Table userBookingTransactions {
 // Classes that the user have booked/attended/booked+cancelled(by user or partner)
 // For analytics only
 Table userBookingTransactionsAnalytics {
-  id bigint [pk, increment, not null]
+  id bigint [pk, increment, not null, unique]
   actionTime bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] // TS should be provided by client, but defaults to server timestamp if none
   userID int [ref: > userAccounts.id, not null]
   classID int [ref: > classes.id, not null]
@@ -220,7 +219,7 @@ Table classTags {
 // PG
 // Every row is a rruleSet string for a single class
 Table classSchedule {
-  id bigint [pk, increment, not null]
+  id bigint [pk, increment, not null, unique]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   // @todo Add updatedAt to track when this is updated for analytics purposes
   // Allow multiple rrules per class
@@ -230,7 +229,7 @@ Table classSchedule {
 
 // PG or FS
 Table userFavourites {
-  id bigint [pk, increment, not null]
+  id bigint [pk, increment, not null, unique]
   userID int [ref: > userAccounts.id, not null]
   favouritedAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] // TS should be provided by client, but defaults to server timestamp if none
   // Only one will be nulled, either classID or partnerID
@@ -276,7 +275,7 @@ Table topupOptions {
 // PG + Trimmable (If trimmed, we need to make this into a seperate service that will hold a materialized view with cached result)
 // PG needed for advance processing, to add a caching layer in front of queries for this with a 1 ~ 2 days expiry?
 Table reviews {
-  id bigint [pk, increment, not null]
+  id bigint [pk, increment, not null, unique]
   reviewedOn bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   userID int [ref: > userAccounts.id, not null]
   classID int [ref: > classes.id, not null]
