@@ -25,6 +25,7 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
   try {
     const { userID } = req.params;
 
+    // For both classes and partners, get them as an array of "favouritedAt time sorted" IDs
     const favourites = {
       classes: (
         await SQLdb("userFavourites")

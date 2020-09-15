@@ -62,6 +62,7 @@ GET {{host}}/favourites/1
 {{authHeader}}
 
 ### Update favourite class
+# Can set favouritedAt timestamp using an object on the favourite key
 POST {{host}}/favourites/classes/update
 {{authHeader}}
 content-type: application/json
@@ -73,6 +74,7 @@ content-type: application/json
 }
 
 ### Update favourite partner
+# Can set favouritedAt timestamp using an object on the favourite key
 POST {{host}}/favourites/partner/update
 {{authHeader}}
 content-type: application/json

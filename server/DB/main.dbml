@@ -231,7 +231,10 @@ Table classSchedule {
 Table userFavourites {
   id bigint [pk, increment, not null, unique]
   userID int [ref: > userAccounts.id, not null]
-  favouritedAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] // TS should be provided by client, but defaults to server timestamp if none
+  // TS should be provided by client, but defaults to server timestamp if none.
+  // Because there might be a difference between client and DB server time due to network latency.
+  // However this is not really that big of a problem, thus it can be changed when needed.
+  favouritedAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   // Only one will be nulled, either classID or partnerID
   // Get classIDs by filtering for NOT NULL classIDs
   classID int [ref: > classes.id, null] // Defaults to null

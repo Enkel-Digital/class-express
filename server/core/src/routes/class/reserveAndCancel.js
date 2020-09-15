@@ -70,6 +70,7 @@ router.post("/reserve", auth, express.json(), async (req, res) => {
         await SQLdb("userBookingTransactions")
           .where({
             classID,
+            // @todo Fix this, without this check, maxParticipants becomes the value for the class across all its timings
             // selectedTime
           })
           .count("classID as currentNumOfParticipants")
@@ -89,7 +90,7 @@ router.post("/reserve", auth, express.json(), async (req, res) => {
       userID,
       classID,
       points: classPoints,
-      startTime: selectedTime || unixseconds(), // @todo temporary hack to allow insertion into column with NOT NULL constraint and bigint type
+      startTime: selectedTime,
     });
 
     res.status(200).json({ success: true });

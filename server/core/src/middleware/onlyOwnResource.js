@@ -12,6 +12,11 @@ module.exports = async function onlyOwnResource(req, res, next) {
   // Explore something like --> await admin.auth().getUserByEmail
   /* eslint-disable no-unreachable */
 
+  // @todo Allow these values to be passed in to check for these values, can even pass in multiple values, to return different types of middlewares
+  // onlyOwnResource({email: "..."}) // email
+  // onlyOwnResource({uid: "..."}) // fire auth ID
+  // onlyOwnResource({id: "..."}) // DB id
+
   // @todo To migrate to only userEmail and only userID, where userID will no longer be email
   const { userID, userEmail } = req.params;
 
