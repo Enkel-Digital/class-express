@@ -198,7 +198,10 @@ export default {
         Sometimes whats passed in is a string and not a int,
         so before creating the object, might be wise to do a parseInt before that
       */
-    async reserveClass({ state, rootState, commit }, classID) {
+    async reserveClass(
+      { state, rootState, commit, dispatch },
+      { classID, selectedTime }
+    ) {
       const { points: classPoints } = state.classes[classID];
       const userPoints = rootState.points.points;
 
@@ -208,20 +211,24 @@ export default {
         if (confirm("Not enough points, topup?"))
           router.push({ name: "topup" });
       } else if (confirm(`Reserve class for ${classPoints} points?`)) {
-        // @todo Show loading UI while making call to API
+        // Add API call to set upcoming class
+        const response = await apiWithLoader.post("/class/reserve", {
+          userID: rootState.user.id,
+          classID,
+          selectedTime,
+        });
 
-        // @todo Add API call to set upcoming class
-        // @notice API logic should deduct points too, but locally update it without checking API
+        if (!response.success)
+          return apiError(response, () =>
+            dispatch("reserveClass", { classID, selectedTime })
+          );
 
-        /** @notice Pessimistic UI, commit changes after API call is successful */
+        // Pessimistic UI, commit changes after API call is successful
         commit("setUpcomingClass", { classID, action: true, timestamp: "" });
 
-        // Deduct points
+        // Call mutation method from points vuex module to deduct points
+        // Alternatively, we can dispatch an action in points module to get user points again
         commit("points/deductPoints", classPoints, { root: true });
-
-        // @todo Handle API failures
-
-        // @todo Remove loading UI after API call is done
       }
     },
     async cancelClass({ state, rootState, commit }, classID) {
