@@ -154,7 +154,11 @@
           <v-btn v-if="isReserved" @click="cancelClass(clas.id)" color="error">
             cancel
           </v-btn>
-          <v-btn v-else @click="reserveClass(clas.id)" color="primary">
+          <v-btn
+            v-else
+            @click="reserveClass({ classID: clas.id, selectedTime })"
+            color="primary"
+          >
             reserve
           </v-btn>
         </v-col>

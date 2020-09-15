@@ -58,7 +58,7 @@ export default {
       return (
         (
           userClasses
-            // null coalescing to protect against undefined if clas object is not loaded yet.
+            // optional chaining operator protects against undefined if clas object is not loaded yet.
             .filter((userClass) => state.classes[userClass.classID]?.length)
             .filter(
               (userClass) =>
