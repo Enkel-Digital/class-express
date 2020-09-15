@@ -25,9 +25,27 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
   try {
     const { userID } = req.params;
 
+    const favourites = {
+      classes: (
+        await SQLdb("userFavourites")
+          .where({ userID })
+          .whereNotNull("classID")
+          .orderBy("favouritedAt", "desc") // Sort by latest favourite first
+          .select("classID")
+      ).map((favClass) => favClass.classID),
+      partners: (
+        await SQLdb("userFavourites")
+          .where({ userID })
+          .whereNotNull("partnerID")
+          .orderBy("favouritedAt", "desc") // Sort by latest favourite first
+          .select("partnerID")
+      ).map((favPartner) => favPartner.partnerID),
+    };
+
+    // OLD CODE BELOW FOR REFERENCE ONLY
     // Filter for class and partners here instead of doing it on the frontend for better performance
     // Then convert returned array into an object for easier access by the client.
-    const favourites = {
+    /* const favourites = {
       classes: (
         await SQLdb("userFavourites")
           .where({ userID })
@@ -48,7 +66,7 @@ router.get("/:userID", onlyOwnResource, async (req, res) => {
         delete acc[cur.partnerID].partnerID;
         return acc;
       }, {}),
-    };
+    }; */
 
     return res.json({ success: true, favourites });
   } catch (error) {
@@ -78,9 +96,7 @@ router.post("/classes/update", express.json(), async (req, res) => {
         await SQLdb("userFavourites").insert({
           userID,
           classID,
-          favouritedAt: favourite.favouritedAt
-            ? favourite.favouritedAt
-            : undefined,
+          favouritedAt: favourite.favouritedAt,
         });
     } else {
       await SQLdb("userFavourites").where({ userID, classID }).del();
@@ -114,9 +130,7 @@ router.post("/partner/update", express.json(), async (req, res) => {
         await SQLdb("userFavourites").insert({
           userID,
           partnerID,
-          favouritedAt: favourite.favouritedAt
-            ? favourite.favouritedAt
-            : undefined,
+          favouritedAt: favourite.favouritedAt,
         });
     } else {
       await SQLdb("userFavourites").where({ userID, partnerID }).del();
