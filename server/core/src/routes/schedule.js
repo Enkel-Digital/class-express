@@ -18,14 +18,18 @@ const logger = createLogger("routes:schedule");
  * Test for all occurences in the rrule using given date
  * @param {object} rruleSet rRule set object from rrule library
  * @param {moment} dateToCheck Moment object of the date to check
- * @returns {Array<Date>} Array of date objects if any for all occurences that lies on the given date
+ * @returns {Array<Number>} Array of unix seconds if any for all occurences that lies between the start and end of the given date
  */
 function onThisDay(rruleSet, dateToCheck) {
   // Get start and end time of selected date to test for timings/occurence between them
   const start = dateToCheck.clone().startOf("day").toDate();
   const end = dateToCheck.clone().endOf("day").toDate();
 
-  return rruleSet.between(start, end, true);
+  // return rruleSet.between(start, end, true);
+
+  // @todo For the moment creation, do I need to set utc or smth?
+  // rruleSet.between returns an array of date strings, which is converted to an array of unix seconds for consistency throughout the system
+  return rruleSet.between(start, end, true).map((date) => moment(date).unix());
 }
 
 /**
@@ -86,6 +90,7 @@ router.get("/class/:classID/:date?", async (req, res) => {
 /**
  * Compute schedule of a partner with given partnerID on the given date
  * @todo Move this to partner API instead
+ * @todo Fix this following API change of the onThisDay function
  * @name GET /schedule/partner/:partnerID/:date?
  * @returns {object} Array of available timings for classes of the selected partner and date
  */
