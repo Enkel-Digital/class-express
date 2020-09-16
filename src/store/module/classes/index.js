@@ -225,7 +225,9 @@ export default {
 
         // Pessimistic UI, commit changes after API call is successful
         // @todo Fix the timestamp
-        commit("setUpcomingClass", { classID, action: true, timestamp: "" });
+        // commit("setUpcomingClass", { classID, action: true, timestamp: "" });
+        // @todo Temporarily using this action instead of calculating the new userClasses array ourselves on the client
+        dispatch("getUsersClasses");
 
         // Call mutation method from points vuex module to deduct points
         // Alternatively, we can dispatch an action in points module to get user points again
@@ -257,7 +259,9 @@ export default {
 
       // Pessimistic UI, commit changes after API call is successful
       // @todo Fix the timestamp
-      commit("setUpcomingClass", { classID, action: false, timestamp: "" });
+      // commit("setUpcomingClass", { classID, action: false, timestamp: "" });
+      // @todo Temporarily using this action instead of calculating the new userClasses array ourselves on the client
+      dispatch("getUsersClasses");
 
       // Call mutation method from points vuex module to refund back the points
       // Alternatively, we can dispatch an action in points module to get user points again
