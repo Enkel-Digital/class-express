@@ -188,7 +188,6 @@
 import { mapActions } from "vuex";
 import BackBtn from "@/components/BackBtn";
 import MapImage from "@/components/MapImage";
-import unixseconds from "unixseconds";
 
 import getClassAndPartnerMixin from "../utils/getClassAndPartnerMixin";
 
@@ -235,25 +234,15 @@ export default {
     // Add a check to see if selected time is a valid time for the class
     isReserved() {
       // Cannot determine if there is a reserved class if no selectedTime is passed in
-      if (!this.selectedTime) return false;
       // Cannot determine time if class object is not loaded yet as we need length of class
-      if (!this.clas) return false;
+      if (!this.selectedTime || !this.clas) return false;
 
-      const nowTS = unixseconds();
-
-      // Return upcoming class object if there is any
-      return (
-        this.$store.state.classes.userClasses
-          // Filter and keep only upcoming classes
-          .filter(
-            (userClass) => userClass.startTime + this.clas?.length * 60 > nowTS
-          )
-          // Find if there is an upcoming class for this class and selected time
-          .find(
-            (userClass) =>
-              userClass.classID === this.classID &&
-              userClass.startTime === this.selectedTime
-          )
+      // Return userClass object if there is any that matches the classID and selectedTime props
+      return this.$store.state.classes.userClasses.find(
+        (userClass) =>
+          // Using parseInt on classID as it is a URL param prop passed in as a string via vue router
+          userClass.classID === parseInt(this.classID) &&
+          userClass.startTime === this.selectedTime
       );
     },
     review() {
