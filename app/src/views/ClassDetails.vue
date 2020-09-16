@@ -151,7 +151,12 @@
         </v-col>
 
         <v-col>
-          <v-btn v-if="isReserved" @click="cancelClass(clas.id)" color="error">
+          <!-- @todo Update cancelClass action and update how it is called to pass in the selected time too -->
+          <v-btn
+            v-if="isReserved"
+            @click="cancelClass({ classID: clas.id, selectedTime })"
+            color="error"
+          >
             cancel
           </v-btn>
           <v-btn

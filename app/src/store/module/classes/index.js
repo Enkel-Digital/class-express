@@ -224,6 +224,7 @@ export default {
           );
 
         // Pessimistic UI, commit changes after API call is successful
+        // @todo Fix the timestamp
         commit("setUpcomingClass", { classID, action: true, timestamp: "" });
 
         // Call mutation method from points vuex module to deduct points
@@ -231,28 +232,36 @@ export default {
         commit("points/deductPoints", classPoints, { root: true });
       }
     },
-    async cancelClass({ state, rootState, commit }, classID) {
+    async cancelClass(
+      { state, rootState, commit, dispatch },
+      { classID, selectedTime }
+    ) {
       const { points: classPoints } = state.classes[classID];
 
       // @todo User obviously cannot cancel when the class is in progress or after it ended
       // @todo Add time check to ensure user knows that we will charge him extra if cancelling late
 
-      if (confirm("Cancel your reservation?")) {
-        // @todo Show loading UI while making call to API
+      if (!confirm("Cancel your reservation?")) return;
 
-        // @todo Add API call to cancel upcoming class
-        // @notice API logic should add back points too, but locally update it without checking API
+      // Add API call to set upcoming class
+      const response = await apiWithLoader.post("/class/cancel", {
+        userID: rootState.user.id,
+        classID,
+        selectedTime,
+      });
 
-        /** @notice Pessimistic UI, commit changes after API call is successful */
-        commit("setUpcomingClass", { classID, action: false, timestamp: "" });
+      if (!response.success)
+        return apiError(response, () =>
+          dispatch("cancelClass", { classID, selectedTime })
+        );
 
-        // Refund back the points
-        commit("points/refundPoints", classPoints, { root: true });
+      // Pessimistic UI, commit changes after API call is successful
+      // @todo Fix the timestamp
+      commit("setUpcomingClass", { classID, action: false, timestamp: "" });
 
-        // @todo Handle API failures
-
-        // @todo Remove loading UI after API call is done
-      }
+      // Call mutation method from points vuex module to refund back the points
+      // Alternatively, we can dispatch an action in points module to get user points again
+      commit("points/refundPoints", classPoints, { root: true });
     },
     // @todo Update to get only the basic review data instead of using the whole reviews object
     // API should return result without userReview
