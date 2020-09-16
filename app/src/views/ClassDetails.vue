@@ -207,11 +207,10 @@ export default {
   // @todo Generate calendar invite link for add to calendar button
   computed: {
     dateObject() {
-      // ClassSchedule view is now using UTC time string, might change if going back to unix seconds again
-      return this.selectedTime ? this.moment(this.selectedTime) : undefined;
-      // return this.selectedTime
-      //   ? this.moment.unix(parseInt(this.selectedTime))
-      //   : undefined;
+      // Using parseInt for the prop that is received via the router, as they will always be of type string
+      return this.selectedTime
+        ? this.moment.unix(parseInt(this.selectedTime))
+        : undefined;
     },
     clas() {
       return this.$store.state.classes.classes[this.classID];

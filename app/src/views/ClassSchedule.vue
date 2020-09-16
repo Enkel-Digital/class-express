@@ -31,11 +31,11 @@
         <v-divider />
 
         <v-card
-          v-for="(isoTimeString, timestampIndex) in scheduleOfSelectedDate"
-          :key="timestampIndex"
+          v-for="(timestamp, index) in scheduleOfSelectedDate"
+          :key="index"
           :to="{
             name: 'ClassDetails',
-            params: { classID: classID, selectedTime: isoTimeString },
+            params: { classID: classID, selectedTime: timestamp },
           }"
           flat
           tile
@@ -49,12 +49,12 @@
                     <!-- If using unix seconds instead of iso 8601 time string -->
                     <!-- <th>{{ moment.unix(timestamp).format("h:mm A") }}</th> -->
                     <!-- @todo Might change to use Location aware format -->
-                    <!-- <th>{{ moment(isoTimeString).format("LT") }}</th> -->
-                    <th>{{ moment(isoTimeString).format("h:mm A") }}</th>
+                    <th>{{ moment.unix(timestamp).format("h:mm A") }}</th>
                     <th>-</th>
                     <th>
                       {{
-                        moment(isoTimeString)
+                        moment
+                          .unix(timestamp)
                           .add(clas.length, "minutes")
                           .format("h:mm A")
                       }}
@@ -81,7 +81,7 @@
 
         <!-- Show no schedule available section if schedule of selected date is not loaded yet or if there is none -->
         <div v-if="!scheduleOfSelectedDate || !scheduleOfSelectedDate.length">
-          <!--  -->
+          <!-- @todo Create the UI -->
           Nothing here
         </div>
       </v-tab-item>
@@ -90,15 +90,6 @@
 </template>
 
 <script>
-/**
- * Notes on the representation of time:
- * - This uses both Unix seconds and iso 8061 time strings in utc
- * - The reason is because it is easier and more standardized to use unix seconds in our system.
- * - However for scheduling, we are using the rrule library in the backend, which means that it returns iso time strings
- * - SO, instead of processing the iso time strings on the backend, we will instead take them as if and use moment lib to transform
- * - This might change in the future for consistency sake, but will only be decided once scheduling and rrule backend is complete.
- */
-
 import { mapState } from "vuex";
 import BackBtn from "@/components/BackBtn";
 
@@ -158,7 +149,9 @@ export default {
      * @param {Number} dateCursorJump Number of 0 to x, representing which tab is pressed, where 0 is the first tab
      */
     dateCursorChanged(dateCursorJump) {
-      // console.log("dateCursor", dateCursor);
+      // @todo Have a check to see when the points period ends and notify user that they cannot book classes beyond the current points period
+      // Or should we allow them to book, and deduct straight away from their nxt month one?
+      // I think at first, use method 1 then in prod then build method 2
 
       // Add the jump number as number of days to the start date and set as the date cursor
       this.dateCursor = this.origStartOfDay
@@ -170,10 +163,6 @@ export default {
         classID: this.classID,
         dateCursor: this.dateCursor,
       });
-
-      // Have a check to see when the points period ends and notify user that they cannot book classes beyond the current points period
-      // Or should we allow them to book, and deduct straight away from their nxt month one?
-      // I think at first, use method 1 then in prod then build method 2
     },
   },
 };
