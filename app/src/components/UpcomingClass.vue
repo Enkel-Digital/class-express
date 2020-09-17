@@ -132,7 +132,7 @@ export default {
       return this.$store.state.classes.classes[this.upcomingClass.classID];
     },
     partner() {
-      // Null coalescing to prevent failure when clas is still being loaded and is undefined
+      // optional chaining operator to prevent failure when clas is still being loaded and is undefined
       return this.$store.state.classes.partners[this.clas?.partnerID];
     },
     isFavourited() {
