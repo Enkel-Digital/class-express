@@ -1,19 +1,21 @@
 <template>
   <v-main style="padding: 0">
-    <v-responsive v-if="favouritePartners.length">
+    <v-responsive v-if="favouritePartnersIDs.length">
       <v-card
-        v-for="partner in favouritePartners"
-        :key="partner.id"
+        v-for="favouritePartnersID in favouritePartnersIDs"
+        :key="favouritePartnersID"
         class="mx-auto mb-4"
         max-width="calc(100% - 1.6em)"
         outlined
         :ripple="false"
       >
-        <v-responsive
+        <div
+          v-if="partners[favouritePartnersID]"
+          :set="(partner = partners[favouritePartnersID])"
           @click="
             $router.push({
               name: 'partner',
-              params: { partnerID: partner.id },
+              params: { partnerID: favouritePartnersID },
             })
           "
         >
@@ -34,7 +36,7 @@
               <!-- @todo Add list of categories of classes the partner offers. -->
             </div>
           </v-list-item>
-        </v-responsive>
+        </div>
 
         <v-card-actions>
           <v-spacer />
@@ -59,7 +61,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "favourite-partners",
@@ -67,13 +69,11 @@ export default {
     this.$store.dispatch("classes/getFavourites");
   },
   computed: {
-    ...mapGetters("classes", ["favouritePartners"]),
+    ...mapGetters("classes", ["favouritePartnersIDs"]),
+    ...mapState("classes", ["partners"]),
   },
   methods: {
     ...mapActions("classes", ["toggleFavouritePartner"]),
-    getPartner(partnerID) {
-      return this.$store.state.classes.partners[partnerID];
-    },
   },
 };
 </script>
