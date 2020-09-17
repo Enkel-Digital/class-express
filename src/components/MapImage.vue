@@ -1,5 +1,11 @@
 <template>
-  <v-img :src="locationImage" @click="openMaps" />
+  <!--
+    - Using the aspect-ratio attribute to "reserve" an empty space of that dimension to prevent "jumpy UI" when image is loaded after being scrolled to
+    - aspect ratio is derived from "600/300", which is the size of map image requested for via the API
+    - eager attribute can also be used to make image load before scrolled to
+  -->
+  <!-- @todo Cache image either locally on the client or on our own CDN instead of always hitting google's server -->
+  <v-img aspect-ratio="2" :src="locationImage" @click="openMaps" />
 </template>
 
 <script>
