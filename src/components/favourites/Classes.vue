@@ -1,19 +1,21 @@
 <template>
   <v-main style="padding: 0">
-    <v-responsive v-if="favouriteClasses.length">
+    <v-responsive v-if="favouriteClassesIDs.length">
       <v-card
-        v-for="clas in favouriteClasses"
-        :key="clas.id"
+        v-for="favouriteClassID in favouriteClassesIDs"
+        :key="favouriteClassID"
         class="mx-auto mb-4"
         max-width="calc(100% - 1.6em)"
         outlined
         :ripple="false"
       >
-        <v-responsive
+        <div
+          v-if="classes[favouriteClassID]"
+          :set="(clas = classes[favouriteClassID])"
           @click="
             $router.push({
               name: 'ClassDetails',
-              params: { classID: clas.id },
+              params: { classID: favouriteClassID },
             })
           "
         >
@@ -46,7 +48,7 @@
               </v-list-item-subtitle>
             </div>
           </v-list-item>
-        </v-responsive>
+        </div>
 
         <v-card-actions>
           <v-spacer />
@@ -79,18 +81,17 @@ export default {
     this.$store.dispatch("classes/getFavourites");
   },
   computed: {
-    ...mapGetters("classes", ["favouriteClasses"]),
-    // @todo update this to do in computed as a standalone method
-    ...mapState("classes", ["partners"]),
+    ...mapGetters("classes", ["favouriteClassesIDs"]),
+    ...mapState("classes", ["classes", "partners"]),
   },
   watch: {
-    // Watcher to load partner details of favourited classes whenever favouriteClasses is loaded or updated
-    favouriteClasses: {
+    // Watcher to load partner details of favourited classes whenever favouriteClassesIDs is loaded or updated
+    favouriteClassesIDs: {
       immediate: true,
       handler() {
         this.$store.dispatch(
-          "classes/getPartner",
-          this.favouriteClasses.map((clas) => clas.partnerID)
+          "classes/getPartnerWithClassIDs",
+          this.favouriteClassesIDs
         );
       },
     },
