@@ -46,7 +46,31 @@ async function _getClass(classes, commit, classID) {
   // Skip if classID is already requested for but not fulfilled yet
   // Return the class if in state and the promise (that is saved in the classesToFetch queue) if it is still pending
   if (classes[classID]) return classes[classID];
-  if (classesToFetch[classID]) return classesToFetch[classID];
+
+  /*
+    When this function is called and the API request has been made, instead of returning the
+    promise in the queue directly, we await the promise here first for the caller to "await".
+    
+    This is because, the promise stored inside the classesToFetch queue is actually the network request promise,
+    which resolves into the response object from the API. Since we only want to return either the Class object
+    or undefined from this function, we need to await the request promise, before returning the Class Object if
+    the API request succeeded, or do an explicit "return undefined" to match the function signature.
+    
+    Why doesnt this section need to do things like handle API error and state mutation?
+    tl;dr The code below handles it all when the API call promise resolves.
+    
+    Unlike the code below that awaits for the promise and handle deleting the promise from the Queue and
+    handling API errors, when the promise resolves, this section for awaiting the Class object does not.
+    Since we can await the same promise multiple times, this is just another part that awaits for the same
+    promise. When the original call to the function / returned-promise, completes the API call, it will
+    handle all the things needed to be done, so this section just needs to await and return the class object
+    if succeeded and does not need to handle anything else.
+  */
+  if (classesToFetch[classID]) {
+    const response = await classesToFetch[classID];
+    if (response.success) return response.class;
+    else return; // Explicit end of function to prevent execution from continuing and re-running the API call.
+  }
 
   const responsePromise = api.get(`/class/details/${classID}`);
 
