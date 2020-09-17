@@ -67,15 +67,13 @@ export default {
           state.favouriteClasses[a].favouritedAt
       );
     },
-    favouritePartners(state) {
-      return Object.keys(state.favouritePartners)
-        .sort(
-          (a, b) =>
-            state.favouritePartners[b].favouritedAt -
-            state.favouritePartners[a].favouritedAt
-        ) // Sort by decsending order
-        .map((partnerID) => state.partners[partnerID]) // Convert from partnerID to partner object
-        .filter((partner) => partner); // Filter to remove undefined if any partner is not loaded into state yet
+    favouritePartnersIDs(state) {
+      // Sort by decsending order
+      return Object.keys(state.favouritePartners).sort(
+        (a, b) =>
+          state.favouritePartners[b].favouritedAt -
+          state.favouritePartners[a].favouritedAt
+      );
     },
   },
   actions: {
