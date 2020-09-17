@@ -39,8 +39,14 @@ async function _getPartner(partners, commit, partnerID) {
   // Clear partnerID immediately after API resolves to prevent this from being uncleared if retries if API failed
   delete partnersToFetch[partnerID];
 
-  // @todo See if this.call(this) is actually valid
-  if (!response.success) return apiError(response, () => this.call(this));
+  // @todo Returning apiError will fk up caller's code, which may depend on getting back the class object or undefined
+  // @todo If res fails but the reason is because invalid classID, maybe I should do smth else instead?
+  if (!response.success)
+    return apiError(
+      response,
+      _getPartner.bind(this, partners, commit, partnerID),
+      `Failed to fetch Partner Details for Partner "${partnerID}"`
+    );
 
   const { partner } = response;
 

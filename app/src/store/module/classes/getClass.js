@@ -58,9 +58,14 @@ async function _getClass(classes, commit, classID) {
   // Clear classID immediately after API resolves to prevent this from being uncleared if retries if API failed
   delete classesToFetch[classID];
 
+  // @todo Returning apiError will fk up caller's code, which may depend on getting back the class object or undefined
   // @todo If res fails but the reason is because invalid classID, maybe I should do smth else instead?
-  // @todo See if this.call(this) is actually valid
-  if (!response.success) return apiError(response, () => this.call(this));
+  if (!response.success)
+    return apiError(
+      response,
+      _getClass.bind(this, classes, commit, classID),
+      `Failed to fetch Class Details for Class "${classID}"`
+    );
 
   // Rename to classObject to prevent naming conflict with "class" keyword
   const classObject = response.class;
