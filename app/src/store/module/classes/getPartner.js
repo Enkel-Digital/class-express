@@ -78,4 +78,4 @@ function addPartner(state, partnerObject) {
   Vue.set(state.partners, partnerObject.id, partnerObject);
 }
 
-export { getPartner, addPartner };
+export { _getPartner, getPartner, addPartner };

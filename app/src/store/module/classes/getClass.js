@@ -98,4 +98,4 @@ function addClass(state, classObject) {
   Vue.set(state.classes, classObject.id, classObject);
 }
 
-export { getClass, addClass };
+export { _getClass, getClass, addClass };

@@ -10,8 +10,8 @@ import setter from "../../utils/setter";
 import apiError from "@/store/utils/apiError";
 import apiWithLoader from "@/store/utils/apiWithLoader";
 
-import { getClass, addClass } from "./getClass";
-import { getPartner, addPartner } from "./getPartner";
+import { _getClass, getClass, addClass } from "./getClass";
+import { _getPartner, getPartner, addPartner } from "./getPartner";
 
 import { getClassSchedule, addClassSchedule } from "./getClassSchedule";
 // import getPartnerSchedule from "./getPartnerSchedule";
@@ -59,16 +59,13 @@ export default {
     },
   },
   getters: {
-    // @todo Change this to be like class details and upcoming class, use the view template to map classID to class object
-    favouriteClasses(state) {
-      return Object.keys(state.favouriteClasses)
-        .sort(
-          (a, b) =>
-            state.favouriteClasses[b].favouritedAt -
-            state.favouriteClasses[a].favouritedAt
-        ) // Sort by decsending order
-        .map((classID) => state.classes[classID]) // Convert from classID to class object
-        .filter((clas) => clas); // Filter to remove undefined if any class is not loaded into state yet
+    favouriteClassesIDs(state) {
+      // Sort by decsending order
+      return Object.keys(state.favouriteClasses).sort(
+        (a, b) =>
+          state.favouriteClasses[b].favouritedAt -
+          state.favouriteClasses[a].favouritedAt
+      );
     },
     favouritePartners(state) {
       return Object.keys(state.favouritePartners)
@@ -84,6 +81,19 @@ export default {
   actions: {
     getClass,
     getPartner,
+    // Call getPartner using partnerIDs from Class Objects that are loaded via getClass
+    // optional chaining operator to handle cases where classID is undefined to prevent chaining partnerID on undefined
+    async getPartnerWithClassIDs({ state, commit }, classID) {
+      if (Array.isArray(classID))
+        return classID.map(async (id) => {
+          const clas = await _getClass(state.classes, commit, id);
+          return _getPartner(state.partners, commit, clas?.partnerID);
+        });
+      else {
+        const clas = await _getClass(state.classes, commit, classID);
+        return _getPartner(state.partners, commit, clas?.partnerID);
+      }
+    },
     /**
      * Get list of user's classes from API
      * This includes both upcoming and past classes
