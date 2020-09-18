@@ -12,7 +12,7 @@
 
       <!-- @todo Update to use toggleFavouritePartner -->
       <v-btn icon @click="toggleFavouritePartner(partner.id)">
-        <v-icon v-if="favourited" color="red">mdi-heart</v-icon>
+        <v-icon v-if="isFavourite" color="red">mdi-heart</v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
     </v-app-bar>
@@ -118,10 +118,11 @@ export default {
     partner() {
       return this.$store.state.classes.partners[this.partnerID];
     },
-    favourited() {
-      if (this.$store.state.classes.favouritePartners[this.partnerID])
-        return true;
-      else return false;
+    isFavourite() {
+      return this.$store.state.classes.favouritePartnersIDs.find(
+        // Using parseInt on partnerID as it is a URL param prop passed in as a string via vue router
+        (partnerID) => partnerID === parseInt(this.partnerID)
+      );
     },
     review() {
       return false;

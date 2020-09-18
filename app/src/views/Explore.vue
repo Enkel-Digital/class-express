@@ -62,6 +62,7 @@
                             />
                             <!-- </v-responsive> -->
 
+                            <!-- @todo fav icon, the isFavourite thing not implemented yet -->
                             <v-btn icon small @click="toggleFavourite(item.id)">
                               <v-icon color="red">mdi-heart</v-icon>
                             </v-btn>
