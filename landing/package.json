@@ -5,7 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy-firebase-hosting": "firebase deploy --only hosting",
+    "deploy": "firebase use default && npm run build && npm run deploy-firebase-hosting"
   },
   "dependencies": {
     "bulma": "^0.9.0",
@@ -24,6 +26,7 @@
     "eslint": "^7.8.1",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^6.2.2",
+    "firebase": "^7.21.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.13",
     "node-sass": "^4.14.1",
