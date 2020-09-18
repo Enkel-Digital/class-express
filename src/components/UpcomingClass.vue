@@ -100,7 +100,7 @@
       <v-spacer />
 
       <v-btn icon @click="toggleFavouriteClass(clas.id)">
-        <v-icon v-if="isFavourited" color="red"> mdi-heart </v-icon>
+        <v-icon v-if="isFavourite" color="red"> mdi-heart </v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
 
@@ -135,12 +135,10 @@ export default {
       // optional chaining operator to prevent failure when clas is still being loaded and is undefined
       return this.$store.state.classes.partners[this.clas?.partnerID];
     },
-    isFavourited() {
-      return this.$store.state.classes.favouriteClasses[
-        this.upcomingClass.classID
-      ]
-        ? true
-        : false;
+    isFavourite() {
+      return this.$store.state.classes.favouriteClassesIDs.find(
+        (classID) => classID === this.upcomingClass.classID
+      );
     },
   },
   methods: {

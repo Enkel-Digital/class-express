@@ -13,7 +13,7 @@
       </v-btn>
 
       <v-btn icon @click="toggleFavouriteClass(clas.id)">
-        <v-icon v-if="favouritedClass" color="red">mdi-heart</v-icon>
+        <v-icon v-if="isFavourite" color="red">mdi-heart</v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
     </v-app-bar>
@@ -226,9 +226,11 @@ export default {
     partner() {
       return this.$store.state.classes.partners[this.partnerID];
     },
-    favouritedClass() {
-      if (this.$store.state.classes.favouriteClasses[this.classID]) return true;
-      else return false;
+    isFavourite() {
+      return this.$store.state.classes.favouriteClassesIDs.find(
+        // Using parseInt on classID as it is a URL param prop passed in as a string via vue router
+        (classID) => classID === parseInt(this.classID)
+      );
     },
     // @todo Possible to make a new API to get what is the reserved class if any of this classID and userID
     // Add a check to see if selected time is a valid time for the class

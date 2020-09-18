@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "favourite-classes",
@@ -81,7 +81,7 @@ export default {
     this.$store.dispatch("classes/getFavourites");
   },
   computed: {
-    ...mapGetters("classes", ["favouriteClassesIDs"]),
+    ...mapState("classes", ["favouriteClassesIDs"]),
     ...mapState("classes", ["classes", "partners"]),
   },
   watch: {
