@@ -97,6 +97,14 @@ export default {
       // Show loading screen before login logic executes
       const loaderRequestID = this.$loader.new();
 
+      /*
+        @todo Disable the login/signup up buttons or some code here to prevent this from being called more then once
+
+        To prevent:
+        - double call to login
+        - double navigation to the same route
+      */
+
       try {
         // eslint-disable-next-line no-unused-vars
         const usr = await firebase

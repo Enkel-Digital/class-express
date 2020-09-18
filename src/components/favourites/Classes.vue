@@ -53,8 +53,8 @@
         <v-card-actions>
           <v-spacer />
 
-          <!-- Change this to a remove icon only. Cos dont need to toggle, here means confirm favourites already -->
-          <v-btn icon @click="toggleFavouriteClass(clas.id)">
+          <!-- Using favouriteClassID instead of clas.id because this is out of the scope of the "clas" property -->
+          <v-btn icon @click="toggleFavouriteClass(favouriteClassID)">
             <v-icon color="red">mdi-heart</v-icon>
           </v-btn>
 
