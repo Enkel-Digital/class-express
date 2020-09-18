@@ -2,14 +2,18 @@
   <div id="app">
     <section class="hero is-fullheight">
       <HeroHead />
-      <img :src="heroImage" alt="Hero" class="image hero-image" />
+      <img
+        class="image hero-image"
+        alt="Hero"
+        :src="require(`./assets/hero/${heroImage}.jpg`)"
+      />
       <HeroBody />
     </section>
 
     <!-- Next section after the hero banner -->
 
     <section id="next" class="hero is-fullheight">
-      <img :src="heroImage2" alt="Hero" class="image hero-image" />
+      <img src="" alt="Hero" class="image hero-image" />
 
       <!-- @todo Empty hero body to force footer to the bottom of the hero page -->
       <div class="hero-body" />
@@ -33,12 +37,21 @@ export default {
   },
   data() {
     return {
-      heroImage:
-        "https://images.unsplash.com/39/lIZrwvbeRuuzqOoWJUEn_Photoaday_CSD%20(1%20of%201)-5.jpg?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
-      heroImage2:
-        "https://images.unsplash.com/photo-1525095182007-3874c4e2b38b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
+      heroImage: 1,
     };
   },
+  /* mounted() {
+    (async () => {
+      // eslint-disable-next-line no-constant-condition
+      while (true)
+        for (let i = 1; i < 6; i++) {
+          // @todo Make the transition smooth
+          this.heroImage = i;
+          console.log(`showing hero ${i}`);
+          await new Promise((resolve) => setTimeout(resolve, 4000));
+        }
+    })();
+  }, */
 };
 </script>
 
