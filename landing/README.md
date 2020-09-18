@@ -1,5 +1,5 @@
-# vue-bulma-template
-Template repository for scaffolding simple frontend sites with Vue and Bulma
+# class-express-landing
+Landing page for Class Express app made with Vue and Bulma
 
 ## Project setup
 ```
@@ -21,11 +21,8 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
 ## License, Author and Contributing
-This project is developed and made available under the "MIT License"  
+This project is developed and made available under the "AGPL v3 License"  
 If you have any questions, contact us via [email](mailto:developer@enkeldigital.com)  
 Authors:
 - [JJ](https://github.com/Jaimeloeuf)
