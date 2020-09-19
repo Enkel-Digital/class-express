@@ -7,7 +7,7 @@
       <div class="container">
         <div class="navbar-brand">
           <a class="navbar-item" href="#">
-            <img src="../assets/logo_wo_slogan.png" alt="Logo" />
+            <img src="../assets/logo_transparent_background.png" alt="Logo" />
           </a>
 
           <!-- Using <a> instead of button as it does not need an icon and dont have the inverted colors on click behaviour -->
@@ -65,7 +65,7 @@ export default {
         { name: "Download", link: "#Download" },
         { name: "Partner", link: "#Partner" },
         { name: "Join Us", link: "#Join" },
-        { name: "Contact", link: "#Contact" },
+        { name: "Contact", link: "#ContactUs" },
       ],
     };
   },
@@ -78,6 +78,6 @@ export default {
   /* background: black; */
   background: white;
   border-bottom: 1px solid rgb(231, 231, 231);
-  opacity: 0.6;
+  opacity: 0.8;
 }
 </style>

@@ -11,21 +11,20 @@
     </section>
 
     <!-- Next section after the hero banner -->
+    <Features id="Features" />
+    <Workouts id="Workouts" />
+    <ContactUs id="ContactUs" />
 
-    <section id="next" class="hero is-fullheight">
-      <img src="" alt="Hero" class="image hero-image" />
-
-      <!-- @todo Empty hero body to force footer to the bottom of the hero page -->
-      <div class="hero-body" />
-
-      <Footer />
-    </section>
+    <Footer />
   </div>
 </template>
 
 <script>
 import HeroHead from "@/components/HeroHead";
 import HeroBody from "@/components/HeroBody";
+import Features from "@/components/Features";
+import Workouts from "@/components/Workouts";
+import ContactUs from "@/components/ContactUs";
 import Footer from "@/components/Footer";
 
 export default {
@@ -33,6 +32,9 @@ export default {
   components: {
     HeroHead,
     HeroBody,
+    Features,
+    Workouts,
+    ContactUs,
     Footer,
   },
   data() {
