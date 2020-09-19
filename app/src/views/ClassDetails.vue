@@ -242,9 +242,10 @@ export default {
       // Return userClass object if there is any that matches the classID and selectedTime props
       return this.$store.state.classes.userClasses.find(
         (userClass) =>
-          // Using parseInt on classID as it is a URL param prop passed in as a string via vue router
+          // Using parseInt on classID and selectedTime as they are URL param props passed in as strings via vue router
+          // Using parseInt on userClass.startTime, because this data is stored as a BigInt type on the DB which is a string on read
           userClass.classID === parseInt(this.classID) &&
-          userClass.startTime === this.selectedTime
+          parseInt(userClass.startTime) === parseInt(this.selectedTime)
       );
     },
     review() {
