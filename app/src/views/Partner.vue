@@ -80,17 +80,39 @@
 
     <!-- @todo Change this into a bottom toolbar and make it sticky -->
     <v-container>
-      <!-- Change this to the button that goes to the partners schedule instead of just that of a class -->
-      <v-btn
+      <!-- Both buttons have the same width and same margin to make them align on the sides -->
+      <!-- <v-btn
         :to="{ name: 'schedule-partner', params: { partnerID: partner.id } }"
         color="primary"
-        block
+        width="calc(50% - 1em)"
+        style="margin: 0.5em"
+      > -->
+      <!-- @todo Fix partner schedule and set the button right -->
+      <v-btn
+        @click="
+          alert(
+            'This feature is still not available yet, check back in our Beta Launch!'
+          )
+        "
+        color="primary"
+        width="calc(50% - 1em)"
+        style="margin: 0.5em"
       >
         view schedule
       </v-btn>
+
+      <v-btn
+        :to="{ name: 'partner-classes', params: { partnerID: partner.id } }"
+        color="primary"
+        width="calc(50% - 1em)"
+        style="margin: 0.5em"
+      >
+        <!-- Show the number of classes this partner have too -->
+        classes ({{ partner.classes.length }})
+      </v-btn>
     </v-container>
 
-    <!-- Perhaps have a similiar classes/partners thing? -->
+    <!-- @todo Perhaps have a similiar classes/partners thing? -->
   </v-main>
 </template>
 
@@ -112,6 +134,10 @@ export default {
     // @todo Implement this to stop using getReview as that is for the classes' reviews
     // Call action to fetch review for this partner
     // this.$store.dispatch("classes/getReview", this.partnerID);
+  },
+  // @todo Remove after Partner schedule button is implemented
+  data() {
+    return { alert: (msg) => window.alert(msg) };
   },
   props: ["partnerID"],
   computed: {

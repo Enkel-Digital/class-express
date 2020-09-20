@@ -11,6 +11,7 @@
         "{{ `${Math.trunc(clas.length / 60)} hrs ${clas.length % 60} mins` }}"
       </h3>
       <v-spacer />
+      <v-spacer />
     </v-app-bar>
 
     <!-- @todo Remove the arrows and the space left by the left arrow -->
