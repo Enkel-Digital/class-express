@@ -41,8 +41,8 @@
         <v-card-actions>
           <v-spacer />
 
-          <!-- Change this to a remove icon only. Cos dont need to toggle, here means confirm favourites already -->
-          <v-btn icon @click="toggleFavouritePartner(partner.id)">
+          <!-- Using favouritePartnersID instead of partner.id because this is outside of the div where "partner" property is set -->
+          <v-btn icon @click="toggleFavouritePartner(favouritePartnersID)">
             <v-icon color="red">mdi-heart</v-icon>
           </v-btn>
 

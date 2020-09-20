@@ -53,7 +53,7 @@
         <v-card-actions>
           <v-spacer />
 
-          <!-- Using favouriteClassID instead of clas.id because this is out of the scope of the "clas" property -->
+          <!-- Using favouriteClassID instead of clas.id because this is outside of the div where "clas" property is set -->
           <v-btn icon @click="toggleFavouriteClass(favouriteClassID)">
             <v-icon color="red">mdi-heart</v-icon>
           </v-btn>
