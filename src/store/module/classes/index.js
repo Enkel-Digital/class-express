@@ -35,11 +35,48 @@ export default {
       if (index === -1) state.favouritePartnersIDs.unshift(partnerID);
       else state.favouritePartnersIDs.splice(index, 1);
     },
-    setUpcomingClass(state, { classID, action, timestamp }) {
-      /** @notice Change state using Vue methods to trigger reactive listeners */
-      // @todo Change set and delete to use the specific timestamp of that class
-      if (action) Vue.set(state.upcomingClasses, classID, true);
-      else Vue.delete(state.upcomingClasses, classID);
+    // @todo Potentially look into using requestIdle callback or smth to run this in the backend
+    setUpcomingClass(state, { classID, selectedTime, points }) {
+      const userClasses = state.userClasses;
+
+      for (let i = 0, len = userClasses.length; i < len; i++) {
+        const userClass = userClasses[i];
+
+        // Using parseInt for both to ensure that they are not strings, which may be possible as stored as BigInt type
+        if (parseInt(selectedTime) > parseInt(userClass.startTime))
+          // Returns immediately to end the loop and function
+          // Change state using splice to trigger reactive listeners
+          return userClasses.splice(i, 0, {
+            classID,
+            selectedTime,
+            points,
+          });
+      }
+
+      // If the class is somehow older than all classes in the list, append it to the array
+      // Append using splice to trigger reactive listeners
+      userClasses.splice(userClasses.length - 1, 0, {
+        classID,
+        selectedTime,
+        points,
+      });
+    },
+    // @todo Potentially look into using requestIdle callback or smth to run this in the backend
+    deleteUpcomingClass(state, { classID, selectedTime }) {
+      const userClasses = state.userClasses;
+
+      for (let i = 0, len = userClasses.length; i < len; i++) {
+        const userClass = userClasses[i];
+
+        if (
+          userClass.classID === classID &&
+          // Using parseInt for both to ensure that they are not strings, which may be possible as stored as BigInt type
+          parseInt(userClass.startTime) === parseInt(selectedTime)
+        )
+          // Returns immediately, as we assume there is only 1 instance of this class and time
+          // Change state using Vue methods to trigger reactive listeners
+          return Vue.delete(userClasses, i);
+      }
     },
     clearUserReview(state) {
       // Clear reviews to prevent caching in memory
@@ -216,8 +253,7 @@ export default {
           );
 
         // Pessimistic UI, commit changes after API call is successful
-        // @todo Fix the timestamp
-        // commit("setUpcomingClass", { classID, action: true, timestamp: "" });
+        // commit("setUpcomingClass", { classID, selectedTime, classPoints });
         // @todo Temporarily using this action instead of calculating the new userClasses array ourselves on the client
         dispatch("getUsersClasses");
 
@@ -250,8 +286,7 @@ export default {
         );
 
       // Pessimistic UI, commit changes after API call is successful
-      // @todo Fix the timestamp
-      // commit("setUpcomingClass", { classID, action: false, timestamp: "" });
+      // commit("deleteUpcomingClass", { classID, selectedTime });
       // @todo Temporarily using this action instead of calculating the new userClasses array ourselves on the client
       dispatch("getUsersClasses");
 
