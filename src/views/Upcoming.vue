@@ -48,29 +48,23 @@ export default {
       const nowTS = unixseconds();
       const userClasses = state.userClasses;
 
-      // Alternate method is to do the filtering at an individual component level
-      // Cannot use this as will create many comp for all classes even for past classes.
-      // return userClasses.slice().reverse();
-      // Then use directive below to determine if we should display class or not.
-      // v-if (class.time < nowTS)
-
+      // Filter for classes that have yet to start or are still running
       // Make a copy of the array with slice and reverse it as original array is ordered by descending startTime
       return (
-        (
-          userClasses
-            // optional chaining operator protects against undefined if clas object is not loaded yet.
-            .filter((userClass) => state.classes[userClass.classID]?.length)
-            .filter(
-              (userClass) =>
-                // Show upcoming class until the end of the class
-                userClass.startTime +
-                  state.classes[userClass.classID].length * 60 >
-                nowTS
-            ) || []
-        )
+        userClasses
+          // optional chaining operator protects against undefined if clas object is not loaded yet.
+          .filter((userClass) => state.classes[userClass.classID]?.length)
+          .filter(
+            (userClass) =>
+              // Show upcoming class until the end of the class
+              userClass.startTime +
+                state.classes[userClass.classID].length * 60 >
+              nowTS
+          )
           .slice()
           .reverse()
       );
+
     },
   },
   watch: {
