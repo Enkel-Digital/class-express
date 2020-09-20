@@ -34,6 +34,15 @@ router.get("/details/:partnerID", async (req, res) => {
     // Inject partnerTags in as an array
     partner.tags = await getPartnerTags(partnerID);
 
+    // @todo Should we list all the classes too? Or create another API to load it? For now, just load it
+    // Get an array of classIDs of classes that belongs to this partner
+    partner.classes = (
+      await SQLdb("classes")
+        .where({ partnerID })
+        .where("deleted", false)
+        .select("id")
+    ).map((clas) => clas.id); // Map the array of objects to an array of just ids
+
     res.json({ success: true, partner });
   } catch (error) {
     logger.error(error);
