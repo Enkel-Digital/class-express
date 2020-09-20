@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "classes-ekd"
+    "default": "classes-ekd",
     "ce-staging-ae480": "ce-staging-ae480"
   }
 }

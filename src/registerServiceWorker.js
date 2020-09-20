@@ -20,6 +20,7 @@ if (process.env.NODE_ENV === "production") {
       console.log("New content is downloading.");
     },
     updated() {
+      // @todo Maybe use an alert or something, to tell user to close and open app again
       console.log("New content is available; please refresh.");
     },
     offline() {
