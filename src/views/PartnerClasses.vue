@@ -59,7 +59,8 @@
 
           <!-- Using classID instead of clas.id because this is outside of the div where "clas" property is set -->
           <v-btn icon @click="toggleFavouriteClass(classID)">
-            <v-icon color="red">mdi-heart</v-icon>
+            <v-icon v-if="isFavourite(classID)" color="red">mdi-heart</v-icon>
+            <v-icon v-else>mdi-heart-outline</v-icon>
           </v-btn>
 
           <!-- @todo Extract out all share buttons to a common component -->
@@ -75,12 +76,16 @@
     <v-responsive v-else>
       Partner does not have any classes currently.
     </v-responsive>
+
+    <!-- @todo Remove and somehow fix the missing margin issue with bottom navigation bars -->
+    <br />
+    <br />
   </v-main>
 </template>
 
 <script>
 /*
-  - Allow them to filter by tags
+  - Allow users to filter by tags
 */
 
 import { mapState, mapActions } from "vuex";
@@ -94,12 +99,8 @@ export default {
 
   props: ["partnerID"],
   created() {
-    //   Get all the classes of this partner
-    this.$store.dispatch(
-      "classes/getClass",
-      //   this.$store.state.classes.partners[this.partnerID].classes
-      this.classIDs // Will this be loaded in created? or not working yet?
-    );
+    // Use getClass to load class details for all the classes of this partner
+    this.$store.dispatch("classes/getClass", this.classIDs);
   },
   data() {
     return {
@@ -117,6 +118,13 @@ export default {
   },
   methods: {
     ...mapActions("classes", ["toggleFavouriteClass"]),
+    // @todo Optimize this, as this is ran for every single class in the array when any one of the value is clicked/changed
+    isFavourite(classIdToCheck) {
+      console.log("check running gor", classIdToCheck);
+      return this.$store.state.classes.favouriteClassesIDs.find(
+        (classID) => classID === classIdToCheck
+      );
+    },
   },
 };
 </script>
