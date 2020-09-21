@@ -62,10 +62,10 @@ export default {
         { name: "Home", link: "#" },
         { name: "About", link: "#About" },
         { name: "Features", link: "#Features" },
-        { name: "Download", link: "#Download" },
-        { name: "Partner", link: "#Partner" },
         // { name: "Join Us", link: "#Join" },
         { name: "Join Us", link: "#Workouts" },
+        { name: "Download", link: "#Download" },
+        { name: "Partner", link: "#Partner" },
         { name: "Contact", link: "#ContactUs" },
       ],
     };

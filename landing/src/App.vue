@@ -14,6 +14,7 @@
     <Features id="Features" />
     <Workouts id="Workouts" />
     <Download id="Download" />
+    <Partner id="Partner" />
     <ContactUs id="ContactUs" />
 
     <Footer />
@@ -26,6 +27,7 @@ import HeroBody from "@/components/HeroBody";
 import Features from "@/components/Features";
 import Workouts from "@/components/Workouts";
 import Download from "@/components/Download";
+import Partner from "@/components/Partner";
 import ContactUs from "@/components/ContactUs";
 import Footer from "@/components/Footer";
 
@@ -36,6 +38,8 @@ export default {
     HeroBody,
     Features,
     Workouts,
+    Download,
+    Partner,
     ContactUs,
     Footer,
   },
