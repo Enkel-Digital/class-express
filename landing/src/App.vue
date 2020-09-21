@@ -1,16 +1,8 @@
 <template>
   <div id="app">
-    <section class="hero is-fullheight">
-      <HeroHead />
-      <img
-        class="image hero-image"
-        alt="Hero"
-        :src="require(`./assets/hero/${heroImage}.jpg`)"
-      />
-      <HeroBody />
-    </section>
+    <Navbar />
 
-    <!-- Next section after the hero banner -->
+    <Hero />
     <Features id="Features" />
     <Workouts id="Workouts" />
     <Download id="Download" />
@@ -22,8 +14,8 @@
 </template>
 
 <script>
-import HeroHead from "@/components/HeroHead";
-import HeroBody from "@/components/HeroBody";
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import Workouts from "@/components/Workouts";
 import Download from "@/components/Download";
@@ -34,8 +26,8 @@ import Footer from "@/components/Footer";
 export default {
   name: "App",
   components: {
-    HeroHead,
-    HeroBody,
+    Navbar,
+    Hero,
     Features,
     Workouts,
     Download,
@@ -43,23 +35,6 @@ export default {
     ContactUs,
     Footer,
   },
-  data() {
-    return {
-      heroImage: 1,
-    };
-  },
-  /* mounted() {
-    (async () => {
-      // eslint-disable-next-line no-constant-condition
-      while (true)
-        for (let i = 1; i < 6; i++) {
-          // @todo Make the transition smooth
-          this.heroImage = i;
-          console.log(`showing hero ${i}`);
-          await new Promise((resolve) => setTimeout(resolve, 4000));
-        }
-    })();
-  }, */
 };
 </script>
 
@@ -73,14 +48,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-.hero-image {
-  overflow: hidden;
-  position: absolute;
-  object-fit: cover;
-  object-position: center center;
-  width: 100%;
-  height: 100%;
 }
 </style>
