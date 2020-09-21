@@ -31,25 +31,7 @@
 
     <v-divider />
 
-    <v-sheet id="recommended-classes-sheet" class="mx-auto" elevation="3">
-      Recommended classes
-      <v-slide-group class="pa-4">
-        <v-slide-item
-          v-for="n in 5"
-          :key="n"
-          v-slot:default="{ active, toggle }"
-        >
-          <v-card
-            :color="'grey lighten-1'"
-            class="ma-4"
-            height="6em"
-            width="6em"
-            @click="toggle"
-          >
-          </v-card>
-        </v-slide-item>
-      </v-slide-group>
-    </v-sheet>
+    <Recommended />
 
     <br />
 
@@ -81,6 +63,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+import Recommended from "@/components/Recommended.vue";
 
 export default {
   name: "home",
