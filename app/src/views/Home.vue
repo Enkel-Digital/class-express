@@ -84,16 +84,48 @@ import { mapState, mapActions } from "vuex";
 
 export default {
   name: "home",
-  beforeMount() {
-    // Using beforeMount hook to ensure this is ran again even if component is cached when navigating
-    // Request store to get and populate list of news banners
-    // @todo remove and call all init actions in main.js or perhaps after login/signup
-    this.$store.dispatch("news/init");
+  components: {
+    Recommended,
   },
-  computed: {
-    ...mapState("news", ["newsBanners"]),
+
+  // @todo Can this be, beforeCreate?
+  created() {
+    this.loadNewsBanners();
   },
+
+  data() {
+    return { newsBanners: [] };
+  },
+
   methods: {
+    loadNewsBanners() {
+      // @todo Replace this mock data with API integration
+      this.newsBanners = [
+        {
+          src:
+            "https://firebasestorage.googleapis.com/v0/b/classes-ekd.appspot.com/o/LEARN%20CODING.jpg?alt=media&token=a42abd4e-14a7-48f6-9057-ba1c78bca9f1",
+          text: "Learn coding now",
+          link: "http://enkeldigital.com/",
+        },
+        {
+          src:
+            "https://firebasestorage.googleapis.com/v0/b/classes-ekd.appspot.com/o/Red%20Motivational%20Blog%20img.jpg?alt=media&token=383669cf-b96b-43f7-8773-535552666e8a",
+          text: "Learn Guitar",
+          link: "",
+        },
+        {
+          src: "https://enkeldigital.com/images/hero.jpg",
+          text: "Checkout our sponsors", // Optional text
+          link: "http://enkeldigital.com/",
+        },
+        {
+          src: "https://miro.medium.com/max/968/1*BWh2pt4DkcFUMznsWHBn0A.png",
+          text: "Read our latest articles!",
+          link: "https://medium.com/enkel-digital",
+        },
+      ];
+    },
+
     viewBanner(link) {
       if (!link) return;
 
