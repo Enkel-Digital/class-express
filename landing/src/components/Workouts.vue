@@ -1,7 +1,7 @@
 <template>
   <section class="hero is-fullheight">
     <img
-      class="image hero-image"
+      class="hero-image"
       alt="Workout section hero image"
       loading="eager"
       src="../assets/workout hero/3.jpg"

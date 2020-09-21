@@ -3,7 +3,7 @@
 
   <section class="hero is-fullheight">
     <img
-      class="image hero-image"
+      class="hero-image"
       alt="Hero"
       :src="require(`../assets/hero/${heroImage}.jpg`)"
     />
@@ -50,14 +50,3 @@ export default {
   }, */
 };
 </script>
-
-<style scoped>
-.hero-image {
-  overflow: hidden;
-  position: absolute;
-  object-fit: cover;
-  object-position: center center;
-  width: 100%;
-  height: 100%;
-}
-</style>

@@ -1,39 +1,16 @@
 <template>
   <div id="app">
-    <Navbar />
-
-    <Hero />
-    <Features id="Features" />
-    <Workouts id="Workouts" />
-    <Download id="Download" />
-    <Partner id="Partner" />
-    <ContactUs id="ContactUs" />
-
-    <Footer />
+    <Main />
   </div>
 </template>
 
 <script>
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import Features from "@/components/Features";
-import Workouts from "@/components/Workouts";
-import Download from "@/components/Download";
-import Partner from "@/components/Partner";
-import ContactUs from "@/components/ContactUs";
-import Footer from "@/components/Footer";
+import Main from "@/views/Main";
 
 export default {
   name: "App",
   components: {
-    Navbar,
-    Hero,
-    Features,
-    Workouts,
-    Download,
-    Partner,
-    ContactUs,
-    Footer,
+    Main,
   },
 };
 </script>
