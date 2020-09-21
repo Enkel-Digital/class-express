@@ -64,7 +64,8 @@ export default {
         { name: "Features", link: "#Features" },
         { name: "Download", link: "#Download" },
         { name: "Partner", link: "#Partner" },
-        { name: "Join Us", link: "#Join" },
+        // { name: "Join Us", link: "#Join" },
+        { name: "Join Us", link: "#Workouts" },
         { name: "Contact", link: "#ContactUs" },
       ],
     };
