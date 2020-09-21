@@ -21,7 +21,26 @@
 
       <div>
         <p class="subtitle bold">Subscribe for our Newsletter</p>
-        <!-- @todo Do the input form -->
+        <input
+          v-model="email"
+          class="input"
+          type="text"
+          color="black"
+          placeholder="Email"
+          style="max-width: 14em; border-radius: 0.4em 0 0 0.4em"
+          @keypress.enter="subscribe"
+        />
+        <button
+          class="button is-info"
+          style="
+            border-radius: 0 0.4em 0.4em 0;
+            color: black;
+            font-weight: bold;
+          "
+          @click="subscribe"
+        >
+          Subscribe
+        </button>
       </div>
     </div>
   </footer>
@@ -32,18 +51,30 @@ export default {
   name: "Footer",
   data() {
     return {
+      email: "",
+
       // @todo Set the links
       iconClasses: [
         { class: "fab fa-instagram", link: "" },
         // Pick 1 for face book
         { class: "fab fa-facebook-square", link: "" },
-        { class: "fab fa-facebook", link: "" },
-        { class: "fab fa-facebook-f", link: "" },
+        // { class: "fab fa-facebook", link: "" },
+        // { class: "fab fa-facebook-f", link: "" },
         { class: "fab fa-twitter", link: "" },
         { class: "fab fa-linkedin-in", link: "" },
         { class: "fab fa-telegram-plane", link: "" },
       ],
     };
+  },
+  methods: {
+    subscribe() {
+      // Protect this method, prevent this from being spammed
+      // disable this form?
+      // and rate limit the API
+
+      this.email;
+      console.log(this.email);
+    },
   },
 };
 </script>
@@ -61,6 +92,11 @@ a:visited {
 }
 
 .bold {
+  font-weight: bold;
+}
+
+input::placeholder {
+  color: black;
   font-weight: bold;
 }
 </style>
