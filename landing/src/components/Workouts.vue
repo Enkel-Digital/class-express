@@ -7,6 +7,7 @@
       src="../assets/workout hero/3.jpg"
     />
 
+    <!-- @todo Use media query to resize and change the words -->
     <div class="hero-body">
       <div class="container columns has-text-left">
         <div class="column is-offset-2 is-4">
@@ -17,12 +18,9 @@
             Join hundreds of Boutique Fitness Studios instantly!
           </p>
           <br />
-          <a
-            class="button"
-            href="https://class.enkeldigital.com"
-            target="_blank"
-          >
-            App
+          <a class="button" href="#Download" target="_blank">
+            <!-- App -->
+            Download now
           </a>
         </div>
       </div>

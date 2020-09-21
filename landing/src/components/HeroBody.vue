@@ -12,9 +12,7 @@
         </p>
         <br />
         <!-- @todo Change to use an Icon instead? Or a picture? -->
-        <a class="button" href="https://class.enkeldigital.com" target="_blank">
-          App
-        </a>
+        <a class="button" href="#Download">Download</a>
       </div>
     </div>
   </div>

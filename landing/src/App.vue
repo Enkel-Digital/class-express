@@ -13,6 +13,7 @@
     <!-- Next section after the hero banner -->
     <Features id="Features" />
     <Workouts id="Workouts" />
+    <Download id="Download" />
     <ContactUs id="ContactUs" />
 
     <Footer />
@@ -24,6 +25,7 @@ import HeroHead from "@/components/HeroHead";
 import HeroBody from "@/components/HeroBody";
 import Features from "@/components/Features";
 import Workouts from "@/components/Workouts";
+import Download from "@/components/Download";
 import ContactUs from "@/components/ContactUs";
 import Footer from "@/components/Footer";
 
