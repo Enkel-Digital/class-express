@@ -27,7 +27,7 @@
           type="text"
           color="black"
           placeholder="Email"
-          style="max-width: 14em; border-radius: 0.4em 0 0 0.4em"
+          style="max-width: 12.4em; border-radius: 0.4em 0 0 0.4em"
           @keypress.enter="subscribe"
         />
         <button
@@ -68,6 +68,7 @@ export default {
   },
   methods: {
     subscribe() {
+      // @todo
       // Protect this method, prevent this from being spammed
       // disable this form?
       // and rate limit the API

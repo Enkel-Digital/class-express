@@ -18,7 +18,7 @@
             Join hundreds of Boutique Fitness Studios instantly!
           </p>
           <br />
-          <a class="button" href="#Download" target="_blank">
+          <a class="button" href="#Download">
             <!-- App -->
             Download now
           </a>
