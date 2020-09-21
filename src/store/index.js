@@ -9,7 +9,6 @@ import setter from "./utils/setter";
 
 import classesModule from "./module/classes";
 import pointsModule from "./module/points";
-import newsModule from "./module/news";
 import subscriptionPlanModule from "./module/subscriptionPlan";
 import settingsModule from "./module/settings";
 
@@ -21,7 +20,6 @@ export default new Vuex.Store({
   modules: {
     classes: classesModule,
     points: pointsModule, // User points and not all points related
-    news: newsModule,
     subscription: subscriptionPlanModule,
     settings: settingsModule,
   },
