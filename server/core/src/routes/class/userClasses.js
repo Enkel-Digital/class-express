@@ -26,19 +26,17 @@ router.get("/user/:userID", auth, express.json(), async (req, res) => {
     const { userID } = req.params;
     const { date } = req.query; // date === usersTodayTsInTheirTimeZone
 
-    // @todo Why is this split up?
-    const userClasses = () =>
-      SQLdb("userBookingTransactions")
-        .where({ userID })
-        .select("classID", "points", "startTime");
+    const classes = await SQLdb("userBookingTransactions")
+      .where({ userID })
+      // startTime will be a string from DB since the DB column type is BigInt
+      .select("classID", "points", "startTime")
+      // Order by startTime desc, so that the last upcoming class is first.
+      // So that if we want to limit the DB results, we will not cut out upcoming classes
+      // The later upcoming classes will be cut out if we limit the query and orderBy asc
+      // Frontend will need to sort and filter this array somehow to differentiate between upcoming and past classes
+      .orderBy("startTime", "desc");
+    // @todo limit the query?
 
-    // Order by startTime desc, so that the last upcoming class is first.
-    // Frontend has to sort and filter this array somehow
-    const classes = await userClasses().orderBy("startTime", "desc");
-
-    // @todo limit the query? always allow all upcoming, only limit the past classes or allow some form of pagination
-
-    // @todo Should we split up as past and upcoming for users? or should frontend handle this?
     res.status(200).json({ success: true, classes });
   } catch (error) {
     logger.error(error);

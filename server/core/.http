@@ -103,7 +103,7 @@ GET {{host}}/schedule/class/1/
 GET {{host}}/schedule/partner/1/
 
 ### Get Partner
-# GET /partner/details/:classID
+# GET /partner/details/:partnerID
 GET {{host}}/partner/details/1
 
 ### Get class reviews
