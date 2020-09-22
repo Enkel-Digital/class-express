@@ -37,6 +37,6 @@
 
 <script>
 export default {
-  name: "Partner",
+  name: "PartnerSection",
 };
 </script>

@@ -6,7 +6,6 @@
     <Features id="Features" />
     <Workouts id="Workouts" />
     <Download id="Download" />
-    <PartnerSection id="Partner" />
     <ContactUs id="ContactUs" />
 
     <Footer />
@@ -19,19 +18,17 @@ import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import Workouts from "@/components/Workouts";
 import Download from "@/components/Download";
-import PartnerSection from "@/components/PartnerSection";
 import ContactUs from "@/components/ContactUs";
 import Footer from "@/components/Footer";
 
 export default {
-  name: "Main",
+  name: "Partner",
   components: {
     Navbar,
     Hero,
     Features,
     Workouts,
     Download,
-    PartnerSection,
     ContactUs,
     Footer,
   },

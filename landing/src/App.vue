@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <Main />
+    <Main v-if="routePath === '/'" />
+    <Partner v-else-if="routePath === '/partner'" />
+    <!-- Show 404 route for not found -->
   </div>
 </template>
 
@@ -11,6 +13,14 @@ export default {
   name: "App",
   components: {
     Main,
+    Partner: () => import("@/views/Partner"), // Lazy load this view
+  },
+  computed: {
+    // Pseudo router
+    // @todo Not great as the routes are not lazy loaded, or are they? Since the components are lazy loaded
+    routePath() {
+      return window.location.pathname;
+    },
   },
 };
 </script>
