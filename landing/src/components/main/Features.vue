@@ -3,15 +3,16 @@
     <!-- Extra break spacing so that when navigating with # ids, the navbar's border does not touch the content so closely -->
     <br />
 
-    <div class="columns">
+    <!-- is-desktop class makes the features item column go under the image in tablet or smaller sizes -->
+    <div class="columns is-desktop">
       <div class="column">
         <img
-          src="../assets/app_screen_mockup.png"
+          src="../../assets/app_screen_mockup.png"
           alt="App screen UI mockups"
         />
       </div>
 
-      <div class="column has-text-left">
+      <div class="column has-text-left ml-6">
         <div class="container">
           <h1 class="title">Features to help you succeed</h1>
           <h2 class="subtitle">

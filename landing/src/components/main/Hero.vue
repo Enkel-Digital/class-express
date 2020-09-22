@@ -5,7 +5,7 @@
     <img
       class="hero-image"
       alt="Hero"
-      :src="require(`../assets/hero/${heroImage}.jpg`)"
+      :src="require(`../../assets/hero/${heroImage}.jpg`)"
     />
 
     <div class="hero-body">

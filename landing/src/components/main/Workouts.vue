@@ -4,7 +4,7 @@
       class="hero-image"
       alt="Workout section hero image"
       loading="eager"
-      src="../assets/workout hero/3.jpg"
+      src="../../assets/workout hero/3.jpg"
     />
 
     <!-- @todo Use media query to resize and change the words -->

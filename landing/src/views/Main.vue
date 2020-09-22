@@ -14,14 +14,14 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import Features from "@/components/Features";
-import Workouts from "@/components/Workouts";
-import Download from "@/components/Download";
-import PartnerSection from "@/components/PartnerSection";
-import ContactUs from "@/components/ContactUs";
-import Footer from "@/components/Footer";
+import Navbar from "@/components/main/Navbar";
+import Hero from "@/components/main/Hero";
+import Features from "@/components/main/Features";
+import Workouts from "@/components/main/Workouts";
+import Download from "@/components/main/Download";
+import PartnerSection from "@/components/main/PartnerSection";
+import ContactUs from "@/components/shared/ContactUs";
+import Footer from "@/components/shared/Footer";
 
 export default {
   name: "Main",

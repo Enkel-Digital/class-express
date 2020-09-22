@@ -4,7 +4,7 @@
       class="hero-image"
       alt="Workout section hero image"
       loading="eager"
-      src="../assets/workout hero/4.jpg"
+      src="../../assets/workout hero/4.jpg"
     />
 
     <div class="hero-body">
