@@ -1,125 +1,29 @@
 <template>
-  <v-main class="home">
-    <v-responsive>
-      <!-- The carousel of images / latest news -->
-      <!-- @todo https://vuetifyjs.com/en/components/aspect-ratios/ -->
-      <v-carousel
-        cycle
-        continuous
-        height="400"
-        hide-delimiter-background
-        :show-arrows="false"
-      >
-        <v-carousel-item
-          :ripple="false"
-          v-for="(item, i) in newsBanners"
-          :key="i"
-          :src="item.src"
-          @click="viewBanner(item.link)"
-          @click.prevent="true"
-          @submit.prevent="true"
-          contain
-        >
-          <!-- @click="viewBanner(item.link)"
-              try wrapping item in empty div and assign this instead of on the carousel item -->
-          <h1 style="position: absolute; bottom: 1em">
-            {{ item.text }}
-          </h1>
-        </v-carousel-item>
-      </v-carousel>
-    </v-responsive>
-
+  <v-main>
+    <NewsBanners />
     <v-divider />
 
     <Recommended />
-
+    <br />
+    <Popular />
     <br />
 
-    <v-sheet id="explore-classes-sheet" class="mx-auto" elevation="3">
-      Explore classes
-      <v-slide-group class="pa-4">
-        <v-slide-item
-          v-for="n in 5"
-          :key="n"
-          v-slot:default="{ active, toggle }"
-        >
-          <v-card
-            :color="'grey lighten-1'"
-            class="ma-4"
-            height="6em"
-            width="6em"
-            @click="toggle"
-          >
-          </v-card>
-        </v-slide-item>
-      </v-slide-group>
-    </v-sheet>
-
-    <br />
-
+    <!-- @todo Update this copywriting -->
     <p>Invite your friends to start learning new skills together!</p>
   </v-main>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import NewsBanners from "@/components/NewsBanners.vue";
 import Recommended from "@/components/Recommended.vue";
+import Popular from "@/components/Popular.vue";
 
 export default {
   name: "home",
   components: {
+    NewsBanners,
     Recommended,
-  },
-
-  // @todo Can this be, beforeCreate?
-  created() {
-    this.loadNewsBanners();
-  },
-
-  data() {
-    return { newsBanners: [] };
-  },
-
-  methods: {
-    loadNewsBanners() {
-      // @todo Replace this mock data with API integration
-      this.newsBanners = [
-        {
-          src:
-            "https://firebasestorage.googleapis.com/v0/b/classes-ekd.appspot.com/o/LEARN%20CODING.jpg?alt=media&token=a42abd4e-14a7-48f6-9057-ba1c78bca9f1",
-          text: "Learn coding now",
-          link: "http://enkeldigital.com/",
-        },
-        {
-          src:
-            "https://firebasestorage.googleapis.com/v0/b/classes-ekd.appspot.com/o/Red%20Motivational%20Blog%20img.jpg?alt=media&token=383669cf-b96b-43f7-8773-535552666e8a",
-          text: "Learn Guitar",
-          link: "",
-        },
-        {
-          src: "https://enkeldigital.com/images/hero.jpg",
-          text: "Checkout our sponsors", // Optional text
-          link: "http://enkeldigital.com/",
-        },
-        {
-          src: "https://miro.medium.com/max/968/1*BWh2pt4DkcFUMznsWHBn0A.png",
-          text: "Read our latest articles!",
-          link: "https://medium.com/enkel-digital",
-        },
-      ];
-    },
-
-    viewBanner(link) {
-      if (!link) return;
-
-      // // @todo Fix this hack that prevents double click
-      // console.log("testing");
-      // console.log("clcked", link);
-      // if (this.lastViewdBanner_tmp === link) return;
-      // this.lastViewdBanner_tmp = link;
-
-      if (confirm("Checkout link?")) window.open(link);
-    },
+    Popular,
   },
 };
 </script>
