@@ -1,0 +1,38 @@
+{
+  "name": "ClassExpress",
+  "short_name": "ClassExpress",
+  "description": "Class Express PWA",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/img/icons/android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/img/icons/android-chrome-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Upcoming Classes",
+      "short_name": "Upcoming",
+      "description": "View upcoming classes and your schedule.",
+      "url": "/upcoming",
+      "icons": [
+        {
+          "src": "/img/icons/android-chrome-192x192.png",
+          "type": "image/png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
