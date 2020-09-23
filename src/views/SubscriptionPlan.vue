@@ -217,6 +217,7 @@ export default {
       } = await billing.checkCustomerAndPaymentMethodStatus(this.user.id);
 
       if (customerDoesNotExists || paymentMethodNotAvailable)
+        // @todo Instead of push, might want to use replace or something instead, since I have a valid redirect object
         return this.$router.push({
           name: "payment",
           query: {
