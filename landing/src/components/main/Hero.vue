@@ -29,7 +29,7 @@
 
 <script>
 export default {
-  name: "HeroBody",
+  name: "Hero",
 
   data() {
     return {

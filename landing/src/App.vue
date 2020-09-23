@@ -1,8 +1,20 @@
 <template>
   <div id="app">
     <Main v-if="routePath === '/'" />
-    <Partner v-else-if="routePath === '/partner'" />
-    <!-- Show 404 route for not found -->
+    <Partner
+      v-else-if="
+        routePath === '/partner' ||
+        routePath === '/partner/' ||
+        routePath === '/partner/index.html'
+      "
+    />
+    <!-- Show 404 picture if invalid route -->
+    <img
+      v-else
+      class="container image"
+      src="./assets/404.png"
+      alt="404 not found"
+    />
   </div>
 </template>
 

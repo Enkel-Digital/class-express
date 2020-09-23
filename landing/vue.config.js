@@ -6,9 +6,7 @@ const productionPlugins = [
     // Assumes that this is running in project root
     staticDir: path.join(__dirname, "dist"),
 
-    // Since this is a landing page with only a single route
-    // @todo Update this if multi page is used.
-    routes: ["/"],
+    routes: ["/", "/partner"],
 
     renderer: new PrerenderSpaPlugin.PuppeteerRenderer({
       // We need to inject a value so we're able to

@@ -78,6 +78,8 @@
 </template>
 
 <script>
+// @todo Make this so that, when I click a tile, a different image shows on the side
+
 export default {
   name: "Features",
 };
