@@ -6,12 +6,12 @@
 const express = require("express");
 const router = express.Router();
 const index = require("../utils/algolia");
+const transformID = require("../middleware/transformID");
 
-async function deleteObjectMiddleware(req, res) {
+// Middleware with shared business logic for deleting search objects from the algolia index.
+async function deleteMW(req, res) {
   try {
-    const { objectID } = req.body;
-
-    const saveRecord = await index.deleteObject(objectID);
+    const saveRecord = await index.deleteObject(req.body.objectID);
 
     if (!saveRecord) {
       return res.json({ success: false, data: saveRecord });
@@ -30,15 +30,7 @@ async function deleteObjectMiddleware(req, res) {
  * @param {object} record
  * @returns {object}
  */
-router.delete(
-  "/class/:id",
-  express.json(),
-  (req, _, next) => {
-    req.body.objectID = `class${req.body.id}`;
-    return next();
-  },
-  deleteObjectMiddleware
-);
+router.delete("/class/:id", express.json(), transformID("class"), deleteMW);
 
 /**
  * Delete parter object
@@ -47,14 +39,6 @@ router.delete(
  * @param {object} record
  * @returns {object}
  */
-router.delete(
-  "/partner/:id",
-  express.json(),
-  (req, _, next) => {
-    req.body.objectID = `partner${req.body.id}`;
-    return next();
-  },
-  deleteObjectMiddleware
-);
+router.delete("/partner/:id", express.json(), transformID("partner"), deleteMW);
 
 module.exports = router;

@@ -6,8 +6,10 @@
 const express = require("express");
 const router = express.Router();
 const index = require("../utils/algolia");
+const transformID = require("../middleware/transformID");
 
-async function addNewObjectMiddleware(req, res) {
+// Middleware with shared business logic for adding new search objects to the algolia index.
+async function addNewMW(req, res) {
   try {
     const {
       objectID,
@@ -34,50 +36,30 @@ async function addNewObjectMiddleware(req, res) {
       _tags,
     });
 
-    if (!saveRecord) {
-      return res.json({ success: false, data: saveRecord });
-    }
+    if (!saveRecord) return res.json({ success: false, data: saveRecord });
 
-    return res.json({ success: true, data: saveRecord });
+    res.json({ success: true, data: saveRecord });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 }
 
 /**
- * Create new class
+ * Add new class to the algolia search index
  * @name POST /new/class
  * @function
  * @param {object} record
  * @returns {object}
  */
-router.post(
-  "/class",
-  express.json(),
-  (req, _, next) => {
-    req.body.objectID = `class${req.body.id}`;
-    req.body.classID = req.body.id;
-    return next();
-  },
-  addNewObjectMiddleware
-);
+router.post("/class", express.json(), transformID("class"), addNewMW);
 
 /**
- * Create new partner
+ * Add new partner to the algolia search index
  * @name POST /new/partner
  * @function
  * @param {object} record
  * @returns {object}
  */
-router.post(
-  "/partner",
-  express.json(),
-  (req, _, next) => {
-    req.body.objectID = `partner${req.body.id}`;
-    req.body.partnerID = req.body.id;
-    return next();
-  },
-  addNewObjectMiddleware
-);
+router.post("/partner", express.json(), transformID("partner"), addNewMW);
 
 module.exports = router;

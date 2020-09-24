@@ -130,27 +130,7 @@ content-type: application/json
 ### Delete search object (class)
 # DELETE /class/:classID
 DELETE {{host}}/class/1
-content-type: application/json
-
-{
-  "id": 3,
-  "name": "zzk",
-  "description": "qqw",
-  "location_address": "231",
-  "pictureSources": "",
-  "points": 1
-}
 
 ### Delete search object (partner)
 # DElETE /partner/:partnerID
 DElETE {{host}}/partner/1
-content-type: application/json
-
-{
-  "id": 11,
-  "name": "zzk",
-  "description": "qqw",
-  "location_address": "231",
-  "pictureSources": "",
-  "points": 1
-}

@@ -6,8 +6,10 @@
 const express = require("express");
 const router = express.Router();
 const index = require("../utils/algolia");
+const transformID = require("../middleware/transformID");
 
-async function partialUpdateObjectMiddleware(req, res) {
+// Middleware with shared business logic for updating search objects in the algolia index.
+async function updateMW(req, res) {
   try {
     const {
       objectID,
@@ -48,39 +50,21 @@ async function partialUpdateObjectMiddleware(req, res) {
 }
 
 /**
- * update class
+ * Update class search object in the algolia index.
  * @name PATCH /class/:id
  * @function
  * @param {object} record
  * @returns {object}
  */
-router.patch(
-  "/class/:id",
-  express.json(),
-  (req, _, next) => {
-    req.body.objectID = `class${req.body.id}`;
-    req.body.classID = req.body.id;
-    return next();
-  },
-  partialUpdateObjectMiddleware
-);
+router.patch("/class/:id", express.json(), transformID("class"), updateMW);
 
 /**
- * update partner
+ * Update partner search object in the algolia index.
  * @name PATCH /partner/:id
  * @function
  * @param {object} record
  * @returns {object}
  */
-router.patch(
-  "/partner/:id",
-  express.json(),
-  (req, _, next) => {
-    req.body.objectID = `partner${req.body.id}`;
-    req.body.partnerID = req.body.id;
-    return next();
-  },
-  partialUpdateObjectMiddleware
-);
+router.patch("/partner/:id", express.json(), transformID("partner"), updateMW);
 
 module.exports = router;

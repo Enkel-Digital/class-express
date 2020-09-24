@@ -34,6 +34,7 @@ async function addNewObjectsMiddleware(req, res) {
   }
 }
 
+// @todo Refactor the middlewares for setting the objectIDs
 /**
  * Import class data
  * @name POST /new/bulk/class
