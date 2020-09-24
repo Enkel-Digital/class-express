@@ -3,7 +3,11 @@
     <div v-for="hit in state.hits" :key="hit.objectID">
       <slot name="item" :item="hit" />
     </div>
-    <div class="sentinel" v-observe-visibility="visibilityChanged" />
+
+    <div
+      v-observe-visibility="visibilityChanged"
+      style="list-style-type: none"
+    />
   </div>
 </template>
 
@@ -20,16 +24,8 @@ export default {
 
   methods: {
     visibilityChanged(isVisible) {
-      if (isVisible && !this.state.isLastPage) {
-        this.state.showMore();
-      }
+      if (isVisible && !this.state.isLastPage) this.state.showMore();
     },
   },
 };
 </script>
-
-<style scoped>
-.sentinel {
-  list-style-type: none;
-}
-</style>
