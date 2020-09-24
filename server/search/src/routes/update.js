@@ -11,39 +11,25 @@ const transformID = require("../middleware/transformID");
 // Middleware with shared business logic for updating search objects in the algolia index.
 async function updateMW(req, res) {
   try {
-    const {
-      objectID,
-      classID,
-      partnerID,
-      name,
-      description,
-      // eslint-disable-next-line camelcase
-      location_address,
-      pictureSources,
-      points,
-      _tags,
-    } = req.body;
-
     const saveRecord = await index.partialUpdateObject(
       {
-        objectID,
-        classID,
-        partnerID,
-        name,
-        description,
-        location_address,
-        pictureSources,
-        points,
-        _tags,
+        objectID: req.body.objectID,
+        classID: req.body.classID,
+        partnerID: req.body.partnerID,
+        name: req.body.name,
+        description: req.body.description,
+        location_address: req.body.location_address,
+        pictureSources: req.body.pictureSources,
+        points: req.body.points,
+        _tags: req.body._tags,
       },
+      // Do not allow API caller to use this API to create new search objects.
       { createIfNotExists: false }
     );
 
-    if (!saveRecord) {
-      return res.json({ success: false, data: saveRecord });
-    }
+    if (!saveRecord) return res.json({ success: false, data: saveRecord });
 
-    return res.json({ success: true, data: saveRecord });
+    res.status(200).json({ success: true, data: saveRecord });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
