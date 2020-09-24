@@ -1,14 +1,15 @@
-// for the default version
-const algoliasearch = require("algoliasearch");
+/**
+ * Module that initializes algolia and exports the classes index.
+ */
 
-// or just use algoliasearch if you are using a <script> tag
-// if you are using AMD module loader, algoliasearch will not be defined in window,
-// but in the AMD modules of the page
+const algoliasearch = require("algoliasearch");
 
 const client = algoliasearch(
   process.env.algolia_ApplicationID,
-  process.env.algolia_AdminAPIKey
+  process.env.algolia_WriteAPIKey
 );
-const index = client.initIndex("searchObject");
+
+// Defaults to the "classes" index
+const index = client.initIndex(process.env.algolia_indexName || "classes");
 
 module.exports = index;

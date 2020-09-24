@@ -18,18 +18,18 @@ GET {{host}}/
 GET {{host}}/health
 
 ### Add new search object (class)
+# Pic should always be the first in the array or the thumbnail depending on which one the partner wants
 POST {{host}}/new/class
 content-type: application/json
 
 {
-      "id":3,
-      "name":"zzk",
-      "description":"qqw",
-      // eslint-disable-next-line camelcase
-      "location_address":"231",
-      "pictureSources":"",
-      "points":1,
-      "_tags":["1","2","3"]
+  "id": 3,
+  "name": "Advanced Cooking",
+  "description": "Learn about how to cook with advanced techniques",
+  "location_address": "some place",
+  "pictureSources": "https://images.unsplash.com/photo-1508138221679-760a23a2285b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+  "points": 8,
+  "_tags": ["1", "2", "3"]
 }
 
 ### Add new search object (partner)
@@ -37,14 +37,13 @@ POST {{host}}/new/partner
 content-type: application/json
 
 {
-      "id":11,
-      "name":"zzk",
-      "description":"qqw",
-      // eslint-disable-next-line camelcase
-      "location_address":"231",
-      "pictureSources":"",
-      "points":1,
-      "_tags":["1","2","3"]
+  "id": 11,
+  "name": "zzk",
+  "description": "qqw",
+  "location_address": "231",
+  "pictureSources": "",
+  "points": 1,
+  "_tags": ["1", "2", "3"]
 }
 
 ### Mass insert new search objects
@@ -59,7 +58,7 @@ content-type: application/json
     "location_address": "231",
     "pictureSources": "",
     "points": 1,
-    "_tags":["1","2","3"]
+    "_tags": ["1", "2", "3"]
   },
   {
     "id": 3,
@@ -68,7 +67,7 @@ content-type: application/json
     "location_address": "231",
     "pictureSources": "",
     "points": 1,
-    "_tags":["1","2","3"]
+    "_tags": ["1", "2", "3"]
   }
 ]
 
@@ -85,7 +84,7 @@ content-type: application/json
     "location_address": "231",
     "pictureSources": "",
     "points": 1,
-    "_tags":["1","2","3"]
+    "_tags": ["1", "2", "3"]
   },
   {
     "id": 3,
@@ -94,7 +93,7 @@ content-type: application/json
     "location_address": "231",
     "pictureSources": "",
     "points": 1,
-    "_tags":["1","2","3"]
+    "_tags": ["1", "2", "3"]
   }
 ]
 
@@ -104,14 +103,13 @@ PATCH {{host}}/class/1
 content-type: application/json
 
 {
-      "id":1,
-      "name":"lok111",
-      "description":"qqw",
-      // eslint-disable-next-line camelcase
-      "location_address":"231",
-      "pictureSources":"",
-      "points":1,
-      "_tags":["1","2","3"]
+  "id": 1,
+  "name": "lok111",
+  "description": "qqw",
+  "location_address": "231",
+  "pictureSources": "",
+  "points": 1,
+  "_tags": ["1", "2", "3"]
 }
 
 ### Update search object (partner)
@@ -120,14 +118,13 @@ PATCH {{host}}/partner/1
 content-type: application/json
 
 {
-      "id":11,
-      "name":"qqqq",
-      "description":"qqw",
-      // eslint-disable-next-line camelcase
-      "location_address":"231",
-      "pictureSources":"",
-      "points":1,
-      "_tags":["1","2","3"]
+  "id": 11,
+  "name": "qqqq",
+  "description": "qqw",
+  "location_address": "231",
+  "pictureSources": "",
+  "points": 1,
+  "_tags": ["1", "2", "3"]
 }
 
 ### Delete search object (class)
@@ -136,13 +133,12 @@ DELETE {{host}}/class/1
 content-type: application/json
 
 {
-      "id":3,
-      "name":"zzk",
-      "description":"qqw",
-      // eslint-disable-next-line camelcase
-      "location_address":"231",
-      "pictureSources":"",
-      "points":1
+  "id": 3,
+  "name": "zzk",
+  "description": "qqw",
+  "location_address": "231",
+  "pictureSources": "",
+  "points": 1
 }
 
 ### Delete search object (partner)
@@ -151,11 +147,10 @@ DElETE {{host}}/partner/1
 content-type: application/json
 
 {
-      "id":11,
-      "name":"zzk",
-      "description":"qqw",
-      // eslint-disable-next-line camelcase
-      "location_address":"231",
-      "pictureSources":"",
-      "points":1
+  "id": 11,
+  "name": "zzk",
+  "description": "qqw",
+  "location_address": "231",
+  "pictureSources": "",
+  "points": 1
 }
