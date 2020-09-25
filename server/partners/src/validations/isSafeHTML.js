@@ -43,7 +43,7 @@ module.exports = (
       "pre",
     ],
     allowedAttributes: {
-      a: ["href"],
+      a: ["href"], // Should this be allowed?
     },
   }
 ) => htmlString === sanitizer(htmlString, options);
