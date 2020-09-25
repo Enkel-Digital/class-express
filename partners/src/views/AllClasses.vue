@@ -10,7 +10,7 @@
         class="class-card"
         @click="
           $router.push({
-            name: 'ClassDetails',
+            name: routeName,
             params: { classID: clas.id },
           })
         "
@@ -36,6 +36,11 @@ export default {
   name: "AllClasses",
   directives: {
     ResizeText: () => import("vue-resize-text"),
+  },
+  props: {
+    routeName: {
+      default: "ClassDetails",
+    },
   },
   created() {
     this.$store.dispatch("classes/getPartnerClasses");

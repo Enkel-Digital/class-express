@@ -48,8 +48,9 @@ const routes = [
   {
     path: "/reviews/all",
     name: "all-reviews",
-    component: () => import("@/views/AllReviews.vue"),
+    component: () => import("@/views/AllClasses.vue"),
     meta: { Auth_requirements: AuthType.private },
+    props: { routeName: "reviews" },
   },
   {
     path: "/bookings",
