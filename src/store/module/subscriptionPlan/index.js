@@ -30,7 +30,11 @@ export default {
     async getPlans({ commit, dispatch }) {
       const response = await apiWithLoader.get("/subscription/plans/all");
       if (!response.success)
-        return apiError(response, () => dispatch("getPlans"));
+        return apiError(
+          response,
+          () => dispatch("getPlans"),
+          "Failed to load available subscription plans"
+        );
 
       commit("setter", ["subscriptionPlans", response.subscriptionPlans]);
     },
@@ -43,7 +47,11 @@ export default {
         `/subscription/${rootState.user.id}`
       );
       if (!response.success)
-        return apiError(response, () => dispatch("getUserPlans"));
+        return apiError(
+          response,
+          () => dispatch("getUserPlans"),
+          "Failed to load your subscription plan(s)"
+        );
 
       commit("setter", ["current", response.plans.current]);
       commit("setter", ["next", response.plans.next]);
@@ -67,7 +75,11 @@ export default {
         });
 
         if (!response.success)
-          return apiError(response, () => dispatch("updatePlan", planID));
+          return apiError(
+            response,
+            () => dispatch("updatePlan", planID),
+            "Failed to update your plan"
+          );
 
         // Call getPoints just in case this plan update caused an update to points value
         dispatch("points/getPoints", undefined, { root: true });
@@ -84,8 +96,10 @@ export default {
       });
 
       if (!response.success)
-        return apiError(response, () =>
-          dispatch("cancelPlan", cancellationReasons)
+        return apiError(
+          response,
+          () => dispatch("cancelPlan", cancellationReasons),
+          "Failed to cancel your plan"
         );
 
       // Indicate that this is the last plan and there will no longer be any next plan

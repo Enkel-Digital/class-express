@@ -56,7 +56,11 @@ export default {
           else {
             // Revert settings back to original settings
             commit("updateSettings", originalSettings);
-            return apiError(response, () => dispatch("syncSettings"));
+            return apiError(
+              response,
+              () => dispatch("syncSettings"),
+              "Failed to sync settings"
+            );
           }
         }
       } else {
@@ -66,7 +70,11 @@ export default {
         );
 
         if (!response.success)
-          return apiError(response, () => dispatch("syncSettings"));
+          return apiError(
+            response,
+            () => dispatch("syncSettings"),
+            "Failed to sync settings"
+          );
 
         // Set the modified at from the server
         commit("setter", ["modifiedAt", response.settings?.modifiedAt]);

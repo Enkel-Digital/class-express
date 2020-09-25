@@ -116,7 +116,11 @@ export default {
       );
 
       if (!response.success)
-        return apiError(response, () => dispatch("getUsersClasses"));
+        return apiError(
+          response,
+          () => dispatch("getUsersClasses"),
+          "Failed to load your Upcoming and Past classes"
+        );
 
       dispatch(
         "getClass",
@@ -142,7 +146,11 @@ export default {
       );
 
       if (!response.success)
-        return apiError(response, () => dispatch("getFavourites"));
+        return apiError(
+          response,
+          () => dispatch("getFavourites"),
+          "Failed to load your favourite classes and partners"
+        );
 
       commit("setter", ["favouriteClassesIDs", response.favourites.classes]);
       dispatch("getClass", response.favourites.classes);
@@ -170,7 +178,11 @@ export default {
       // On error change back favourite value first using the toggle mutation
       if (!response.success) {
         commit("toggleFavouriteClass", classID);
-        return apiError(response, () => dispatch("toggleFavouriteClass"));
+        return apiError(
+          response,
+          () => dispatch("toggleFavouriteClass"),
+          "Failed to save update to favourite classes"
+        );
       }
     },
     async toggleFavouritePartner(
@@ -193,7 +205,11 @@ export default {
       // On error change back favourite value first using the toggle mutation
       if (!response.success) {
         commit("toggleFavouritePartner", partnerID);
-        return apiError(response, () => dispatch("toggleFavouritePartner"));
+        return apiError(
+          response,
+          () => dispatch("toggleFavouritePartner"),
+          "Failed to save update to favourite partners"
+        );
       }
     },
     // Get Schedules of a given class and date
@@ -248,8 +264,10 @@ export default {
         });
 
         if (!response.success)
-          return apiError(response, () =>
-            dispatch("reserveClass", { classID, selectedTime })
+          return apiError(
+            response,
+            () => dispatch("reserveClass", { classID, selectedTime }),
+            "Failed to reserve class"
           );
 
         // Pessimistic UI, commit changes after API call is successful
@@ -282,7 +300,11 @@ export default {
 
       if (!response.success)
         return apiError(response, () =>
-          dispatch("cancelClass", { classID, selectedTime })
+          dispatch(
+            "cancelClass",
+            { classID, selectedTime },
+            "Failed to cancel class reservation"
+          )
         );
 
       // Pessimistic UI, commit changes after API call is successful
@@ -302,7 +324,11 @@ export default {
 
       const response = await apiWithLoader.get(`/reviews/class/${classID}`);
       if (!response.success)
-        return apiError(response, () => dispatch("getReview"));
+        return apiError(
+          response,
+          () => dispatch("getReview"),
+          "Failed to load reviews"
+        );
 
       commit("setter", ["review", response.reviews]);
     },
@@ -313,7 +339,11 @@ export default {
 
       const response = await apiWithLoader.get(`/reviews/class/${classID}`);
       if (!response.success)
-        return apiError(response, () => dispatch("getReview"));
+        return apiError(
+          response,
+          () => dispatch("getReview"),
+          "Failed to load user reviews"
+        );
 
       commit("setter", ["review", response.reviews]);
     },
