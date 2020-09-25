@@ -38,7 +38,7 @@ export default {
     ResizeText: () => import("vue-resize-text"),
   },
   created() {
-    this.$store.dispatch("classes/getAllClasses");
+    this.$store.dispatch("classes/getPartnerClasses");
   },
   computed: mapState("classes", ["classes"]),
 };

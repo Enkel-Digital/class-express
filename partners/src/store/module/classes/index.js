@@ -34,7 +34,7 @@ export default {
      * Get list of partner's classIDs from API before dispatching getClass to load all of the classes
      * @function getPartnerClasses
      */
-    async getPartnerClasses({ rootState, dispatch, commit }) {
+    async getPartnerClasses({ rootState, dispatch }) {
       const response = await apiWithLoader.get(
         `/class/of/${rootState.user.partnerID}`
       );

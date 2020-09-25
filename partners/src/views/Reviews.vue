@@ -110,7 +110,8 @@ export default {
   destroyed() {
     // Although this would be unnecessary if we do not store reviews into persistence state
     // This can still help free up memory by removing userReviews.
-    this.$store.commit("classes/clearUserReview", this.classID);
+    // Should we clear? Cos if they come right back in, the data is loaded again
+    // this.$store.commit("classes/clearUserReview", this.classID);
   },
   data() {
     const className = this.$store.state.classes.classes[this.classID].name;

@@ -24,7 +24,7 @@
 
       <br />
 
-      <v-btn color="#60696c" width="30em" outlined @click="login">Login</v-btn>
+      <v-btn color="#60696c" width="100%" outlined @click="login">Login</v-btn>
 
       <br />
       <br />
@@ -34,10 +34,6 @@
           Register as a Partner with us now!
         </router-link>
       </h4>
-
-      <!-- <v-btn id="back-btn" color="#60696c" width="20em" outlined @click="back"
-        >Back</v-btn
-      > -->
     </div>
   </v-row>
 </template>

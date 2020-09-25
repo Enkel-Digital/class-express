@@ -70,6 +70,7 @@ export default new Vuex.Store({
     // Register modules for persistent state using localStorage
     createPersistedState({
       paths: [
+        "user",
         "bookings",
         "employees",
         "partner",

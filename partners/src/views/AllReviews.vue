@@ -1,5 +1,5 @@
 <template>
-  <v-main id="AllClasses">
+  <v-main id="AllReviews">
     <masonry
       :cols="{ default: 5, 1000: 3, 700: 2, 400: 1 }"
       :gutter="{ default: '0.5em', 700: '0.25em' }"
@@ -30,39 +30,24 @@
 </template>
 
 <script>
-import api from "../store/utils/fetch";
+import { mapState } from "vuex";
 
 export default {
-  data() {
-    return {
-      classes: [],
-    };
-  },
-  name: "AllClasses",
+  name: "AllReviews",
   directives: {
     ResizeText: () => import("vue-resize-text"),
   },
-  props: {
-    partnerID: {
-      default: 2,
-      type: Number,
-    },
-  },
   created() {
-    this.getAllClasses();
+    this.$store.dispatch("classes/getPartnerClasses");
   },
-  methods: {
-    async getAllClasses() {
-      this.classes = (
-        await api.get(`/class/details/of/${this.partnerID}`)
-      ).class;
-    },
+  computed: {
+    ...mapState("classes", ["classes"]),
   },
 };
 </script>
 
 <style scoped>
-#AllClasses {
+#AllReviews {
   margin: 2em;
   margin-top: 2em;
 }
