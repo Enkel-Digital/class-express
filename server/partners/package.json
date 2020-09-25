@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/Enkel-Digital/class-server#readme",
   "dependencies": {
-    "@enkeldigital/ce-search-lib": "0.0.1",
+    "@enkeldigital/ce-search-lib": "file:../search-lib",
     "@enkeldigital/ce-sql": "^0.1.0",
     "@lionellbriones/logging": "^3.2.1",
     "@sendgrid/mail": "^7.2.5",

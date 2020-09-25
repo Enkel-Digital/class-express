@@ -8,7 +8,7 @@ const executeSearchOperation = require("./executeSearchOperation");
 
 const _add = index.saveObject;
 const add = async (searchObjects, prependedString) =>
-  executeSearchOperation(_add, prependedString, searchObjects);
+  executeSearchOperation(_add, searchObjects, prependedString);
 
 // @todo Might want to add a custom bulk addition method
 

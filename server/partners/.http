@@ -101,7 +101,7 @@ content-type: application/json
     "clas": {
         "partnerID": 1,
         "name": "Barista Training",
-        "description": "Learn basic barista training taught by a licensed and experienced barista",
+        "description": "Basic barista training taught by licensed and experienced baristas",
         "length": 45,
         "points": 5,
         "maxParticipants": 30,

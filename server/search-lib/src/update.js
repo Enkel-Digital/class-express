@@ -12,6 +12,6 @@ const _update = (searchObject) =>
     { createIfNotExists: false } // Do not allow API caller to use this API to create new search objects.
   );
 const update = async (searchObjects, prependedString) =>
-  executeSearchOperation(_update, prependedString, searchObjects);
+  executeSearchOperation(_update, searchObjects, prependedString);
 
 module.exports = { _update, update };

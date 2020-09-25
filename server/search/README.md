@@ -1,3 +1,7 @@
+# DEPRECATED
+- Service is temporarily deprecated and on hold, in favour of using [search-lib](../search-lib) directly in services that interface with algolia search service.
+- This is to reduce the need of cross talk between services whenever possible, and this is still kept in case we decide to switch back again, to implement more advance features such as index update batching / queueing or moving to a different search service approach.
+
 # Search service
 This service contains APIs for search related business logics. Acting primarily as a wrapper around the Algolia search service.  
 
