@@ -49,8 +49,10 @@ export default new Vuex.Store({
 
       const response = await apiWithLoader.get(`/user/${email}`);
       if (!response.success)
-        return apiError(response, (self) =>
-          self.$store.dispatch("getUserDetails", email)
+        return apiError(
+          response,
+          (self) => self.$store.dispatch("getUserDetails", email),
+          "Failed to load your user details. Unable to proceed. Please logout and re-login."
         );
 
       commit("setter", ["user", response.user]);

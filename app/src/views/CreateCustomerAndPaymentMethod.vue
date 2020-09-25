@@ -120,26 +120,23 @@ export default {
     // Creates billing customer with billing service using user details in vuex store
     // Needs stripe object to be loaded first
     async createCustomer() {
-      try {
-        const { id, email, firstName, lastName } = this.$store.state.user;
+      const { id, email, firstName, lastName } = this.$store.state.user;
 
-        const response = await apiWithLoader.post("/user/create", {
-          userAccountID: id,
-          // User details object MUST follow stripe customer object. Ref: https://stripe.com/docs/api/customers/create
-          userDetails: {
-            email,
-            name: `${firstName} ${lastName || ""}`, // Prevent saving null last names
-          },
-        });
+      const response = await apiWithLoader.post("/user/create", {
+        userAccountID: id,
+        // User details object MUST follow stripe customer object. Ref: https://stripe.com/docs/api/customers/create
+        userDetails: {
+          email,
+          name: `${firstName} ${lastName || ""}`, // Prevent saving null last names
+        },
+      });
 
-        if (!response.success) return apiError(response, this.createCustomer);
-      } catch (error) {
-        apiError(
-          error.message,
+      if (!response.success)
+        return apiError(
+          response,
           this.createCustomer,
-          "Failed to create Stripe billing customer instance"
+          "Failed to create Stripe customer billing instance"
         );
-      }
     },
 
     createAndMountFormElement() {

@@ -73,7 +73,12 @@ export default {
         partners: [1, 2, 3],
       };
 
-      if (!response.success) return apiError(response, this.loadRecommended);
+      if (!response.success)
+        return apiError(
+          response,
+          this.loadRecommended,
+          "Failed to load recommended classes and partners."
+        );
 
       this.$store.dispatch("classes/getClass", response.classes);
       this.$store.dispatch("classes/getPartner", response.partners);

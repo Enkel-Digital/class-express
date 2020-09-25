@@ -47,7 +47,11 @@ export default {
       const response = await apiWithLoader.get(`/points/${rootState.user.id}`);
 
       if (!response.success)
-        return apiError(response, () => dispatch("getPoints"));
+        return apiError(
+          response,
+          () => dispatch("getPoints"),
+          "Failed to load your points"
+        );
 
       commit("setter", ["points", response.points]);
     },
@@ -59,7 +63,11 @@ export default {
       const response = await apiWithLoader.get("/topup/options");
 
       if (!response.success)
-        return apiError(response, () => dispatch("getTopupOptions"));
+        return apiError(
+          response,
+          () => dispatch("getTopupOptions"),
+          "Failed to get topup options"
+        );
 
       commit("setter", ["topupOptions", response.topupOptions]);
     },
@@ -83,7 +91,11 @@ export default {
         });
 
         if (!response.success)
-          return apiError(response, () => dispatch("updatePlan", topupID));
+          return apiError(
+            response,
+            () => dispatch("buyPoints", topupID),
+            "Failed to buy points"
+          );
 
         commit("topupPoints", points);
 
