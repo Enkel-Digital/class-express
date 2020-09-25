@@ -1,16 +1,18 @@
 {
-  "name": "ce-search-lib",
-  "private": true,
+  "name": "@enkeldigital/ce-search-lib",
   "version": "0.0.1",
   "description": "ClassExpress Search library, is a customised wrapper around the algolia service for CE specific use.",
   "main": "./src/index.js",
+  "files": ["/src"],
   "scripts": {
+    "publish:npm": "npm publish --access public",
     "test": "npx mocha --exit",
     "lint:js": "npx eslint --ignore-path .gitignore --fix **/*.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Enkel-Digital/class-server.git"
+    "url": "https://github.com/Enkel-Digital/class-server.git",
+    "directory": "search-lib"
   },
   "author": "JJ",
   "license": "AGPL-3.0-or-later",
@@ -20,25 +22,25 @@
   "homepage": "https://github.com/Enkel-Digital/class-server#readme",
   "dependencies": {
     "@lionellbriones/logging": "^3.2.1",
-    "algoliasearch": "^4.3.1",
+    "algoliasearch": "^4.5.1",
     "dotenv": "^8.2.0"
   },
   "devDependencies": {
-    "eslint": "^7.5.0",
+    "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-mocha": "^7.0.1",
+    "eslint-plugin-mocha": "^8.0.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.2.2",
-    "husky": "^4.2.5",
+    "husky": "^4.3.0",
     "ignore-loader": "^0.1.2",
-    "lint-staged": "^10.2.11",
-    "mocha": "^8.0.1",
-    "prettier": "^2.0.5"
+    "lint-staged": "^10.4.0",
+    "mocha": "^8.1.3",
+    "prettier": "^2.1.2"
   },
   "husky": {
     "hooks": {

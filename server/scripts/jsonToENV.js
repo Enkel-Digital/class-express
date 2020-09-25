@@ -11,11 +11,11 @@ function cmdArgs() {
 
   idx = process.argv.indexOf("-f");
   const jsonFile = process.argv[idx + 1];
-  const jsonFilePath = path.join(__dirname, jsonFile);
+  const jsonFilePath = path.join(process.cwd(), jsonFile);
 
   idx = process.argv.indexOf("-o");
   const outputFile = process.argv[idx + 1];
-  const outputFilePath = path.join(__dirname, outputFile);
+  const outputFilePath = path.join(process.cwd(), outputFile);
 
   return {
     jsonFilePath,
