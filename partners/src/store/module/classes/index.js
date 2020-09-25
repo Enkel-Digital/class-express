@@ -9,12 +9,8 @@ import apiError from "@/store/utils/apiError";
 import apiWithLoader from "@/store/utils/apiWithLoader";
 
 import { getClass, addClass } from "./getClass";
-
-// import { getClassSchedule, addClassSchedule } from "./getClassSchedule";
-// import { getPartnerSchedule, addPartnerSchedule } from "./getPartnerSchedule";
-
-import moment from "moment";
-// import unixseconds from "unixseconds";
+import { getClassSchedule, addClassSchedule } from "./getClassSchedule";
+// import getPartnerSchedule from "./getPartnerSchedule";
 
 export default {
   namespaced: true,
@@ -26,34 +22,27 @@ export default {
       Vue.delete(state.review, "userReviews");
     },
     addClass,
+    addClassSchedule,
+    addPartnerSchedule(state, schedule) {
+      Vue.set(state.schedule.partner, schedule.partnerID, schedule);
+    },
   },
   actions: {
     getClass,
+    getClassSchedule,
     /**
-     * Gets all the class of this partner
+     * Get list of partner's classIDs from API before dispatching getClass to load all of the classes
+     * @function getPartnerClasses
      */
-    async getAllClasses({ rootState, dispatch }) {
+    async getPartnerClasses({ rootState, dispatch, commit }) {
       const response = await apiWithLoader.get(
         `/class/of/${rootState.user.partnerID}`
       );
 
       if (!response.success)
-        return apiError(response, () => dispatch("getAllClasses"));
-
-      console.log("response", response);
+        return apiError(response, () => dispatch("getPartnerClasses"));
 
       dispatch("getClass", response.classIDs);
-    },
-    /**
-     * Get Schedules of a given class and date
-     * @function getClassSchedule
-     * @param {number} [dateCursor=today] unix timestamp of the start of the day in utc
-     */
-    async getClassSchedule(
-      { rootState, commit },
-      { classID, dateCursor = "" }
-    ) {
-      // @todo
     },
     async cancelClass({ rootState, commit }, classID) {
       // @todo
@@ -70,6 +59,7 @@ export default {
 
       commit("setter", ["review", response.reviews]);
     },
+    // @todo Update to get userReviews instead of using the current reviews API
     async getUserReview({ state, commit, dispatch }, classID) {
       // If review is already in state, ignore request
       if (state.review && classID === state.review[classID]) return;
