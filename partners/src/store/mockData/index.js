@@ -4,6 +4,5 @@
 
 module.exports = {
   ...require("./bookings"),
-  ...require("./subscriptionPlan"),
   ...require("./earningsHistory"),
 };
