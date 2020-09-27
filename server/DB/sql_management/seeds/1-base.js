@@ -7,6 +7,7 @@ const unixseconds = require("unixseconds");
 const start = unixseconds();
 const { RRule, RRuleSet } = require("rrule");
 const moment = require("moment");
+const searchIndex = require("@enkeldigital/ce-search-lib");
 // 30 Days in seconds
 const periodLengthInSeconds = 30 * 24 * 60 * 60; // 30 days, 24 hours, 60 mins, 60 seconds
 
@@ -191,54 +192,69 @@ exports.seed = async function (knex) {
     },
   ]);
 
-  await knex("classes").insert([
-    {
-      partnerID: 3,
-      name: "Basic Guitar",
-      description:
-        "Basic guitar lessons to help you get started with this wonderful musical instrument! This class covers all the basics from score reading to strumming techniques.",
-      length: 45,
-      points: 5,
-      maxParticipants: 20,
-      pictureSources:
-        "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg",
-      location_address: "Orchard road, Plaza Singapura",
-      location_coordinates: "1.3006954, 103.84475",
-    },
-    {
-      partnerID: 2,
-      name: "Advanced Guitar",
-      description:
-        "Advance guitar lessons taught be the legendary Ichika Mo.<br />Will be going through advanced music scores and includes 1 on 1 trainings for the students, alongside a chance to practice in front of a live audience",
-      length: 80,
-      points: 8,
-      maxParticipants: 20,
-      pictureSources:
-        "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg",
-    },
-    {
-      partnerID: 1,
-      name: "Basic Cooking",
-      description:
-        "Want to get started in the magical world of cooking? Well join our class to learn more and get ready to be amazed.",
-      length: 150,
-      points: 3,
-      maxParticipants: 6,
-      pictureSources:
-        "https://d2ga8dje9bus38.cloudfront.net/0QTxUDcDSYaU0951YubV_verlocal_cooking_basics_class_workshop_in_oakland_900_600.jpg",
-    },
-    {
-      partnerID: 1,
-      name: "Advanced Cooking",
-      description:
-        "Like cooking but always feel like you are missing a magical ingredient? Well join our class to learn more and get ready to be amazed.",
-      length: 180,
-      points: 6,
-      maxParticipants: 20,
-      pictureSources:
-        "https://www.fetimes.co.kr/news/photo/201709/60017_41960_2138.jpg",
-    },
-  ]);
+  // Get all the classes back from the DB with the DB generated values to save into the search index.
+  const insertedClasses = await knex("classes")
+    .insert([
+      {
+        partnerID: 3,
+        name: "Basic Guitar",
+        description:
+          "Basic guitar lessons to help you get started with this wonderful musical instrument! This class covers all the basics from score reading to strumming techniques.",
+        length: 45,
+        points: 5,
+        maxParticipants: 20,
+        pictureSources:
+          "https://tmw.com.sg/wp-content/uploads/2019/10/how-to-sharpen-your-guitar-skills-by-taking-classes-870x460.jpg",
+        location_address: "Orchard road, Plaza Singapura",
+        location_coordinates: "1.3006954, 103.84475",
+      },
+      {
+        partnerID: 2,
+        name: "Advanced Guitar",
+        description:
+          "Advance guitar lessons taught be the legendary Ichika Mo.<br />Will be going through advanced music scores and includes 1 on 1 trainings for the students, alongside a chance to practice in front of a live audience",
+        length: 80,
+        points: 8,
+        maxParticipants: 20,
+        pictureSources:
+          "https://pickupmusic.com/wp-content/uploads/2020/01/Ichka-web-3-1775x2048.jpg",
+      },
+      {
+        partnerID: 1,
+        name: "Basic Cooking",
+        description:
+          "Want to get started in the magical world of cooking? Well join our class to learn more and get ready to be amazed.",
+        length: 150,
+        points: 3,
+        maxParticipants: 6,
+        pictureSources:
+          "https://d2ga8dje9bus38.cloudfront.net/0QTxUDcDSYaU0951YubV_verlocal_cooking_basics_class_workshop_in_oakland_900_600.jpg",
+      },
+      {
+        partnerID: 1,
+        name: "Advanced Cooking",
+        description:
+          "Like cooking but always feel like you are missing a magical ingredient? Well join our class to learn more and get ready to be amazed.",
+        length: 180,
+        points: 6,
+        maxParticipants: 20,
+        pictureSources:
+          "https://www.fetimes.co.kr/news/photo/201709/60017_41960_2138.jpg",
+      },
+    ])
+    .returning("*"); // Return the entire row
+
+  // Clear all objects from the search index if requested
+  if (
+    await yesno({
+      question:
+        "Clear Search Index and re-populate? YES -> clear and re-populate, NO -> just insert.",
+    })
+  )
+    await searchIndex.algoliaIndex.clearObjects(); // await to complete before inserting new objects in
+
+  // Update the search index with the returned classes values
+  await searchIndex.add(insertedClasses, "class");
 
   // Day starts at "11am"
   const today = moment().startOf("day").add(11, "hours");
