@@ -35,6 +35,7 @@ export default {
     CameraBtn,
   },
   created() {
+    // @todo Might want to optimise this to not always get these values.
     this.$store.dispatch("classes/getUsersClasses");
 
     // getFavourites in case favourites.vue is not visited yet, to ensure we can correctly show if a upcoming class is favourited
@@ -47,6 +48,9 @@ export default {
 
       const nowTS = unixseconds();
       const userClasses = state.userClasses;
+      // need to fix this, this runs the number of times the number of userClasses there are.... ridiculously stupid
+      // Maybe is because the unixseconds value always changes?
+      // console.log("running upcoming class agn", userClasses);
 
       // Filter for classes that have yet to start or are still running
       // Make a copy of the array with slice and reverse it as original array is ordered by descending startTime
@@ -57,14 +61,13 @@ export default {
           .filter(
             (userClass) =>
               // Show upcoming class until the end of the class
-              userClass.startTime +
+              parseInt(userClass.startTime) +
                 state.classes[userClass.classID].length * 60 >
               nowTS
           )
           .slice()
           .reverse()
       );
-
     },
   },
   watch: {
@@ -72,6 +75,13 @@ export default {
     upcomingClasses: {
       immediate: true,
       handler() {
+        // console.log(
+        //   "watcher",
+        //   this.upcomingClasses.map(
+        //     (clas) => this.$store.state.classes.classes[clas.classID]?.partnerID
+        //   )
+        // );
+
         this.$store.dispatch(
           "classes/getPartner",
           this.upcomingClasses.map(

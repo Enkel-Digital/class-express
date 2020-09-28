@@ -80,7 +80,28 @@ export default {
     this.$store.dispatch("classes/getPastClasses");
   },
   computed: {
-    ...mapGetters("classes", ["pastClasses"]),
+    // ...mapGetters("classes", ["pastClasses"]),
+    pastClasses() {
+      // Make a copy of the array with slice and reverse it as original array is ordered by descending startTime
+      // return (
+      //   (
+      //     userClasses
+      //       // optional chaining operator protects against undefined if clas object is not loaded yet.
+      //       .filter((userClass) => state.classes[userClass.classID]?.length)
+      //       .filter(
+      //         (userClass) =>
+      //           // Show upcoming class until the end of the class
+      //           parseInt(userClass.startTime) +
+      //             state.classes[userClass.classID].length * 60 >
+      //           nowTS
+      //       ) || []
+      //   )
+      //     .slice()
+      //     .reverse()
+      // );
+
+      return [];
+    },
   },
   methods: {
     ...mapActions("classes", ["toggleFavouriteClass"]),
