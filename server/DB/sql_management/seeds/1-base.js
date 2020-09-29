@@ -495,6 +495,13 @@ exports.seed = async function (knex) {
   await knex("userBookingTransactions").insert([
     {
       userID: 1,
+      classID: 3,
+      points: 3,
+      // 1 past class
+      startTime: unixseconds() - 60 * 60 * 24, // @todo
+    },
+    {
+      userID: 1,
       classID: 1,
       points: 5,
       startTime: unixseconds() + 60 * 60 * 24, // @todo

@@ -27,7 +27,8 @@ router.post("/resendVerificationEmail/:email", async (req, res) => {
 
     // Create a email verification link with a continue URL back to the app
     const link = await admin.auth().generateEmailVerificationLink(email, {
-      url: "https://classes-ekd.firebaseapp.com",
+      // @todo Update the URL once domain is set
+      url: "https://partners.enkeldigital.com",
     });
 
     // Send user email verification link

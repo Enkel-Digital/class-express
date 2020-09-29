@@ -16,6 +16,8 @@ const onlyOwnResource = require("../middleware/onlyOwnResource");
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:users");
 
+// @todo FIX THIS API MODULE and the duplicate routes shit
+
 /**
  * Get user (partner account / employee) details object
  * @todo Can be get by both the employee themselves and admin accounts

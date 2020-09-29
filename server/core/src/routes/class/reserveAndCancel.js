@@ -71,7 +71,7 @@ router.post("/reserve", auth, express.json(), async (req, res) => {
           .where({
             classID,
             // @todo Fix this, without this check, maxParticipants becomes the value for the class across all its timings
-            // selectedTime
+            selectedTime,
           })
           .count("classID as currentNumOfParticipants")
           .first()
@@ -112,7 +112,7 @@ router.post("/cancel", auth, express.json(), async (req, res) => {
   try {
     const { userID, classID, selectedTime } = req.body;
 
-    // user cannot delete a class that is after / ended / started?
+    // @todo user cannot delete a class that is after / ended / started?
     // cannot delete after ended, as partner simply wont get paid
     if (selectedTime <= unixseconds())
       return res
@@ -124,7 +124,7 @@ router.post("/cancel", auth, express.json(), async (req, res) => {
       .where({
         userID,
         classID,
-        // selectedTime
+        selectedTime,
       })
       .del();
 
