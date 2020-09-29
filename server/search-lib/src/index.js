@@ -19,7 +19,7 @@ const search = {
       {
         // @todo See how to not use target and not get an error here
         get(target, prop) {
-          //   toLowerCase the prop
+          // toLowerCase the prop
 
           const operation = {
             add: async (searchObjects, prependedString) =>
@@ -56,6 +56,8 @@ const search = {
   },
 };
 
+const indexCache = {};
+
 // Export a proxy around the search object
 module.exports = new Proxy(search, {
   get(target, prop) {
@@ -63,13 +65,15 @@ module.exports = new Proxy(search, {
       case "algoliaClient":
       case "executeSearchOperation":
       case "transformID":
-        // @todo See whats the diff
-        // return Reflect.get(...arguments);
         return target[prop];
 
       // The prop will be treated as the index name
       default:
-        return search.useIndex(target.algoliaClient.initIndex(prop));
+        // If never use index before, initialize and cache it for reuse
+        if (!indexCache[prop])
+          indexCache[prop] = target.algoliaClient.initIndex(prop);
+
+        return search.useIndex(indexCache[prop]);
     }
   },
 
