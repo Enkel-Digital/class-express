@@ -1,6 +1,6 @@
 {
   "name": "@enkeldigital/ce-search-lib",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "ClassExpress Search library, is a customised wrapper around the algolia service for CE specific use.",
   "main": "./src/index.js",
   "files": [
@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/Enkel-Digital/class-server#readme",
   "dependencies": {
-    "@lionellbriones/logging": "^3.2.1",
     "algoliasearch": "^4.5.1",
     "dotenv": "^8.2.0"
   },
