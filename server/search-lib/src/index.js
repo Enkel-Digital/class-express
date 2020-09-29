@@ -13,6 +13,7 @@ const search = {
   transformID: require("./transformID"),
   executeSearchOperation,
 
+  // THIS METHOD SHOULD NOT BE ACCESSED DIRECTLY by users. Should only be called by the proxy.
   useIndex(index) {
     return new Proxy(
       {},

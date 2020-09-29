@@ -111,18 +111,9 @@ content-type: application/json
     }
 }
 
-### Get class
-# GET /class/details/:classID
-GET {{host}}/class/details/1
-
-### Get all the IDs of a partner's classes
-# GET /class/of/:partnerID
-GET {{host}}/class/of/1
-{{authHeader}}
-
 ### Update class details
 # PATCH /class/:classID
-PATCH {{host}}/class/1
+PATCH {{host}}/class/5
 {{authHeader}}
 content-type: application/json
 
@@ -131,6 +122,21 @@ content-type: application/json
         "description": "New description for class"
     }
 }
+
+### Delete a class
+# DELETE /class/:classID
+DELETE {{host}}/class/5
+{{authHeader}}
+content-type: application/json
+
+### Get class
+# GET /class/details/:classID
+GET {{host}}/class/details/1
+
+### Get all the IDs of a partner's classes
+# GET /class/of/:partnerID
+GET {{host}}/class/of/1
+{{authHeader}}
 
 ### Favourite count of class
 # GET /favourites/class/:classID

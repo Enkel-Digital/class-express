@@ -31,7 +31,7 @@ router.delete("/:classID", express.json(), async (req, res) => {
 
     // @todo If this fails, we need to somehow allow a retry later.
     // Remove this class from the search index
-    await search.del(classID, "class");
+    await search.classes.del(classID, "class");
 
     res.status(200).json({ success: true });
   } catch (error) {

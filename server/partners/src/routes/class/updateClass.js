@@ -53,7 +53,7 @@ router.patch("/:classID", express.json(), async (req, res) => {
 
     // @todo If this fails, we need to somehow allow a retry later.
     // Update class in the search index
-    await search.update(readBackClass, "class");
+    await search.classes.update(readBackClass, "class");
 
     res.status(200).json({ success: true });
   } catch (error) {

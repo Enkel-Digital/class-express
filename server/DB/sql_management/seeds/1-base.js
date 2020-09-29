@@ -7,7 +7,7 @@ const unixseconds = require("unixseconds");
 const start = unixseconds();
 const { RRule, RRuleSet } = require("rrule");
 const moment = require("moment");
-const searchIndex = require("@enkeldigital/ce-search-lib");
+const search = require("@enkeldigital/ce-search-lib");
 // 30 Days in seconds
 const periodLengthInSeconds = 30 * 24 * 60 * 60; // 30 days, 24 hours, 60 mins, 60 seconds
 
@@ -251,10 +251,11 @@ exports.seed = async function (knex) {
         "Clear Search Index and re-populate? YES -> clear and re-populate, NO -> just insert.",
     })
   )
-    await searchIndex.algoliaIndex.clearObjects(); // await to complete before inserting new objects in
+    // Creating index manually before clearing objects because clearObjects is not a directly supported method [add, update, del]
+    await search.algoliaClient.initIndex("classes").clearObjects(); // await to complete before inserting new objects in
 
   // Update the search index with the returned classes values
-  await searchIndex.add(insertedClasses, "class");
+  await search.classes.add(insertedClasses, "class");
 
   // Day starts at "11am"
   const today = moment().startOf("day").add(11, "hours");
