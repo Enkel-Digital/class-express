@@ -8,7 +8,7 @@
 const express = require("express");
 const router = express.Router();
 const SQLdb = require("@enkeldigital/ce-sql");
-const getPartnerTags = require("../db/getPartnerTags");
+const dbTags = require("../db/tags");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:partner");
@@ -32,7 +32,7 @@ router.get("/details/:partnerID", async (req, res) => {
 
     // @todo Can we achieve this using a SQL JOIN?
     // Inject partnerTags in as an array
-    partner.tags = await getPartnerTags(partnerID);
+    partner.tags = await dbTags.partner.get(partnerID);
 
     // @todo Should we list all the classes too? Or create another API to load it? For now, just load it
     // Get an array of classIDs of classes that belongs to this partner
