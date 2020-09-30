@@ -9,8 +9,7 @@
 
 const express = require("express");
 const router = express.Router();
-const SQLdb = require("@enkeldigital/ce-sql");
-const getClassTags = require("../db/getClassTags");
+const dbTags = require("../db/tags");
 const auth = require("../middleware/auth");
 const onlyOwnResource = require("../middleware/onlyOwnResource");
 
@@ -29,7 +28,7 @@ router.get("/:classID", async (req, res) => {
 
     res.json({
       success: true,
-      tags: await getClassTags(classID),
+      tags: await dbTags.class.get(classID),
     });
   } catch (error) {
     logger.error(error);
@@ -48,12 +47,7 @@ router.post("/new", auth, onlyOwnResource, express.json(), async (req, res) => {
   try {
     const { classID, tags } = req.body;
 
-    // @todo (Jess to implement) Prevent duplicate tags insertion
-
-    // Insert the tags 1 by 1 and wait for all of them to complete.
-    await Promise.all(
-      tags.map((tag) => SQLdb("classTags").insert({ classID, tag }))
-    );
+    await dbTags.class.insert(classID, tags);
 
     res.status(201).json({ success: true });
   } catch (error) {
@@ -79,11 +73,7 @@ router.delete(
     try {
       const { classID, tags } = req.body;
 
-      await Promise.all(
-        tags.map((tag) =>
-          SQLdb("classTags").where({ classID, tag: tag }).delete()
-        )
-      );
+      await dbTags.class.delete(classID, tags);
 
       res.status(201).json({ success: true });
     } catch (error) {

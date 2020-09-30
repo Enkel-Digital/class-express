@@ -17,7 +17,7 @@ const { RRule, RRuleSet, rrulestr } = require("rrule");
 const auth = require("../../middleware/auth");
 const onlyOwnResource = require("../../middleware/onlyOwnResource");
 const SQLdb = require("@enkeldigital/ce-sql");
-const getClassTags = require("../../db/getClassTags");
+const tags = require("../../db/tags");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:class");
@@ -41,7 +41,7 @@ router.get("/details/:classID", async (req, res) => {
 
     // @todo Can we achieve this using a SQL JOIN?
     // Inject classTags in as an array
-    classObject.tags = await getClassTags(classID);
+    classObject.tags = await tags.class.get(classID);
 
     res.json({ success: true, class: classObject });
   } catch (error) {

@@ -10,7 +10,7 @@
 const express = require("express");
 const router = express.Router();
 const SQLdb = require("@enkeldigital/ce-sql");
-const getPartnerTags = require("../db/getPartnerTags");
+const dbTags = require("../db/tags");
 const auth = require("../middleware/auth");
 const onlyOwnResource = require("../middleware/onlyOwnResource");
 
@@ -31,7 +31,7 @@ router.get("/:partnerID", async (req, res) => {
 
     res.json({
       success: true,
-      tags: await getPartnerTags(partnerID),
+      tags: await dbTags.partner.get(partnerID),
     });
   } catch (error) {
     logger.error(error);
@@ -51,13 +51,7 @@ router.post("/new", auth, onlyOwnResource, express.json(), async (req, res) => {
   try {
     const { partnerID, tags } = req.body;
 
-    // @todo (Jess to implement) Prevent duplicate tags insertion
-
-    // Insert the tags 1 by 1 and wait for all of them to complete.
-    // @todo Can knex take in an array directly?
-    await Promise.all(
-      tags.map((tag) => SQLdb("partnerTags").insert({ partnerID, tag }))
-    );
+    await dbTags.partner.insert(partnerID, tags);
 
     res.status(201).json({ success: true });
   } catch (error) {
@@ -83,12 +77,7 @@ router.delete(
     try {
       const { partnerID, tags } = req.body;
 
-      // @todo Can knex take in an array directly?
-      await Promise.all(
-        tags.map((tag) =>
-          SQLdb("partnerTags").where({ partnerID, tag }).delete()
-        )
-      );
+      await dbTags.partner.delete(partnerID, tags);
 
       res.status(201).json({ success: true });
     } catch (error) {

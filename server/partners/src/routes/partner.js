@@ -8,7 +8,7 @@
 const express = require("express");
 const router = express.Router();
 const SQLdb = require("@enkeldigital/ce-sql");
-const getPartnerTags = require("../db/getPartnerTags");
+const tags = require("../db/tags");
 const sendMail = require("../utils/sendMail");
 
 const createLogger = require("@lionellbriones/logging").default;
@@ -33,7 +33,7 @@ router.get("/:partnerID", async (req, res) => {
 
     // @todo Can we achieve this using a SQL JOIN?
     // Inject partnerTags in as an array
-    partner.tags = await getPartnerTags(partnerID);
+    partner.tags = await dbTags.partner.get(partnerID);
 
     res.json({ success: true, partner });
   } catch (error) {
@@ -216,9 +216,10 @@ router.post("/new/approve/:pendingPartnerID", async (req, res) => {
       .returning("id");
 
     // Generate array of partner tag objects like this --> [{ partnerID: 1, tag: "tag_name" },] before inserting as seperate rows
-    await SQLdb("partnerTags").insert(
-      partner.tags.split(",").map((tag) => ({ tag, partnerID }))
-    );
+    // await SQLdb("partnerTags").insert(
+    //   partner.tags.split(",").map((tag) => ({ tag, partnerID }))
+    // );
+    await tags.partner.insert(partnerID, partner.tags.split(","));
 
     // Send email to company email to let them know that verification has been complete
     await sendMail({

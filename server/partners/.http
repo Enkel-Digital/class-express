@@ -107,7 +107,8 @@ content-type: application/json
         "maxParticipants": 30,
         "pictureSources": "https://cdn.shopify.com/s/files/1/0245/7727/8015/products/barista_class_for_2_5_2_1024x.jpg?v=1579094260",
         "location_address": "Orchard road, Plaza Singapura",
-        "location_coordinates": "1.3006954, 103.84475"
+        "location_coordinates": "1.3006954, 103.84475",
+        "tags": ["initialTags", "testing"]
     }
 }
 
@@ -169,6 +170,7 @@ GET {{host}}/points/class/:classID
 {{authHeader}}
 
 ### Get all tags of a class (This should normally not be used, as GET class details will include the tags)
+# Primarily used for updating the tags on the client when tags are updated but we might not want to reload the whole class object
 # GET /tags/class/:classID
 GET {{host}}/tags/class/1
 
