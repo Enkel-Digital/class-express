@@ -12,6 +12,6 @@ module.exports = function enforceSchema(originalObject) {
     location_address: originalObject.location_address,
     pictureSources: originalObject.pictureSources,
     points: originalObject.points,
-    _tags: originalObject._tags,
+    _tags: originalObject.tags,
   };
 };

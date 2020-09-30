@@ -13,6 +13,8 @@ This repo contains some schema files created using the [Database Markup Language
 
 
 ## Directories
+- [abstractions](./abstractions)
+    - DB abstractions for common operations that are shared across multiple services / repos.
 - [ce-sql](./ce-sql)
     - Scoped npm library, "@enkeldigital/ce-sql" that is essentially just a wrapper around the knex library with preset configurations to keep the use of knex consistent across services.
 - [sql_management](./sql_management)
