@@ -10,7 +10,6 @@
         <v-icon>mdi-share</v-icon>
       </v-btn>
 
-      <!-- @todo Update to use toggleFavouritePartner -->
       <v-btn icon @click="toggleFavouritePartner(partner.id)">
         <v-icon v-if="isFavourite" color="red">mdi-heart</v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>
@@ -36,17 +35,22 @@
           <p class="overline">Reviews</p>
 
           <v-list-item-subtitle v-if="review">
-            <!-- Do the star icon thing for the reviews -->
-            {{ review.ratings }} / 5 based on
-            {{ review.numberOfReviews }} reviews
+            <div v-if="review.ratings">
+              <!-- @todo Do the star icon thing for the reviews -->
+              {{ review.ratings }} / 5 based on
+              {{ review.numberOfReviews }} reviews
+            </div>
+
+            <!-- If no review, like no attendance, show no review -->
+            <div v-else>No reviews yet!</div>
           </v-list-item-subtitle>
 
           <v-list-item-subtitle v-else> Loading... </v-list-item-subtitle>
         </v-list-item-content>
 
-        <!-- @todo Temporarily hidden till implemented -->
+        <!-- Only show btn if reviews loaded and there are reviews -->
         <v-btn
-          v-if="false"
+          v-if="review && review.ratings"
           :to="{ name: 'reviews-partner', params: { partnerID: partner.id } }"
           text
           small
@@ -131,9 +135,8 @@ export default {
   },
   mixins: [getClassAndPartnerMixin],
   created() {
-    // @todo Implement this to stop using getReview as that is for the classes' reviews
     // Call action to fetch review for this partner
-    // this.$store.dispatch("classes/getReview", this.partnerID);
+    this.$store.dispatch("classes/getReview", { partnerID: this.partnerID });
   },
   // @todo Remove after Partner schedule button is implemented
   data() {
@@ -151,15 +154,10 @@ export default {
       );
     },
     review() {
-      return false;
-
-      // @todo Change this to be partner reviews.
-      // return this.$store.state.classes.review;
+      return this.$store.state.classes.partnerReview;
     },
   },
-  methods: {
-    ...mapActions("classes", ["toggleFavouritePartner"]),
-  },
+  methods: mapActions("classes", ["toggleFavouritePartner"]),
 };
 </script>
 

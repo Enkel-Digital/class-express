@@ -78,10 +78,11 @@ export default {
           return Vue.delete(userClasses, i);
       }
     },
-    clearUserReview(state) {
-      // Clear reviews to prevent caching in memory
-      Vue.delete(state.review, "userReviews");
-    },
+    // @todo Support both review objects
+    // clearUserReview(state) {
+    //   // Clear reviews to prevent caching in memory
+    //   Vue.delete(state.review, "userReviews");
+    // },
     addClass,
     addPartner,
     addClassSchedule,
@@ -318,34 +319,45 @@ export default {
     },
     // @todo Update to get only the basic review data instead of using the whole reviews object
     // API should return result without userReview
-    async getReview({ state, commit, dispatch }, classID) {
-      // If review is already in state, ignore request
-      if (state.review && classID === state.review[classID]) return;
+    // Generic review loading action, for both Class and Partner reviews.
+    async getReview({ state, commit, dispatch }, { classID, partnerID }) {
+      const id = classID || partnerID;
+      const typeString = classID ? "class" : "partner";
+      const stateKey = `${typeString}Review`;
 
-      const response = await apiWithLoader.get(`/reviews/class/${classID}`);
+      // If there is a review in state, and it is for this ID and type, ignore the request
+      if (state[stateKey] && id === state[stateKey].id) return;
+
+      const response = await apiWithLoader.get(`/reviews/${typeString}/${id}`);
       if (!response.success)
         return apiError(
           response,
           () => dispatch("getReview"),
-          "Failed to load reviews"
+          `Failed to load reviews for: ${typeString} - ${id}`
         );
 
-      commit("setter", ["review", response.reviews]);
+      // Set the reviews object along with the id in state. ID used for caching and prevent duplicated calls to API
+      commit("setter", [stateKey, { id, ...response.reviews }]);
     },
     // @todo Update to get userReviews instead of using the current reviews API
-    async getUserReview({ state, commit, dispatch }, classID) {
-      // If review is already in state, ignore request
-      if (state.review && classID === state.review[classID]) return;
+    async getUserReview({ state, commit, dispatch }, { classID, partnerID }) {
+      const id = classID || partnerID;
+      const typeString = classID ? "class" : "partner";
+      const stateKey = `${typeString}Review`;
 
-      const response = await apiWithLoader.get(`/reviews/class/${classID}`);
+      // If there is a review in state, and it is for this ID and type, ignore the request
+      if (state[stateKey] && id === state[stateKey].id) return;
+
+      const response = await apiWithLoader.get(`/reviews/${typeString}/${id}`);
       if (!response.success)
         return apiError(
           response,
           () => dispatch("getReview"),
-          "Failed to load user reviews"
+          `Failed to load reviews for: ${typeString} - ${id}`
         );
 
-      commit("setter", ["review", response.reviews]);
+      // Set the reviews object along with the id in state. ID used for caching and prevent duplicated calls to API
+      commit("setter", [stateKey, { id, ...response.reviews }]);
     },
     async saveNewReview(
       { commit },

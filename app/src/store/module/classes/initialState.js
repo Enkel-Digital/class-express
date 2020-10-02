@@ -10,7 +10,8 @@ export default function initialState() {
     favouriteClassesIDs: [],
     favouritePartnersIDs: [],
     classSchedules: {},
-    review: {},
+    classReview: {},
+    partnerReview: {},
   };
 }
 
