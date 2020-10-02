@@ -26,14 +26,11 @@
           <ais-highlight :hit="item" attribute="name" />
           <hr />
 
-          <!-- @todo For the description might want to crop it here or the backend to limit the character length to
-            prevent this from being too long and blocking everyone else out and over stretching the image-->
           <ais-highlight
             :hit="item"
             attribute="description"
             style="font-size: 0.9em"
           />
-          <!-- <p><ais-highlight :hit="item" attribute="description" /></p> -->
           <hr />
 
           <!-- @todo Maybe show the _tags? -->

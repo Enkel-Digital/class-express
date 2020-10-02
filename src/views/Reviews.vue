@@ -106,13 +106,13 @@ export default {
   props: ["classID", "partnerID"],
   created() {
     // @todo Update this to support getting reviews of partner
-    this.$store.dispatch("classes/getUserReview", this.classID);
+    this.$store.dispatch("classes/getUserReview", { classID: this.classID });
   },
   destroyed() {
     // Although this would be unnecessary if we do not store reviews into persistence state
     // This can still help free up memory by removing userReviews.
     // @todo Update this to support partner reviews
-    this.$store.commit("classes/clearUserReview", this.classID);
+    // this.$store.commit("classes/clearUserReview", this.classID);
   },
   data() {
     return {
@@ -125,7 +125,11 @@ export default {
     };
   },
   computed: {
-    ...mapState("classes", ["review"]),
+    review() {
+      return this.$store.state.classes[
+        this.classID ? "classReview" : "partnerReview"
+      ];
+    },
   },
 };
 </script>
