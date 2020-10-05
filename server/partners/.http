@@ -86,6 +86,13 @@ content-type: application/json
 # PATCH /partner/:partnerID
 PATCH {{host}}/partner/1
 {{authHeader}}
+content-type: application/json
+
+{
+    "partner": {
+        "description": "Updated description",
+    }
+}
 
 ### Delete partner / business organisation and all of its accounts and classes
 # DELETE /partner/:partnerID

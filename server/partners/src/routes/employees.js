@@ -171,11 +171,13 @@ router.post("/new/complete", auth, express.json(), async (req, res) => {
     const finalEmployee = {
       ...employee,
       ...pendingPartnerAccount,
-      verified_email: true,
     };
 
     // Create new partnerAccount using the data from partner account creation request and new data from the frontend form
-    await SQLdb("partnerAccounts").insert(finalEmployee);
+    // Get the new partnerAccount's id back, as it might be used later for setting creator of partner if employee is first admin.
+    const partnerAccountID = (
+      await SQLdb("partnerAccounts").insert(finalEmployee).returning("id")
+    )[0];
 
     // Remove the entry in new_partnerAccounts ONLY AFTER insert to partnerAccounts table is successful
     await SQLdb("new_partnerAccounts")
@@ -186,10 +188,16 @@ router.post("/new/complete", auth, express.json(), async (req, res) => {
       })
       .del();
 
-    // Set email to be Verified using uid from JWT
+    // Set email to be Verified using uid from JWT, so that they can now login on the portal
     // Email is considered to be verified when the user is able to get the generated token sent only to their email
     // To see the UserRecord reference returned, save as userRecord, then run userRecord.toJSON()
     await admin.auth().updateUser(uid, { emailVerified: true });
+
+    // If user is the first admin/owner of biz, save their ID into the partner table
+    if (pendingPartnerAccount.firstAdmin)
+      await SQLdb("partners")
+        .where({ id: pendingPartnerAccount.partnerID })
+        .update({ createdBy: partnerAccountID });
 
     // Although this is an update internally, to the frontend UX, this is a partner account that is just created
     res.status(201).json({ success: true });

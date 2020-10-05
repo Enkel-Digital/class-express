@@ -8,8 +8,10 @@
 const express = require("express");
 const router = express.Router();
 const SQLdb = require("@enkeldigital/ce-sql");
-const tags = require("../db/tags");
+const search = require("@enkeldigital/ce-search-lib");
+const dbTags = require("../db/tags");
 const sendMail = require("../utils/sendMail");
+const newPartnerAccount = require("../controllers/newPartnerAccount");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:partner");
@@ -110,15 +112,18 @@ router.post("/new", express.json(), async (req, res) => {
     // Tags is stored together with new partner creation request because of the schema constraint
     // we cannot store in the partnerTags table before partner is created.
     // Join the tags with commas so that we can store it in a single column of new_partners table.
+    // @todo Might need to ensure that the user does not use any tags with commas in them.
     partner.tags = partner.tags.join();
 
     // Insert partner details alongside data from accountCreationRequest into temporary DB, for CE admins to verify
-    await SQLdb("new_partners").insert({
-      // @todo Enfore a write schema to prevent extra values from breaking the insert process
-      ...partner,
-      createdByName: accountCreationRequest.name,
-      createdByEmail: accountCreationRequest.email,
-    });
+    const pendingPartnerID = await SQLdb("new_partners")
+      .insert({
+        // @todo Enfore a write schema to prevent extra values from breaking the insert process
+        ...partner,
+        createdByName: accountCreationRequest.name,
+        createdByEmail: accountCreationRequest.email,
+      })
+      .returning("id");
 
     // Create a HTML list for the details to send to CE admins for us to verify
     const htmlDetails =
@@ -140,9 +145,9 @@ router.post("/new", express.json(), async (req, res) => {
         `A new ClassExpress partner has been registered and is now waiting for verification.<br />` +
         "Here are the details.<br />" +
         "<br />" +
-        htmlDetails,
-      // @todo Perhaps add link to allow us to verify directly or smth?
-      // @todo This part should be replaced by an Admin panel
+        htmlDetails +
+        // @todo This part should be replaced by an Admin panel
+        `https://ce-partner.api.enkeldigital.com/partner/new/approve/${pendingPartnerID[0]}`,
     });
 
     // Send email to the company email address to let them know that verification is in progress
@@ -172,7 +177,7 @@ router.post("/new", express.json(), async (req, res) => {
         "Thank you so much for choosing us! If you need any further assistance, please contact us <a href='mailto:classexpress@enkeldigital.com'>here</a>.<br />",
     });
 
-    // @todo Instead of 201 for created, maybe 200 as it is processing? or a better code?
+    // 201 indicates that a pending request is created
     res.status(201).json({ success: true });
   } catch (error) {
     logger.error(error);
@@ -190,36 +195,37 @@ router.post("/new", express.json(), async (req, res) => {
 router.post("/new/approve/:pendingPartnerID", async (req, res) => {
   try {
     const { pendingPartnerID } = req.params;
+    const { approvedBy } = req.query;
 
     // Verify pendingPartnerID by getting the partner creation request. Will be undefined if invalid.
-    const partner = await SQLdb("new_partners").where({ id: pendingPartnerID });
-    if (!partner) throw new Error("Invalid pending partner ID");
+    const pendingPartner = await SQLdb("new_partners").where({
+      id: pendingPartnerID,
+    });
+    if (!pendingPartner) throw new Error("Invalid pending partner ID");
 
     // Insert partner data from the partner creation request into partners table
-    // Inserting values 1 by 1 instead of spreading in to ensure only values of, matching
+    // explicitly 1 by 1 instead of spreading in to ensure only values of matching
     // columns are inserted, as new_partners have more columns then partners table
-    // Get back partnerID of the newly inserted row
-    const partnerID = await SQLdb("partners")
+    // Get back inserted partner object with the DB generated values for use later
+    const partner = await SQLdb("partners")
       .insert({
-        createdBy: partner.createdBy,
-        approvedBy: partner.approvedBy,
-        name: partner.name,
-        description: partner.description,
-        email: partner.email,
-        phoneNumber: partner.phoneNumber,
-        location_address: partner.location_address,
-        location_coordinates: partner.location_coordinates,
-        location_postalCode: partner.location_postalCode,
-        website: partner.website,
-        pictureSources: partner.pictureSources,
+        // This shouldnt be here
+        // createdBy: pendingPartner.createdBy,
+        approvedBy,
+        name: pendingPartner.name,
+        description: pendingPartner.description,
+        email: pendingPartner.email,
+        phoneNumber: pendingPartner.phoneNumber,
+        location_address: pendingPartner.location_address,
+        location_coordinates: pendingPartner.location_coordinates,
+        location_postalCode: pendingPartner.location_postalCode,
+        website: pendingPartner.website,
+        pictureSources: pendingPartner.pictureSources,
       })
-      .returning("id");
+      .returning("*");
 
-    // Generate array of partner tag objects like this --> [{ partnerID: 1, tag: "tag_name" },] before inserting as seperate rows
-    // await SQLdb("partnerTags").insert(
-    //   partner.tags.split(",").map((tag) => ({ tag, partnerID }))
-    // );
-    await tags.partner.insert(partnerID, partner.tags.split(","));
+    // Split the joined array from the DB back into an array and insert back into the partnerTags table
+    await dbTags.partner.insert(partner.id, pendingPartner.tags.split(","));
 
     // Send email to company email to let them know that verification has been complete
     await sendMail({
@@ -234,9 +240,9 @@ router.post("/new/approve/:pendingPartnerID", async (req, res) => {
 
     // Notify the business owner that their business is now verified, and they will get another email right after this
     await sendMail({
-      to: partner.createdByEmail,
+      to: pendingPartner.createdByEmail,
       from: "Accounts@classexpress.com",
-      subject: `Hi ${partner.createdByName}, ${partner.name}'s ClassExpress partner has just been verified and approved`,
+      subject: `Hi ${pendingPartner.createdByName}, ${partner.name}'s ClassExpress partner has just been verified and approved`,
       // @todo Use a sendgrid template instead
       html:
         `Hey there, great news! ${partner.name} is now verified for Class Express!<br />` +
@@ -249,15 +255,16 @@ router.post("/new/approve/:pendingPartnerID", async (req, res) => {
       {
         admin: true,
         partnerID: partner.id,
-        email: partner.createdByEmail,
-        name: partner.createdByName,
+        email: pendingPartner.createdByEmail,
+        name: pendingPartner.createdByName,
+        firstAdmin: true, // Indicate that this user is the creator of this business
       }
       // redirectUrl,
-      // ""
     );
 
-    // @todo Update search service to push partner into algolia
+    // Push partner into search index
     // This is done right after business is verified even if first admin partner account is not created yet
+    await search.partner.add(partner, "partner");
 
     res.status(201).json({ success: true });
   } catch (error) {

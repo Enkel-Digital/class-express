@@ -46,6 +46,10 @@ Table userSettings {
 Table partners {
   id int [pk, increment, not null, unique]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  // createdBy int [ref: > partnerAccounts.id, not null] // To identify the admin that created the business account.
+  // approvedBy varchar [not null] // To identify CE admin that approved and verified this company
+  createdBy int [ref: > partnerAccounts.id, null] // To identify the admin that created the business account.
+  approvedBy varchar [null] // To identify CE admin that approved and verified this company
   name varchar [not null]
   description varchar [not null]
   email varchar [not null, unique] // Company email
@@ -122,6 +126,8 @@ Table new_partnerAccounts {
   email varchar [not null, unique]
   token varchar [not null]
   admin boolean [default: false]
+  // Is this the first account of partner? First account defaults to admin an admin account
+  firstAdmin boolean [default: false]
 }
 
 // FS
