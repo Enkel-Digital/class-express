@@ -1,5 +1,6 @@
 <template>
   <v-main id="welcome">
+    <!-- Is the eager tag preventing the splash from loading? maybe not, since when logged in alr, it still does not load -->
     <v-img
       eager
       alt="ClassExpress logo"
@@ -29,11 +30,28 @@
     >
       Login
     </v-btn>
+
+    <div
+      style="
+        position: absolute;
+        bottom: 1vh;
+        font-size: 0.6em;
+        text-align: center;
+      "
+    >
+      <p>version: {{ buildTime + " " + commitHash.slice(0, 6).toString() }}</p>
+    </div>
   </v-main>
 </template>
 
 <script>
 export default {
   name: "welcome",
+  data() {
+    return {
+      buildTime: process.env.buildTime,
+      commitHash: process.env.commitHash,
+    };
+  },
 };
 </script>

@@ -3,24 +3,31 @@
     <h3 class="slider-title">Popular classes</h3>
     <v-slide-group class="pa-4">
       <v-slide-item v-for="classID in popularClasses" :key="classID">
-        <!-- v-slot:default="{ active, toggle }" -->
-        <!-- @todo Take the first pic of the array 
-            @todo Perhaps allow partners to have a seperate "thumbnail" picture
+        <!--
+            Need an additional div to wrap around it to prevent the v-if from being false.
+            Which is evaluated as not enough items in the slot, which causes the default slot not found issue.
+            thus the div is always here, but the image will only be shown once the classes is loaded for the picture source.
+         -->
+        <div>
+          <!--@todo
+            Take the first pic of the array.
+            Perhaps allow partners to have a seperate "thumbnail" picture
             something that is smaller in size, lower res, and square
-        -->
-        <v-img
-          v-if="classes[classID]"
-          :src="classes[classID].pictureSources"
-          @click="
-            $router.push({
-              name: 'ClassDetails',
-              params: { classID },
-            })
-          "
-          height="24vw"
-          width="24vw"
-          style="margin: 0 2vw; border-radius: 0.3em"
-        />
+          -->
+          <v-img
+            v-if="classes[classID]"
+            :src="classes[classID].pictureSources"
+            @click="
+              $router.push({
+                name: 'ClassDetails',
+                params: { classID },
+              })
+            "
+            height="24vw"
+            width="24vw"
+            style="margin: 0 2vw; border-radius: 0.3em"
+          />
+        </div>
       </v-slide-item>
 
       <!-- @todo Use a v-else, to only show when no classes are available -->
@@ -39,6 +46,8 @@
 </template>
 
 <script>
+// @todo Support partners too
+
 import { mapState } from "vuex";
 import apiError from "@/store/utils/apiError";
 
