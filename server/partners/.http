@@ -49,7 +49,7 @@ content-type: application/json
 
 {
     "employee": {
-        "verified_email": true
+        "name": "new name"
     }
 }
 

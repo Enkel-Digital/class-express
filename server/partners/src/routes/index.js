@@ -19,5 +19,7 @@ router.use("/settings", auth, require("./settings"));
 router.use("/emailActionLinks", require("./emailActionLinks"));
 router.use("/employees", require("./employees"));
 router.use("/bookings", require("./bookings"));
+router.use("/partner/new", require("./newPartner"));
+router.use("/employees/new", require("./newPartnerAccount"));
 
 module.exports = router;
