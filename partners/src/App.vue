@@ -81,3 +81,14 @@ export default {
   text-align: center;
 }
 </style>
+
+<style>
+/*
+  Temporary fix for buggy word wrap in cards. Refer to issue and solution.
+  https://github.com/vuetifyjs/vuetify/issues/9130#issuecomment-542534966
+ */
+.v-card__text,
+.v-card__title {
+  word-break: normal !important;
+}
+</style>

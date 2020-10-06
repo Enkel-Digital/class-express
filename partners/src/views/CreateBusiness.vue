@@ -1,11 +1,12 @@
 <template>
   <div>
     <!-- Dialog to inform user to verify email before redirecting them to the login page -->
-    <v-dialog v-model="verifyEmailDialog" max-width="40%">
+    <v-dialog v-model="completeSignupDialog" max-width="40%">
       <v-card>
-        <v-card-title class="headline">
-          Please verify your email before logging in!
-        </v-card-title>
+        <v-card-title
+          v-html="completeSignupDialogHTML"
+          style="text-align: left"
+        />
 
         <v-card-actions>
           <v-spacer />
@@ -15,7 +16,7 @@
             text
             @click="$router.replace({ name: 'login' })"
           >
-            login now!
+            login
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -237,7 +238,9 @@ export default {
       // Value used to control the stepper component.
       step: 1,
 
-      verifyEmailDialog: false,
+      completeSignupDialog: false,
+      completeSignupDialogHTML:
+        "Thank you for registering!<br /><br />We will begin the verification process, and we will be in contact once approved or if more information is needed!",
 
       name: "",
       email: "",
@@ -331,7 +334,7 @@ export default {
         if (!response.success) throw new Error(response.error);
 
         // Show dialog to inform user to verify email and allow them to redirect to login view
-        this.verifyEmailDialog = true;
+        this.completeSignupDialog = true;
       } catch (error) {
         this.$error.new(
           this.$error.createError(
