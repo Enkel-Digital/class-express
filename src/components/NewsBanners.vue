@@ -6,11 +6,13 @@
     
     However the pictures are resized to the same height and aspect ratio to prevent
     bottom content from going up and down when scrolling through the carousel.
+    
+    height="auto"
   -->
   <v-carousel
+    height="35vh"
     cycle
     continuous
-    height="auto"
     hide-delimiter-background
     :show-arrows="false"
   >

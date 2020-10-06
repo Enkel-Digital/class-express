@@ -53,6 +53,7 @@ export default {
   methods: {
     openMaps() {
       if (confirm("Open Maps?"))
+        // @todo This target _blank seems to still not work in PWAs? Why?
         window.open(
           `https://www.google.com/maps/search/${this.coordinates}?hl=en`,
           "_blank"
