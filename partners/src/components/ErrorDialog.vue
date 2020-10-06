@@ -15,7 +15,7 @@
       <v-card-title
         v-html="error.name"
         class="headline mt-0 pt-0"
-        style="text-align: left; word-break: keep-all"
+        style="text-align: left"
       />
 
       <!-- Default error description for the specific Error type -->
