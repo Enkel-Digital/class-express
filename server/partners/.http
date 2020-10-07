@@ -99,6 +99,14 @@ content-type: application/json
 DELETE {{host}}/partner/1
 {{authHeader}}
 
+### Approve a newly created partner account
+# POST /partner/new/approve/:pendingPartnerID?approvedBy=:CE_admin_that_approved_the_request
+POST {{host}}/partner/new/approve/1?approvedBy=CE_admin
+
+### Get class details
+# GET /class/details/:classID
+GET {{host}}/class/details/1
+
 ### Create new class
 POST {{host}}/class/new
 {{authHeader}}
@@ -136,10 +144,6 @@ content-type: application/json
 DELETE {{host}}/class/5
 {{authHeader}}
 content-type: application/json
-
-### Get class
-# GET /class/details/:classID
-GET {{host}}/class/details/1
 
 ### Get all the IDs of a partner's classes
 # GET /class/of/:partnerID

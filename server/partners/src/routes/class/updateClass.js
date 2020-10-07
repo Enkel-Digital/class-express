@@ -31,25 +31,13 @@ router.patch("/:classID", express.json(), async (req, res) => {
     if (!isSafeHTML(clas.description))
       throw new Error("Class description is not a sanitized HTML.");
 
-    // Read back all values from DB needed to update the search index instead of editing the request body clas object
-    // Because the clas object from the request body usually is just a partial update for updates only.
-    // Thus lack all the values needed to update the index.
-    const readBackClass = (
-      await SQLdb("classes")
-        .where({ id: classID })
-        .update(clas)
-        .returning([
-          "id",
-          "partnerID",
-          "name",
-          "description",
-          "length",
-          "points",
-          "walkIn",
-          "pictureSources",
-          "location_address",
-        ])
-    )[0];
+    // Read back all values from DB to update search index instead of editing request body clas object
+    // Because clas object from request body is usually just partial values for updates only, lacking all the values to update index.
+    // Destructure out the first value from the returned array
+    const [readBackClass] = await SQLdb("classes")
+      .where({ id: classID })
+      .update(clas)
+      .returning("*");
 
     // @todo If this fails, we need to somehow allow a retry later.
     // Update class in the search index

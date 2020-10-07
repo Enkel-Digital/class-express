@@ -74,9 +74,10 @@ router.post("/complete", auth, express.json(), async (req, res) => {
 
     // Create new partnerAccount using the data from partner account creation request and new data from the frontend form
     // Get the new partnerAccount's id back, as it might be used later for setting creator of partner if employee is first admin.
-    const partnerAccountID = (
-      await SQLdb("partnerAccounts").insert(finalEmployee).returning("id")
-    )[0];
+    // Destructure out the first value from the returned array
+    const [partnerAccountID] = await SQLdb("partnerAccounts")
+      .insert(finalEmployee)
+      .returning("id");
 
     // Remove the entry in new_partnerAccounts ONLY AFTER insert to partnerAccounts table is successful
     await SQLdb("new_partnerAccounts")

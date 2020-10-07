@@ -42,17 +42,16 @@ router.post("/", express.json(), async (req, res) => {
     partner.tags = partner.tags.join();
 
     // Insert partner details with accountCreationRequest details into temporary DB and get back the ID for CE admins to verify
-    const pendingPartnerID = (
-      await SQLdb("new_partners")
-        .insert({
-          // @todo Enfore a write schema to prevent extra values from breaking the insert process
-          ...partner,
-          // These values saved into the DB, are used for creating first new partner account once Partner approved by CE admins
-          createdByName: accountCreationRequest.name,
-          createdByEmail: accountCreationRequest.email,
-        })
-        .returning("id")
-    )[0];
+    // Destructure out the first value from the returned array
+    const [pendingPartnerID] = await SQLdb("new_partners")
+      .insert({
+        // @todo Enfore a write schema to prevent extra values from breaking the insert process
+        ...partner,
+        // These values saved into the DB, are used for creating first new partner account once Partner approved by CE admins
+        createdByName: accountCreationRequest.name,
+        createdByEmail: accountCreationRequest.email,
+      })
+      .returning("id");
 
     // Create a HTML list for the details to send to CE admins for us to verify
     const htmlDetails =
