@@ -61,7 +61,6 @@ Table partners {
   website varchar [null, unique]
   pictureSources varchar [null] // Perhaps use an array?
   verified_phone boolean [default: false]
-  verified boolean [default: false] // Is the business verified by us (Class Express)?
   deleted boolean [default: false]
 }
 

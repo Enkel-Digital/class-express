@@ -118,7 +118,6 @@ exports.seed = async function (knex) {
       pictureSources:
         "https://www.pa.gov.sg/images/default-source/module/community-clubs/tampines-west-community-club",
       verified_phone: true,
-      verified: true,
     },
     {
       name: "Advance Guitar Studio",
@@ -132,7 +131,6 @@ exports.seed = async function (knex) {
       pictureSources:
         "https://media.timeout.com/images/105537588/630/472/image.jpg",
       verified_phone: true,
-      verified: true,
     },
     {
       name: "Music Classes by Jen",
@@ -145,7 +143,6 @@ exports.seed = async function (knex) {
       pictureSources:
         "https://rezaglobalpro.com/wp-content/uploads/Reza-Global-Productions-Music-Studio-3.2-1.jpg",
       verified_phone: true,
-      verified: true,
     },
   ]);
 
