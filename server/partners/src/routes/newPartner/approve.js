@@ -29,19 +29,21 @@ router.post("/approve/:pendingPartnerID", async (req, res) => {
     const { approvedBy } = req.query;
 
     // Verify pendingPartnerID by getting the partner creation request. Will be undefined if invalid.
-    const pendingPartner = await SQLdb("new_partners").where({
-      id: pendingPartnerID,
-    });
+    const pendingPartner = await SQLdb("new_partners")
+      .where({ id: pendingPartnerID })
+      .first();
     if (!pendingPartner) throw new Error("Invalid pending partner ID");
 
-    // Insert partner data from the partner creation request into partners table
-    // explicitly 1 by 1 instead of spreading in to ensure only values of matching
-    // columns are inserted, as new_partners have more columns then partners table
-    // Get back inserted partner object with the DB generated values for use later
-    const partner = await SQLdb("partners")
+    /**
+     * Insert partner data from the partner creation request into partners table
+     * explicitly 1 by 1 instead of spreading in to ensure only values of matching
+     * columns are inserted, as new_partners have more columns then partners table
+     *
+     * Get back and destructure out the first value that is the,
+     * inserted partner object with the DB generated values for use later
+     */
+    const [partner] = await SQLdb("partners")
       .insert({
-        // This shouldnt be here
-        // createdBy: pendingPartner.createdBy,
         approvedBy,
         name: pendingPartner.name,
         description: pendingPartner.description,
@@ -84,11 +86,11 @@ router.post("/approve/:pendingPartnerID", async (req, res) => {
     // @todo Might want to set this to no expiry date
     await newPartnerAccount(
       {
+        firstAdmin: true, // Indicate that this user is the creator of this business
         admin: true,
         partnerID: partner.id,
         email: pendingPartner.createdByEmail,
         name: pendingPartner.createdByName,
-        firstAdmin: true, // Indicate that this user is the creator of this business
       }
       // redirectUrl,
     );

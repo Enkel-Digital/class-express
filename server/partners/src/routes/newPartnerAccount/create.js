@@ -26,7 +26,14 @@ router.post("/", express.json(), async (req, res) => {
   try {
     // Create a new pending partnerAccount and send the user a email to complete signup
     await newPartnerAccount(
-      req.body.accountCreationRequest,
+      // Explicitly insert values instead of spreading the values in, to prevent API from putting invalid values in
+      {
+        firstAdmin: false, // Explicitly indicate that this user is NOT the creator of this business
+        partnerID: req.body.accountCreationRequest.partnerID,
+        admin: req.body.accountCreationRequest.admin,
+        email: req.body.accountCreationRequest.email,
+        name: req.body.accountCreationRequest.name,
+      },
       req.body.redirectUrl
     );
 

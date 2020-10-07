@@ -1,5 +1,5 @@
 /**
- * Business logic for creating a new pending partner account
+ * Business logic for creating a new pending partner account. Use this to request a new pending partner account.
  * @author JJ
  * @module newPartnerAccount
  */
@@ -10,6 +10,7 @@ const sendMail = require("../utils/sendMail");
 
 /**
  * Create a new pending partnerAccount and send the user a email to complete signup
+ * It is assumed that the caller of this function will verify the inputs first to prevent invalid inputs
  * @param {object} accountCreationRequest
  * @param {String} redirectUrl Defaults to the production url if undefined
  *
@@ -23,6 +24,8 @@ module.exports = async function newPartnerAccount(
   // @todo Add validation for accountCreationRequest object
 
   // Generate a random secret token user can use to identify/prove themselves, where this token will ONLY be sent to their email address
+  // Don't need to ensure that token is unique, because token is like hash salt, where salt not necessarily unique,
+  // but combination of this and the email is unique since email is required to be unique by the DB's unique constraint.
   accountCreationRequest.token = Math.random().toString(36).substring(2);
 
   // Make lowercase, refer to notes & faq on why this is lowercase.
@@ -39,6 +42,9 @@ module.exports = async function newPartnerAccount(
     email: accountCreationRequest.email,
     token: accountCreationRequest.token,
     admin: accountCreationRequest.admin,
+
+    // Should only be set to true once!
+    firstAdmin: accountCreationRequest.firstAdmin,
   });
 
   // Generate link for user to click

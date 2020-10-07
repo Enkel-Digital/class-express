@@ -126,7 +126,7 @@ Table new_partnerAccounts {
   email varchar [not null, unique]
   token varchar [not null]
   admin boolean [default: false]
-  // Is this the first account of partner? First account defaults to admin an admin account
+  // Is this the first account of partner? First account defaults to an admin account
   firstAdmin boolean [default: false]
 }
 

@@ -30,7 +30,7 @@ router.post("/", express.json(), async (req, res) => {
     if (!accountCreationRequest)
       throw new Error("Missing 'owner account' data");
 
-    const validateURL = require("../validations/isHTTPS");
+    const validateURL = require("../../validations/isHTTPS");
 
     if (!validateURL(partner.website))
       throw new Error("Website URL should be HTTPS only");
@@ -41,15 +41,18 @@ router.post("/", express.json(), async (req, res) => {
     // @todo Might need to ensure that the user does not use any tags with commas in them.
     partner.tags = partner.tags.join();
 
-    // Insert partner details alongside data from accountCreationRequest into temporary DB, for CE admins to verify
-    const pendingPartnerID = await SQLdb("new_partners")
-      .insert({
-        // @todo Enfore a write schema to prevent extra values from breaking the insert process
-        ...partner,
-        createdByName: accountCreationRequest.name,
-        createdByEmail: accountCreationRequest.email,
-      })
-      .returning("id");
+    // Insert partner details with accountCreationRequest details into temporary DB and get back the ID for CE admins to verify
+    const pendingPartnerID = (
+      await SQLdb("new_partners")
+        .insert({
+          // @todo Enfore a write schema to prevent extra values from breaking the insert process
+          ...partner,
+          // These values saved into the DB, are used for creating first new partner account once Partner approved by CE admins
+          createdByName: accountCreationRequest.name,
+          createdByEmail: accountCreationRequest.email,
+        })
+        .returning("id")
+    )[0];
 
     // Create a HTML list for the details to send to CE admins for us to verify
     const htmlDetails =
@@ -73,7 +76,7 @@ router.post("/", express.json(), async (req, res) => {
         "<br />" +
         htmlDetails +
         // @todo This part should be replaced by an Admin panel
-        `https://ce-partner.api.enkeldigital.com/partner/new/approve/${pendingPartnerID[0]}`,
+        `https://ce-partner.api.enkeldigital.com/partner/new/approve/${pendingPartnerID}`,
     });
 
     // Send email to the company email address to let them know that verification is in progress

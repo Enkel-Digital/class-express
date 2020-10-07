@@ -64,6 +64,8 @@ router.post("/complete", auth, express.json(), async (req, res) => {
       Preventing malicious users from tampering with the employee object, and e.g. promote themselves to be admins.
       
       Also email is considered verified as accountCreationRequest is only sent to the user's email
+      
+      @todo Support default name set by employer
     */
     const finalEmployee = {
       ...employee,
@@ -75,8 +77,6 @@ router.post("/complete", auth, express.json(), async (req, res) => {
     const partnerAccountID = (
       await SQLdb("partnerAccounts").insert(finalEmployee).returning("id")
     )[0];
-
-    console.log("partnerAccountID", partnerAccountID);
 
     // Remove the entry in new_partnerAccounts ONLY AFTER insert to partnerAccounts table is successful
     await SQLdb("new_partnerAccounts")
