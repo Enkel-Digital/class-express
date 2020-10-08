@@ -14,7 +14,7 @@
         <div @click="moreInfo(employee.id)">
           <v-list-item two-line>
             <v-list-item-content>
-              <div v-resize-text>{{ employee.name }}</div>
+              <div>{{ employee.name }}</div>
             </v-list-item-content>
           </v-list-item>
 
@@ -127,17 +127,12 @@
 </template>
 
 <script>
-// import ResizeText from "vue-resize-text";
 import { mapState } from "vuex";
 import apiError from "@/store/utils/apiError";
 import apiWithLoader from "@/store/utils/apiWithLoader";
 
 export default {
   name: "ManageEmployees",
-
-  directives: {
-    ResizeText: () => import("vue-resize-text"),
-  },
 
   created() {
     // Always reload employee data from API on load

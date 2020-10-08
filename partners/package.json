@@ -24,7 +24,6 @@
     "vue-chartjs": "^3.5.1",
     "vue-error-controller": "^0.3.1",
     "vue-loader-controller": "^0.1.0",
-    "vue-resize-text": "^0.1.1",
     "vue-router": "^3.4.3",
     "vue-sanitize": "^0.2.0",
     "vuetify": "^2.3.10",

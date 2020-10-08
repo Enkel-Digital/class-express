@@ -20,7 +20,7 @@
 
         <v-list-item one-line dense>
           <v-list-item-content>
-            <div v-resize-text>{{ clas.name }}</div>
+            <div>{{ clas.name }}</div>
             <!-- <v-list-item-subtitle>{{ 7 }}</v-list-item-subtitle> -->
           </v-list-item-content>
         </v-list-item>
@@ -34,9 +34,6 @@ import { mapState } from "vuex";
 
 export default {
   name: "AllClasses",
-  directives: {
-    ResizeText: () => import("vue-resize-text"),
-  },
   props: {
     routeName: {
       default: "ClassDetails",

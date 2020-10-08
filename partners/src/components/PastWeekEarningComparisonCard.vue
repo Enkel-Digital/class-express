@@ -3,9 +3,9 @@
     <v-card class="elevation-0" outlined width="500">
       <v-list-item two-line>
         <v-list-item-content>
-          <v-list-item-title class="overline font-weight-black"
-            >Earning Comparison with Past Week</v-list-item-title
-          >
+          <v-list-item-title class="overline font-weight-black">
+            Earning Comparison with Past Week
+          </v-list-item-title>
           <!-- <v-list-item-subtitle>Mon, 12:30 PM, Mostly sunny</v-list-item-subtitle> -->
         </v-list-item-content>
       </v-list-item>
