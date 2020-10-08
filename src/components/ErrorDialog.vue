@@ -12,11 +12,7 @@
       <p class="overline ma-4 pa-4 mb-0 pb-0" style="color: red">
         sadly, there is ({{ errorCount }}) error(s)
       </p>
-      <v-card-title
-        v-html="error.name"
-        class="headline mt-0 pt-0"
-        style="word-break: keep-all"
-      />
+      <v-card-title v-html="error.name" class="headline mt-0 pt-0" />
 
       <!-- Default error description for the specific Error type -->
       <v-card-text v-html="error.description" style="text-align: left" />
