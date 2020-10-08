@@ -38,11 +38,23 @@ export default {
 };
 </script>
 
-<style>
-/* Basic default styles applied throughout the app */
+<style scoped>
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+}
+</style>
+
+<style>
+/* Basic default styles applied throughout the app */
+
+/*
+  Temporary fix for buggy word wrap in cards. Refer to issue and solution.
+  https://github.com/vuetifyjs/vuetify/issues/9130#issuecomment-542534966
+ */
+.v-card__text,
+.v-card__title {
+  word-break: normal !important;
 }
 </style>
