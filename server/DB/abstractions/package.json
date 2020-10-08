@@ -1,6 +1,6 @@
 {
   "name": "@enkeldigital/ce-sql-abstractions",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "DB abstractions for CE SQL DB",
   "main": "index.js",
   "author": "JJ",

@@ -1,11 +1,14 @@
 /**
  * DB abstraction to interact with tags.
  * @author JJ
+ *
+ * Proxy object to use the key used as the name of the table and ID type.
+ *
+ * Cache the proxy locally after initializing, and caching on module.exports
+ * This also means initialize can only be called once, as module.exports will be overwritten with the cached proxy
  */
-
-// Proxy object to read the key used on this object as the name of the table and ID type.
-module.exports = (SQLdb) =>
-  new Proxy(
+module.exports.initialize = (SQLdb) =>
+  (module.exports = new Proxy(
     {},
     {
       get(target, prop) {
@@ -54,4 +57,4 @@ module.exports = (SQLdb) =>
         throw new Error("CANNOT SET PROPERTIES ON DB TAGS MODULE");
       },
     }
-  );
+  ));
