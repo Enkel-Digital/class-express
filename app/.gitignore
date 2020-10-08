@@ -24,3 +24,6 @@ firebase-debug.log*
 
 # Cache
 .firebase/
+
+# Any pem key/certificate files
+**/*.pem
