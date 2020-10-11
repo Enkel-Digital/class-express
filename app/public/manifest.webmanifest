@@ -25,7 +25,7 @@
       "name": "Upcoming Classes",
       "short_name": "Upcoming",
       "description": "View upcoming classes and your schedule.",
-      "url": "/upcoming",
+      "url": "/#/upcoming",
       "icons": [
         {
           "src": "/img/icons/android-chrome-192x192.png",
