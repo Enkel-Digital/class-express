@@ -23,7 +23,7 @@
         { value: 'instant_search_point_asc', label: 'Points' },
       ]"
     >
-      <v-menu offset-y slot-scope="{ items, currentRefinement, refine }">
+      <v-menu offset-y slot-scope="{ items, refine }">
         <template v-slot:activator="{ on }">
           <v-btn color="primary" dark v-on="on">
             <v-icon left>mdi-sort</v-icon>

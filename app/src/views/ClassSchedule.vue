@@ -8,6 +8,7 @@
       <!-- name and class length is displayed together as the length is always the same for class schedule -->
       <h3>
         {{ name }}
+        <br />
         "{{ `${Math.trunc(clas.length / 60)} hrs ${clas.length % 60} mins` }}"
       </h3>
       <v-spacer />
@@ -81,7 +82,11 @@
         </v-card>
 
         <!-- Show no schedule available section if schedule of selected date is not loaded yet or if there is none -->
-        <div v-if="!scheduleOfSelectedDate || !scheduleOfSelectedDate.length">
+        <div
+          v-if="!scheduleOfSelectedDate || !scheduleOfSelectedDate.length"
+          width="100%"
+          height="100%"
+        >
           <!-- @todo Create the UI -->
           Nothing here
         </div>
