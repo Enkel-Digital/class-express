@@ -7,6 +7,7 @@
 
       <!-- name and class length is displayed together as the length is always the same for class schedule -->
       <h3>
+        <br />
         {{ name }}
         <br />
         "{{ `${Math.trunc(clas.length / 60)} hrs ${clas.length % 60} mins` }}"
@@ -15,6 +16,8 @@
       <v-spacer />
     </v-app-bar>
 
+    <br />
+
     <!-- @todo Remove the arrows and the space left by the left arrow -->
     <v-tabs
       @change="dateCursorChanged"
@@ -22,6 +25,7 @@
       slider-color="black"
       :show-arrows="true"
     >
+      <!-- @todo Fix this tab and do a scroll overlay so that if there are alot of timings, I wont be able to scroll this up and hide it -->
       <v-tab v-for="i in tabs" :key="i">
         {{
           daysFromToday(i).format("ddd") + " " + daysFromToday(i).format("D")
@@ -82,10 +86,10 @@
         </v-card>
 
         <!-- Show no schedule available section if schedule of selected date is not loaded yet or if there is none -->
+        <!-- @todo Fix the temporary 100vh height, since using 100% for height does not work. Using 100vh-->
         <div
           v-if="!scheduleOfSelectedDate || !scheduleOfSelectedDate.length"
-          width="100%"
-          height="100%"
+          style="height: 100vh"
         >
           <!-- @todo Create the UI -->
           Nothing here
