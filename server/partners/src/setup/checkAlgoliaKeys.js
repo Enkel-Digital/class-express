@@ -2,7 +2,6 @@
 
 /**
  * Setup module to ensure algolia keys are available as env vars for the search-lib to use
- * @todo To implement
  * @author JJ
  */
 
@@ -17,8 +16,10 @@ const logger = createLogger("setup:MinBalance");
  */
 async function setup() {
   try {
-    return;
-    // eslint-disable-next-line no-unreachable
+    if (!process.env.algolia_ApplicationID)
+      throw new Error("Missing 'algolia_ApplicationID' environment variable");
+    if (!process.env.algolia_WriteAPIKey)
+      throw new Error("Missing 'algolia_WriteAPIKey' environment variable");
   } catch (error) {
     logger.error(error);
     process.exit(1);
