@@ -28,7 +28,7 @@
   "homepage": "https://github.com/Enkel-Digital/class-server#readme",
   "dependencies": {
     "@enkeldigital/ce-sql": "^0.1.0",
-    "@enkeldigital/ce-sql-abstractions": "https://github.com/Enkel-Digital/class-server/archive/enkeldigital-ce-sql-abstractions-v0.1.0-gitpkg.tar.gz",
+    "@enkeldigital/ce-sql-abstractions": "https://github.com/Enkel-Digital/class-server/archive/enkeldigital-ce-sql-abstractions-v0.2.0-gitpkg.tar.gz",
     "@lionellbriones/logging": "^3.2.1",
     "@sendgrid/mail": "^7.2.5",
     "compression": "^1.7.4",

@@ -31,9 +31,7 @@ async function setup(resolve) {
    * @notice Certain Setup/Checks can be skipped for development purposes only.
    * @notice Skpping is done in the module itself, as some modules should never be skipped.
    */
-  // await require("./utils/rabbitmq").setup(); // Setup the singleton
-  // await require("./setup/MinBalance");
-  // await require("./setup/RabbitmqQueues");
+  await require("./setup/initializeDbAbstractions");
   logger.info("Completed calls to all Setup/Check/Verification modules.");
 
   // setup cors middleware

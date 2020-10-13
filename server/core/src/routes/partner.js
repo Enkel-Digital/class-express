@@ -8,7 +8,7 @@
 const express = require("express");
 const router = express.Router();
 const SQLdb = require("@enkeldigital/ce-sql");
-const dbTags = require("../db/tags");
+const dbTags = require("@enkeldigital/ce-sql-abstractions/tags");
 
 const createLogger = require("@lionellbriones/logging").default;
 const logger = createLogger("routes:partner");
