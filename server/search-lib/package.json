@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "publish:npm": "npm publish --access public",
+    "publish:github": "npx gitpkg publish",
     "test": "npx mocha --exit",
     "lint:js": "npx eslint --ignore-path .gitignore --fix **/*.js"
   },

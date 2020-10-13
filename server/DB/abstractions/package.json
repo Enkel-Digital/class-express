@@ -4,6 +4,9 @@
   "description": "DB abstractions for CE SQL DB",
   "main": "index.js",
   "author": "JJ",
+  "scripts": {
+    "publish:github": "npx gitpkg publish"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Enkel-Digital/class-server.git",

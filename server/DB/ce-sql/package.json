@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "",
   "main": "./src/index.js",
+  "scripts": {
+    "publish:github": "npx gitpkg publish"
+  },
   "dependencies": {
     "knex": "^0.21.5",
     "pg": "^8.3.3"
