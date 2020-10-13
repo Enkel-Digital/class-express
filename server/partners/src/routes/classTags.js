@@ -9,7 +9,7 @@
 
 const express = require("express");
 const router = express.Router();
-const dbTags = require("../db/tags");
+const dbTags = require("@enkeldigital/ce-sql-abstractions/tags");
 const auth = require("../middleware/auth");
 const onlyOwnResource = require("../middleware/onlyOwnResource");
 

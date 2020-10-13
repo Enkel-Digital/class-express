@@ -9,7 +9,7 @@ const express = require("express");
 const router = express.Router();
 const SQLdb = require("@enkeldigital/ce-sql");
 const onlyOwnResource = require("../../middleware/onlyOwnResource");
-const dbTags = require("../../db/tags");
+const dbTags = require("@enkeldigital/ce-sql-abstractions/tags");
 const isSafeHTML = require("../../validations/isSafeHTML");
 const search = require("@enkeldigital/ce-search-lib");
 

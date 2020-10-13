@@ -9,7 +9,7 @@ const express = require("express");
 const router = express.Router();
 const SQLdb = require("@enkeldigital/ce-sql");
 const search = require("@enkeldigital/ce-search-lib");
-const dbTags = require("../../db/tags");
+const dbTags = require("@enkeldigital/ce-sql-abstractions/tags");
 const sendMail = require("../../utils/sendMail");
 const newPartnerAccount = require("../../controllers/newPartnerAccount");
 
