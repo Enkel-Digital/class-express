@@ -114,9 +114,7 @@ export default {
     // this.$store.commit("classes/clearUserReview", this.classID);
   },
   data() {
-    const className = this.$store.state.classes.classes[this.classID].name;
-    console.log("t", className);
-    return { className };
+    return { className: this.$store.state.classes.classes[this.classID].name };
   },
   computed: {
     ...mapState("classes", ["review"]),

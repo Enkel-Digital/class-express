@@ -12,7 +12,7 @@ import createGMapsImg from "../utils/gMapsImage";
 
 export default {
   name: "gMap",
-  props: ["src", "classID", "partnerID"],
+  props: ["src", "classID"],
   computed: {
     clas() {
       return this.$store.state.classes.classes[this.classID];

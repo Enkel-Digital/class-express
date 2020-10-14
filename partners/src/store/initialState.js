@@ -5,11 +5,15 @@
 export default function initialState() {
   return {
     user: {
+      id: undefined,
+      partnerID: undefined,
       email: undefined,
       name: undefined,
-      fname: undefined,
-      lname: undefined,
-      imageSrc: undefined,
+      // Although user can just set this on the frontend, there is verification on the backend which will not return any data if auth fails
+      admin: false,
+      permissions: null,
+      phoneNumber: null,
+      profilePictureURL: null,
     },
   };
 }

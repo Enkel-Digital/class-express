@@ -7,6 +7,6 @@
 module.exports = {
   // URL cannot have ending slash "/"
   // @todo To update URL once domain is fixed
-  apiUrl: "https://ce-partners.api.enkeldigital.com/",
-  errorApiEndpoint: "https://ce-partners.api.enkeldigital.com/error",
+  apiUrl: "https://ce-partners.api.enkeldigital.com",
+  errorApiEndpoint: "https://ce-error.api.enkeldigital.com/error",
 };
