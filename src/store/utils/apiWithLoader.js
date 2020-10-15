@@ -1,3 +1,4 @@
+// @todo After migration to eazyfetch, might want to convert this into a plugin instead
 import fetch from "./fetch";
 import Vue from "vue";
 
@@ -22,24 +23,34 @@ async function withLoader(fn, ...fnArgs) {
   return response;
 }
 
+/**
+ * Wrapping in a function instead of a simple defualt export as there are cases where a API service with a different base URL
+ * needs to be used instead of the default fetch/api service. E.g. using this with the billing service endpoint API service
+ * @param api API service to wrap around.
+ */
 export function createApiWithLoader(api) {
-  return {
-    async get(url) {
-      return withLoader(api.get, url);
-    },
-    async post(url, data) {
-      return withLoader(api.post, url, data);
-    },
-    async patch(url, data) {
-      return withLoader(api.post, url, data);
-    },
-    async put(url, data) {
-      return withLoader(api.post, url, data);
-    },
-    async delete(url, data) {
-      return withLoader(api.post, url, data);
-    },
-  };
+  return new Proxy(
+    {}, // Empty target as we just want to use the GET traps
+    {
+      // Target is intentionally unused, because using proxy only for the GET traps
+      get(target, prop) {
+        switch (prop) {
+          case "get":
+          case "delete":
+            return (url) => withLoader(api[prop], url);
+
+          case "post":
+          case "patch":
+          case "put":
+            return (url, data) => withLoader(api[prop], url, data);
+
+          default:
+            throw new Error(`Invalid HTTP method '${prop}' for apiWithLoader`);
+        }
+      },
+    }
+  );
 }
 
+// Use the default export using the default fetch (with default base API URL)
 export default createApiWithLoader(fetch);

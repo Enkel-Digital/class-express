@@ -97,7 +97,10 @@ export default {
             "Failed to buy points"
           );
 
+        // Pessimistic UI only updating after API call succeeds
         commit("topupPoints", points);
+
+        alert(`Topped up ${points} points!`);
 
         // @todo Maybe should get back points topped up from API, and/or get back the total points
         // To ensure the front end view is consistent with the data stored.
