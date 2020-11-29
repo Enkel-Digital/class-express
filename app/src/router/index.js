@@ -11,6 +11,10 @@ import NotFound from "./NotFound";
 Vue.use(VueRouter);
 
 const router = new VueRouter({
+  // Scroll to top for all route navigations, and if there is a savedPosition it will result in native-like behavior when navigating with back/forward buttons
+  scrollBehavior: (to, from, savedPosition) =>
+    savedPosition ? savedPosition : { x: 0, y: 0 },
+
   routes: [...PrivateRoutes, ...PublicRoutes, ...NotFound],
 });
 
