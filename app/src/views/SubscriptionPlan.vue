@@ -22,7 +22,7 @@
       </v-list-item>
     </v-responsive>
 
-    <PointsCard />
+    <PointsCard :hideActionButton="true" />
 
     <br />
     <h3 class="opacity7 ml-5">Subscription Plans</h3>
