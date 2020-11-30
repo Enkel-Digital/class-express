@@ -16,7 +16,7 @@ const { RRule, RRuleSet, rrulestr } = require("rrule");
 const unixseconds = require("unixseconds");
 
 const createLogger = require("@lionellbriones/logging").default;
-const logger = createLogger("routes:class");
+const logger = createLogger("routes:class:reserveAndCancel");
 
 /**
  * Reserve a class
@@ -70,8 +70,8 @@ router.post("/reserve", auth, express.json(), async (req, res) => {
         await SQLdb("userBookingTransactions")
           .where({
             classID,
-            // @todo Fix this, without this check, maxParticipants becomes the value for the class across all its timings
-            selectedTime,
+            // This ensures we get num of participants for the selected class and time instead of value for class across all timings
+            startTime: selectedTime,
           })
           .count("classID as currentNumOfParticipants")
           .first()
@@ -112,8 +112,8 @@ router.post("/cancel", auth, express.json(), async (req, res) => {
   try {
     const { userID, classID, selectedTime } = req.body;
 
-    // @todo user cannot delete a class that is after / ended / started?
-    // cannot delete after ended, as partner simply wont get paid
+    // @todo Check to ensure that the selectedTime is given
+    // User cannot cancel a class booking once the class has started, as partner wont get paid
     if (selectedTime <= unixseconds())
       return res
         .status(400) // @todo
@@ -124,7 +124,7 @@ router.post("/cancel", auth, express.json(), async (req, res) => {
       .where({
         userID,
         classID,
-        selectedTime,
+        startTime: selectedTime,
       })
       .del();
 
