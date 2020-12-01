@@ -258,6 +258,7 @@ exports.seed = async function (knex) {
   const today = moment().startOf("day").add(11, "hours");
   const getToday = () => today.clone();
 
+  // @todo Clean up this seeding function
   await knex("classSchedule").insert([
     {
       classID: 1,
@@ -273,10 +274,20 @@ exports.seed = async function (knex) {
           })
         );
 
+        console.log("pre 1", rruleSet.all(), rruleSet.valueOf());
+
         // Add a date to rruleSet that does not lie in the reccurence pattern
         rruleSet.rdate(getToday().toDate());
         rruleSet.rdate(getToday().add(1, "hour").toDate());
+        // rruleSet.rdate(getToday().add(2, "hour").toDate());
+        // rruleSet.rdate(getToday().add(2, "hour").toDate());
+        // rruleSet.rdate(getToday().add(2, "days").toDate());
+
+        console.log("pre 2", rruleSet.all(), rruleSet.valueOf());
         rruleSet.rdate(getToday().add(2, "hour").toDate());
+        console.log("after first 2", rruleSet.all(), rruleSet.valueOf());
+        rruleSet.rdate(getToday().add(2, "hour").toDate());
+        console.log("after second 2", rruleSet.all(), rruleSet.valueOf());
         rruleSet.rdate(getToday().add(2, "days").toDate());
 
         // Add a exclusion rrule to rruleSet
@@ -306,26 +317,8 @@ exports.seed = async function (knex) {
           new RRule({
             freq: RRule.WEEKLY,
             dtstart: getToday().add(2, "days").toDate(),
-            count: 10,
           })
         );
-
-        // Add a date to rruleSet that does not lie in the reccurence pattern
-        rruleSet.rdate(getToday().add(3, "days").toDate());
-
-        // Add a exclusion rrule to rruleSet
-        // For example, the first day of every month
-        rruleSet.exrule(
-          new RRule({
-            freq: RRule.MONTHLY,
-            count: 10,
-            dtstart: getToday().add(2, "days").toDate(),
-            bymonthday: 1,
-          })
-        );
-
-        // Add a date to exclude from the rruleSet
-        rruleSet.exdate(getToday().add(9, "days").toDate());
 
         return rruleSet.toString();
       })(),
@@ -335,67 +328,23 @@ exports.seed = async function (knex) {
       rruleSetString: (function () {
         const rruleSet = new RRuleSet();
 
-        // Add a rrule to rruleSet
         rruleSet.rrule(
           new RRule({
-            freq: RRule.WEEKLY,
-            dtstart: getToday().add(1, "days").toDate(),
+            freq: RRule.DAILY,
+            dtstart: getToday().toDate(),
             count: 10,
           })
         );
 
-        // Add a date to rruleSet that does not lie in the reccurence pattern
-        rruleSet.rdate(getToday().toDate());
-        rruleSet.rdate(getToday().add(2, "days").toDate());
-
-        // Add a exclusion rrule to rruleSet
-        // For example, the first day of every month
-        rruleSet.exrule(
-          new RRule({
-            freq: RRule.MONTHLY,
-            count: 10,
-            dtstart: getToday().add(1, "days").toDate(),
-            bymonthday: 1,
-          })
-        );
-
-        // Add a date to exclude from the rruleSet
-        rruleSet.exdate(getToday().add(8, "days").toDate());
-
-        return rruleSet.toString();
-      })(),
-    },
-    {
-      classID: 4,
-      rruleSetString: (function () {
-        const rruleSet = new RRuleSet();
-
-        // Add a rrule to rruleSet
         rruleSet.rrule(
           new RRule({
-            freq: RRule.WEEKLY,
-            dtstart: getToday().add(1, "days").toDate(),
+            freq: RRule.DAILY,
+            dtstart: getToday().add(2, "hours").toDate(),
             count: 10,
           })
         );
 
-        // Add a date to rruleSet that does not lie in the reccurence pattern
-        rruleSet.rdate(getToday().toDate());
-        rruleSet.rdate(getToday().add(2, "days").toDate());
-
-        // Add a exclusion rrule to rruleSet
-        // For example, the first day of every month
-        rruleSet.exrule(
-          new RRule({
-            freq: RRule.MONTHLY,
-            count: 10,
-            dtstart: getToday().add(1, "days").toDate(),
-            bymonthday: 1,
-          })
-        );
-
-        // Add a date to exclude from the rruleSet
-        rruleSet.exdate(getToday().add(8, "days").toDate());
+        // @todo This wont work, the prob with this is that, when I save the rruleset as a string, it will produce 2 different rrules which when being read back by the rrulestr function, will drop the second one and only keep the first one
 
         return rruleSet.toString();
       })(),
