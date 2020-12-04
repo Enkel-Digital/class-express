@@ -16,6 +16,7 @@
 // @todo To remove use of main components and use components from /partner
 import Navbar from "@/components/partner/Navbar";
 import Hero from "@/components/partner/Hero";
+import Features from "@/components/partner/Features";
 import ContactUs from "@/components/shared/ContactUs";
 import Footer from "@/components/shared/Footer";
 
