@@ -4,8 +4,7 @@
 
     <Hero />
     <Features id="Features" />
-    <Workouts id="Workouts" />
-    <Download id="Download" />
+    <Tutorial id="Portal" />
     <ContactUs id="ContactUs" />
 
     <Footer />
@@ -17,6 +16,7 @@
 import Navbar from "@/components/partner/Navbar";
 import Hero from "@/components/partner/Hero";
 import Features from "@/components/partner/Features";
+import Tutorial from "@/components/partner/Tutorial";
 import ContactUs from "@/components/shared/ContactUs";
 import Footer from "@/components/shared/Footer";
 
@@ -26,8 +26,7 @@ export default {
     Navbar,
     Hero,
     Features,
-    Workouts,
-    Download,
+    Tutorial,
     ContactUs,
     Footer,
   },
