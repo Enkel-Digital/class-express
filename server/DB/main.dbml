@@ -164,7 +164,7 @@ Table userTopups {
 // @todo need to add selected time of class to this too right?
 // @todo Do we need to add the start time of the class?
 // PG + Trimmable (keep like the latest 20 user past classes, allow user to request for more)
-// Instead of relying on a Points table that needs to be updated every month, perhaps use a transactions table and the userPlans table to compute the points on demand
+// Instead of relying on a Points table that needs to be updated every month, use transactions and userPlans table to compute points on demand
 // Bascially records of user bookings and cancellation events and more
 // Classes that the users have booked and did not cancel
 Table userBookingTransactions {
@@ -176,7 +176,6 @@ Table userBookingTransactions {
   // Only store start time as end time should be computed using length of class
   // Might look into using ISO 8061 defaults, but using unix seconds for now for consistency
   startTime bigint [not null]
-  // @todo might store end time too as a hack guard, as partners can change the length of the class to cheat the system and gain points even before class actually ended and then the user's cannot cancel.
 }
 
 // @todo need to add selected time of class to this too right?
