@@ -14,10 +14,10 @@
     "@dbml/core": "^2.1.1",
     "@enkeldigital/ce-search-lib": "file:../../search-lib",
     "dotenv": "^8.2.0",
-    "knex": "^0.21.5",
-    "moment": "^2.27.0",
-    "pg": "^8.3.3",
-    "rrule": "^2.6.4",
+    "knex": "^0.21.12",
+    "moment": "^2.29.1",
+    "pg": "^8.5.1",
+    "rrule": "^2.6.6",
     "unixseconds": "^0.1.0",
     "yesno": "^0.3.1"
   }
