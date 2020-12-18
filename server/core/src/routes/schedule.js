@@ -22,6 +22,7 @@ const logger = createLogger("routes:schedule");
  */
 function onThisDay(rruleSet, dateToCheck) {
   // Get start and end time of selected date to test for timings/occurence between them
+  // Need to clone the moment as startOf and endOf methods mutates the original moment
   const start = dateToCheck.clone().startOf("day").toDate();
   const end = dateToCheck.clone().endOf("day").toDate();
 

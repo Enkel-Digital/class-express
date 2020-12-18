@@ -47,6 +47,8 @@ router.post("/new", express.json(), async (req, res) => {
     // Insert class tags into DB
     await dbTags.class.insert(clas.id, tags);
 
+    // @todo Get location too
+
     // @todo If this fails, we need to somehow allow a retry later.
     // Add new class to the search index
     await search.classes.add(clas, "class");
