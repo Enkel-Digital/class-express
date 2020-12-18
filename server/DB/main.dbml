@@ -178,6 +178,19 @@ Table userBookingTransactions {
   startTime bigint [not null]
 }
 
+// Everytime insert into userBookingTransactions.
+Table partnerPayouts {
+  id bigint [pk, increment, not null, unique]
+  actionTime bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] // TS should be provided by client, but defaults to server timestamp if none
+
+  // Dont do cascading delete on trim, because it will also delete this during trimming.
+  // BUT keep the same ID, so that i can easily find when the user cancel only.
+  userID int [ref: > userAccounts.id, not null]
+  classID int [ref: > classes.id, not null]
+  points int [not null] // A copy of the points of the class at the moment of action, as points of a class can be changed by partner later on
+  pendingTime bigint [not null] // can  only claim after this timing...
+}
+
 // @todo need to add selected time of class to this too right?
 // @todo Do we need to add the start time of the class?
 // Trimmable
@@ -222,13 +235,40 @@ Table classTags {
 
 // PG
 // Every row is a rruleSet string for a single class
+//
+// To get class schedule, get all rows that match classID, create moments object, test 1 by 1 and if any of them matches, return true.
+// Or each row store the rruleset string, where 1 string can have more then 1 rules?
 Table classSchedule {
   id bigint [pk, increment, not null, unique]
   createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
   // @todo Add updatedAt to track when this is updated for analytics purposes
   // Allow multiple rrules per class
   classID int [ref: > classes.id, not null]
+  
+  // Defaults to the default instructor,
+  // Although they can create multiple classes with the same start time, it must be different instructors.
+  // Partners can create another class before the first one ends if they have multiple instructors.
+  // What if they want to have many same class start at the same time, but is not instructor base? E.g. A bouldering gym? In this case, just have 1 class with a high amount of max-participants value
+  // Defaults to null, where if null, means the default instructor. Which means you can only have 1 class at any point in time.
+  instructorID int [ref: > instructors.id, null]
+
   rruleSetString varchar [not null]
+}
+
+// How to do rules overlayering.
+//
+// E.g. If a partner support diff instructors, and they want to make mon a public holiday and pause all classes that day,
+// instead of doing 1 by 1 for the instructors, can it be done automatically? Like a rrule for the class itself, and a
+// rrule for the instructors. Then a rrule for the partner itself that can override the class itself.
+Table instructors {
+  id int [pk, increment, not null, unique]
+  partnerID int [ref: > partners.id, not null]
+  name varchar [not null]
+  description varchar [not null]
+
+  // An array of classes this instructor teach
+  // Add constraint that this class must belong to the same partner of partnerID
+  classID int [ref: > classes.id]
 }
 
 // PG or FS
