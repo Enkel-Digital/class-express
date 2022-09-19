@@ -20,7 +20,7 @@
     "firebase": "^7.23.0",
     "instantsearch.css": "^7.4.5",
     "lodash.clonedeep": "^4.5.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "register-service-worker": "^1.7.1",
     "unixseconds": "^0.1.0",
     "vue": "^2.6.12",
