@@ -3,9 +3,3 @@
 
 ## Roadmap:
 -- tbd --
-
-## License, Author and Contributing
-This project is developed and made available under the "MIT" License  
-If you have any questions, contact us via [email](mailto:developer@enkeldigital.com)  
-Authors:
-- [JJ](https://github.com/Jaimeloeuf)

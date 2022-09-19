@@ -20,9 +20,3 @@ npm run build
 ```
 npm run lint
 ```
-
-## License, Author and Contributing
-This project is developed and made available under the "AGPL v3 License"  
-If you have any questions, contact us via [email](mailto:developer@enkeldigital.com)  
-Authors:
-- [JJ](https://github.com/Jaimeloeuf)
