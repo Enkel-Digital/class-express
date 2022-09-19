@@ -1,0 +1,86 @@
+# Global file variable definitions
+@hostname = http://localhost
+@port = 3002
+@host = {{hostname}}:{{port}}
+
+### Create api_tester account if none
+# @name signUp
+# @todo Generate new service account
+
+### Get auth credentials
+# @name getAuth
+# @todo Generate credentials from service account
+
+### ping
+GET {{host}}/
+
+### Health probe
+GET {{host}}/health
+
+### Check if user exists as a stripe Customer
+# GET /user/exists/:userID
+GET {{host}}/user/exists/1
+
+### Create Customer
+POST {{host}}/user/create
+content-type: application/json
+
+{
+    "userAccountID": "1",
+    "userDetails": {
+        "email": "api_tester@email.com",
+        "name": "Tester"
+    }
+}
+
+### Create Stripe Payment Method
+POST {{host}}/paymentMethod/create
+content-type: application/json
+
+{
+    "userAccountID": "1",
+    "type": "card",
+    "card": {
+        "number": "4242424242424242",
+        "exp_month": 7,
+        "exp_year": 2024,
+        "cvc": "424"
+    },
+    "billingDetails": {
+        "email": "ewqweewq@email.com",
+        "name": "James"
+    }
+}
+
+### Update Stripe Payment Method
+# @todo To fix this up.
+PATCH {{host}}/paymentMethod
+content-type: application/json
+
+{
+    "userAccountID": "1",
+    "type": "card",
+    "card": {
+        "number": "4242424242424242",
+        "exp_month": 7,
+        "exp_year": 2024,
+        "cvc": "424"
+    },
+    "billingDetails": {
+        "email": "ewqweewq@email.com",
+        "name": "James"
+    }
+}
+
+### Update Subscription Plan
+# POST /plans/update/:planID
+POST {{host}}/plans/update/3
+content-type: application/json
+
+{
+    "userAccountID":"1"
+}
+
+### get stripe client secret
+# GET /setupIntent/card-wallet/:userAccountID
+GET {{host}}/setupIntent/card-wallet/1

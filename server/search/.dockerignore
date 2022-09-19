@@ -1,0 +1,19 @@
+# dockerignore file, specifies what files should not be sent as build context to the docker daemon.
+# Refer to https://stackoverflow.com/a/45118985 for an explaination on build process and what is included in build context
+# Refer to Last paragraph of https://docs.docker.com/engine/reference/builder/#dockerignore-file for an explaination about how the build context is selected in this .dockerignore file
+# Note: this optimizations are not really needed when using buildkit. Here's why https://docs.docker.com/engine/reference/builder/#buildkit
+
+# This dockerignore file uses the whitelist layout format as explained above.
+# .Dockerfile and this .dockerignore will also be ignored, but will still be automatically sent to docker daemon by default
+# Certain things that must be ignored:
+#       - .git
+#       - secrets/.env (visible via docker inspect if build context is cached)
+
+# Ignore everything first to use dockerignore as a whitelist instead of a blacklist
+*
+
+# Allow package json files to be copied over for installing dependencies
+!package*.json
+
+# Only allow src/ to be copied in
+!src/

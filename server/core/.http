@@ -1,0 +1,173 @@
+# Global file variable definitions
+@hostname = http://localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+@firebaseAuthApiKey = AIzaSyAXQkdXjxHpZbEYNTXoyfyBXfWVEbm-tCA
+@authHeader = Authorization: Bearer {{getAuth.response.body.idToken}}
+
+### Create api_tester account if none
+# @name signUp
+POST https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "api_tester@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
+
+### Get auth credentials
+# @name getAuth
+POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "api_tester@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
+### ping
+GET {{host}}/
+
+### Health probe
+GET {{host}}/health
+
+### Get User
+# GET /user/:userEmail
+GET {{host}}/user/social@enkeldigital.com
+{{authHeader}}
+
+### Get all subscription plans
+GET {{host}}/subscription/plans/all
+
+### Get new verification email
+# This does not need any authorization as user needs to access this before they are even logged in.
+# However, this is auto rate limited by firebase Auth
+# POST /emailActionLinks/resendVerificationEmail/:email
+POST {{host}}/emailActionLinks/resendVerificationEmail/social@enkeldigital.com
+
+### Get Topup Options
+GET {{host}}/topup/options
+
+### Get user's points
+# GET /points/:userID
+GET {{host}}/points/1
+{{authHeader}}
+
+### Get favourites
+# GET /favourites/:userID
+GET {{host}}/favourites/1
+{{authHeader}}
+
+### Update favourite class
+# Can set favouritedAt timestamp using an object on the favourite key
+POST {{host}}/favourites/classes/update
+{{authHeader}}
+content-type: application/json
+
+{
+    "userID": 1,
+    "classID": 1,
+    "favourite": true
+}
+
+### Update favourite partner
+# Can set favouritedAt timestamp using an object on the favourite key
+POST {{host}}/favourites/partner/update
+{{authHeader}}
+content-type: application/json
+
+{
+    "userID": 1,
+    "partnerID": 2,
+    "favourite": true
+}
+
+### Get user's plan
+# GET /subscription/:userID
+GET {{host}}/subscription/1
+{{authHeader}}
+
+### Get class details
+# GET /class/details/:classID
+GET {{host}}/class/details/1
+
+### Get class schedule
+# GET /schedule/class/:classID/:date?
+GET {{host}}/schedule/class/1/
+
+### Get schedules of classes of a partner
+# GET /schedule/partner/:partnerID/:date?
+GET {{host}}/schedule/partner/1/
+
+### Get Partner
+# GET /partner/details/:partnerID
+GET {{host}}/partner/details/1
+
+### Get class reviews
+# GET /reviews/class/:classID
+GET {{host}}/reviews/class/1
+
+### Get partner reviews
+# GET /reviews/partner/:partnerID
+GET {{host}}/reviews/partner/3
+
+### Get user's classes (upcoming & past)
+# GET /class/user/:userID
+GET {{host}}/class/user/1
+{{authHeader}}
+
+### Create new review
+# POST /reviews/new/:classID
+POST {{host}}/reviews/new/1
+{{authHeader}}
+content-type: application/json
+
+{
+    "userID": 1,
+    "points": 5,
+    "description": "Sibei fun!"
+}
+
+### Update user's plan
+POST {{host}}/subscription/update
+{{authHeader}}
+content-type: application/json
+
+{
+    "userID": 1,
+    "subscriptionPlanID": 1
+}
+
+### Reserve a class
+POST {{host}}/class/reserve
+{{authHeader}}
+content-type: application/json
+
+{
+    "userID": 1,
+    "classID": 1,
+    "selectedTime": ""
+}
+
+### Cancel a reservation
+POST {{host}}/class/cancel
+{{authHeader}}
+content-type: application/json
+
+{
+    "userID": 1,
+    "classID": 1,
+    "selectedTime": ""
+}
+
+### Cancel user's plan
+POST {{host}}/subscription/cancel
+{{authHeader}}
+content-type: application/json
+
+{
+    "userID": 1
+}

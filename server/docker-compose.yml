@@ -1,0 +1,29 @@
+# Compose file for running whole system locally for development and testing only.
+
+version: "3"
+
+services:
+  # @todo Run migration and maybe seeding everytime this starts up by using another docker image from DB/knex
+  postgresql:
+    restart: always
+    hostname: sql
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "password"
+
+  core:
+    restart: always
+    hostname: core
+    build:
+      context: ./core
+      dockerfile: .Dockerfile
+    # By passing in image along with build object, compose will build to "image" name before using it
+    image: ce-core
+    env_file:
+      - ./core/.env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgresql

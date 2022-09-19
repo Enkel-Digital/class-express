@@ -1,0 +1,4 @@
+{
+  "watch": ["**.js", "**.json", ".env"],
+  "ignore": ["test/utils/config.json", "README"]
+}

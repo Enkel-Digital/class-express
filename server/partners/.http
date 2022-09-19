@@ -1,0 +1,310 @@
+# Global file variable definitions
+@hostname = http://localhost
+@port = 3001
+@host = {{hostname}}:{{port}}
+@firebaseAuthApiKey = AIzaSyA6WspXWorAK_1HiwLAVht7-ujoUDdWsAs
+@authHeader = Authorization: Bearer {{getAuth.response.body.idToken}}
+
+### Create api_tester account if none
+# @name signUp
+POST https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "api_tester@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
+
+### Get auth credentials
+# @name getAuth
+POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "api_tester@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
+### ping
+GET {{host}}/
+
+### Health probe
+GET {{host}}/health
+
+### Get user
+# GET /user/:userEmail
+# GET {{host}}/user/test@enkeldigital.com @todo Test that this does not work when still in account creation stage
+# Does it matter? since they wont be able to login anyways...
+GET {{host}}/user/jj@enkeldigital.com
+{{authHeader}}
+
+### Update user details
+# PATCH /user/:employeeID
+PATCH {{host}}/user/3
+{{authHeader}}
+content-type: application/json
+
+{
+    "employee": {
+        "name": "new name"
+    }
+}
+
+### Delete employee account
+# DELETE /user/:employeeID
+DELETE {{host}}/user/3
+{{authHeader}}
+
+### Get partner details
+# GET /partner/:partnerID
+GET {{host}}/partner/1
+
+### Create new partner
+# Can change website value to http or remove the http protocol directly to test isHttps url validator
+POST {{host}}/partner/new
+{{authHeader}}
+content-type: application/json
+
+{
+    "partner": {
+        "name": "test-partner",
+        "email": "test@enkeldigital.com",
+        "phoneNumber": "+65 12345678",
+        "description": "this is a description",
+        "website": "https://enkeldigital.com",
+        "location_address": "123 Main St",
+        "location_postalCode": "600500",
+        "location_coordinates": "123.1234454, 23.234512"
+    }
+}
+
+
+### Update partner details
+# PATCH /partner/:partnerID
+PATCH {{host}}/partner/1
+{{authHeader}}
+content-type: application/json
+
+{
+    "partner": {
+        "description": "Updated description",
+    }
+}
+
+### Delete partner / business organisation and all of its accounts and classes
+# DELETE /partner/:partnerID
+DELETE {{host}}/partner/1
+{{authHeader}}
+
+### Approve a newly created partner account
+# POST /partner/new/approve/:pendingPartnerID?approvedBy=:CE_admin_that_approved_the_request
+POST {{host}}/partner/new/approve/1?approvedBy=CE_admin
+
+### Get class details
+# GET /class/details/:classID
+GET {{host}}/class/details/1
+
+### Create new class
+POST {{host}}/class/new
+{{authHeader}}
+content-type: application/json
+
+{
+    "clas": {
+        "partnerID": 1,
+        "name": "Barista Training",
+        "description": "Basic barista training taught by licensed and experienced baristas",
+        "length": 45,
+        "points": 5,
+        "maxParticipants": 30,
+        "pictureSources": "https://cdn.shopify.com/s/files/1/0245/7727/8015/products/barista_class_for_2_5_2_1024x.jpg?v=1579094260",
+        "location_address": "Orchard road, Plaza Singapura",
+        "location_coordinates": "1.3006954, 103.84475",
+        "tags": ["initialTags", "testing"]
+    }
+}
+
+### Update class details
+# PATCH /class/:classID
+PATCH {{host}}/class/5
+{{authHeader}}
+content-type: application/json
+
+{
+    "clas": {
+        "description": "New description for class"
+    }
+}
+
+### Delete a class
+# DELETE /class/:classID
+DELETE {{host}}/class/5
+{{authHeader}}
+content-type: application/json
+
+### Get all the IDs of a partner's classes
+# GET /class/of/:partnerID
+GET {{host}}/class/of/1
+{{authHeader}}
+
+### Favourite count of class
+# GET /favourites/class/:classID
+GET {{host}}/favourites/class/2
+{{authHeader}}
+
+### Favourite count of partner
+# GET /favourites/partner/:partnerID
+GET {{host}}/favourites/partner/1
+{{authHeader}}
+
+### Favourite count of all classes from a partner
+# GET /favourites/all-classes/of/:partnerID
+GET {{host}}/favourites/all-classes/of/1
+{{authHeader}}
+
+### Get pending points
+# GET /points/pending/:partnerID
+GET {{host}}/points/pending/3
+{{authHeader}}
+
+### Get earned points
+# GET /points/valid/:partnerID
+GET {{host}}/points/valid/3
+{{authHeader}}
+
+### Get all points earned from class
+# GET /points/class/:classID
+GET {{host}}/points/class/:classID
+{{authHeader}}
+
+### Get all tags of a class (This should normally not be used, as GET class details will include the tags)
+# Primarily used for updating the tags on the client when tags are updated but we might not want to reload the whole class object
+# GET /tags/class/:classID
+GET {{host}}/tags/class/1
+
+### Add more tags for a class
+POST {{host}}/tags/class/new
+{{authHeader}}
+content-type: application/json
+
+{
+    "classID": 1,
+    "tags": ["test", "test2"]
+}
+
+### Delete tags of a class
+# DELETE /tags/class/:classID
+DELETE {{host}}/tags/class/1
+{{authHeader}}
+content-type: application/json
+
+{
+    "classID": 1,
+    "tags": ["test", "test2"]
+}
+
+### Get all tags of a partner (This should normally not be used, as GET partner details will include the tags)
+# GET /tags/partner/:partnerID
+GET {{host}}/tags/partner/1
+
+### Add more tags for a partner
+POST {{host}}/tags/partner/new
+{{authHeader}}
+content-type: application/json
+
+{
+    "partnerID": 1,
+    "tags": ["test", "test2"]
+}
+
+### Delete tags of a parrner
+# DELETE /tags/partner/:partnerID
+DELETE {{host}}/tags/partner/1
+{{authHeader}}
+content-type: application/json
+
+{
+    "partnerID": 1,
+    "tags": ["test", "test2"]
+}
+
+
+### Get all employees
+# GET /employees/all/:partnerID
+GET {{host}}/employees/all/1
+{{authHeader}}
+
+### Create new employee account and send them a email with a link to complete account creation
+# Use a local address in the optional redirectUrl field
+POST {{host}}/employees/new
+{{authHeader}}
+content-type: application/json
+
+{
+    "accountCreationRequest": {
+        "partnerID": 1,
+        "email": "test@enkeldigital.com",
+        "admin": false
+    },
+    "redirectUrl": "http://localhost:8081/#/signup"
+}
+
+### (Rate limited) Verify the "accountCreationRequest" string received in the user's email
+# POST /employees/new/verify
+POST {{host}}/employees/new/verify
+content-type: application/json
+
+{
+    "accountCreationRequest": "eyJwYXJ0bmVySUQiOjEsImVtYWlsIjoidGVzdEBlbmtlbGRpZ2l0YWwuY29tIiwiYWRtaW4iOmZhbHNlLCJ0b2tlbiI6Im1laGE2OTZkbCJ9"
+}
+
+
+### Create test@enkeldigital.com account with firebase, mimicing user signup behaviour
+# MAKE SURE the same email in /employees/new is used for firebase auth account creation
+# @name createEmployeeAccount
+POST https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "test@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
+
+### Get auth credentials for the test@enkeldigital.com account if already created
+# @name getEmployeeAccount
+POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "test@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
+### Complete partnerAccount creation process, by saving the update name after firebase auth account is created
+# This will verify the email from the JWT and the token in the body with the DB
+POST {{host}}/employees/new/complete
+Authorization: Bearer {{getEmployeeAccount.response.body.idToken}}
+content-type: application/json
+
+{
+    "accountCreationRequest": "eyJwYXJ0bmVySUQiOjEsImVtYWlsIjoidGVzdEBlbmtlbGRpZ2l0YWwuY29tIiwiYWRtaW4iOmZhbHNlLCJ0b2tlbiI6Im1laGE2OTZkbCJ9",
+    "employee": {
+        "name": "TestPartner"
+    }
+}
+
+### Get bookings of a partner
+# GET /bookings/all/:partnerID
+GET {{host}}/bookings/all/3
+{{authHeader}}
+
+### Get reviews for a class
+# GET /reviews/class/:classID
+GET {{host}}/reviews/class/1
+{{authHeader}}

@@ -1,0 +1,64 @@
+{
+  "name": "partners",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "deploy-firebase-hosting": "firebase deploy --only hosting",
+    "deploy": "npm run build && npm run deploy-firebase-hosting"
+  },
+  "dependencies": {
+    "chart.js": "^2.9.3",
+    "core-js": "^3.6.5",
+    "fetch-with-fire": "^1.5.1",
+    "firebase": "^7.19.1",
+    "lodash.clonedeep": "^4.5.0",
+    "moment": "^2.27.0",
+    "register-service-worker": "^1.7.1",
+    "sanitize-html": "^1.27.4",
+    "serve": "^11.3.2",
+    "unixseconds": "^0.1.0",
+    "vue": "^2.6.12",
+    "vue-chartjs": "^3.5.1",
+    "vue-error-controller": "^0.3.1",
+    "vue-loader-controller": "^0.1.0",
+    "vue-router": "^3.4.3",
+    "vue-sanitize": "^0.2.0",
+    "vuetify": "^2.3.10",
+    "vuex": "^3.5.1",
+    "vuex-persistedstate": "^3.1.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.5.4",
+    "@vue/cli-plugin-eslint": "^4.5.4",
+    "@vue/cli-plugin-pwa": "^4.5.4",
+    "@vue/cli-service": "^4.5.4",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.8.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-vue": "^6.2.2",
+    "husky": "^4.3.0",
+    "ignore-loader": "^0.1.2",
+    "lint-staged": "^10.3.0",
+    "prettier": "^2.1.1",
+    "sass": "^1.26.10",
+    "sass-loader": "^10.0.2",
+    "vue-cli-plugin-vuetify": "^2.0.7",
+    "vue-masonry-css": "^1.0.3",
+    "vue-template-compiler": "^2.6.12",
+    "vuetify-loader": "^1.6.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,vue}": [
+      "vue-cli-service lint"
+    ]
+  }
+}

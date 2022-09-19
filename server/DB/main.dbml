@@ -1,0 +1,332 @@
+// https://www.dbml.org/docs/
+
+// Legend:
+// PG (Attribute) -> PostgreSQL (preferred DB choice)
+// FS (Attribute) -> Firestore (preferred DB choice)
+// Trimmable (Attribute) -> Data that can be warehoused by deleting older data from production after backing up everything into data warehouse
+
+Project ClassExpress {
+  database_type: 'PostgreSQL'
+  Note: 'SQL DB for Class Express'
+}
+
+// FS
+// NOTE: There is no verified_email field as the app signup flow built explicitly requires email verification before user is allowed to login
+Table userAccounts {
+  id int [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  email varchar [not null, unique]
+  phoneNumber varchar [null] // Includes area code
+  firstName varchar [not null]
+  lastName varchar [null]
+  countryCode varchar [not null]
+  cityCode varchar [not null] // @todo Should this allow null? If null, then use country
+  timezone varchar [not null]
+  profilePictureURL varchar [null]
+  currency varchar [not null]
+  verified_phone boolean [default: false]
+  deleted boolean [default: false]
+}
+
+// FS
+Table userSettings {
+  userID int [pk, not null, ref: - userAccounts.id]
+  notification_email boolean [null]
+  notification_mobile boolean [null]
+  // @todo Add a updatedAt timestamp
+
+  // @todo
+  // Instead of fixed columns, maybe should just have a settings varchar column where frontend reads and parses it themselves
+  // so in effect using that column as kind of a key value store...  Using SQL instead of document store to keep data together in the same DB and service
+}
+
+// FS
+// Partners / Business organisations.
+// NOTE: There is no verified_email field as the signup flow explicitly requires email verification before firebase auth account is even created
+Table partners {
+  id int [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  // createdBy int [ref: > partnerAccounts.id, not null] // To identify the admin that created the business account.
+  // approvedBy varchar [not null] // To identify CE admin that approved and verified this company
+  createdBy int [ref: > partnerAccounts.id, null] // To identify the admin that created the business account.
+  approvedBy varchar [null] // To identify CE admin that approved and verified this company
+  name varchar [not null]
+  description varchar [not null]
+  email varchar [not null, unique] // Company email
+  // @todo might not need country code here? we should include country code somewhere else? or base64 encode this...
+  phoneNumber varchar [not null, unique] // Includes area code
+  location_address varchar [not null]
+  location_coordinates varchar [not null] // @todo shouldnt this be generated instead??
+  location_postalCode varchar [null]
+  website varchar [null, unique]
+  pictureSources varchar [null] // Perhaps use an array?
+  verified_phone boolean [default: false]
+  deleted boolean [default: false]
+}
+
+// Table used to temporarily store new partners creation requests and will be removed once verified by CE admins
+// This will also be used later for owner identify verification via a signup link sent to the owner's email
+Table new_partners {
+  id int [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+
+  // The name and email of the admin that created this partner, used once partner is verified for the partnerAccount's "accountCreationRequest"
+  createdByName varchar [not null]
+  createdByEmail varchar [not null, unique] // Unique constraint to prevent spams
+
+  // These fields are the same as those in partners table, upon verification, these data will be inserted to partners table
+  name varchar [not null]
+  description varchar [not null]
+  email varchar [not null, unique] // Company email
+  // @todo might not need country code here? we should include country code somewhere else? or base64 encode this...
+  phoneNumber varchar [not null, unique] // Includes area code
+  location_address varchar [not null]
+  location_coordinates varchar [not null] // @todo shouldnt this be generated instead??
+  location_postalCode varchar [null]
+  website varchar [null, unique]
+  pictureSources varchar [null] // Perhaps use an array?
+  
+  // Tags column to store all the tags as a single comma seperated string first.
+  // After partner verification, split the string into an array and insert into partnerTags table
+  tags varchar [null]
+}
+
+// Tags describing the Partners / Business organisations.
+Table partnerTags {
+  id bigint [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  partnerID int [ref: > partners.id, not null]
+  tag varchar [not null]
+}
+
+// FS
+// Individual users (employees) of a Partner / Business organisation
+Table partnerAccounts {
+  id int [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  partnerID int [ref: > partners.id, not null]
+  name varchar [not null]
+  admin boolean [default: false]
+  permissions varchar // Perhaps use an array?
+  email varchar [not null, unique]
+  phoneNumber varchar [null] // Includes area code
+  profilePictureURL varchar [null] // @todo Might not be stored here
+  verified_phone boolean [default: false]
+  deleted boolean [default: false]
+}
+
+// Table used to temporarily store new partnerAccounts creation requests
+// Data stored here will also be sent to the employees' email for them to proof their identify
+// Will be removed once partnerAccount creation is fully completed
+Table new_partnerAccounts {
+  id int [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  partnerID int [ref: > partners.id, not null]
+  email varchar [not null, unique]
+  token varchar [not null]
+  admin boolean [default: false]
+  // Is this the first account of partner? First account defaults to an admin account
+  firstAdmin boolean [default: false]
+}
+
+// FS
+Table partnerSettings {
+  userID int [pk, ref: - partnerAccounts.id, not null]
+  notification_email boolean [null]
+  notification_mobile boolean [null]
+  // @todo Add a updatedAt timestamp
+}
+
+// Trimmable + PG
+// Since planID is fixed overtime, it is used to get cost of plan and currency, instead of storing a copy of it in this table
+Table userPlans {
+  id bigint [pk, increment, not null, unique]
+  // @todo Add updatedAt to track when this is updated for analytics purposes?
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  userID int [ref: > userAccounts.id, not null] // Many rows with each row being 1 plan in users history
+  planID int [ref: > subscriptionPlans.id, not null]
+  // Might look into using ISO 8061 defaults, but using unix seconds for now for consistency
+  start bigint [not null] // Although can be generated, using not null and no default, forces server to always generate
+  end bigint [null]
+}
+
+// Trimmable + PG
+// Since topupID is fixed overtime, it is used to get cost of plan and currency, instead of storing a copy of it in this table
+// Each topup is only valid in same period it is purchased. Determined by checking if purchaseTime is between start and end of current period
+Table userTopups {
+  id bigint [pk, increment, not null, unique]
+  // @todo Add updatedAt to track when this is updated for analytics purposes?
+  purchaseTime bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  userID int [ref: > userAccounts.id, not null] // Many rows with each row being 1 topup in users history
+  topupID int [ref: > topupOptions.id, not null]
+}
+
+// @todo need to add selected time of class to this too right?
+// @todo Do we need to add the start time of the class?
+// PG + Trimmable (keep like the latest 20 user past classes, allow user to request for more)
+// Instead of relying on a Points table that needs to be updated every month, use transactions and userPlans table to compute points on demand
+// Bascially records of user bookings and cancellation events and more
+// Classes that the users have booked and did not cancel
+Table userBookingTransactions {
+  id bigint [pk, increment, not null, unique]
+  actionTime bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] // TS should be provided by client, but defaults to server timestamp if none
+  userID int [ref: > userAccounts.id, not null]
+  classID int [ref: > classes.id, not null]
+  points int [not null] // A copy of the points of the class at the moment of action, as points of a class can be changed by partner later on
+  // Only store start time as end time should be computed using length of class
+  // Might look into using ISO 8061 defaults, but using unix seconds for now for consistency
+  startTime bigint [not null]
+}
+
+// Everytime insert into userBookingTransactions.
+Table partnerPayouts {
+  id bigint [pk, increment, not null, unique]
+  actionTime bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] // TS should be provided by client, but defaults to server timestamp if none
+
+  // Dont do cascading delete on trim, because it will also delete this during trimming.
+  // BUT keep the same ID, so that i can easily find when the user cancel only.
+  userID int [ref: > userAccounts.id, not null]
+  classID int [ref: > classes.id, not null]
+  points int [not null] // A copy of the points of the class at the moment of action, as points of a class can be changed by partner later on
+  pendingTime bigint [not null] // can  only claim after this timing...
+}
+
+// @todo need to add selected time of class to this too right?
+// @todo Do we need to add the start time of the class?
+// Trimmable
+// Bascially records of user bookings and cancellation events and more
+// Classes that the user have booked/attended/booked+cancelled(by user or partner)
+// For analytics only
+Table userBookingTransactionsAnalytics {
+  id bigint [pk, increment, not null, unique]
+  actionTime bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`] // TS should be provided by client, but defaults to server timestamp if none
+  userID int [ref: > userAccounts.id, not null]
+  classID int [ref: > classes.id, not null]
+  points int [not null] // A copy of the points of the class at the moment of action, as points of a class can be changed by partner later on
+  // Both booked and cancelled defaults to false to make it easier as only need to set one to be true on insert
+  booked boolean [default: false]
+  cancelled boolean [default: false]
+}
+
+// FS or PG
+Table classes {
+  id int [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  partnerID int [ref: > partners.id, not null]
+  name varchar [not null]
+  description varchar [not null] // HTML allowed
+  length int [not null]
+  points int [not null]
+  maxParticipants int [not null]
+  walkIn boolean [default: false] // Default to not allow users to walkIn, matching the partner add new class UI
+  pictureSources varchar [null] // Perhaps use an array?
+  location_address varchar [null]
+  location_coordinates varchar [null]
+  deleted boolean [default: false]
+}
+
+// Tags describing the classes
+Table classTags {
+  id bigint [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  classID int [ref: > classes.id, not null]
+  tag varchar [not null]
+}
+
+// PG
+// Every row is a rruleSet string for a single class
+//
+// To get class schedule, get all rows that match classID, create moments object, test 1 by 1 and if any of them matches, return true.
+// Or each row store the rruleset string, where 1 string can have more then 1 rules?
+Table classSchedule {
+  id bigint [pk, increment, not null, unique]
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  // @todo Add updatedAt to track when this is updated for analytics purposes
+  // Allow multiple rrules per class
+  classID int [ref: > classes.id, not null]
+  
+  // Defaults to the default instructor,
+  // Although they can create multiple classes with the same start time, it must be different instructors.
+  // Partners can create another class before the first one ends if they have multiple instructors.
+  // What if they want to have many same class start at the same time, but is not instructor base? E.g. A bouldering gym? In this case, just have 1 class with a high amount of max-participants value
+  // Defaults to null, where if null, means the default instructor. Which means you can only have 1 class at any point in time.
+  instructorID int [ref: > instructors.id, null]
+
+  rruleSetString varchar [not null]
+}
+
+// How to do rules overlayering.
+//
+// E.g. If a partner support diff instructors, and they want to make mon a public holiday and pause all classes that day,
+// instead of doing 1 by 1 for the instructors, can it be done automatically? Like a rrule for the class itself, and a
+// rrule for the instructors. Then a rrule for the partner itself that can override the class itself.
+Table instructors {
+  id int [pk, increment, not null, unique]
+  partnerID int [ref: > partners.id, not null]
+  name varchar [not null]
+  description varchar [not null]
+
+  // An array of classes this instructor teach
+  // Add constraint that this class must belong to the same partner of partnerID
+  classID int [ref: > classes.id]
+}
+
+// PG or FS
+Table userFavourites {
+  id bigint [pk, increment, not null, unique]
+  userID int [ref: > userAccounts.id, not null]
+  // TS should be provided by client, but defaults to server timestamp if none.
+  // Because there might be a difference between client and DB server time due to network latency.
+  // However this is not really that big of a problem, thus it can be changed when needed.
+  favouritedAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  // Only one will be nulled, either classID or partnerID
+  // Get classIDs by filtering for NOT NULL classIDs
+  classID int [ref: > classes.id, null] // Defaults to null
+  // Get partnerIDs by filtering for NOT NULL partnerIDs
+  partnerID int [ref: > partners.id, null] // Defaults to null
+}
+
+// @todo add columns start/end, to allow us to specify when this is avail to user for? Like good for setting promos
+// All subscription plans across time
+Table subscriptionPlans {
+  id int [pk, increment, not null, unique] // This is also the "planID"
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  available boolean [default: true] // By default all plans are available // @todo Can change to be a procedure to be executed to see if this is avail?
+  name varchar [not null]
+  copywriting varchar [not null] // HTML allowed
+  currency varchar [not null]
+  price int [not null] // Price in the specified currency
+  totalPoints int [not null]
+}
+
+// @todo Create seperate table for country codes for subscription plans and other tables
+  // Country that this plan is available in = All countries if none specified
+  // Usually need to specify and usually the same as the currency of the plan.
+  // Multiple rows, 1 row for each unique countryCode
+  // countryCode varchar [not null]
+
+// FS
+// @todo add columns start/end, to allow us to specify when this is avail to user for? Like good for setting promos
+// All topupOptions allowed other then the custom points topup
+Table topupOptions {
+  id int [pk, increment, not null, unique] // This is also the "topupID"
+  createdAt bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  available boolean [default: true] // By default all plans are available // @todo Can change to be a procedure to be executed to see if this is avail?
+  name varchar [not null]
+  copywriting varchar [not null] // HTML allowed
+  currency varchar [not null]
+  price int [not null]
+  totalPoints int [not null]
+}
+
+// PG + Trimmable (If trimmed, we need to make this into a seperate service that will hold a materialized view with cached result)
+// PG needed for advance processing, to add a caching layer in front of queries for this with a 1 ~ 2 days expiry?
+Table reviews {
+  id bigint [pk, increment, not null, unique]
+  reviewedOn bigint [default: `EXTRACT(EPOCH FROM now() at time zone 'utc')`]
+  userID int [ref: > userAccounts.id, not null]
+  classID int [ref: > classes.id, not null]
+  // @todo Add what time was the lesson so partner can take action -- Implement after classSchedule is implemented
+  points int [not null]
+  description varchar [null]
+}
